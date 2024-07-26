@@ -78,6 +78,16 @@ export const useRegisterStore = defineStore({
           return { ok: false, message: message, caso: 0, rd: 0}
         }
       },
+      async gettipo_mantenimiento() {
+        try {
+          const { data } = await siibApi.get('registro/tipo_mantenimiento/')
+        //  router.push({ name: 'documentaryReceptionList' });
+          return  data
+        } catch (error: any) {
+          const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+          return { ok: false, message: message, caso: 0, rd: 0}
+        }
+      },
   // OBTENER INFORMACION DE DELITO POR ID
   async orden_id (id_orden: any) {
     try {

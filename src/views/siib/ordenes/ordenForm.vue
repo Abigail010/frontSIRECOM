@@ -213,7 +213,7 @@ editar.value = false
   const buttonAddCode = () => {
     console.log('clic')
 
-   // console.log("recibiendo: " +state.formData.nombre_accesorio+ " id " +state.formData.id_accesorio)
+    //console.log("recibiendo: " +state.formData.nombre_accesorio+ " id " +state.formData.id_accesorio)
     if(state.formData.id_accesorio && state.formData.nombre_accesorio){
       lista_accesorios.value = lista_accesorios.value.filter(
         (codigo: any) =>
@@ -964,8 +964,6 @@ Fecha de Registro<span style="color:red">*</span>
           no-data-text="No existe más opciones para seleccionar"
           item-value="id"
           item-title="nombre_accesorio"
-          
-
           @update:model-value="setCodeName()"
           
         >
