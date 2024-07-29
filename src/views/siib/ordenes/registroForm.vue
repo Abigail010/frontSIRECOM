@@ -8,7 +8,7 @@ import { useResourceStore } from '@/stores/resource';
 import { useDocumentaryReceptionStore } from '@/stores/moduleOne/documentaryReception';
 import { useOrdenStore } from '@/stores/orden/orden';
 import { useRegisterStore } from '@/stores/orden/registro';
-
+import { useSystemStore } from '@/stores/resources/system';
 import { validateText } from '@/utils/helpers/validateText'
 import { editPermission } from '@/utils/helpers/editPermission' 
 
@@ -21,6 +21,7 @@ import { readonly } from 'vue';
   const documentaryReceptionStore = useDocumentaryReceptionStore()
   const orden = useOrdenStore()
   const registro = useRegisterStore()
+  const getSystem = useSystemStore()
   const tipos_combustible = ['GASOLINA', 'DIESEL', 'KEROSENE']
   const submitButton = ref(false)
   const addButton = ref(false)
@@ -124,6 +125,9 @@ import { readonly } from 'vue';
         idfrenos: [] as any,
         id_f:'',
         nombre_f:'', 
+        id_sistema:'',
+        sistema_select:'', 
+        prueba:'', 
    
       cedula_identidad: '',
    
@@ -142,7 +146,7 @@ import { readonly } from 'vue';
   const lista_tipo_codigo = ref([]) as any
   const lista_diagnosticos = ref([]) as any
 
-  const lista_dependencia = ref([]) as any
+  const lista_sistemas = ref([]) as any
   const jurisdicciones = ref([]) as any
   const tipo_mantenimiento = ref([]) as any
   const tipo_mantenimiento2 = ref([]) as any
@@ -168,17 +172,23 @@ import { readonly } from 'vue';
     tipo_mantenimiento8.value = await registro.gettipo_mantenimiento()   
     tipo_mantenimiento9.value = await registro.gettipo_mantenimiento()   
     tipo_mantenimiento10.value = await registro.gettipo_mantenimiento()    
-  //  console.log(tipo_mantenimiento.value)
-    /*lista_dependencia.value = await resourceStore.getDependencies()   // LISTA DE DEPENDENCIAS
-    const jurisdictions = await resourceStore.getTalleres()            // LISTA DE JURISDICCIONES
-    if(perfilUsuario != 'SUPERADMIN'){
-      jurisdicciones.value = jurisdictions.filter( (jurisdiccion: any) => jurisdiccion.nombre_oficina == oficinaUsuario )
-    }else{
-      jurisdicciones.value = jurisdictions.filter( (jurisdiccion: any) => jurisdiccion.departamento != 'NACIONAL' )
-    }
-    lista_casos.value = await resourceStore.getInstances()*/
-  }
+ 
 
+    // // LISTA DE sistemas
+    lista_sistemas.value = await getSystem.systems()
+    console.log(lista_sistemas.value)
+    
+  }
+  
+
+   // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
+ const buttonSearchSistema = async () => {
+  state.formData.id_sistema= ''
+ console.log(state.formData)
+  
+    //const respuesta = await userStore.bienes(state.formData)
+   // console.log(respuesta)
+}
   const recepciones = ref([]) as any
 
    
@@ -202,6 +212,7 @@ import { readonly } from 'vue';
     state.formData.kilometraje = data.kilometraje
     state.formData.tipo_orden = data.tipo 
     state.formData.color_ve = data.color
+    state.formData.prueba= data.prueba
 
 
     
@@ -327,11 +338,6 @@ editar.value = false
     state.formData.nombre_f = registro10.nombre_f
   }
   //trans
-
-  
-  
-
-
 
   // AGREGA TIPO DE CODIGO A LA TABLA DE CODIGOS
   const buttonAddCode = () => {
@@ -1450,6 +1456,44 @@ const getMecanicos = async() => {
         </v-table>
       </v-col>
     </template>
+
+    <v-col cols="12" lg="12">
+      <h3 class="my-3 text-primary">PEDIDO DE REPUESTOS</h3>
+    </v-col>
+    <v-col cols="12" md="12">
+         
+         <v-select
+             v-model.trim="state.formData.sistema_select"
+             :items="lista_sistemas"
+             item-title="nombre_sistema"
+             item-value="id"
+             no-data-text="No existe más opciones para seleccionar"
+             :error="submitButton && !state.formData.sistema_select"
+             clearable
+          >
+         <template v-slot:append v-if="route.params.id_orden != '0'">
+             <v-btn
+               color="primary"
+               @click= buttonSearchSistema()
+               :disabled="!state.formData.sistema_select"
+               readonly="true"
+               ><SearchIcon/>Buscar
+             </v-btn>
+             <v-btn
+               color="secondary"
+               
+             ><TrashIcon/>Limpiar
+             </v-btn>
+           </template>
+         </v-select>
+         <template v-if="submitButton && !state.formData.sistema_select">
+           <div class="v-messages font-weight-black px-2 py-2">
+             <div class="v-messages__message text-error ">
+               El campo es requerido
+             </div>
+           </div>
+         </template>
+       </v-col>
   </v-row>
 
   <v-row>

@@ -7,7 +7,6 @@ import { format } from 'date-fns'
 import { useResourceStore } from '@/stores/resource';
 import { useDocumentaryReceptionStore } from '@/stores/moduleOne/documentaryReception';
 import { useOrdenStore } from '@/stores/orden/orden';
-
 import { validateText } from '@/utils/helpers/validateText'
 import { editPermission } from '@/utils/helpers/editPermission' 
 
@@ -19,6 +18,7 @@ import { readonly } from 'vue';
   const resourceStore = useResourceStore()
   const documentaryReceptionStore = useDocumentaryReceptionStore()
   const orden = useOrdenStore()
+
   const tipos_combustible = ['GASOLINA', 'DIESEL', 'KEROSENE']
   const submitButton = ref(false)
   const addButton = ref(false)
@@ -407,11 +407,11 @@ editar.value = false
     state.formData.id_persona = ''
     const respuesta = await orden.searchOrden(state.formData)
     state.formData.color_ve = respuesta.color 
-    state.formData.tipo_orden= respuesta.nombre_clase
+    state.formData.tipo_orden= respuesta.tipo_v
     state.formData.chasis_ = respuesta.chasis
     state.formData.placas = respuesta.placa
     state.formData.modelo = respuesta.modelo
-    state.formData.marca = respuesta.nombre_marca + ' ' +respuesta.tipo
+    state.formData.marca = respuesta.marca
     state.formData.motor = respuesta.motor
     state.formData.anio_fabri = respuesta.anio_registro
     state.formData.nro_ocupantes = respuesta.nro_ocupantes
