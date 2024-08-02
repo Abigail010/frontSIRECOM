@@ -325,7 +325,7 @@ const openpanel = ref([0]);
     for (let i = 0; i < fre.length; i++) {
       state.formData.idfrenos.push(fre[i])
   
-      tipo_mantenimiento10.value = tipo_mantenimiento10.value.filter( (tipo: any) => tipo.nombre_diagnostico != fre[i].id_tt)
+      tipo_mantenimiento10.value = tipo_mantenimiento10.value.filter( (tipo: any) => tipo.nombre_diagnostico != fre[i].id_f)
     }
       
     const acce = data.id_accesorios_
@@ -979,7 +979,7 @@ if(state.formData.id_Rep.length>0){
     if(!sendForm.value) return
 
     isLoading.value = true
-    if(route.params.id_orden != '0' ){
+    if(state.formData.id_registro === '0' ){
       // ES NUEVO REGISTRO
       console.log('registroooo1010101')
 
@@ -1004,20 +1004,23 @@ if(state.formData.id_Rep.length>0){
         }
       })
     }else{
-      // NO ES NUEVO REGISTRO
-      if(permisoEdicion.value){
-        // SI TIENE PERMISO DE EDICIO
-        const { ok, message } = await orden.updateOrdenID(state.formData)
-        const icono = (ok ? 'success' : 'error')
-        Toast.fire({ icon: icono, title: message })
-       /* if(caso != 0 && rd != 0){
-          await documentaryReceptionStore.minutesReport(caso, rd)
-        }*/
-      }else{
-        // NO TIENE PERMISO DE EDICION, SOLO REPORTE
-       /* await documentaryReceptionStore.minutesReport(Number(state.formData.id_caso), Number(state.formData.id_recepcion_documental))*/
-        router.push({ name: 'ordenList' });
-      }
+      console.log('registrooo actualizar')
+      if(state.formData.id_registro !=0){
+            if(permisoEdicion.value){
+              // SI TIENE PERMISO DE EDICIO
+              const { ok, message } = await registro.update_mantenimiento(state.formData)
+              const icono = (ok ? 'success' : 'error')
+              Toast.fire({ icon: icono, title: message })
+            /* if(caso != 0 && rd != 0){
+                await documentaryReceptionStore.minutesReport(caso, rd)
+              }*/
+            }else{
+              // NO TIENE PERMISO DE EDICION, SOLO REPORTE
+            /* await documentaryReceptionStore.minutesReport(Number(state.formData.id_caso), Number(state.formData.id_recepcion_documental))*/
+              router.push({ name: 'ordenList' });
+            }
+
+        }
     }
     isLoading.value = false
   }

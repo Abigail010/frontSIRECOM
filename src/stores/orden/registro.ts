@@ -134,6 +134,23 @@ export const useRegisterStore = defineStore({
     }
   },
 
+  async update_mantenimiento(form: any) {
+    try {
+      const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
+      const { data } = await siibApi.post('registro/update_man/' + userLogged, form)
+     // router.push({ name: 'ordenList' });
+      return {
+        ok: true,
+        message: data.message,
+        // vehiculo: data.id_vehiculo,
+      //   rd: data.id_orden
+      }
+    } catch (error: any) {
+      const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+      return { ok: false, message: message, caso: 0, rd: 0}
+    }
+  },
+
     //  OBTENER LISTA DE RECEPCIONES DOCUMENTALES MEDIANTE CASOS
     async documentaryReceptions () {
       try {
