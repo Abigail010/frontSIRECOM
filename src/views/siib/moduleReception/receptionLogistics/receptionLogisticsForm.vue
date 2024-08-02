@@ -402,7 +402,6 @@ const fines_semana = ['Sat', 'Sun' ];
     }
   }
 
-
   const buttonSendForm = async () => {
     submitButton.value = true
     await miValidacion()

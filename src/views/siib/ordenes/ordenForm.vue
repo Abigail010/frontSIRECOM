@@ -925,9 +925,7 @@ Fecha de Registro<span style="color:red">*</span>
     <v-col cols="12">
 
     </v-col>
-    <v-col cols="12" lg="12">
-      <h3 class="my-3 text-primary">PRE - DIAGNOSTICO</h3>
-    </v-col>
+    
     <v-col class="12" md="12">
         <v-text-field 
         variant="outlined" 

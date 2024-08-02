@@ -314,7 +314,7 @@ import { useValidationErrors } from '@/stores/useValidationErrors';
       <v-expansion-panels v-model="openpanel">
 
         <v-expansion-panel elevation="10">
-          <v-expansion-panel-title class="text-h6">1. DATOS DEL MOTORIZADO</v-expansion-panel-title>
+          <v-expansion-panel-title class="text-h6">1. </v-expansion-panel-title>
           <v-expansion-panel-text class="mt-4">
             <v-row>
               <v-col cols="12" md="6" v-for="campo in formulario_1">

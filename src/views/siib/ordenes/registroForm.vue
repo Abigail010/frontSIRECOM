@@ -11,11 +11,18 @@ import { useRegisterStore } from '@/stores/orden/registro';
 import { useSystemStore } from '@/stores/resources/system';
 import { validateText } from '@/utils/helpers/validateText'
 import { editPermission } from '@/utils/helpers/editPermission' 
-
+import type { Header } from "vue3-easy-data-table";
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import Swal from 'sweetalert2'
 import { readonly } from 'vue';
+const select = ref('');
+const location = ref(['Alaska', 'Arizona', 'Hawaii']);
 
+const radioColumn = ref('1');
+const radioInline = ref('1');
+const paymentradio = ref('1');
+const checkedNames = ref([])
+const openpanel = ref([0]);
   const route = useRoute()
   const resourceStore = useResourceStore()
   const documentaryReceptionStore = useDocumentaryReceptionStore()
@@ -45,20 +52,25 @@ import { readonly } from 'vue';
       href: '#'
     }
   ]);
-
+ 
+  const sendForm1 = ref(true)
+  const sendForm8 = ref(true)
+  const sendForm9 = ref(true)
+  const sendForm10 = ref(true)
   // DECLARACION DE VARIABLES Y STATE
   const perfilUsuario = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
   const oficinaUsuario = JSON.parse(localStorage.getItem('user') || '').nombre_oficina
   const permisoFecha = JSON.parse(localStorage.getItem('user') || '').estado
   const permisoEdicion = ref<any>(true)
   const panel = ref<any>(false)
-  const currentDate = (route.params.id_caso != '0') ? '' : format(new Date(),"yyyy-MM-dd")
+  const currentDate = (route.params.id_orden != '0') ? '' : format(new Date(),"yyyy-MM-dd")
   const currentDate2 = format(new Date(), "yyyy-MM-dd");
   const editar = ref<any>(false)
 
   const state = reactive({
     formData: {
       id_orden: '',
+      id_registro:'', 
       placa_chasis: '', 
       nombre_taller: '',
         placa:'', 
@@ -72,12 +84,12 @@ import { readonly } from 'vue';
         chasis_: '',
         kilometraje: '',
         nro_ocupantes: '', 
-        combustible:'',
-        fuerza_orden:'',
+        observaciones:'',
+        requerimientos:'',
         tipo_orden: '', 
         nombre_conductor: '',
         celular_con: '',
-        apellidos_condutor : '',
+        tipo_man:'',
         prediagnostico: '', 
         id_mecanico:'',
         id_vehiculo: '',
@@ -128,26 +140,33 @@ import { readonly } from 'vue';
         id_sistema:'',
         sistema_select:'', 
         prueba:'', 
-   
+        repuestos: [] as any,
+        nombre_repuesto:'',
+        id_sis: '',
+        id_filtro:'', 
+        cantidad_r:'',
+        unidad_r:'',
+        observacion_r:'', 
+        id_Rep:[] as any, 
+        id_repuestos: '', 
+
+        id_accesorios_: []as any, 
+        
       cedula_identidad: '',
    
-      implicados: [] as any,
-      investigador_presente: false,
+      
     }
   });
 
-  const lista_tipo = ref([
-    { title: 'INVESTIGADOR' },
-    { title: 'ENLACE' }
-  ]);
+
 
   //const accesorios = [ 'PARRILLA', 'PORTA CARPA', 'CARPA', 'ASIENTOS DE CARROCERÍA', 'MATABURROS', 'ALÓGENOS', 'GUINCHE']
   // RECURSOS
-  const lista_tipo_codigo = ref([]) as any
+  const lista_unidad = ref([]) as any
   const lista_diagnosticos = ref([]) as any
-
+  const lista_accesorios = ref([]) as any
   const lista_sistemas = ref([]) as any
-  const jurisdicciones = ref([]) as any
+  const tipo_filtro= ref([]) as any
   const tipo_mantenimiento = ref([]) as any
   const tipo_mantenimiento2 = ref([]) as any
   const tipo_mantenimiento3 = ref([]) as any
@@ -173,35 +192,31 @@ import { readonly } from 'vue';
     tipo_mantenimiento9.value = await registro.gettipo_mantenimiento()   
     tipo_mantenimiento10.value = await registro.gettipo_mantenimiento()    
  
-
+    lista_accesorios.value = await resourceStore.getAccesorios()      // LISTA DE accesorios
     // // LISTA DE sistemas
     lista_sistemas.value = await getSystem.systems()
-    console.log(lista_sistemas.value)
-    
+    //console.log(lista_sistemas.value)
+    tipo_filtro.value=await registro.getFiltros()
+    //lista unidades
+    lista_unidad.value=await registro.getUnidad()
   }
   
-
-   // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
+  const itemsSelected: any = ref([])
+  const headers: Header[] = [
+   
+   { text: "DESCRIPCIÓN DEL REPUESTO", value: "nombre_repuesto" },
+ ];
+   // BUSQUEDA o despliegue de repuestos
+   const desser = ref([]) as any
  const buttonSearchSistema = async () => {
   state.formData.id_sistema= ''
- console.log(state.formData)
-  
-    //const respuesta = await userStore.bienes(state.formData)
-   // console.log(respuesta)
+   state.formData.repuestos= await registro.searchOrden(state.formData)
 }
-  const recepciones = ref([]) as any
-
-   
 
    const basico_id = async (id_orden: any) => {
-   
-   
    // const data = await registro.getbasico(id_orden)// console.log(data)
     const data = await registro.getbasico(id_orden)
-   // console.log(data)
-    //console.log(data)
-    state.formData.id_orden = data.id
-// state.formData. = data.id
+
     state.formData.id_orden =data.id
     state.formData.dato1= data.placa
     state.formData.dato2 = data.chasis
@@ -213,23 +228,126 @@ import { readonly } from 'vue';
     state.formData.tipo_orden = data.tipo 
     state.formData.color_ve = data.color
     state.formData.prueba= data.prueba
-
-
-    
-// recepciones.value =info
    } 
-  const ordernes_id = async (id_orden: any) => {
+
+   const verificar_id = async (id_orden: any) => {
+   // const data = await registro.getbasico(id_orden)// console.log(data)
+    const data = await registro.verificar_reg(id_orden)
+    const size = Object.keys(data).length;
+   if(size>0){
+    state.formData.id_registro = data.id_registro
+    ///console.log( state.formData.id_registro)
+   }else{
+    state.formData.id_registro = size;
+   }
+   }
+
+  const registro_id = async (id_registro: any) => {
+    const data = await registro.registro_id(id_registro)
+    console.log(data)
+    state.formData.id_registro = data.id
+    state.formData.tipo_man= data.tipo_man
+    state.formData.observaciones = data.observacion
+    state.formData.requerimientos = data.requerimiento
+   const motores = data.id_motor
+    state.formData.id_motor= []
+    for (let i = 0; i < motores.length; i++) {
+      state.formData.id_motor.push(motores[i])
+      tipo_mantenimiento.value = tipo_mantenimiento.value.filter( (tipo: any) => tipo.nombre_diagnostico != motores[i].id_diagnostico)
+    }
+    
+    const as = data.idalimentacion
+    state.formData.idalimentacion = []
+    for (let i = 0; i < as.length; i++) {
+      state.formData.idalimentacion.push(as[i])
+      tipo_mantenimiento2.value = tipo_mantenimiento2.value.filter( (tipo: any) => tipo.nombre_diagnostico != as[i].id_a)
+    }
+   
+    const ref = data.idrefreigeracion
+    state.formData.idrefreigeracion = []
+    for (let i = 0; i < ref.length; i++) {
+      state.formData.idrefreigeracion.push(ref[i])
+      tipo_mantenimiento3.value = tipo_mantenimiento3.value.filter( (tipo: any) => tipo.nombre_diagnostico != ref[i].id_r)
+    }
+
+    const dir = data.iddireccion
+    state.formData.iddireccion= []
+    for (let i = 0; i < dir.length; i++) {
+      state.formData.iddireccion.push(dir[i])
+   
+      tipo_mantenimiento4.value = tipo_mantenimiento4.value.filter( (tipo: any) => tipo.nombre_diagnostico != dir[i].id_d)
+    }
+    const trans = data.idtransmision
+    state.formData.idtransmision= []
+    for (let i = 0; i < trans.length; i++) {
+      state.formData.idtransmision.push(trans[i])
+    //  console.log(state.formData.id_motor)
+ 
+      tipo_mantenimiento5.value = tipo_mantenimiento5.value.filter( (tipo: any) => tipo.nombre_diagnostico != trans[i].id_t)
+    }
+    
+    const sus = data.idsuspencion
+    state.formData.idsuspencion= []
+    for (let i = 0; i < sus.length; i++) {
+      state.formData.idsuspencion.push(sus[i])
+    //  console.log(state.formData.id_motor)
+ 
+      tipo_mantenimiento6.value = tipo_mantenimiento6.value.filter( (tipo: any) => tipo.nombre_diagnostico != sus[i].id_s)
+    }
+    const ele = data.idelectricidad
+    state.formData.idelectricidad= []
+    for (let i = 0; i < ele.length; i++) {
+      state.formData.idelectricidad.push(ele[i])
+    //  console.log(state.formData.id_motor)
+ 
+      tipo_mantenimiento7.value = tipo_mantenimiento7.value.filter( (tipo: any) => tipo.nombre_diagnostico != ele[i].id_e)
+    }
+    const cha = data.idchaperia
+    state.formData.idchaperia= []
+    for (let i = 0; i < cha.length; i++) {
+      state.formData.idchaperia.push(cha[i])
+    //  console.log(state.formData.id_motor)
+ 
+      tipo_mantenimiento8.value = tipo_mantenimiento8.value.filter( (tipo: any) => tipo.nombre_diagnostico != cha[i].id_c)
+    }
+    
+    const ttt = data.idtorneria
+    state.formData.idtorneria= []
+    for (let i = 0; i < ttt.length; i++) {
+      state.formData.idtorneria.push(ttt[i])
+    //  console.log(state.formData.id_motor)
+ 
+      tipo_mantenimiento9.value = tipo_mantenimiento9.value.filter( (tipo: any) => tipo.nombre_diagnostico != ttt[i].id_tt)
+    }
+    
+    const fre = data.idfrenos
+    state.formData.idfrenos= []
+    for (let i = 0; i < fre.length; i++) {
+      state.formData.idfrenos.push(fre[i])
   
-    //const data = await registro.orden_id(id_orden)
-/*
-   // state.formData. = data.id
-    state.formData.id_orden = data.id
-    state.formData.chasis_= data.chasis
-    state.formData.fecha_formulario = data.fecha
-    state.formData.placas = data.placa
-    state.formData.placa_chasis = data.placa
-    state.formData.nro_ocupantes = data.nro_ocupantes
-    state.formData.motor = data.motor
+      tipo_mantenimiento10.value = tipo_mantenimiento10.value.filter( (tipo: any) => tipo.nombre_diagnostico != fre[i].id_tt)
+    }
+      
+    const acce = data.id_accesorios_
+    const n= data.id_accesorios_.map(item => item.id);
+ 
+   state.formData.id_accesorios_= []
+    for (let i = 0; i < acce.length; i++) {
+      state.formData.id_accesorios_.push(n[i])
+    
+      lista_accesorios.value = lista_accesorios.value.filter( (tipo: any) => tipo != n[i])
+    }
+
+    const rep = data.id_Rep
+    for (let i = 0; i < rep.length; i++) {
+      state.formData.id_Rep.push(rep[i])
+    //  console.log(state.formData.id_motor)
+ 
+      tipo_filtro.value = tipo_filtro.value.filter( (tipo: any) => tipo.id !=rep[i].id_filtro)
+    }
+
+
+/*    state.formData.motor = data.motor
     state.formData.nombre_conductor = data.nombre_conductor
 state.formData.apellidos_condutor = data.apellidos_conductor
 state.formData.cedula_identidad = data.carnet_conductor
@@ -261,6 +379,50 @@ editar.value = false
     const respuesta = 'MG-'+arrayfechas[0]+arrayfechas[1]+arrayfechas[2]+'-###'
     return respuesta
   }
+
+  const mifuncion = async () => {
+   if(itemsSelected.value.length>0){
+      const indice = itemsSelected.value.length-1
+      console.log(indice)
+     // state.formData.fecha_add=itemsSelected.value[indice].fecha_revision
+      //console.log(itemsSelected.value[indice].fecha_revision)
+     // console.log(state.formData.fecha_add)
+      state.formData.id_filtro= itemsSelected.value[indice].id
+      state.formData.nombre_repuesto= itemsSelected.value[indice].nombre_repuesto
+      state.formData.id_sis = itemsSelected.value[indice].id_sistema
+      console.log(state.formData.id_filtro)
+    
+    }
+
+ /*   for(let i=0; i<itemsSelected.value.length; i++){
+      state.formData.id_filtro= itemsSelected.value[i].id
+      state.formData.nombre_repuesto= itemsSelected.value[i].nombre_repuesto
+      state.formData.id_sis = itemsSelected.value[i].id_sistema
+      console.log(state.formData.id_filtro)
+   //   state.formData.nombre_repuesto= ''
+    //state.formData.id_filtro=''
+    //state.formData.id_sistema=''
+    }
+
+    
+
+/*    const currentItemIndex=0
+    do {
+        currentItemIndex++;
+        if (currentItemIndex >= itemsSelected.value.length) {
+          currentItemIndex = 0; // Reset to first item if we exceed the array length
+        }
+      } while (currentItemIndex < 0 || currentItemIndex >= itemsSelected.value.length);
+      
+      const currentItem = itemsSelected.value[currentItemIndex];
+      // this.state.formData.fecha_add = currentItem.fecha_revision;
+    state.formData.id_filtro = currentItem.id;
+      state.formData.nombre_repuesto = currentItem.nombre_repuesto;
+      state.formData.id_sis = currentItem.id_sistema;
+      
+      console.log(state.formData.id_filtro);
+    }*/}
+  
 
   const setCodeName = () => {
     const registro: any = tipo_mantenimiento.find(
@@ -356,8 +518,6 @@ editar.value = false
       state.formData.id_diagnostico = ''
     
     }
-    
-
 
     if(state.formData.id_a){
       tipo_mantenimiento2.value = tipo_mantenimiento2.value.filter(
@@ -386,7 +546,7 @@ editar.value = false
       state.formData.id_r = ''
   
     }
-    console.log(state.formData.id_d)
+    //console.log(state.formData.id_d)
     if(state.formData.id_d){
       tipo_mantenimiento4.value = tipo_mantenimiento4.value.filter(
         (codigo: any) =>
@@ -401,7 +561,7 @@ editar.value = false
   
     }
    
-    console.log(state.formData.id_t)
+    //console.log(state.formData.id_t)
     if(state.formData.id_t){
       tipo_mantenimiento5.value = tipo_mantenimiento5.value.filter(
         (codigo: any) =>
@@ -416,8 +576,6 @@ editar.value = false
   
     }
 
-
-    console.log(state.formData.id_s)
     if(state.formData.id_s){
       tipo_mantenimiento6.value = tipo_mantenimiento6.value.filter(
         (codigo: any) =>
@@ -431,7 +589,7 @@ editar.value = false
       state.formData.id_s = ''
     }
 
-    console.log(state.formData.id_e)
+   // console.log(state.formData.id_e)
     if(state.formData.id_e){
       tipo_mantenimiento7.value = tipo_mantenimiento7.value.filter(
         (codigo: any) =>
@@ -446,7 +604,7 @@ editar.value = false
   
     }
 
-    console.log(state.formData.id_c)
+    //console.log(state.formData.id_c)
     if(state.formData.id_c){
       tipo_mantenimiento8.value = tipo_mantenimiento8.value.filter(
         (codigo: any) =>
@@ -461,7 +619,6 @@ editar.value = false
   
     }
 
-    console.log(state.formData.id_tt)
     if(state.formData.id_tt){
       tipo_mantenimiento9.value = tipo_mantenimiento9.value.filter(
         (codigo: any) =>
@@ -487,6 +644,28 @@ editar.value = false
       })
 
       state.formData.id_f = ''
+  
+    }
+
+    if(state.formData.id_filtro && state.formData.cantidad_r && state.formData.unidad_r){
+      tipo_filtro.value = tipo_filtro.value.filter(
+        (codigo: any) =>
+        codigo.id != state.formData.id_filtro
+      )
+      state.formData.id_Rep.push({
+        id_filtro: state.formData.id_filtro,
+        nombre_repuesto:state.formData.nombre_repuesto,
+        cantidad_r: state.formData.cantidad_r,
+        unidad_r:state.formData.unidad_r,
+        observacion_r:state.formData.observacion_r
+        
+      })
+
+      state.formData.id_filtro = ''
+      state.formData.nombre_repuesto= ''
+      state.formData.cantidad_r= ''
+      state.formData.unidad_r = ''
+      state.formData.observacion_r = ''
   
     }
   }
@@ -518,9 +697,13 @@ editar.value = false
           state.formData.id_motor.splice(index,1)
           //alimentacuo
       }
-  
 
-      if(state.formData.idalimentacion.length>0){
+
+  }
+
+  const buttonDeleteA = (index: number) => {
+
+    if(state.formData.idalimentacion.length>0){
         const registro2: any = state.formData.idalimentacion[index]
 
           tipo_mantenimiento2.value.push({
@@ -542,37 +725,40 @@ editar.value = false
           })
           state.formData.idalimentacion.splice(index,1)
       }
+  }
 
-      if(state.formData.idrefreigeracion.length>0){
+  const buttonDeleteR = (index: number) => {
+    if(state.formData.idrefreigeracion.length>0){
 
-        const registro3: any = state.formData.idrefreigeracion[index]
+const registro3: any = state.formData.idrefreigeracion[index]
 
-          tipo_mantenimiento3.value.push({
-            id: registro3.id_recepcion_documental,
-            nombre_diagnostico: registro3.id_r
-          })
-          // REORDENAMIENTO DE LISTA
-          tipo_mantenimiento3.value.sort(function(aa: any, bb: any) {
-            const codigo_a = aa.nombre_diagnostico
-            const codigo_b = bb.nombre_diagnostico
-          
-            if(codigo_a < codigo_b){
-              return -1
-            }
-            if(codigo_a > codigo_b){
-              return 1
-            }
-            return 0
-          })
-          state.formData.idrefreigeracion.splice(index,1)
-      }
+  tipo_mantenimiento3.value.push({
+    id: registro3.id_r,
+    nombre_diagnostico: registro3.id_r
+  })
+  // REORDENAMIENTO DE LISTA
+  tipo_mantenimiento3.value.sort(function(aa: any, bb: any) {
+    const codigo_a = aa.nombre_diagnostico
+    const codigo_b = bb.nombre_diagnostico
+  
+    if(codigo_a < codigo_b){
+      return -1
+    }
+    if(codigo_a > codigo_b){
+      return 1
+    }
+    return 0
+  })
+  state.formData.idrefreigeracion.splice(index,1)
+}
+  }
 
-
-      if(state.formData.iddireccion.length>0){
+  const buttonDeleteD = (index: number) => {
+    if(state.formData.iddireccion.length>0){
         const registro2: any = state.formData.iddireccion[index]
 
           tipo_mantenimiento4.value.push({
-            id: registro2.id_recepcion_documental,
+            id: registro2.id_d,
             nombre_diagnostico: registro2.id_d
           })
           // REORDENAMIENTO DE LISTA
@@ -590,11 +776,14 @@ editar.value = false
           })
           state.formData.iddireccion.splice(index,1)
       }
-          if(state.formData.idtransmision.length>0){
+  }
+
+  const buttonDeleteT = (index: number) => {
+    if(state.formData.idtransmision.length>0){
         const registro2: any = state.formData.idtransmision[index]
 
           tipo_mantenimiento5.value.push({
-            id: registro2.id_recepcion_documental,
+            id: registro2.id_t,
             nombre_diagnostico: registro2.id_t
           })
           // REORDENAMIENTO DE LISTA
@@ -612,12 +801,14 @@ editar.value = false
           })
           state.formData.idtransmision.splice(index,1)
       }
-  
-      if(state.formData.idsuspencion.length>0){
+  }
+
+  const buttonDeleteS = (index: number) => {
+    if(state.formData.idsuspencion.length>0){
         const registro2: any = state.formData.idsuspencion[index]
 
           tipo_mantenimiento6.value.push({
-            id: registro2.id_recepcion_documental,
+            id: registro2.id_s,
             nombre_diagnostico: registro2.id_s
           })
           // REORDENAMIENTO DE LISTA
@@ -636,12 +827,13 @@ editar.value = false
           state.formData.idsuspencion.splice(index,1)
       }
   
-
-      if(state.formData.idelectricidad.length>0){
+  }
+  const buttonDeleteE = (index: number) => {
+    if(state.formData.idelectricidad.length>0){
         const registro2: any = state.formData.idelectricidad[index]
 
           tipo_mantenimiento7.value.push({
-            id: registro2.id_recepcion_documental,
+            id: registro2.id_s,
             nombre_diagnostico: registro2.id_s
           })
           // REORDENAMIENTO DE LISTA
@@ -659,12 +851,13 @@ editar.value = false
           })
           state.formData.idelectricidad.splice(index,1)
       }
-  
-      if(state.formData.idchaperia.length>0){
+  }
+  const buttonDeleteC = (index: number) => {
+    if(state.formData.idchaperia.length>0){
         const registro2: any = state.formData.idchaperia[index]
 
           tipo_mantenimiento8.value.push({
-            id: registro2.id_recepcion_documental,
+            id: registro2.id_c,
             nombre_diagnostico: registro2.id_c
           })
           // REORDENAMIENTO DE LISTA
@@ -683,12 +876,13 @@ editar.value = false
           state.formData.idchaperia.splice(index,1)
       }
   
-
-      if(state.formData.idtorneria.length>0){
+}
+const buttonDeleteTT = (index: number) => {
+  if(state.formData.idtorneria.length>0){
         const registro2: any = state.formData.idtorneria[index]
 
           tipo_mantenimiento9.value.push({
-            id: registro2.id_recepcion_documental,
+            id: registro2.id_tt,
             nombre_diagnostico: registro2.id_tt
           })
           // REORDENAMIENTO DE LISTA
@@ -706,13 +900,14 @@ editar.value = false
           })
           state.formData.idtorneria.splice(index,1)
       }
+}
+const buttonDeleteF = (index: number) => {
 
-      
-      if(state.formData.idfrenos.length>0){
+  if(state.formData.idfrenos.length>0){
         const registro2: any = state.formData.idfrenos[index]
 
           tipo_mantenimiento10.value.push({
-            id: registro2.id_recepcion_documental,
+            id: registro2.id_f,
             nombre_diagnostico: registro2.id_f
           })
           // REORDENAMIENTO DE LISTA
@@ -731,46 +926,43 @@ editar.value = false
           state.formData.idfrenos.splice(index,1)
       }
 
-  }
+}
 
-  // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
-  const buttonSearchOrden = async () => {
-  
-    const respuesta = await orden.searchOrden(state.formData)
-    state.formData.color_ve = respuesta.color 
-    state.formData.tipo_orden= respuesta.tipo
-    state.formData.chasis_ = respuesta.chasis
-    state.formData.placas = respuesta.placa
-    state.formData.modelo = respuesta.modelo
-    state.formData.marca = respuesta.nombre_marca
-    state.formData.motor = respuesta.motor
+const buttonDeleteRep = (index: number) => {
+
+if(state.formData.id_Rep.length>0){
+      const registro2: any = state.formData.id_Rep[index]
+
+        tipo_filtro.value.push({
+          id: registro2.id_filtro,
+          nombre_repuesto: registro2.id_f
+        })
+        // REORDENAMIENTO DE LISTA
+        tipo_mantenimiento10.value.sort(function(aa: any, bb: any) {
+          const codigo_a = aa.nombre_repuesto
+          const codigo_b = bb.nombre_repuesto
+        
+          if(codigo_a < codigo_b){
+            return -1
+          }
+          if(codigo_a > codigo_b){
+            return 1
+          }
+          return 0
+        })
+        state.formData.id_Rep.splice(index,1)
+    }
+
+}
  
-    state.formData.nro_ocupantes = respuesta.nro_ocupantes
-    state.formData.fuerza_orden = respuesta.nombre_fuerza
-    state.formData.combustible = respuesta.combustible
-    editar.value = true
 
-  }
+  const buttonClearSistema = () => {
 
-  const buttonClearOrden = () => {
-
-    state.formData.id_orden= ''
-     state.formData.placa_chasis='' 
-      state.formData.nombre_taller=''
-        state.formData.placa=''
-        state.formData.chasis=''
-        state.formData.marca=''
-        state.formData.modelo=''
-        state.formData.motor= ''
-   
-        state.formData.color_ve=''
-        state.formData.placas= ''
-        state.formData.chasis_= ''
-        state.formData.kilometraje= ''
-        state.formData.nro_ocupantes= '' 
-        state.formData.combustible=''
-        state.formData.fuerza_orden=''
-        state.formData.tipo_orden= ''
+    state.formData.sistema_select= ''
+    itemsSelected.value.length=0
+    state.formData.nombre_repuesto= ''
+    state.formData.id_filtro=''     
+    state.formData.repuestos.length = 0;
         editar.value = true
 
   }
@@ -780,8 +972,6 @@ editar.value = false
     router.push({ name: 'ordenList' })
   }
 
-
-
   const buttonSendForm = async () => {
     console.log('registroooo')
     submitButton.value = true
@@ -789,9 +979,9 @@ editar.value = false
     if(!sendForm.value) return
 
     isLoading.value = true
-    if(route.params.id_orden == '0'){
+    if(route.params.id_orden != '0' ){
       // ES NUEVO REGISTRO
-      console.log('registroooo')
+      console.log('registroooo1010101')
 
       Swal.fire({
         title: 'Estás seguro?',
@@ -805,7 +995,7 @@ editar.value = false
       }).then(async (result) => {
         if(result.isConfirmed){
 
-          const { ok, message, caso, rd } = await orden.create_orden(state.formData)
+          const { ok, message, caso, rd } = await registro.create_mantenimiento(state.formData)
           const icono = (ok ? 'success' : 'error')
           Toast.fire({ icon: icono, title: message })
           if(caso != 0 && rd != 0){
@@ -847,14 +1037,13 @@ editar.value = false
   // VALIDACION GENERAL
   const validateForm = async () => {
     sendForm.value = true
-    if(!state.formData.placa_chasis ||
-      !state.formData.kilometraje ||
-      !state.formData.combustible ||
-      !state.formData.cedula_identidad ||
-      !state.formData.nombre_conductor ||
-      !state.formData.apellidos_condutor ||
-      !state.formData.celular_con ||
-      !state.formData.id_mecanico ||  state.formData.accesorios_orden.length == 0){
+    if( !state.formData.tipo_man || 
+       (state.formData.id_motor.length ==0 && state.formData.idsuspencion.length==0 
+        && state.formData.idalimentacion.length == 0 && state.formData.idrefreigeracion.length==0 
+        && state.formData.idelectricidad.length ==0 && state.formData.iddireccion.length ==0 
+        && state.formData.idchaperia.length ==0 && state.formData.idtransmision.length ==0   
+        && state.formData.idtorneria.length ==0 && state.formData.idfrenos.length ==0)|| 
+        state.formData.id_accesorios_.length == 0 || state.formData.id_Rep.length ==0 ){
       sendForm.value = false
     }
   }
@@ -876,8 +1065,14 @@ const getMecanicos = async() => {
     await placeholderHojaRuta()
     if(route.params.id_orden  != '0'){
       //.value = editPermission('RECEPCION DOCUMENTAL')
-      //await getOrdenes_soli()
-      await ordernes_id(route.params.id_orden)
+      await verificar_id(route.params.id_orden)
+     // console.log(state.formData.id_registro)
+      if(state.formData.id_registro>0){
+        await registro_id(route.params.id_orden)
+      }else{
+        console.log('0')
+      }
+      //await registro_id(route.params.id_orden)
       await basico_id(route.params.id_orden)
 
       editar.value = true
@@ -926,13 +1121,46 @@ const getMecanicos = async() => {
     </v-col>
   </v-row>
 
-  <v-row>
-    <template v-if="permisoEdicion">
-      <v-col cols="12" md="12">
+<v-rom>
+
+    <v-expansion-panels v-model="openpanel">
+        <!---Delivery Address--->
+        <v-expansion-panel elevation="10"  >
+            <v-expansion-panel-title class="text-h6">Descripción de Trabajo</v-expansion-panel-title>
+            <v-expansion-panel-text class="mt-4">
+             <v-row>
+              <v-col cols="12" md="12">
+        <v-label class="mb-2 font-weight-medium">Tipo de mantenimiento <span style="color:red">*</span></v-label>
+        <v-radio-group 
+          v-model="state.formData.tipo_man"
+        
+          class="ml-n3"
+          inline
+          :error="submitButton && !state.formData.tipo_man"
+          hide-details
+        >
+          <v-radio label="CORRECTIVO" color="primary" value="CORRECTIVO"></v-radio>
+          <v-radio label="PREVENTIVO" color="secondary" value="PREVENTIVO"></v-radio>
+        </v-radio-group>
+        <template v-if="submitButton && !state.formData.tipo_man">
+          <div class="v-messages font-weight-black px-2 py-2">
+            <div class="v-messages__message text-error ">
+              El campo es requerido
+            </div>
+          </div>
+        </template>
+
+      </v-col>
+              <template v-if="permisoEdicion">
+      <v-col cols="12" md="6">
         <v-label class="mb-2 font-weight-medium">
           Motor
         </v-label>
         <v-autocomplete
+        variant="outlined"
+        color="primary"
+       
+     
         :items="tipo_mantenimiento"
           v-model="state.formData.id_diagnostico"
           no-data-text="No existe más opciones para seleccionar"
@@ -956,11 +1184,11 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="state.formData.id_motor.length>0">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-table density="compact">
           <thead>
             <tr>
-              <th class="text-center">#</th>
+              <th class="text-center">N° Motor</th>
               <th class="text-center"><b> Descripción de trabajo</b></th>
               
               <th class="text-center" v-if="permisoEdicion">Acción</th>
@@ -983,11 +1211,13 @@ const getMecanicos = async() => {
 
 
     <template v-if="permisoEdicion">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-label class="mb-2 font-weight-medium">
           Alimentación
         </v-label>
         <v-autocomplete
+        variant="outlined"
+        color="primary"
         :items="tipo_mantenimiento2"
           v-model="state.formData.id_a"
           no-data-text="No existe más opciones para seleccionar"
@@ -1011,11 +1241,11 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="state.formData.idalimentacion.length>0">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-table density="compact">
           <thead>
             <tr>
-              <th class="text-center">#</th>
+              <th class="text-center">N° Alimentación</th>
               <th class="text-center"><b> Descripción de trabajo</b></th>
               
               <th class="text-center" v-if="permisoEdicion">Acción</th>
@@ -1028,7 +1258,7 @@ const getMecanicos = async() => {
               <td class="text-center">{{ index+1 }}</td>
               <td class="text-center">{{ item.id_a }}</td>
             
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteCode(index)"/></td>
+              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteA(index)"/></td>
             </tr>
           </tbody>
         </v-table>
@@ -1036,11 +1266,13 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="permisoEdicion">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-label class="mb-2 font-weight-medium">
           Refrigeración
         </v-label>
         <v-autocomplete
+        variant="outlined"
+        color="primary"
         :items="tipo_mantenimiento3"
           v-model="state.formData.id_r"
           no-data-text="No existe más opciones para seleccionar"
@@ -1064,11 +1296,11 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="state.formData.idrefreigeracion.length>0">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-table density="compact">
           <thead>
             <tr>
-              <th class="text-center">#</th>
+              <th class="text-center">N° Refrigeración</th>
               <th class="text-center"><b> Descripción de trabajo</b></th>
               
               <th class="text-center" v-if="permisoEdicion">Acción</th>
@@ -1081,18 +1313,20 @@ const getMecanicos = async() => {
               <td class="text-center">{{ index+1 }}</td>
               <td class="text-center">{{ item.id_r }}</td>
             
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteCode(index)"/></td>
+              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteR(index)"/></td>
             </tr>
           </tbody>
         </v-table>
       </v-col>
     </template>
     <template v-if="permisoEdicion">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-label class="mb-2 font-weight-medium">
           Dirección
         </v-label>
         <v-autocomplete
+        variant="outlined"
+        color="primary"
         :items="tipo_mantenimiento4"
           v-model="state.formData.id_d"
           no-data-text="No existe más opciones para seleccionar"
@@ -1116,11 +1350,11 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="state.formData.iddireccion.length>0">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-table density="compact">
           <thead>
             <tr>
-              <th class="text-center">#</th>
+              <th class="text-center">N° Dirección</th>
               <th class="text-center"><b> Descripción de trabajo</b></th>
               
               <th class="text-center" v-if="permisoEdicion">Acción</th>
@@ -1133,7 +1367,7 @@ const getMecanicos = async() => {
               <td class="text-center">{{ index+1 }}</td>
               <td class="text-center">{{ item.id_d }}</td>
             
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteCode(index)"/></td>
+              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteD(index)"/></td>
             </tr>
           </tbody>
         </v-table>
@@ -1141,11 +1375,13 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="permisoEdicion">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-label class="mb-2 font-weight-medium">
         <b>Transmisión</b>
         </v-label>
         <v-autocomplete
+        variant="outlined"
+        color="primary"
         :items="tipo_mantenimiento5"
           v-model="state.formData.id_t"
           no-data-text="No existe más opciones para seleccionar"
@@ -1169,11 +1405,11 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="state.formData.idtransmision.length>0">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-table density="compact">
           <thead>
             <tr>
-              <th class="text-center">#</th>
+              <th class="text-center">N° Transmisión</th>
               <th class="text-center"><b> Descripción de trabajo</b></th>
               
               <th class="text-center" v-if="permisoEdicion">Acción</th>
@@ -1186,18 +1422,20 @@ const getMecanicos = async() => {
               <td class="text-center">{{ index+1 }}</td>
               <td class="text-center">{{ item.id_t }}</td>
             
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteCode(index)"/></td>
+              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteT(index)"/></td>
             </tr>
           </tbody>
         </v-table>
       </v-col>
     </template>
     <template v-if="permisoEdicion">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-label class="mb-2 font-weight-medium">
         <b>Suspensión</b>
         </v-label>
         <v-autocomplete
+        variant="outlined"
+        color="primary"
         :items="tipo_mantenimiento6"
           v-model="state.formData.id_s"
           no-data-text="No existe más opciones para seleccionar"
@@ -1221,11 +1459,11 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="state.formData.idsuspencion.length>0">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-table density="compact">
           <thead>
             <tr>
-              <th class="text-center">#</th>
+              <th class="text-center">N° Suspensión</th>
               <th class="text-center"><b> Descripción de trabajo</b></th>
               
               <th class="text-center" v-if="permisoEdicion">Acción</th>
@@ -1238,7 +1476,7 @@ const getMecanicos = async() => {
               <td class="text-center">{{ index+1 }}</td>
               <td class="text-center">{{ item.id_s }}</td>
             
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteCode(index)"/></td>
+              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteS(index)"/></td>
             </tr>
           </tbody>
         </v-table>
@@ -1246,11 +1484,14 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="permisoEdicion">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-label class="mb-2 font-weight-medium">
         <b> Electricidad</b>
         </v-label>
         <v-autocomplete
+
+        variant="outlined"
+        color="primary"
         :items="tipo_mantenimiento7"
           v-model="state.formData.id_e"
           no-data-text="No existe más opciones para seleccionar"
@@ -1274,11 +1515,11 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="state.formData.idelectricidad.length>0">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-table density="compact">
           <thead>
             <tr>
-              <th class="text-center">#</th>
+              <th class="text-center">N° Electricidad</th>
               <th class="text-center"><b> Descripción de trabajo</b></th>
               
               <th class="text-center" v-if="permisoEdicion">Acción</th>
@@ -1291,7 +1532,7 @@ const getMecanicos = async() => {
               <td class="text-center">{{ index+1 }}</td>
               <td class="text-center">{{ item.id_e }}</td>
             
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteCode(index)"/></td>
+              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteE(index)"/></td>
             </tr>
           </tbody>
         </v-table>
@@ -1299,11 +1540,13 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="permisoEdicion">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-label class="mb-2 font-weight-medium">
         <b>Chaperia</b>
         </v-label>
         <v-autocomplete
+        variant="outlined"
+        color="primary"
         :items="tipo_mantenimiento8"
           v-model="state.formData.id_c"
           no-data-text="No existe más opciones para seleccionar"
@@ -1327,11 +1570,11 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="state.formData.idchaperia.length>0">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-table density="compact">
           <thead>
             <tr>
-              <th class="text-center">#</th>
+              <th class="text-center">N° Chaperia</th>
               <th class="text-center"><b> Descripción de trabajo</b></th>
               
               <th class="text-center" v-if="permisoEdicion">Acción</th>
@@ -1344,7 +1587,7 @@ const getMecanicos = async() => {
               <td class="text-center">{{ index+1 }}</td>
               <td class="text-center">{{ item.id_c }}</td>
             
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteCode(index)"/></td>
+              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteC(index)"/></td>
             </tr>
           </tbody>
         </v-table>
@@ -1352,11 +1595,13 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="permisoEdicion">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-label class="mb-2 font-weight-medium">
         <b> Tornería</b>
         </v-label>
         <v-autocomplete
+        variant="outlined"
+        color="primary"
         :items="tipo_mantenimiento9"
           v-model="state.formData.id_tt"
           no-data-text="No existe más opciones para seleccionar"
@@ -1380,11 +1625,11 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="state.formData.idtorneria.length>0">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-table density="compact">
           <thead>
             <tr>
-              <th class="text-center">#</th>
+              <th class="text-center">N° Torneria</th>
               <th class="text-center"><b> Descripción de trabajo</b></th>
               
               <th class="text-center" v-if="permisoEdicion">Acción</th>
@@ -1397,7 +1642,7 @@ const getMecanicos = async() => {
               <td class="text-center">{{ index+1 }}</td>
               <td class="text-center">{{ item.id_tt }}</td>
             
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteCode(index)"/></td>
+              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteTT(index)"/></td>
             </tr>
           </tbody>
         </v-table>
@@ -1405,11 +1650,13 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="permisoEdicion">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-label class="mb-2 font-weight-medium">
         <b> Frenos</b>
         </v-label>
         <v-autocomplete
+        variant="outlined"
+        color="primary"
         :items="tipo_mantenimiento10"
           v-model="state.formData.id_f"
           no-data-text="No existe más opciones para seleccionar"
@@ -1433,11 +1680,11 @@ const getMecanicos = async() => {
     </template>
 
     <template v-if="state.formData.idfrenos.length>0">
-      <v-col cols="12" md="12">
+      <v-col cols="12" md="6">
         <v-table density="compact">
           <thead>
             <tr>
-              <th class="text-center">#</th>
+              <th class="text-center">N° Frenos</th>
               <th class="text-center"><b> Descripción de trabajo</b></th>
               
               <th class="text-center" v-if="permisoEdicion">Acción</th>
@@ -1450,17 +1697,76 @@ const getMecanicos = async() => {
               <td class="text-center">{{ index+1 }}</td>
               <td class="text-center">{{ item.id_f }}</td>
             
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteCode(index)"/></td>
+              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteF(index)"/></td>
+              
             </tr>
           </tbody>
         </v-table>
       </v-col>
     </template>
+             </v-row>
+            </v-expansion-panel-text>
+        </v-expansion-panel>
 
-    <v-col cols="12" lg="12">
-      <h3 class="my-3 text-primary">PEDIDO DE REPUESTOS</h3>
-    </v-col>
-    <v-col cols="12" md="12">
+          <!---Payment Method--->
+          <v-expansion-panel elevation="10" class=" mt-3">
+            <v-expansion-panel-title class="text-h6" style="color:black;">Accesorios del vehiculo</v-expansion-panel-title>
+            <v-expansion-panel-text class="mt-4">
+               
+                <v-row>
+            
+
+                  <div class="checkbox-container">
+                        <div v-for="item in lista_accesorios" :key="item" class="checkbox-item">
+                        <label style=" font-size: small;">
+                          <input type="checkbox" :value="item.id" v-model="state.formData.id_accesorios_" class="styled-checkbox"/>
+                          {{ item.nombre_accesorio }}
+
+                      </label>
+                      </div>
+                  </div>
+                  <v-col cols="12" lg="12">
+                      <h3 class="my-3 text-primary">Requerimientos</h3>
+                    </v-col>
+                  <v-col class="12" md="12">
+                      <v-text-field 
+                      variant="outlined" 
+                      color="primary"
+                      type="text"
+                      
+                      v-model="state.formData.requerimientos"
+                      @input="state.formData.requerimientos = validateText(state.formData.requerimientos.toUpperCase())"
+
+                      
+                      hide-details
+                    />
+                    </v-col>
+                    <v-col cols="12" lg="12">
+                      <h3 class="my-3 text-primary">Observaciones</h3>
+                    </v-col>
+                  <v-col class="12" md="12">
+                      <v-text-field 
+                      variant="outlined" 
+                      color="primary"
+                      type="text"
+                      
+                      v-model="state.formData.observaciones"
+                      @input="state.formData.observaciones = validateText(state.formData.observaciones.toUpperCase())"
+
+                    
+                      hide-details
+                    />
+                    </v-col>
+              
+                </v-row>
+            </v-expansion-panel-text>
+        </v-expansion-panel>
+        <!---Delivery Options--->
+        <v-expansion-panel elevation="10" class=" mt-3">
+            <v-expansion-panel-title class="text-h6">Solicitud de Repuestos</v-expansion-panel-title>
+            <v-expansion-panel-text class="mt-4">
+               <v-row>
+                <v-col cols="12" md="12">
          
          <v-select
              v-model.trim="state.formData.sistema_select"
@@ -1481,7 +1787,9 @@ const getMecanicos = async() => {
              </v-btn>
              <v-btn
                color="secondary"
-               
+               @click= buttonClearSistema()
+               :disabled="!state.formData.sistema_select"
+               readonly="true"
              ><TrashIcon/>Limpiar
              </v-btn>
            </template>
@@ -1494,20 +1802,197 @@ const getMecanicos = async() => {
            </div>
          </template>
        </v-col>
-  </v-row>
+               </v-row>
+               <v-row>
+                <template v-if=" state.formData.repuestos.length > 0">
+
+                  <v-col cols="12" md="8">
+        <v-card variant="flat" color="primary" :style="submitButton && !state.formData.sistema_select ? 'border: 1px solid #FA896B;' : ''">
+          <v-card-title class="text-white">Repuestos disponibles para realizar el Mantenimiento</v-card-title>
+
+          <EasyDataTable
+            v-model:items-selected="itemsSelected"
+            :headers="headers"
+            :items="state.formData.repuestos"
+            header-text-direction="left"
+            body-text-direction="left"
+            @update-page-items="mifuncion()"
+          >
+        
+            <template #item-url_encuentro="item">
+              <div class="operation-wrapper">
+                <a target="_blank" :href="item.url_encuentro">{{ item.url_encuentro }}</a>
+              </div>
+            </template>
+            <template #item-url_recepcion="item">
+              <div class="operation-wrapper">
+                <a target="_blank" :href="item.url_recepcion">{{ item.url_recepcion }}</a>
+              </div>
+            </template>
+          </EasyDataTable>
+          
+        </v-card>
+        <template v-if="submitButton && !state.formData.sistema_select">
+          <div class="text-center v-messages font-weight-black px-2 py-2">
+            <div class="v-messages__message text-error ">
+              Debe seleccionar al menos un repuesto
+            </div>
+          </div>
+        </template>
+      </v-col>
+
+                </template>
+                <template v-if="itemsSelected.length===1">
+                  
+                  <v-col cols="12" md="4">
+                    <v-card variant="flat" color="primary" :style="submitButton && !state.formData.sistema_select ? 'border: 1px solid #FA896B;' : ''">
+                      <v-card-title class="text-white">Registro de repuesto</v-card-title>
+                    </v-card>
+                    <div v-for="item in itemsSelected" :key="item" style=" font-size: xx-small;">
+                        <v-col cols="12" md="12">
+                    
+                          <v-text-field 
+                            variant="outlined" 
+                            color="primary"
+                            aria-valuetext=item.nombre_repuesto
+                            v-model="state.formData.nombre_repuesto"
+                            readonly
+                            hide-details
+                          />
+                        </v-col>
+                       <div id="div_hor">
+                        <v-col cols="12" md="6">
+                          <v-label class="mb-2 font-weight-medium">
+                            Cantidad
+                          </v-label>
+                          <v-text-field 
+                            variant="outlined" 
+                            color="primary"
+                            v-model="state.formData.cantidad_r"
+                            type="number"
+                            min="1"
+                            hide-details
+                            :error="submitButton && !state.formData.cantidad_r"
+                          />
+                          <template v-if="submitButton && !state.formData.cantidad_r">
+                            <div class="v-messages font-weight-black px-2 py-2">
+                              <div class="v-messages__message text-error ">
+                                El campo es requerido
+                              </div>
+                            </div>
+                          </template>
+                        </v-col>
+                        <v-col cols="12" md="6">
+                       
+                          <v-label class="mb-2 font-weight-medium">
+                            Unidad
+                          </v-label>
+                          <v-autocomplete
+                              variant="outlined"
+                              color="primary"
+                              hide-details
+                               :items="lista_unidad"
+                              v-model="state.formData.unidad_r"
+                              no-data-text="No existe más opciones para seleccionar"
+                              item-value="nombre_unidad"
+                              item-title="nombre_unidad"
+                              @input="state.formData.unidad_r = validateText(state.formData.unidad_r.toUpperCase())"
+                              @update:model-value="setCodeName()"
+                              
+                            /> 
+                          <template v-if="submitButton && !state.formData.cantidad_r">
+                            <div class="v-messages font-weight-black px-2 py-2">
+                              <div class="v-messages__message text-error ">
+                                El campo es requerido
+                              </div>
+                            </div>
+                          </template>
+                        </v-col>
+                       </div>
+                        
+
+                        <v-col cols="12" md="12">
+                          <v-label class="mb-2 font-weight-medium">
+                            Observacion
+                          </v-label>
+                        
+                          <v-text-field 
+                              variant="outlined"
+                              color="primary"
+                              v-model.trim="state.formData.observacion_r"
+                              @input="state.formData.observacion_r = validateText(state.formData.observacion_r.toUpperCase())"
+                            
+                            >
+                          
+                          <template v-slot:append>
+                            <v-btn 
+                              color="success"
+                              @click= buttonAddCode()
+                              :disabled="!state.formData.id_filtro">
+                              <PlusIcon/>Adicionar
+                            </v-btn>
+                          </template>
+                        </v-text-field>
+                        </v-col>
+                      </div>
+                    
+                  </v-col>
+                  
+              
+
+                  
+                </template>
+
+                <template v-if="state.formData.id_Rep.length>0">
+      <v-col cols="12" md="12">
+        <v-table density="compact">
+          <thead>
+            <tr>
+              <th class="text-center">N° </th>
+              <th class="text-center"><b> Repuesto</b></th>
+              <th class="text-center"><b> Cantidad</b></th>
+              <th class="text-center"><b> Unidad</b></th>
+              <th class="text-center"><b> Observación</b></th>
+              <th class="text-center" v-if="permisoEdicion">Acción</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(item, index) in state.formData.id_Rep"  :key="index"
+            >
+              <td class="text-center">{{ index+1 }}</td>
+              <td class="text-center">{{ item.nombre_repuesto }}</td>
+              <td class="text-center">{{ item.cantidad_r }}</td>
+              <td class="text-center">{{ item.unidad_r }}</td>
+              <td class="text-center">{{ item.observacion_r }}</td>
+              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteRep(index)"/></td>
+              
+            </tr>
+          </tbody>
+        </v-table>
+      </v-col>
+    </template>
+               </v-row>
+               
+            </v-expansion-panel-text>
+        </v-expansion-panel>
+       
+    </v-expansion-panels>
+</v-rom>
+    
 
   <v-row>
     <v-col cols="12" class="text-lg-right pt-5">
       <template v-if="!isLoading">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Volver</v-btn>
         <v-btn color="primary" @click="buttonSendForm()">
-          <template v-if="route.params.id_orden == '0'">
+          <template v-if="route.params.id_orden != '0' && state.formData.id_registro == '0' ">
             Enviar    
           </template>
-          <template v-if="route.params.id_orden != '0' && permisoEdicion">
+          <template v-if="state.formData.id_registro != '0' && permisoEdicion">
             Actualizar
           </template>
-          <template v-if="route.params.id_orden != '0' && !permisoEdicion">
+          <template v-if="route.params.id_registro != '0' && !permisoEdicion">
             Imprimir
           </template>
         </v-btn>
@@ -1525,3 +2010,60 @@ const getMecanicos = async() => {
     </v-col>
   </v-row>
 </template>
+
+<style scoped>
+
+#div_hor{
+  display: inline-block;
+  display: flex;
+justify-content: center;
+align-items: center;
+  
+}
+.checkbox-container {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 10px;
+}
+
+.checkbox-item {
+  margin:10px;
+}
+
+.styled-checkbox {
+  position: relative;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #2f21b3;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.styled-checkbox:checked::before {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background-color: #1d64e7;
+}
+
+.styled-checkbox:checked::after {
+  content: '';
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  width: 4px;
+  height: 8px;
+  border: solid white;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+.white-background .v-input__control,
+.white-background .v-select__selections,
+.white-background .v-input__slot {
+  background-color: rgb(194, 33, 33) !important;
+}
+</style>

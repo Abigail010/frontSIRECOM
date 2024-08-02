@@ -14,7 +14,7 @@ export const useRegisterStore = defineStore({
       try {
         const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
         
-        const { data } = await siibApi.post('vehiculo/search/' , form)
+        const { data } = await siibApi.post('registro/search/' , form)
         return data
         
       } catch (error: any) {
@@ -24,33 +24,27 @@ export const useRegisterStore = defineStore({
     },
     
        //  OBTENER LISTA DE RECEPCIONES DOCUMENTALES MEDIANTE CASOS
-       async getDisponibles () {
+       async getFiltros () {
         try {
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await siibApi.get('vehiculo/disponibles/' + userLogged)
+          const { data } = await siibApi.get('repuestos/geter/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
           return { ok: false, message: message }
         }
       },
-  
-      async create_orden(form: any) {
+      async getUnidad () {
         try {
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await siibApi.post('vehiculo/create_orden/' + userLogged, form)
-          router.push({ name: 'ordenList' });
-          return {
-            ok: true,
-            message: data.message,
-            // vehiculo: data.id_vehiculo,
-          //   rd: data.id_orden
-          }
+          const { data } = await siibApi.get('repuestos/unidad/')
+          return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-          return { ok: false, message: message, caso: 0, rd: 0}
+          return { ok: false, message: message }
         }
       },
+
       async updateOrdenID(form: any) {
         try {
           console.log("actualizar")
@@ -89,9 +83,32 @@ export const useRegisterStore = defineStore({
         }
       },
   // OBTENER INFORMACION DE DELITO POR ID
-  async orden_id (id_orden: any) {
+  async registro_id (id_orden: any) {
     try {
+      
+      const { data } = await siibApi.get('registro/registro_id/' + id_orden)
+      return data
+    } catch (error: any) {
+      const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+      return { ok: false, message: message }
+    }
+
+  },
+    // OBTENER INFORMACION DE DELITO POR ID
+    async verificar_reg(id_orden: any) {
+      try {
         
+        const { data } = await siibApi.get('registro/soli_id/' + id_orden)
+        return data
+      } catch (error: any) {
+        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+        return { ok: false, message: message }
+      }
+  
+    },
+  // OBTENER INFORMACION DE DELITO POR ID
+  async getbasico (id_orden: any) {
+    try {
       const { data } = await siibApi.get('registro/basico/' + id_orden)
       return data
     } catch (error: any) {
@@ -100,17 +117,21 @@ export const useRegisterStore = defineStore({
     }
 
   },
-  // OBTENER INFORMACION DE DELITO POR ID
-  async getbasico (id_orden: any) {
+  async create_mantenimiento(form: any) {
     try {
-        console.log(id_orden)
-      const { data } = await siibApi.get('registro/basico/' + id_orden)
-      return data
+      const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
+      const { data } = await siibApi.post('registro/create_man/' + userLogged, form)
+      router.push({ name: 'ordenList' });
+      return {
+        ok: true,
+        message: data.message,
+        // vehiculo: data.id_vehiculo,
+      //   rd: data.id_orden
+      }
     } catch (error: any) {
       const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-      return { ok: false, message: message }
+      return { ok: false, message: message, caso: 0, rd: 0}
     }
-
   },
 
     //  OBTENER LISTA DE RECEPCIONES DOCUMENTALES MEDIANTE CASOS
