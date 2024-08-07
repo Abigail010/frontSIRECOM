@@ -267,50 +267,6 @@ editar.value = false
     }
   }
 
-  // AGREGA TIPO DE CODIGO A LA TABLA DE CODIGOS
-  const buttonAddInvolved = async () => {
-    addButton.value = true
-    await validatePerson()
-    if(!sendPerson.value) return
-
-    lista_tipo.value = lista_tipo.value.filter(
-      (registro: any) => registro.title != state.formData.tipo
-    )
-
-    state.formData.implicados.push({
-      id_persona: state.formData.id_persona,
-      cedula_identidad: state.formData.cedula_identidad,
-      complemento: state.formData.complemento,
-      nombres: state.formData.nombres,
-      apellido_paterno: state.formData.apellido_paterno,
-      apellido_materno: state.formData.apellido_materno,
-      genero: state.formData.genero,
-      fecha_nacimiento: state.formData.fecha_nacimiento,
-      pais: state.formData.pais,
-      departamento: state.formData.departamento,
-      provincia: state.formData.provincia,
-      localidad: state.formData.localidad,
-      domicilio: state.formData.domicilio,
-      imagen: state.formData.imagen,
-
-      id_dependencia: state.formData.id_dependencia,
-      nombre_dependencia: state.formData.nombre_dependencia,
-
-      tipo: state.formData.tipo,
-      cargo: state.formData.cargo,
-      telefono: state.formData.telefono,
-      celular: state.formData.celular,
-      correo_electronico: state.formData.correo_electronico
-    })
-
-    if(state.formData.tipo == 'INVESTIGADOR'){
-      state.formData.investigador_presente = true
-    }
-
-    buttonClearOrden()
-    panel.value = false
-    addButton.value = false
-  }
 
   // ELIMINA TIPO DE CODIGO DE LA TABLA DE CODIGOS
   const buttonDeleteInvolved = (index: number) => {
@@ -542,7 +498,7 @@ editar.value = false
       !state.formData.nombre_conductor ||
       !state.formData.apellidos_condutor ||
       !state.formData.celular_con ||
-      !state.formData.id_mecanico ||  state.formData.accesorios_orden.length == 0){
+      !state.formData.id_mecanico ){
       sendForm.value = false
     }
   }
@@ -829,7 +785,7 @@ Fecha de Registro<span style="color:red">*</span>
     </v-col>
 
     <v-col cols="12" lg="12">
-      <h3 class="my-3 text-primary">INFORMACIÓN DEL CONDUCTOR - MECANICO</h3>
+      <h3 class="my-3 text-primary">INFORMACIÓN DEL CONDUCTOR</h3>
     </v-col>
 
     <v-col cols="12" md="4">
@@ -923,7 +879,7 @@ Fecha de Registro<span style="color:red">*</span>
     </v-col>
 
     <v-col cols="12">
-
+      <h3 class="my-3 text-primary">PRE - DIAGNOSTICO</h3>
     </v-col>
     
     <v-col class="12" md="12">
@@ -945,76 +901,8 @@ Fecha de Registro<span style="color:red">*</span>
           </div>
         </div>
       </template>
-    </v-col>
-    <v-col cols="12" lg="12">
-      <h3 class="my-3 text-primary">REGISTRO DE ACCESORIOS</h3>
-    </v-col>
- 
+</v-col>
 
-    <template v-if="permisoEdicion">
-      <v-col cols="12" md="6">
-        <v-label class="mb-2 font-weight-medium">
-          Accesorios 
-        </v-label>
-        <v-select
-          :items="lista_accesorios"
-          v-model="state.formData.id_accesorio"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="id"
-          item-title="nombre_accesorio"
-          @update:model-value="setCodeName()"
-          
-        >
-        </v-select>
-      </v-col>
-      <v-col cols="12" md="6">
-        <v-label class="mb-2 font-weight-medium">
-          Observación
-        </v-label>
-        <v-text-field 
-          variant="outlined"
-          color="primary"
-          v-model.trim="state.formData.observacion_ac"
-          @input="state.formData.observacion_ac = validateText(state.formData.observacion_ac.toUpperCase())"
-        
-        >
-        <template v-slot:append>
-          <v-btn 
-            color="primary"
-            @click= buttonAddCode()
-            :disabled="!state.formData.id_accesorio">
-            <PlusIcon/> Agregar
-          </v-btn>
-        </template>
-        </v-text-field>
-      </v-col>
-    </template>
-
-    <template v-if="state.formData.accesorios_orden.length>0">
-      <v-col cols="12" md="12">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">#</th>
-              <th class="text-center">Nombre accesorio</th>
-              <th class="text-center">Observación</th>
-              <th class="text-center" v-if="permisoEdicion">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.accesorios_orden"
-              :key="index"
-            >
-              <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.nombre_accesorio }}</td>
-              <td class="text-center">{{ item.observacion_ac }}</td>
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteCode(index)"/></td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-    </template>
 
   
 

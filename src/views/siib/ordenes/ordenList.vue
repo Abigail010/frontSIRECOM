@@ -36,7 +36,9 @@ const getOrdenes_sol = async() => {
   const buttonRegistro = (id_orden: any) => {
     router.push({ name: 'registroForm', params: { id_orden: id_orden }})
   }
-
+  const getestado = (estado) => {
+      return estado === 'EN PROCESO' ? 'estado-1' : estado === 'ENTREGADO' ? 'estado-2' : estado === 'FINALIZADO' ? 'estado-3' :'';
+    };
   // nuevo data table
 // nuevo data table
 const headers = ref([
@@ -103,6 +105,9 @@ onMounted(() => {
           :sort-by="[{ key: 'nombre_delito', order: 'asc' }]" 
           :search="search"
         >
+        <template v-slot:item.estado="{ item }">
+             <span :class="getestado(item.estado)">{{ item.estado }}</span>
+        </template>
           <template v-slot:top>
             <v-toolbar class="bg-lightprimary" flat>
               <v-text-field
@@ -122,6 +127,7 @@ onMounted(() => {
               > Nueva orden </v-btn>
             </v-toolbar>                        
           </template>
+          
           <template v-slot:item.actions="{ item }">
               <v-icon color="info" size="large" class="me-2" @click="buttonDepositForm(item.id)">
                   mdi-pencil
@@ -129,17 +135,68 @@ onMounted(() => {
               <v-btn
                   class="mr-1"
                   size="x-small"
-                  title="Registro de diagnostico - repuestos"
+                  title="Descripcion de trabajo"
                   height="25"
                   width="25"
-                  color="blue"
+                  color="secondary"
                   text="hola"
                   @click="buttonRegistro(item.id)"
                 >
                 <ReportIcon style="cursor: pointer;"></ReportIcon>
+
               </v-btn>
+              <v-btn
+                  class="mr-1"
+                  size="x-small"
+                  title="Solicitud de repuestos"
+                  height="25"
+                  width="25"
+                  color="warning"
+                  text="hola"
+                  @click="buttonRegistro(item.id)"
+                >
+                <ReportIcon style="cursor: pointer;"></ReportIcon>
+                
+              </v-btn>
+              <v-btn
+                  v-if="!item.condicion"
+                  class=""
+                  size="x-small"
+                  title="Entregar"
+                  height="25"
+                  width="25"
+                  color="light"
+                  @click="buttonApprove(item.id)"
+                >
+                  <FileCheckIcon style=" cursor: pointer;"></FileCheckIcon>
+                </v-btn>
+
           </template>                    
         </v-data-table>
       </v-col>
   </v-row>
 </template>
+<style scoped>
+
+.estado-1{
+  background-color: rgb(79, 190, 79);
+  padding: 8px 5px;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+}
+.estado-2{
+  background-color: rgb(36, 174, 192);
+  padding: 8px 5px;
+  border-radius: 10px; 
+  variant:"flat"; 
+  color: white; text-align: center;
+}
+.estado-3{
+  background-color: rgb(194, 26, 35);
+  padding: 8px 5px;
+  border-radius: 10px; 
+  variant:"flat"; 
+  color: white; text-align: center;
+}
+</style>

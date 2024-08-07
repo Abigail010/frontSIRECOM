@@ -6,7 +6,7 @@ import { router } from '@/router';
 import { useRoute } from 'vue-router'
 import Swal from 'sweetalert2'
 
-import { useaccesorioStore } from '@/stores/resources/accesorio';
+import { useServiceStore } from '@/stores/resources/servicios';
 import { validateText } from '@/utils/helpers/validateText'
 //import { useVuelidate } from '@vuelidate/core'
 //import { required, helpers } from '@vuelidate/validators'
@@ -14,10 +14,10 @@ import { validateText } from '@/utils/helpers/validateText'
 //import { useValidationErrors } from '@/stores/useValidationErrors';
 
   const route = useRoute()
-  const accesorioStore = useaccesorioStore()
+  const servicios = useServiceStore()
 
   // BREADCRUMB  
-  const page = ref({ title: 'Accesorio' });
+  const page = ref({ title: 'Servicios' });
   const breadcrumbs = ref([
     {
       text: 'Dashboard',
@@ -25,7 +25,7 @@ import { validateText } from '@/utils/helpers/validateText'
       href: '#'
     },
     {
-      text: 'Accesorio',
+      text: 'Registro de servicios para talleres externos',
       disabled: true,
       href: '#'
     }
@@ -35,7 +35,7 @@ import { validateText } from '@/utils/helpers/validateText'
   const state = reactive({
     formData: {
       id: '',
-      nombre_accesorio: '',
+      nombre_servicio: '',
       estado: '',
     }
   });
@@ -43,32 +43,62 @@ import { validateText } from '@/utils/helpers/validateText'
   const editar = ref<any>(false)
 
   // FUNCION QUE OBTIENE LA INFORMACION DE LA DEPENDENCIA
-  const getaccesorioById = async (id: any) => {
-    const respuesta = await accesorioStore.accesorio(id)
+  const getservicioById = async (id: any) => {
+    const respuesta = await servicios.serviceID(id)
     state.formData.id = respuesta.id
-    state.formData.nombre_accesorio = respuesta.nombre_accesorio
+    state.formData.nombre_servicio = respuesta.nombre_servicio
   }
 
+  // VALIDACIONES
+  
+  // const rules = computed(() => {
+  //   return {
+  //     formData: {
+  //       nombre_delito: { required: helpers.withMessage(FORM_REQUIRED_FIELD, required) }
+  //     }
+  //   }
+  // })
+  // const v$ = useVuelidate(rules, state)
+  // const errors:any = computed(
+  //   () => useValidationErrors(v$.value.$errors)
+  // )
  
   const sendForm = ref(true)
   const miValidacion = async () => {
   sendForm.value = true
-  if(!state.formData.nombre_accesorio){
+  if(!state.formData.nombre_servicio){
     sendForm.value = false
   }
 }
 
   // BOTON RETORNAR
   const buttonReturnList = () => {
-    router.push({ name: 'accesorioList' })
+    router.push({ name: 'serviciosList' })
   }
+
+  // BOTON ENVIAR FORMULARIO
+  // const buttonSendForm = async () => {
+  //   const result = await v$.value.$validate()
+  //   if(!result) return
+
+  //   const { ok, message } = (route.params.id_delito == '0') ? await crimeStore.createCrime(state.formData) : await crimeStore.updateCrime(state.formData)
+  //   const icono = (ok ? 'success' : 'error')
+  //   Swal.fire({
+  //     icon: icono,
+  //     title: message,
+  //     timer: 1500,
+  //     showConfirmButton: false,
+  //     timerProgressBar: true
+  //   })
+  // }
+  
 
 const submitButton = ref(false)
 const buttonSendForm = async () => {
   submitButton.value = true
     await miValidacion()
     if(!sendForm.value)return 
-        const { ok, message } = (route.params.id_accesorio == '0') ? await accesorioStore.createaccesorio(state.formData) : await accesorioStore.updateaccesorio(state.formData)
+        const { ok, message } = (route.params.id_delito == '0') ? await servicios.createService(state.formData) : await servicios.updateService(state.formData)
         const icono = (ok ? 'success' : 'error')
         Swal.fire({
         icon: icono,
@@ -80,8 +110,8 @@ const buttonSendForm = async () => {
   }
  
   onMounted(() => {
-    if(route.params.id_accesorio != '0'){
-      getaccesorioById(route.params.id_accesorio)
+    if(route.params.id_servicio != '0'){
+      getservicioById(route.params.id_servicio)
       editar.value = true
     }
   })
@@ -93,23 +123,22 @@ const buttonSendForm = async () => {
   <v-row>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <strong> DATOS DE LA Accesorio:</strong> Los campos con <span style="color:red">*</span> son obligatorios
+        <strong> DATOS DEL SERVICIO:</strong> Los campos con <span style="color:red">*</span> son obligatorios
       </h4>
 
       <v-row>
         <v-col cols="12" md="12">
-          <v-label class="mb-2 font-weight-medium">Nombre Accesorio<span style="color:red">*</span></v-label>
-    
+          <v-label class="mb-2 font-weight-medium">Nombre servicio<span style="color:red">*</span></v-label>
           <VTextField
             variant="outlined" 
             color="primary"
             type="text"
-            v-model.trim="state.formData.nombre_accesorio"
-            @input="miValidacion(), state.formData.nombre_accesorio= validateText(state.formData.nombre_accesorio.toUpperCase())"
-            :error="submitButton && !state.formData.nombre_accesorio"
+            v-model.trim="state.formData.nombre_servicio"
+            @input="miValidacion(), state.formData.nombre_servicio= validateText(state.formData.nombre_servicio.toUpperCase())"
+            :error="submitButton && !state.formData.nombre_servicio"
             hide-details
           />
-          <template v-if="submitButton && !state.formData.nombre_accesorio">
+          <template v-if="submitButton && !state.formData.nombre_servicio">
             <div class="v-messages font-weight-black px-2 py-2">
               <div class="v-messages__message text-error ">
                 El campo es requerido

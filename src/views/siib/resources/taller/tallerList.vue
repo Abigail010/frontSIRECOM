@@ -30,6 +30,10 @@ const getTallerList = async() => {
     router.push({ name: 'tallerForm', params: { id_taller: id_taller }})
   }
 
+  const getTipoClass = (tipo) => {
+      return tipo === 'PROPIO' ? 'tipo-externo2' : tipo === 'EXTERNO' ? 'tipo-externo' : '';
+    };
+
   // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
@@ -37,7 +41,7 @@ const headers = ref([
   { title: 'Fuerza', key: 'fuerza' },
   { title: 'Departamento', key: 'ciudad' },
   { title: 'Direccion', key: 'direccion' },
-  { title: 'Tipo', key: 'url_deposito' },
+
   { title: 'Servicio', key: 'servicio' },
     { title: 'Tipo', key: 'tipo' },
 
@@ -93,6 +97,9 @@ onMounted(() => {
           :sort-by="[{ key: 'nombre_delito', order: 'asc' }]" 
           :search="search"
         >
+        <template v-slot:item.tipo="{ item }">
+             <span :class="getTipoClass(item.tipo)">{{ item.tipo }}</span>
+        </template>
           <template v-slot:top>
             <v-toolbar class="bg-lightprimary" flat>
               <v-text-field
@@ -124,3 +131,26 @@ onMounted(() => {
       </v-col>
   </v-row>
 </template>
+
+<style >
+.tipo-externo{
+  background-color: rgb(82, 209, 82);
+  padding: 8px 5px;
+  border-radius: 10px;
+  color: white;
+  text-align: center;
+}
+.tipo-externo2{
+  background-color: rgb(36, 174, 192);
+  padding: 8px 5px;
+  border-radius: 10px; 
+  variant:"flat"; 
+  color: white; text-align: center;
+}
+
+.tipo-propio{
+  background-color: rgb(0, 140, 255)(153, 0, 255);
+  color: white;
+}
+
+</style>

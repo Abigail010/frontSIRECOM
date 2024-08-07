@@ -303,6 +303,29 @@ const MainRoutes = {
             component: () => import('@/views/siib/ordenes/registroForm.vue')
         },
 
+         //DELITO
+         {
+            name: 'serviciosList',
+            path: '/serviciosList',
+            component: () => import('@/views/siib/resources/servicios/serviciosList.vue')
+        },
+        {
+            name: 'serviciosForm',
+            path: '/serviciosForm/:id_servicio',
+            component: () => import('@/views/siib/resources/servicios/serviciosForm.vue')
+        },
+        //DELITO
+        {
+            name: 'accesorioList',
+            path: '/accesorioList',
+            component: () => import('@/views/siib/resources/accesorios/accesoriosList.vue')
+        },
+        {
+            name: 'accesorioForm',
+            path: '/accesorioForm/:id_accesorio',
+            component: () => import('@/views/siib/resources/accesorios/accesorioForm.vue')
+        },
+
 
 
         // PERFIL DE USUARIO

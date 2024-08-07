@@ -2,12 +2,12 @@
 import { ref, onMounted} from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
-import { useaccesorioStore } from '@/stores/resources/accesorio';
+import { useServiceStore } from '@/stores/resources/servicios';
 import Swal from 'sweetalert2'
 
-const AccesorioStore = useaccesorioStore()
+const servicios = useServiceStore()
 
-const page = ref({ title: 'Accesorios' });
+const page = ref({ title: 'Servicios Externos' });
 const breadcrumbs = ref([
   {
     text: 'Dashboard',
@@ -15,26 +15,26 @@ const breadcrumbs = ref([
     href: '#'
   },
   {
-    text: 'Listado de Accesorios',
+    text: 'Listado de servicios',
     disabled: true,
     href: '#'
   }
 ]);
 
   const desserts = ref([]) as any
-  const getAccesoriosList = async() => {
-    desserts.value = await AccesorioStore.accesorios()
+  const getList = async() => {
+    desserts.value = await servicios.servicios()
   }
 
-  const buttonAccesorioForm = (id_accesorio: any) => {
-    router.push({ name: 'accesorioForm', params: { id_accesorio: id_accesorio }})
+  const buttonServicioForm = (id_servicio: any) => {
+    router.push({ name: 'serviciosForm', params: { id_servicio: id_servicio }})
   }
 
 
 // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
-  { title: 'Accesorioss', key: 'nombre_accesorio' },
+  { title: 'Servicios', key: 'nombre_servicio' },
 ])
 
 function deleteItem(item: any) {
@@ -48,10 +48,10 @@ function deleteItem(item: any) {
         confirmButtonText: "Si, eliminar!"
     }).then(async (result) => {
     if (result.isConfirmed) {
-      const { ok, message } = await AccesorioStore.deleteaccesorio({"id":item})
+      const { ok, message } = await servicios.deleteService({"id":item})
       const icono = (ok ? 'success' : 'error')
       if(ok){
-        await getAccesoriosList()
+        await getList()
       }
       Toast.fire({
         icon: icono,
@@ -72,7 +72,7 @@ const Toast = Swal.mixin({
 });
 
 onMounted(() => {
-  getAccesoriosList()
+  getList()
 });
 </script>
 
@@ -84,7 +84,7 @@ onMounted(() => {
             class="border rounded-md" 
             :headers="headers" 
             :items="desserts" 
-            :sort-by="[{ key: 'nombre_accesorio', order: 'asc' }]" 
+            :sort-by="[{ key: 'nombre_servicio', order: 'asc' }]" 
             :search="search"
           >
             <template v-slot:top>
@@ -102,12 +102,12 @@ onMounted(() => {
                   color="primary"  
                   variant="flat" 
                   dark   
-                  @click="buttonAccesorioForm(0)" 
-                >Nuevo Accesorios</v-btn>
+                  @click="buttonServicioForm(0)" 
+                >Nuevo Servicio</v-btn>
               </v-toolbar>                        
             </template>
             <template v-slot:item.actions="{ item }">
-                <v-icon color="info" size="large" class="me-2" @click="buttonAccesorioForm(item.id)">
+                <v-icon color="info" size="large" class="me-2" @click="buttonServicioForm(item.id)">
                     mdi-pencil
                 </v-icon>
                 <v-icon color="error" size="large"  @click="deleteItem(item.id)">
