@@ -1820,20 +1820,11 @@ const getMecanicos = async() => {
             header-text-direction="left"
             body-text-direction="left"
             @update-page-items="mifuncion()"
+            select-strategy="single" 
           >
         
-            <template #item-url_encuentro="item">
-              <div class="operation-wrapper">
-                <a target="_blank" :href="item.url_encuentro">{{ item.url_encuentro }}</a>
-              </div>
-            </template>
-            <template #item-url_recepcion="item">
-              <div class="operation-wrapper">
-                <a target="_blank" :href="item.url_recepcion">{{ item.url_recepcion }}</a>
-              </div>
-            </template>
           </EasyDataTable>
-          
+        
         </v-card>
         <template v-if="submitButton && !state.formData.sistema_select">
           <div class="text-center v-messages font-weight-black px-2 py-2">

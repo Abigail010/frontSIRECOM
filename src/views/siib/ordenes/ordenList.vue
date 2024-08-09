@@ -36,6 +36,9 @@ const getOrdenes_sol = async() => {
   const buttonRegistro = (id_orden: any) => {
     router.push({ name: 'registroForm', params: { id_orden: id_orden }})
   }
+  const buttonEstadoRep = (id_orden: any) => {
+    router.push({ name: 'soliRepForm', params: { id_orden: id_orden }})
+  }
   const getestado = (estado) => {
       return estado === 'EN PROCESO' ? 'estado-1' : estado === 'ENTREGADO' ? 'estado-2' : estado === 'FINALIZADO' ? 'estado-3' :'';
     };
@@ -148,12 +151,12 @@ onMounted(() => {
               <v-btn
                   class="mr-1"
                   size="x-small"
-                  title="Solicitud de repuestos"
+                  title="Estado de repuestos"
                   height="25"
                   width="25"
                   color="warning"
                   text="hola"
-                  @click="buttonRegistro(item.id)"
+                  @click="buttonEstadoRep(item.id)"
                 >
                 <ReportIcon style="cursor: pointer;"></ReportIcon>
                 
@@ -165,7 +168,7 @@ onMounted(() => {
                   title="Entregar"
                   height="25"
                   width="25"
-                  color="light"
+                  color="error"
                   @click="buttonApprove(item.id)"
                 >
                   <FileCheckIcon style=" cursor: pointer;"></FileCheckIcon>

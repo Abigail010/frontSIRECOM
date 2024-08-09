@@ -302,6 +302,12 @@ const MainRoutes = {
             path: '/registroForm/:id_orden',
             component: () => import('@/views/siib/ordenes/registroForm.vue')
         },
+        {
+            name: 'soliRepForm',
+            path: '/soliRepForm/:id_orden',
+            component: () => import('@/views/siib/ordenes/soli_repForm.vue')
+        },
+
 
          //DELITO
          {
@@ -325,6 +331,31 @@ const MainRoutes = {
             path: '/accesorioForm/:id_accesorio',
             component: () => import('@/views/siib/resources/accesorios/accesorioForm.vue')
         },
+
+         //DELITO
+         {
+            name: 'systemList',
+            path: '/systemList',
+            component: () => import('@/views/siib/resources/sistemas/systemList.vue')
+        },
+        {
+            name: 'systemForm',
+            path: '/systemForm/:id_sistema',
+            component: () => import('@/views/siib/resources/sistemas/systemForm.vue')
+        },
+
+          //DELITO
+          {
+            name: 'filtroList',
+            path: '/filtroList',
+            component: () => import('@/views/siib/resources/filtros/filtroList.vue')
+        },
+        {
+            name: 'repuestoForm',
+            path: '/repuestoForm/:id_filtro',
+            component: () => import('@/views/siib/resources/filtros/repuestoForm.vue')
+        },
+
 
 
 

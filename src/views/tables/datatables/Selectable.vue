@@ -50,8 +50,12 @@ const headers :any = ref([
                 </v-data-table>
             </UiParentCard>
             <UiParentCard title="Select Strategies" class="mt-6">
-                <v-data-table items-per-page="5" :headers="headers" :items="BasicDatatables" item-value="name"
-                    select-strategy="single" show-select class="border rounded-md">
+                <v-data-table items-per-page="5" 
+                :headers="headers"
+                 :items="BasicDatatables" 
+                 item-value="name"
+                    select-strategy="single" 
+                    show-select class="border rounded-md">
                 </v-data-table>
             </UiParentCard>
         </v-col>

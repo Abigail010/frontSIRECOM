@@ -155,14 +155,14 @@ const lista_menu = [
           to: '/accesorioList'
         },
         {
-          title: 'Dependencia',
+          title: 'Sistemas',
           icon: CircleIcon,
-          to: '/dependenceList'
+          to: '/systemList'
         },
         {
-          title: 'Deposito',
+          title: 'Filtros',
           icon: CircleIcon,
-          to: '/depositList'
+          to: '/filtroList'
         },
         {
           title: 'Juzgado',
