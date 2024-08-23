@@ -7,7 +7,16 @@ const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identid
 export const usefilterStore = defineStore({
   id: 'filter',
   actions: {
-
+ // OBTENER LISTA DE DELITOS
+    async repuestos () {
+      try {
+        const { data } = await siibApi.get('repuestos/geter')
+        return data
+      } catch (error: any) {
+        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+        return { ok: false, message: message }
+      }
+    },
     // OBTENER LISTA DE DELITOS
     async filters () {
       try {
@@ -73,8 +82,9 @@ export const usefilterStore = defineStore({
     // CREAR DELITO
     async createfilter(form: any) {
       try {
+        console.log('creando...')
         const { data } = await siibApi.post('repuestos/create_filter/' + userLogged, form)
-        router.push({ name: 'filterList' });
+        router.push({ name: 'filtroList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

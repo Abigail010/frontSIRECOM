@@ -71,17 +71,13 @@ const openpanel = ref([0]);
     formData: {
       id_orden: '',
       id_registro:'', 
-      placa_chasis: '', 
-      nombre_taller: '',
-        placa:'', 
-        chasis:'',
+      
+    
         marca:'',
-        modelo:'',
-        motor: '',
+       
         
         color_ve:'',
-        placas: '', 
-        chasis_: '',
+        
         kilometraje: '',
         nro_ocupantes: '', 
         observaciones:'',
@@ -94,8 +90,7 @@ const openpanel = ref([0]);
         id_mecanico:'',
         id_vehiculo: '',
         nombre_completo: '', 
-        nombre_accesorio: '',
-        observacion_ac: '',
+      
         id_accesorio: '', 
         accesorios_orden: [] as any,
         dato1:'',
@@ -149,10 +144,16 @@ const openpanel = ref([0]);
         observacion_r:'', 
         id_Rep:[] as any, 
         id_repuestos: '', 
-
+        uno:'',
+        dos:'',
+        sinfonia:'', 
+        estado_llantas:'', 
+        gasolina:'', 
+        tanque_aux:'', 
         id_accesorios_: []as any, 
+        estado_orden:'', 
         
-      cedula_identidad: '',
+   
    
       
     }
@@ -211,6 +212,7 @@ const openpanel = ref([0]);
  const buttonSearchSistema = async () => {
   state.formData.id_sistema= ''
    state.formData.repuestos= await registro.searchOrden(state.formData)
+   console.log( state.formData.repuestos)
 }
 
    const basico_id = async (id_orden: any) => {
@@ -228,12 +230,19 @@ const openpanel = ref([0]);
     state.formData.tipo_orden = data.tipo 
     state.formData.color_ve = data.color
     state.formData.prueba= data.prueba
+    state.formData.uno= data.uno 
+    state.formData.dos = data.dos
+    state.formData.celular_con = data.celular_conductor
+    state.formData.estado_orden = data.estado
+    //console.log(state.formData.estado_orden)
    } 
 
    const verificar_id = async (id_orden: any) => {
    // const data = await registro.getbasico(id_orden)// console.log(data)
     const data = await registro.verificar_reg(id_orden)
     const size = Object.keys(data).length;
+   // console.log('dfdf '+size)
+   // console.log('..pppp'+ state.formData.id_registro)
    if(size>0){
     state.formData.id_registro = data.id_registro
     ///console.log( state.formData.id_registro)
@@ -249,7 +258,12 @@ const openpanel = ref([0]);
     state.formData.tipo_man= data.tipo_man
     state.formData.observaciones = data.observacion
     state.formData.requerimientos = data.requerimiento
+    state.formData.gasolina = data.gasolina_
+    state.formData.tanque_aux = data.tanque_auxiliar
+    state.formData.estado_llantas = data.estado_llantas
+    state.formData.sinfonia = data.sintonia_
    const motores = data.id_motor
+
     state.formData.id_motor= []
     for (let i = 0; i < motores.length; i++) {
       state.formData.id_motor.push(motores[i])
@@ -390,7 +404,7 @@ editar.value = false
       state.formData.id_filtro= itemsSelected.value[indice].id
       state.formData.nombre_repuesto= itemsSelected.value[indice].nombre_repuesto
       state.formData.id_sis = itemsSelected.value[indice].id_sistema
-      console.log(state.formData.id_filtro)
+  ///    console.log(state.formData.id_filtro)
     
     }
 
@@ -503,7 +517,7 @@ editar.value = false
 
   // AGREGA TIPO DE CODIGO A LA TABLA DE CODIGOS
   const buttonAddCode = () => {
-    console.log('clic')
+  
 
     if(state.formData.id_diagnostico){
       tipo_mantenimiento.value = tipo_mantenimiento.value.filter(
@@ -668,6 +682,13 @@ editar.value = false
       state.formData.observacion_r = ''
   
     }
+  }
+
+  const ButtonReport2 = async (item: any) => {
+    console.log('clic')
+   console.log(item)
+  const data2 = await registro.minutesReport(item);
+  console.log(data2)
   }
 
   // ELIMINA TIPO DE CODIGO DE LA TABLA DE CODIGOS
@@ -977,9 +998,8 @@ if(state.formData.id_Rep.length>0){
     submitButton.value = true
     await validateForm()
     if(!sendForm.value) return
-
     isLoading.value = true
-    if(state.formData.id_registro === '0' ){
+    if(state.formData.id_registro == '0' ){
       // ES NUEVO REGISTRO
       console.log('registroooo1010101')
 
@@ -1004,8 +1024,10 @@ if(state.formData.id_Rep.length>0){
         }
       })
     }else{
-      console.log('registrooo actualizar')
-      if(state.formData.id_registro !=0){
+      //console.log('registrooo actualizar')
+      //console.log(state.formData.id_registro)
+      if(state.formData.id_registro != '0'){
+        console.log(state.formData.id_registro)
             if(permisoEdicion.value){
               // SI TIENE PERMISO DE EDICIO
               const { ok, message } = await registro.update_mantenimiento(state.formData)
@@ -1046,7 +1068,8 @@ if(state.formData.id_Rep.length>0){
         && state.formData.idelectricidad.length ==0 && state.formData.iddireccion.length ==0 
         && state.formData.idchaperia.length ==0 && state.formData.idtransmision.length ==0   
         && state.formData.idtorneria.length ==0 && state.formData.idfrenos.length ==0)|| 
-        state.formData.id_accesorios_.length == 0 || state.formData.id_Rep.length ==0 ){
+       !state.formData.gasolina || !state.formData.tanque_aux || 
+       !state.formData.sinfonia || !state.formData.estado_llantas || state.formData.id_Rep.length ==0 ){
       sendForm.value = false
     }
   }
@@ -1069,7 +1092,7 @@ const getMecanicos = async() => {
     if(route.params.id_orden  != '0'){
       //.value = editPermission('RECEPCION DOCUMENTAL')
       await verificar_id(route.params.id_orden)
-     // console.log(state.formData.id_registro)
+      console.log(state.formData.id_registro)
       if(state.formData.id_registro>0){
         await registro_id(route.params.id_orden)
       }else{
@@ -1098,16 +1121,24 @@ const getMecanicos = async() => {
         title="INFORMACIÓN DEL VEHÍCULO"
         closable
       >
-        - <B>PLACA : </B><span class="text-primary" style='padding-right: 150px'> {{state.formData.dato1}} </span> 
-          <B>CHASIS : </B><span class="text-primary" style='padding-right: 150px'>{{ state.formData.dato2 }} </span>
-          <B>TIPO : </B><span class="text-primary" style='padding-right: 150px'>{{ state.formData.tipo_orden }} </span> <br>
-        - <B>MARCA: </B><span class="text-primary" style='padding-right: 165px'>{{ state.formData.marca }} </span>
-          <B>COLOR  : </B><span class="text-primary" style='padding-right: 270px'>{{ state.formData.color_ve }} </span>
-          <B>FECHA DE INGRESO: </B><span class="text-primary" style='padding-right: 50px'>{{  state.formData.dato3 }}</span><br>
-        - <B>CONDUCTOR : </B><span class="text-primary" style='padding-right: 60px'>{{  state.formData.nombre_completo }}</span> 
-          <B>CEL : </B><span class="text-primary" style='padding-right: 200px'>{{  state.formData.dato3 }}</span>
-        <B>PRE - DIAGNOSTICO : </B><span class="text-primary" style='padding-right: 150px'> {{ state.formData.dato4 }}</span>
-        <br>
+      <div style="display: flex; justify-content: space-between;">
+  <div><b>PLACA :</b> <span class="text-primary">{{state.formData.dato1}}</span></div>
+  <div><b>CHASIS :</b> <span class="text-primary">{{state.formData.dato2}}</span></div>
+  <div><b>TIPO :</b> <span class="text-primary">{{state.formData.tipo_orden}}</span></div>
+</div>
+
+<div style="display: flex; justify-content: space-between;">
+  <div><b>MARCA :</b> <span class="text-primary">{{state.formData.marca}}</span></div>
+  <div><b>COLOR :</b> <span class="text-primary">{{state.formData.color_ve}}</span></div>
+  <div><b>FECHA DE INGRESO :</b> <span class="text-primary">{{state.formData.dato3}}</span></div>
+</div>
+
+<div style="display: flex; justify-content: space-between;">
+  <div><b>CONDUCTOR :</b> <span class="text-primary">{{state.formData.nombre_completo}}</span></div>
+  <div><b>CEL :</b> <span class="text-primary">{{state.formData.celular_con}}</span></div>
+  <div><b>PRE - DIAGNOSTICO :</b> <span class="text-primary">{{state.formData.dato4}}</span></div>
+</div>
+     
 
       </v-alert>
     </v-col>
@@ -1144,6 +1175,7 @@ const getMecanicos = async() => {
         >
           <v-radio label="CORRECTIVO" color="primary" value="CORRECTIVO"></v-radio>
           <v-radio label="PREVENTIVO" color="secondary" value="PREVENTIVO"></v-radio>
+          <v-radio label="PREVENTIVO/CORRECTIVO" color="primary" value="PREVENTIVO/CORRECTIVO"></v-radio>
         </v-radio-group>
         <template v-if="submitButton && !state.formData.tipo_man">
           <div class="v-messages font-weight-black px-2 py-2">
@@ -1713,11 +1745,102 @@ const getMecanicos = async() => {
 
           <!---Payment Method--->
           <v-expansion-panel elevation="10" class=" mt-3">
-            <v-expansion-panel-title class="text-h6" style="color:black;">Accesorios del vehiculo</v-expansion-panel-title>
+            <v-expansion-panel-title class="text-h6" style="color:black;">Inventario del vehículo</v-expansion-panel-title>
             <v-expansion-panel-text class="mt-4">
                
                 <v-row>
-            
+                  <v-col cols="12" md="3">
+                  <v-label class="mb-2 font-weight-medium">Sinfonía de Radio<span style="color:red">*</span></v-label>
+                  <v-radio-group 
+                    v-model="state.formData.sinfonia"
+                  
+                    class="ml-n3"
+                    inline
+                    :error="submitButton && !state.formData.sinfonia"
+                    hide-details
+                  >
+                    <v-radio label="AM" color="primary" value="AM"></v-radio>
+                    <v-radio label="FM" color="secondary" value="FM"></v-radio>
+                    <v-radio label="AM/FM" color="primary" value="AM/FM"></v-radio>
+                  </v-radio-group>
+                  <template v-if="submitButton && !state.formData.sinfonia">
+                    <div class="v-messages font-weight-black px-2 py-2">
+                      <div class="v-messages__message text-error ">
+                        El campo es requerido
+                      </div>
+                    </div>
+                  </template>
+
+                </v-col>
+                <v-col cols="12" md="3">
+                  <v-label class="mb-2 font-weight-medium">Estado de llantas<span style="color:red">*</span></v-label>
+                  <v-radio-group 
+                    v-model="state.formData.estado_llantas"
+                  
+                    class="ml-n3"
+                    inline
+                    :error="submitButton && !state.formData.estado_llantas"
+                    hide-details
+                  >
+                    <v-radio label="B" color="primary" value="B"></v-radio>
+                    <v-radio label="M" color="secondary" value="M"></v-radio>
+                    <v-radio label="R" color="primary" value="R"></v-radio>
+                  </v-radio-group>
+                  <template v-if="submitButton && !state.formData.estado_llantas">
+                    <div class="v-messages font-weight-black px-2 py-2">
+                      <div class="v-messages__message text-error ">
+                        El campo es requerido
+                      </div>
+                    </div>
+                  </template>
+
+                </v-col>
+                <v-col cols="12" md="3">
+                  <v-label class="mb-2 font-weight-medium">Gasolina<span style="color:red">*</span></v-label>
+                  <v-radio-group 
+                    v-model="state.formData.gasolina"
+                  
+                    class="ml-n3"
+                    inline
+                    :error="submitButton && !state.formData.gasolina"
+                    hide-details
+                  >
+                    <v-radio label="1/4" color="primary" value="1/4"></v-radio>
+                    <v-radio label="1/2" color="secondary" value="1/2"></v-radio>
+                    <v-radio label="3/4" color="primary" value="3/4"></v-radio>
+                  </v-radio-group>
+                  <template v-if="submitButton && !state.formData.gasolina">
+                    <div class="v-messages font-weight-black px-2 py-2">
+                      <div class="v-messages__message text-error ">
+                        El campo es requerido
+                      </div>
+                    </div>
+                  </template>
+
+                </v-col>
+                <v-col cols="12" md="3">
+                  <v-label class="mb-2 font-weight-medium">Tanque Auxiliar<span style="color:red">*</span></v-label>
+                  <v-radio-group 
+                    v-model="state.formData.tanque_aux"
+                  
+                    class="ml-n3"
+                    inline
+                    :error="submitButton && !state.formData.tanque_aux"
+                    hide-details
+                  >
+                    <v-radio label="1/4" color="primary" value="1/4"></v-radio>
+                    <v-radio label="1/2" color="secondary" value="1/2"></v-radio>
+                    <v-radio label="3/4" color="primary" value="3/4"></v-radio>
+                  </v-radio-group>
+                  <template v-if="submitButton && !state.formData.tanque_aux">
+                    <div class="v-messages font-weight-black px-2 py-2">
+                      <div class="v-messages__message text-error ">
+                        El campo es requerido
+                      </div>
+                    </div>
+                  </template>
+
+                </v-col>
 
                   <div class="checkbox-container">
                         <div v-for="item in lista_accesorios" :key="item" class="checkbox-item">
@@ -1728,25 +1851,10 @@ const getMecanicos = async() => {
                       </label>
                       </div>
                   </div>
+                  
                   <v-col cols="12" lg="12">
-                      <h3 class="my-3 text-primary">Requerimientos</h3>
-                    </v-col>
-                  <v-col class="12" md="12">
-                      <v-text-field 
-                      variant="outlined" 
-                      color="primary"
-                      type="text"
-                      
-                      v-model="state.formData.requerimientos"
-                      @input="state.formData.requerimientos = validateText(state.formData.requerimientos.toUpperCase())"
-
-                      
-                      hide-details
-                    />
-                    </v-col>
-                    <v-col cols="12" lg="12">
                       <h3 class="my-3 text-primary">Observaciones</h3>
-                    </v-col>
+                  </v-col>
                   <v-col class="12" md="12">
                       <v-text-field 
                       variant="outlined" 
@@ -1762,6 +1870,7 @@ const getMecanicos = async() => {
                     </v-col>
               
                 </v-row>
+
             </v-expansion-panel-text>
         </v-expansion-panel>
         <!---Delivery Options--->
@@ -1976,20 +2085,28 @@ const getMecanicos = async() => {
     
 
   <v-row>
-    <v-col cols="12" class="text-lg-right pt-5">
+    <v-col cols="12" class="text-lg-left pt-5">
       <template v-if="!isLoading">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Volver</v-btn>
-        <v-btn color="primary" @click="buttonSendForm()">
+        <v-btn  v-if="route.params.id_orden != '0' && state.formData.id_registro == '0' " color="primary" @click="buttonSendForm()">
           <template v-if="route.params.id_orden != '0' && state.formData.id_registro == '0' ">
             Enviar    
           </template>
-          <template v-if="state.formData.id_registro != '0' && permisoEdicion">
+        </v-btn>
+        <v-btn v-if="state.formData.id_registro != '0' && state.formData.estado_orden == 'EN PROCESO'  " color="primary" @click="buttonSendForm()">  
+          <template v-if="state.formData.id_registro != '0' && state.formData.estado_orden == 'EN PROCESO'  ">
             Actualizar
           </template>
-          <template v-if="route.params.id_registro != '0' && !permisoEdicion">
-            Imprimir
+          
+        </v-btn>
+            
+        <v-btn v-if="state.formData.estado_orden === 'FINALIZADO'"   color="success"  class="mr-10" @click="ButtonReport2( route.params.id_orden)">
+          <template v-if="state.formData.estado_orden === 'FINALIZADO'" >
+            Imprimir 
           </template>
         </v-btn>
+        
+       
       </template>
       <template v-else>
         <v-btn color="primary" disabled>

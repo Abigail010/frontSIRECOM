@@ -4,8 +4,8 @@ import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
 import { useTallerStore } from '@/stores/resources/taller';
 import { useOrdenStore } from '@/stores/orden/orden';
-
-
+import { format, formatDistance } from 'date-fns'
+import { es } from 'date-fns/locale'
 
 import Swal from 'sweetalert2'
 const orden = useOrdenStore()
@@ -24,7 +24,13 @@ const breadcrumbs = ref([
     href: '#'
   }
 ]);
+const currentDate = format(new Date(), 'yyyy-MM-dd')
+  const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
+  // console.log('perfil', userProfile);
 
+  const timeAgo = (value: any) => {
+    return formatDistance(new Date(currentDate), new Date(value), {locale:es})
+  }
 const desserts = ref([]) as any
 const getOrdenes_sol = async() => {
     desserts.value = await orden.getOrdenes_soli()
@@ -39,7 +45,7 @@ const getOrdenes_sol = async() => {
   const buttonEstadoRep = (id_orden: any) => {
     router.push({ name: 'soliRepForm', params: { id_orden: id_orden }})
   }
-  const getestado = (estado) => {
+  const getestado = (estado: any) => {
       return estado === 'EN PROCESO' ? 'estado-1' : estado === 'ENTREGADO' ? 'estado-2' : estado === 'FINALIZADO' ? 'estado-3' :'';
     };
   // nuevo data table
@@ -82,6 +88,83 @@ const headers = ref([
     });
 } 
 
+const buttonApprove = (item: any) => {
+    Swal.fire({
+      title: 'Estas seguro?',
+      text: "",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si, aprobar'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+     const { ok, message }  = await orden.updateentrega({"id":item})
+      const icono = (ok ? 'success' : 'error')
+        Swal.fire({
+          icon: icono,
+          title: message,
+          timer: 1500,
+          showConfirmButton: false,
+          timerProgressBar: true
+        })
+        getOrdenes_sol()
+      }
+    })
+  }
+  const buttonApprove2 = (item: any) => {
+    Swal.fire({
+      title: 'Estas seguro?',
+      text: "",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si, aprobar'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+     const { ok, message }  = await orden.updatefinalizado({"id":item})
+      const icono = (ok ? 'success' : 'error')
+        Swal.fire({
+          icon: icono,
+          title: message,
+          timer: 1500,
+          showConfirmButton: false,
+          timerProgressBar: true
+        })
+        getOrdenes_sol()
+      }
+    })
+  }
+
+  const buttonDelete = (item: any) => {
+    Swal.fire({
+      title: 'Estas seguro?',
+      text: "",
+      icon: 'info',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      cancelButtonText: 'Cancelar',
+      confirmButtonText: 'Si, cancelar mantenimiento'
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+     const { ok, message }  = await orden.deleteEntrega({"id":item})
+      const icono = (ok ? 'success' : 'error')
+        Swal.fire({
+          icon: icono,
+          title: message,
+          timer: 1500,
+          showConfirmButton: false,
+          timerProgressBar: true
+        })
+        getOrdenes_sol()
+      }
+    })
+  }
+
 const search = ref() as any
 
 const Toast = Swal.mixin({
@@ -114,7 +197,7 @@ onMounted(() => {
           <template v-slot:top>
             <v-toolbar class="bg-lightprimary" flat>
               <v-text-field
-                class="ml-4"
+                class="ml-2"
                 v-model.trim="search" 
                 append-inner-icon="mdi-magnify" 
                 label="Busqueda" 
@@ -122,7 +205,7 @@ onMounted(() => {
               />
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <v-btn 
+              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile == 'SUPERVISOR DE MANTENIMIENTO'"
                 color="primary"  
                 variant="flat" 
                 dark   
@@ -132,10 +215,11 @@ onMounted(() => {
           </template>
           
           <template v-slot:item.actions="{ item }">
-              <v-icon color="info" size="large" class="me-2" @click="buttonDepositForm(item.id)">
+              <v-icon v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') "
+              color="info" size="large" class="me-2" @click="buttonDepositForm(item.id)">
                   mdi-pencil
               </v-icon>
-              <v-btn
+              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') ||  userProfile.includes('MECANICO')"
                   class="mr-1"
                   size="x-small"
                   title="Descripcion de trabajo"
@@ -148,7 +232,7 @@ onMounted(() => {
                 <ReportIcon style="cursor: pointer;"></ReportIcon>
 
               </v-btn>
-              <v-btn
+              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('PERSONAL DE ENTREGA')  "
                   class="mr-1"
                   size="x-small"
                   title="Estado de repuestos"
@@ -161,9 +245,9 @@ onMounted(() => {
                 <ReportIcon style="cursor: pointer;"></ReportIcon>
                 
               </v-btn>
-              <v-btn
-                  v-if="!item.condicion"
-                  class=""
+              <v-btn 
+                  v-if="item.estado == 'EN PROCESO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('MECANICO') ) "
+                  class="mr-1"
                   size="x-small"
                   title="Entregar"
                   height="25"
@@ -173,6 +257,35 @@ onMounted(() => {
                 >
                   <FileCheckIcon style=" cursor: pointer;"></FileCheckIcon>
                 </v-btn>
+
+
+                
+                <v-btn 
+                  v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') )"
+                  class=""
+                  size="x-small"
+                  title="Rechazar entrega de mantenimiento"
+                  height="25"
+                  width="25"
+                  color="primary"
+                  @click="buttonDelete(item.id)"
+                >
+                  <FileIcon style=" cursor: pointer;"></FileIcon>
+                </v-btn>
+
+                <v-btn 
+                  v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') )"
+                  class=""
+                  size="x-small"
+                  title="Entrega de vehiculo"
+                  height="25"
+                  width="25"
+                  color="success"
+                  @click="buttonApprove2(item.id)"
+                >
+                  <FileCheckIcon style=" cursor: pointer;"></FileCheckIcon>
+                </v-btn>
+                pdf
 
           </template>                    
         </v-data-table>

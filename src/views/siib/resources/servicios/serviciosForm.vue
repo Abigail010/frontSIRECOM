@@ -98,7 +98,7 @@ const buttonSendForm = async () => {
   submitButton.value = true
     await miValidacion()
     if(!sendForm.value)return 
-        const { ok, message } = (route.params.id_delito == '0') ? await servicios.createService(state.formData) : await servicios.updateService(state.formData)
+        const { ok, message } = (route.params.id_servicio == '0') ? await servicios.createService(state.formData) : await servicios.updateService(state.formData)
         const icono = (ok ? 'success' : 'error')
         Swal.fire({
         icon: icono,

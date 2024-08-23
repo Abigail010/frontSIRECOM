@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 
 const sistemaStore = useSystemStore()
 
-const page = ref({ title: 'sistemas' });
+const page = ref({ title: 'Sistemas' });
 const breadcrumbs = ref([
   {
     text: 'Dashboard',
@@ -34,7 +34,7 @@ const breadcrumbs = ref([
 // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
-  { title: 'sistemass', key: 'nombre_sistema' },
+  { title: 'Sistemas', key: 'nombre_sistema' },
 ])
 
 function deleteItem(item: any) {

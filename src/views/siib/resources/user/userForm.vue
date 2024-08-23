@@ -8,10 +8,10 @@ import Swal from 'sweetalert2'
 import { useResourceStore } from '@/stores/resource';
 import { useUserStore } from '@/stores/resources/user';
 import { validateText } from '@/utils/helpers/validateText'
-// import { useVuelidate } from '@vuelidate/core'
-// import { required, email, helpers } from '@vuelidate/validators'
-// import { FORM_INVALID_EMAIL, FORM_REQUIRED_FIELD } from '@/utils/helpers/messages'
-// import { useValidationErrors } from '@/stores/useValidationErrors';
+ import { useVuelidate } from '@vuelidate/core'
+ import { required, email, helpers } from '@vuelidate/validators'
+ import { FORM_INVALID_EMAIL, FORM_REQUIRED_FIELD } from '@/utils/helpers/messages'
+ import { useValidationErrors } from '@/stores/useValidationErrors';
 
   const route = useRoute()
   const resourceStore = useResourceStore()
@@ -85,7 +85,7 @@ import { validateText } from '@/utils/helpers/validateText'
   const s_submenu_padre = ref([]) as any
   const t_submenu_independiente = ref([]) as any
   const getMenuList = async() => {
-   /* menus.value = await resourceStore.getMenu()
+    menus.value = await resourceStore.getMenu()
     const lista = menus.value
 
     // LISTADO DE MENUS INDEPENDIENTES
@@ -136,12 +136,12 @@ import { validateText } from '@/utils/helpers/validateText'
           t_submenu_independiente.value.push(lista[j])
         }
       }
-    }*/
+    }
   }
 
   const perfilMenus = ref([]) as any
   const getProfileMenuList = async() => {
-  //  perfilMenus.value = await resourceStore.getProfileMenu()
+    perfilMenus.value = await resourceStore.getProfileMenu()
   }
 
   const setMenu = async() => {
@@ -173,13 +173,13 @@ import { validateText } from '@/utils/helpers/validateText'
     state.formData.celular = respuesta.celular
     state.formData.nombre_usuario = respuesta.nombre_usuario
     state.formData.contrasena = respuesta.contrasena
-  /*  const menu = respuesta.menu
+    const menu = respuesta.menu
     for (let i = 0; i < menu.length; i++) {
       state.formData.menu.push(menu[i].id_menu)
       if(menu[i].editar){
         state.formData.ediciones.push(menu[i].id_menu)
       }
-    }*/
+    }
   }
 
   // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
@@ -567,6 +567,7 @@ const buttonSendForm = async () => {
             item-title="nombre_perfil"
             item-value="id"
             v-model="state.formData.id_perfil"
+             @update:model-value="setMenu()"
             :error="submitButton && !state.formData.id_perfil"
           />
           <template v-if="submitButton && !state.formData.id_perfil">

@@ -10,11 +10,11 @@ import { HelpIcon, ChevronDownIcon } from 'vue-tabler-icons';
     <!-- mega menu DD -->
     <!-- ---------------------------------------------- -->
     <v-menu open-on-hover :close-on-content-click="false">
-        <template v-slot:activator="{ props }">
+       <!---- <template v-slot:activator="{ props }">
             <v-btn class="hidden-sm-and-down" rounded="sm" variant="text" color="primary" v-bind="props">
                 Apps <ChevronDownIcon size="16" class="mt-1 ml-1" />
             </v-btn>
-        </template>
+        </template>--->
         <v-sheet width="900" height="382" elevation="10" rounded="md" class="pa-4 pb-0">
             <div>
                 <v-row>
@@ -45,13 +45,13 @@ import { HelpIcon, ChevronDownIcon } from 'vue-tabler-icons';
             </div>
         </v-sheet>
     </v-menu>
-    <router-link to="/apps/chats" class="text-decoration-none">
+  <!----- <router-link to="/apps/chats" class="text-decoration-none">
         <v-btn variant="text" color="primary">Chat </v-btn>
-    </router-link>
+    </router-link>-->
     <router-link to="/apps/calendar" class="text-decoration-none">
         <v-btn variant="text" color="primary">Calendar </v-btn>
     </router-link>
-    <router-link to="/apps/notes" class="text-decoration-none">
+  <!----- <router-link to="/apps/notes" class="text-decoration-none">
         <v-btn variant="text" color="primary">Notes </v-btn>
-    </router-link>
+    </router-link>-->
 </template>

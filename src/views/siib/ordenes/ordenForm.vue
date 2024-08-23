@@ -18,13 +18,14 @@ import { readonly } from 'vue';
   const resourceStore = useResourceStore()
   const orden = useOrdenStore()
   const tipos_combustible = ['GASOLINA', 'DIESEL', 'KEROSENE']
+  const categorias_conductor = ['P', 'M', 'PROFESIONAL A', 'PROFESIONAL B', 'PROFESIONAL C', 'T', 'LICENCIA ESPECIAL']
   const submitButton = ref(false)
   const sendForm = ref(true)
   const searchLoading = ref(false)
   const isLoading = ref(false)
-
+  const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
   // BREADCRUMB
-  const page = ref({ title: 'Orden de Mantenimiento' });
+  const page = ref({ title: 'Registro de ingreso del vehículo' });
   const breadcrumbs = ref([
     {
       text: 'Dashboard',
@@ -32,7 +33,7 @@ import { readonly } from 'vue';
       href: '/home'
     },
     {
-      text: 'orden',
+      text: 'Orden de mantenimiento',
       disabled: true,
       href: '#'
     }
@@ -76,6 +77,11 @@ import { readonly } from 'vue';
         fecha_formulario: currentDate2,
         id_persona: '',
         cedula_identidad: '',
+        categoria_con:'',
+        comparar_:'', 
+        kilo_:'', 
+        valido_kilo:'', 
+        estado_orden:'',
     }
   });
 
@@ -92,7 +98,7 @@ import { readonly } from 'vue';
   const ordernes_id = async (id_orden: any) => {
   
     const data = await orden.orden_id(id_orden)
-
+ //console.log(data)
    // state.formData. = data.id
     state.formData.id_orden = data.id_soli
     state.formData.chasis_= data.chasis
@@ -101,22 +107,28 @@ import { readonly } from 'vue';
     state.formData.placa_chasis = data.placa
     state.formData.nro_ocupantes = data.nro_ocupantes
     state.formData.motor = data.motor
+    state.formData.marca = data.marca
+    state.formData.modelo = data.modelo
+    state.formData.color_ve = data.color
+    state.formData.combustible = data.combustible
+    state.formData.tipo_orden = data.tipo
+    state.formData.anio_fabri = data.año_registro
+    state.formData.kilometraje = data.kilometraje
+    editar.value = false
+    state.formData.prediagnostico = data.prediagnostigo
     state.formData.nombre_conductor = data.nombre_conductor
-state.formData.apellidos_condutor = data.apellidos_conductor
-state.formData.cedula_identidad = data.carnet_conductor
-state.formData.mecanico_disponible = data.id
-state.formData.id_mecanico = data.mecanico_disponible
-state.formData.celular_con= data.celular_conductor
-state.formData.marca = data.marca
-state.formData.modelo = data.modelo
-state.formData.color_ve = data.color
-state.formData.combustible = data.combustible
-state.formData.tipo_orden = data.tipo
-state.formData.anio_fabri = data.año_registro
-state.formData.kilometraje = data.kilometraje
-state.formData.prediagnostico = data.prediagnostigo
-editar.value = false
-
+    state.formData.apellidos_condutor = data.apellidos_conductor
+    state.formData.cedula_identidad = data.carnet_conductor
+    state.formData.mecanico_disponible = data.id
+    state.formData.id_mecanico = data.mecanico_disponible
+    state.formData.celular_con= data.celular_conductor
+    state.formData.categoria_con = data.categoria
+    state.formData.comparar_ = data.total
+    state.formData.kilo_ = data.kilo_rem
+    state.formData.estado_orden = data.estado
+    let dato1  = parseInt(state.formData.comparar_)+1
+      let dato2 = dato1* parseInt(state.formData.kilo_)
+      state.formData.valido_kilo = dato2
  /*   const codigos = data.accesorios_orden
     state.formData.accesorios_orden = []
     for (let i = 0; i < codigos.length; i++) {
@@ -142,10 +154,112 @@ editar.value = false
   // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
   const buttonSearchOrden = async () => {
     state.formData.id_persona = ''
-    const respuesta = await orden.searchOrden(state.formData)
+    const respuesta_info = await orden.searchInfo(state.formData)
+     ///console.log(respuesta_info.length)
+    if(!respuesta_info){
+     // console.log('busqueda 2')
+      const respuesta = await orden.searchOrden(state.formData)
+      //console.log(respuesta)
+                state.formData.color_ve = respuesta.color 
+                state.formData.tipo_orden= respuesta.tipo_v
+                state.formData.chasis_ = respuesta.chasis
+            
+                state.formData.placas = respuesta.placa
+                state.formData.modelo = respuesta.modelo
+                state.formData.marca = respuesta.marca
+                state.formData.motor = respuesta.motor
+                state.formData.anio_fabri = respuesta.anio_registro
+                state.formData.nro_ocupantes = respuesta.nro_ocupantes
+                state.formData.fuerza_orden = respuesta.nombre_fuerza
+                state.formData.combustible = respuesta.combustible
+                editar.value = true
+
+      //console.log('viendo_', JSON.stringify(respuesta, null, 2))
+          if(!respuesta){
+            Toast.fire({
+              icon: 'error',
+              title: 'No se encontro información'
+            })
+          // DESBLOQUEAR EL INPUT
+          
+          }else{
+            Toast.fire({
+              icon: 'success',
+              title: 'Resultado Obtenido Satisfactoriamente'
+            })
+          }
+
+      // DESBLOQUEAR EL INPUT
+      }else{
+        Toast.fire({
+          icon: 'success',
+          title: 'Resultado Obtenido Satisfactoriamente'
+        })
+        //si ya se registro anteriormente
+
+        state.formData.color_ve = respuesta_info.color 
+                state.formData.tipo_orden= respuesta_info.tipo
+                state.formData.chasis_ = respuesta_info.chasis
+            
+                state.formData.placas = respuesta_info.placa
+                state.formData.modelo = respuesta_info.modelo
+                state.formData.marca = respuesta_info.marca
+                state.formData.motor = respuesta_info.motor
+                state.formData.anio_fabri = respuesta_info.año_registro
+                state.formData.nro_ocupantes = respuesta_info.nro_ocupantes
+                state.formData.fuerza_orden = respuesta_info.nombre_fuerza
+                state.formData.combustible = respuesta_info.combustible
+                
+                
+                editar.value = true
+                state.formData.nombre_conductor= respuesta_info.nombre_conductor
+                state.formData.apellidos_condutor = respuesta_info.apellidos_conductor
+                state.formData.cedula_identidad = respuesta_info.carnet_conductor
+                state.formData.categoria_con = respuesta_info.categoria
+                state.formData.celular_con = respuesta_info.celular_conductor
+                state.formData.comparar_ = respuesta_info.total
+                state.formData.kilo_ = respuesta_info.kilometraje
+                state.formData.id_vehiculo = respuesta_info.id_vehiculo
+
+      }
+  //  const respuesta = await orden.searchOrden(state.formData)
+  /*  if(Object.prototype.hasOwnProperty.call(respuesta, 'id')){
+      // console.log('UTILIZANDO DESDE DB');
+        Toast.fire({
+          icon: 'success',
+          title: 'Resultado Obtenido Satisfactoriamente'
+        })
+      }else{
+        Toast.fire({
+          icon: 'error',
+          title: 'No se encontro información'
+        })
+      }*/
+
+    /*  if (JSON.stringify(respuesta, null, 2)) {
+  console.log('El objeto está vacío');
+} else {
+  console.log('El objeto no está vacío');
+}*/
+   /*  console.log('viendo_ ' + respuesta)
+      if(!respuesta){
+        Toast.fire({
+          icon: 'error',
+          title: 'No se encontro información'
+        })
+      // DESBLOQUEAR EL INPUT
+      }else{
+        Toast.fire({
+          icon: 'success',
+          title: 'Resultado Obtenido Satisfactoriamente'
+        })
+      }
+
+      //console.log('viendo_', JSON.stringify(respuesta, null, 2));
     state.formData.color_ve = respuesta.color 
     state.formData.tipo_orden= respuesta.tipo_v
     state.formData.chasis_ = respuesta.chasis
+ 
     state.formData.placas = respuesta.placa
     state.formData.modelo = respuesta.modelo
     state.formData.marca = respuesta.marca
@@ -154,11 +268,42 @@ editar.value = false
     state.formData.nro_ocupantes = respuesta.nro_ocupantes
     state.formData.fuerza_orden = respuesta.nombre_fuerza
     state.formData.combustible = respuesta.combustible
-    editar.value = true
+    editar.value = true*/
 
   }
 
+  const validateKilometraje = () => {
+    //verificar que sea distinto de cero 
 
+    //console.log(' ver'+ state.formData.comparar_)
+     if(parseInt(state.formData.comparar_)> 0 ){
+   //   console.log('existen registros')
+      let dato1  = parseInt(state.formData.comparar_)+1
+      let dato2 = dato1* parseInt(state.formData.kilo_)
+      state.formData.valido_kilo = dato2
+      //console.log( 'valor '+ state.formData.valido_kilo) 
+        if(parseInt(state.formData.kilometraje)>=parseInt(state.formData.kilo_) && parseInt(state.formData.kilometraje)<=dato2  ){
+        //  console.log('registro')
+          Toast.fire({
+          icon: 'success',
+          title: 'Kilometraje valido'
+        })
+        }else{
+          Toast.fire({
+              icon: 'error',
+              title: 'No corresponde el registro, verifique información'
+            })
+        }
+     }else{
+
+      Toast.fire({
+          icon: 'success',
+          title: 'Primer registro'
+        })
+     }
+    //const dato1  = parseInt(state.formData.comparar_)* parseInt(state.formData.kilo_)
+   // console.log( 'valor '+ dato1)
+  }
 
   const buttonClearOrden = () => {
 
@@ -252,7 +397,7 @@ editar.value = false
   const validateForm = async () => {
     sendForm.value = true
     if(!state.formData.placa_chasis ||
-      !state.formData.kilometraje ||
+      (state.formData.kilometraje>= state.formData.kilo_ ||  state.formData.kilometraje<=state.formData.valido_kilo ) &&
       !state.formData.combustible ||
       !state.formData.cedula_identidad ||
       !state.formData.nombre_conductor ||
@@ -371,7 +516,7 @@ Fecha de Registro<span style="color:red">*</span>
     </v-col>
     <v-col cols="12" md="4">
       <v-label class="mb-2 font-weight-medium">
-        Tipo
+        Tipo  <span style="color:red">*</span>
       </v-label>
       <v-text-field 
         variant="outlined" 
@@ -406,27 +551,46 @@ Fecha de Registro<span style="color:red">*</span>
       <v-label class="mb-2 font-weight-medium">
         Color<span style="color:red">*</span>
       </v-label>
-      <v-text-field
-            variant="outlined" 
-            color="primary"
-            type="text"
-            v-model="state.formData.color_ve"
-            @input= " state.formData.color_ve=validateText(state.formData.color_ve.toUpperCase())"
-            readonly 
-            :error="submitButton && !state.formData.color_ve" 
-            
-          >
-          </v-text-field>
-<template v-if="submitButton && !state.formData.color_ve">
+      <div v-if="state.formData.color_ve != ''">
+        <v-textarea
+        rows="1"
+        auto-grow
+        v-model.trim="state.formData.color_ve"
+        @input="state.formData.color_ve = validateText(state.formData.color_ve.toUpperCase())"
+        :error="submitButton && !state.formData.color_ve"
+
+        hide-details
+         />
+          <template v-if="submitButton && !state.formData.color_ve">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
             El campo es requerido
           </div>
         </div>
       </template>
+      </div>
+      <div v-else>
+        <VTextField
+            variant="outlined" 
+            color="primary"
+            type="text"
+            v-model.trim="state.formData.color_ve"
+            @input=" state.formData.color_ve= validateText(state.formData.color_ve.toUpperCase())"
+            :error="submitButton && !state.formData.color_ve"
+            hide-details
+          />
+          <template v-if="submitButton && !state.formData.color_ve">
+        <div class="v-messages font-weight-black px-2 py-2">
+          <div class="v-messages__message text-error ">
+            El campo es requerido
+          </div>
+        </div>
+      </template>
+      </div>
+
     </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Año de fabricación<span style="color:red">*</span></v-label>
+      <v-label class="mb-2 font-weight-medium">Año de Ingreso<span style="color:red">*</span></v-label>
       <v-text-field 
         variant="outlined" 
         color="primary"
@@ -484,12 +648,14 @@ Fecha de Registro<span style="color:red">*</span>
                   color="primary"
                   type="number"
                   min="1"
+                 
+                   @input="validateKilometraje()"
         v-model.trim="state.formData.kilometraje"
         :error="submitButton && !state.formData.kilometraje"
 
         hide-details
       ></v-text-field>
-      <template v-if="submitButton && !state.formData.kilometraje">
+      <template v-if="submitButton && !state.formData.kilometraje ">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
             El campo es requerido
@@ -498,31 +664,53 @@ Fecha de Registro<span style="color:red">*</span>
       </template>
     </v-col>
     <v-col cols="12" md="4">
+      <div v-if="state.formData.nro_ocupantes != '0'  ">
       <v-label class="mb-2 font-weight-medium">N° de ocupantes </v-label>
-      <v-text-field
-
-                   variant="outlined" 
-                  color="primary"
-                  type="number"
-                  min="1"
+      <v-text-field 
+         variant="outlined" 
+         color="primary"
+        type="number"
+         min="1"
         v-model.trim="state.formData.nro_ocupantes"
-        @input="state.formData.nro_ocupantes = validateText(state.formData.nro_ocupantes.toUpperCase())"
-        :readonly="editar"
-
-
+        @input="state.formData.nro_ocupantes "
         hide-details
+        :readonly="editar"
       ></v-text-field>
-    </v-col><v-col cols="12" md="4">
+      </div>
+      
+      <div v-else>
+      <v-label class="mb-2 font-weight-medium">N° de ocupantes </v-label>
+      <v-text-field 
+         variant="outlined" 
+         color="primary"
+        type="number"
+         min="1"
+        v-model.trim="state.formData.nro_ocupantes"
+        @input="state.formData.nro_ocupantes"
+        hide-details
+        
+      ></v-text-field>
+      </div>
+    </v-col>
+    <template v-if="submitButton && !state.formData.nro_ocupantes">
+        <div class="v-messages font-weight-black px-2 py-2">
+          <div class="v-messages__message text-error ">
+            El campo es requerido
+          </div>
+        </div>
+      </template>
+    <v-col cols="12" md="4">
       <v-label class="mb-2 font-weight-medium">Tipo de combustible</v-label>
      <div v-if="state.formData.combustible === ''">
-      <v-textarea
-        rows="1"
-        auto-grow
-        v-model.trim="state.formData.combustible"
-        @input="state.formData.combustible = validateText(state.formData.combustible.toUpperCase())"
-        :readonly="editar"
-        hide-details
-      ></v-textarea>
+      <v-select
+            v-model="state.formData.combustible"
+            :items="tipos_combustible"
+            item-title="nombre_region"
+            item-value="nombre_region"
+            :error="submitButton && !state.formData.combustible"
+             
+
+          ></v-select>
       <template v-if="submitButton && !state.formData.combustible">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
@@ -549,7 +737,7 @@ Fecha de Registro<span style="color:red">*</span>
     </v-col>
 
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Cedula de identidad</v-label>
+      <v-label class="mb-2 font-weight-medium">Licencia  <span style="color:red">*</span></v-label>
       <v-textarea
         rows="1"
         auto-grow
@@ -567,9 +755,28 @@ Fecha de Registro<span style="color:red">*</span>
         </div>
       </template>
     </v-col>
+    <v-col cols="12" md="4">
+      <v-label class="mb-2 font-weight-medium">Categoria  <span style="color:red">*</span></v-label>
+      <v-select
+            v-model="state.formData.categoria_con"
+            :items="categorias_conductor"
+            item-title="nombre"
+            item-value="nombre"
+            :error="submitButton && !state.formData.categoria_con"
+        
+
+          ></v-select>
+      <template v-if="submitButton && !state.formData.categoria_con">
+        <div class="v-messages font-weight-black px-2 py-2">
+          <div class="v-messages__message text-error ">
+            El campo es requerido
+          </div>
+        </div>
+      </template>
+    </v-col>
 
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Nombres</v-label>
+      <v-label class="mb-2 font-weight-medium">Nombres  <span style="color:red">*</span></v-label>
       <v-textarea
         rows="1"
         auto-grow
@@ -588,7 +795,7 @@ Fecha de Registro<span style="color:red">*</span>
       </template>
     </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Apellidos</v-label>
+      <v-label class="mb-2 font-weight-medium">Apellidos  <span style="color:red">*</span></v-label>
       <v-textarea
         rows="1"
         auto-grow
@@ -607,7 +814,7 @@ Fecha de Registro<span style="color:red">*</span>
       </template>
     </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Celular</v-label>
+      <v-label class="mb-2 font-weight-medium">Celular  <span style="color:red">*</span></v-label>
       <v-textarea
         rows="1"
         auto-grow
@@ -669,19 +876,25 @@ Fecha de Registro<span style="color:red">*</span>
   </v-row>
 
   <v-row>
-    <v-col cols="12" class="text-lg-right pt-5">
+    <v-col cols="12" class="text-lg-left pt-5">
       <template v-if="!isLoading">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Volver</v-btn>
-        <v-btn color="primary" @click="buttonSendForm()">
-          <template v-if="route.params.id_orden == '0'">
+        <v-btn v-if="route.params.id_orden == '0' "
+        color="primary" @click="buttonSendForm()">
+          <template v-if="route.params.id_orden == '0' ">
             Enviar    
           </template>
-          <template v-if="route.params.id_orden != '0' && permisoEdicion">
+         
+         
+        </v-btn>
+        <v-btn  v-if="route.params.id_orden != '0' && state.formData.estado_orden==='EN PROCESO'"
+        color="primary" @click="buttonSendForm()" >
+      
+          
+          <template v-if="(route.params.id_orden != '0' && state.formData.estado_orden==='EN PROCESO') || userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ">
             Actualizar
           </template>
-          <template v-if="route.params.id_orden != '0' && !permisoEdicion">
-            Imprimir
-          </template>
+         
         </v-btn>
       </template>
       <template v-else>

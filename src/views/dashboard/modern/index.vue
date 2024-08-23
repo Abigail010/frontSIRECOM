@@ -14,6 +14,8 @@ import TopProjects from "../dashboardComponents/modern/TopProjects.vue";
 
 </script>
 <template>
+
+    Modificar vista 
     <v-row>
         <!-- Top cards -->
         <v-col cols="12">
@@ -22,50 +24,11 @@ import TopProjects from "../dashboardComponents/modern/TopProjects.vue";
          <v-col cols="12">
            <v-row>
                 <!-- Revenue Updates -->
-                <v-col cols="12" lg="8" md="12">
+                <v-col cols="12" lg="12" md="12">
                     <RevenueUpdates/>
                 </v-col>
-                <!-- Yearly Breakup / Monthly Earnings -->
-                <v-col cols="12" lg="4" sm="12">
-                    <v-row>
-                        <v-col cols="12" lg="12" sm="6">
-                            <YearlyBreakup/>
-                        </v-col>
-                        <v-col cols="12" lg="12" sm="6">
-                            <MonthlyEarnings/>
-                        </v-col>
-                    </v-row>
-                </v-col>
-                <!-- Employee Salary -->    
-                <v-col cols="12" lg="4" md="4">
-                    <EmployeeSalary/>
-                </v-col>
-                <!-- Customers / Projects / Usercard -->    
-                <v-col cols="12" lg="4" md="4">
-                    <v-row>
-                        <v-col cols="12" sm="6">
-                            <Customers/>
-                        </v-col>
-                        <v-col cols="12" sm="6">
-                            <Projects/>
-                        </v-col>
-                        <v-col cols="12">
-                            <UserCard/>
-                        </v-col>
-                    </v-row>
-                </v-col>
-                <!--Best selling products-->    
-                <v-col cols="12" lg="4" md="4">
-                    <BestSellingProducts/>
-                </v-col>
-                <!-- Weekly Stats -->
-                <v-col cols="12" lg="4" md="4">
-                    <WeeklyStats/>
-                </v-col>
-                <!-- Top Projects -->
-                <v-col cols="12" lg="8" md="8">
-                    <TopProjects/>
-                </v-col>
+            
+              
            </v-row>
         </v-col>    
     </v-row>

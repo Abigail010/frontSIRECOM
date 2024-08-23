@@ -22,6 +22,7 @@ export const useSystemStore = defineStore({
      // OBTENER INFORMACION DE DELITO POR ID
      async systemID (id: any) {
       try {
+        //console.log(id)
         const { data } = await siibApi.get('system/sistemID/' + id)
         return data
       } catch (error: any) {

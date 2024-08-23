@@ -80,6 +80,7 @@ export const useDocumentaryReceptionStore = defineStore({
     async minutesReport(id_caso: number, id_recepcion_documental: number) {
       try {
         const response = open(direccion_url+'documentaryReception/minutes_report/'+id_caso+'/'+id_recepcion_documental)
+        
         return response
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

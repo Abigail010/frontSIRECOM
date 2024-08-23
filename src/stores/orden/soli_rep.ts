@@ -119,128 +119,121 @@ export const useSoliStore = defineStore({
     }
 
   },
-  async create_mantenimiento(form: any) {
+
+  async soliReport(id_orden: number) {
     try {
-      const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-      const { data } = await siibApi.post('registro/create_man/' + userLogged, form)
-      router.push({ name: 'ordenList' });
-      return {
-        ok: true,
-        message: data.message,
-        // vehiculo: data.id_vehiculo,
-      //   rd: data.id_orden
-      }
+      console.log('........'+id_orden)
+      console.log(open(direccion_url+'soli_rep/generate_report/'+id_orden))
+      const response = open(direccion_url+'soli_rep/generate_report/'+id_orden)
+      return response
     } catch (error: any) {
       const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-      return { ok: false, message: message, caso: 0, rd: 0}
+      return { ok: false, message: message }
     }
   },
-
-  async update_mantenimiento(form: any) {
+  /*
+  async Report(id_orden: number) {
     try {
-      const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-      const { data } = await siibApi.post('registro/update_man/' + userLogged, form)
-     // router.push({ name: 'ordenList' });
-      return {
-        ok: true,
-        message: data.message,
-        // vehiculo: data.id_vehiculo,
-      //   rd: data.id_orden
+      const response = await fetch(`http://localhost:3001/soli_Rep/report/${id_orden}`, {
+        method: 'GET',
+      });
+  
+      if (!response.ok) {
+        throw new Error(`Error en la solicitud: ${response.status} ${response.statusText}`);
       }
-    } catch (error: any) {
-      const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-      return { ok: false, message: message, caso: 0, rd: 0}
+  
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.setAttribute('download', 'usuarios.pdf');
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);  // Revoca la URL para liberar memoria
+    } catch (error) {
+      console.error('Error al descargar el PDF:', error);
     }
-  },
-
-    //  OBTENER LISTA DE RECEPCIONES DOCUMENTALES MEDIANTE CASOS
-    async documentaryReceptions () {
-      try {
-        const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-        const { data } = await siibApi.get('documentaryReception/documentary_receptions/' + userLogged)
-        return data
-      } catch (error: any) {
-        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-        return { ok: false, message: message }
+  }
+  
+/*
+  async soliReport(id_orden: number) {
+    try {
+      // Realiza la solicitud POST y recibe el archivo directamente como un blob
+      const response = await siibApi.post(`soli_rep/generate_report/${id_orden}`, {
+        responseType: 'blob', // Asegúrate de recibir la respuesta como un blob
+      });
+  
+      // Crea un objeto URL para el blob
+      const url = window.URL.createObjectURL(response.data);
+      
+      // Crea un enlace y lo descarga
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'reporte.pdf';
+      document.body.appendChild(a);
+      a.click();
+  
+      // Limpia el URL para liberar memoria
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+  
+      // Devuelve un indicador de éxito
+      return { ok: true, message: 'Reporte descargado correctamente.' };
+    } catch (error: any) {
+      // Manejo del error, con una comprobación más precisa
+      const message = error.response?.data?.message || 'error: sin conexión';
+      return { ok: false, message: message };
+    }
+  }
+  
+  
+  async soliReport(id_orden: number) {
+    try {
+      // Realiza la solicitud POST y recibe el archivo directamente como un blob
+      const response = await siibApi.post(`soli_rep/generate_report/${id_orden}`, {
+        responseType: 'blob', // Asegúrate de recibir la respuesta como un blob
+      });
+  
+      // Crea un objeto URL para el blob
+      const url = window.URL.createObjectURL(response.data);
+      
+      // Crea un enlace y lo descarga
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'reporte.pdf';
+      document.body.appendChild(a);
+      a.click();
+  
+      // Limpia el URL para liberar memoria
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+  
+      // Devuelve un indicador de éxito
+      return { ok: true, message: 'Reporte descargado correctamente.' };
+    } catch (error: any) {
+      // Manejo del error, con una comprobación más precisa
+      const message = error.response?.data?.message || 'error: sin conexión';
+      return { ok: false, message: message };
+    }
+  }
+  */
+  async minutesReport(id_orden: number) {
+    try {
+      const url = `http://localhost:3001/soli_Rep/pedidos_report/${id_orden}`;
+      const newWindow = window.open(url, '_blank');
+  
+      if (!newWindow) {
+        throw new Error('No se pudo abrir la nueva ventana. Puede que el navegador esté bloqueando las ventanas emergentes.');
       }
-    },
-
-    //  OBTENER LISTA DE RECEPCIONES DOCUMENTALES MEDIANTE CASOS
-    async documentaryReceptionsByCase (id: any) {
-      try {
-        const { data } = await siibApi.get('documentaryReception/documentary_receptions_by_case/' + id)
-        return data
-      } catch (error: any) {
-        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-        return { ok: false, message: message }
-      }
-    },
-
-     //  OBTENER RECEPCION DOCUMENTAL POR ID
-     async documentaryReceptionById (id: any) {
-      try {
-        const { data } = await siibApi.get('documentaryReception/documentary_receptions_by_id/' + id)
-        return data
-      } catch (error: any) {
-        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-        return { ok: false, message: message }
-      }
-    },
-
-    async createDocumentaryReception(form: any) {
-      try {
-        const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-        const { data } = await siibApi.post('documentaryReception/create_documentary_reception/' + userLogged, form)
-        router.push({ name: 'documentaryReceptionList' });
-        return {
-          ok: true,
-          message: data.message,
-          caso: data.id_caso,
-          rd: data.id_recepcion_documental
-        }
-      } catch (error: any) {
-        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-        return { ok: false, message: message, caso: 0, rd: 0}
-      }
-    },
-
-    async updateDocumentaryReception(form: any) {
-      try {
-        const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-        const { data } = await siibApi.post('documentaryReception/update_documentary_reception/' + userLogged, form)
-        router.push({ name: 'documentaryReceptionList' });
-        return {
-          ok: true,
-          message: data.message,
-          caso: data.id_caso,
-          rd: data.id_recepcion_documental
-        }
-      } catch (error: any) {
-        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-        return { ok: false, message: message, caso: 0, rd: 0}
-      }
-    },
-
-    async minutesReport(id_caso: number, id_recepcion_documental: number) {
-      try {
-        const response = open(direccion_url+'documentaryReception/minutes_report/'+id_caso+'/'+id_recepcion_documental)
-        return response
-      } catch (error: any) {
-        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-        return { ok: false, message: message }
-      }
-    },
-
-    // INFORMACION DE SEGUIMIENTO
-    async tracingByIds (id_caso: any, id_recepcion_documental: any) {
-      try {
-        const { data } = await siibApi.get('documentaryReception/tracing_by_ids/' + id_caso + '/' + id_recepcion_documental)
-        return data
-      } catch (error: any) {
-        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-        return { ok: false, message: message }
-      }
-    },
+  
+      return { ok: true };
+    } catch (error: any) {
+      const message = error.message || 'Error: sin conexión';
+      return { ok: false, message };
+    }
+  }, 
+  
 
   }
 });

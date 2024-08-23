@@ -165,9 +165,9 @@ const lista_menu = [
           to: '/filtroList'
         },
         {
-          title: 'Juzgado',
+          title: 'Tipos de mantenimiento',
           icon: CircleIcon,
-          to: '/courtList'
+          to: '/tipo_manList'
         },
         {
           title: 'Bienes',

@@ -45,6 +45,7 @@ import { validateText } from '@/utils/helpers/validateText'
   // FUNCION QUE OBTIENE LA INFORMACION DE LA DEPENDENCIA
   const getsystemById = async (id: any) => {
     const respuesta = await systemStore.systemID(id)
+  
     state.formData.id = respuesta.id
     state.formData.nombre_sistema = respuesta.nombre_sistema
   }

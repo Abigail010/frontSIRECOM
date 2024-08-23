@@ -16,7 +16,7 @@ import {notifications} from '@/_mockApis/headerData';
         <v-sheet rounded="md" width="360" elevation="10">
             <div class="px-8 pb-4 pt-6">
                 <div class="d-flex align-center justify-space-between">
-                    <h6 class="text-h5">Notifications</h6>
+                    <h6 class="text-h5">Notifications 45</h6>
                     <v-chip color="primary" variant="flat" size="small" class="text-white">5 New</v-chip>
                 </div>
             </div>

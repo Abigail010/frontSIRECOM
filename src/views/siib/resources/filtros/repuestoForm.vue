@@ -9,6 +9,7 @@ import { usefilterStore } from '@/stores/resources/filtro';
 import { useSystemStore } from '@/stores/resources/system';
 
 import { validateText } from '@/utils/helpers/validateText'
+import { setDate } from 'date-fns';
 //import { useVuelidate } from '@vuelidate/core'
 //import { required, helpers } from '@vuelidate/validators'
 //import { FORM_REQUIRED_FIELD } from '@/utils/helpers/messages'
@@ -35,23 +36,39 @@ import { validateText } from '@/utils/helpers/validateText'
   // DECLARACION DEL STATE
   const state = reactive({
     formData: {
+      id_filtro: '',
       id: '',
+      id_tipo_repuesto:'', 
       nombre_clase: '',
       nombre_tipo: '',
       nombre_marca:'',
       nombre_tm: '',
       nombre_sistema:'', 
       id_sistema: '', 
+      union:'',
+      //union: nombre_marca + ''+ nombre_tipo,
       estado: '',
+      nombre_repuesto:'',
     }
   });
 
   const editar = ref<any>(false)
 
   // FUNCION QUE OBTIENE LA INFORMACION DE LA DEPENDENCIA
-  const getsystemById = async (id: any) => {
-    const respuesta = await repuestoStore.filter(id)
+  const getsystemById = async (id_filtro: any) => {
+    const respuesta = await repuestoStore.filter(id_filtro)
+   
     state.formData.id = respuesta.id
+    state.formData.nombre_repuesto=respuesta.nombre_repuesto
+    state.formData.nombre_clase=respuesta.clase
+    state.formData.nombre_tm = respuesta.tipo_motor
+    state.formData.nombre_sistema = respuesta.id_sistema
+    state.formData.nombre_marca = respuesta.uno
+    state.formData.nombre_tipo = respuesta.dos
+    state.formData.id_tipo_repuesto = respuesta.id_tipo_repuesto
+    state.formData.union = respuesta.tipo
+
+
     //state.formData.nombre_sistema = respuesta.nombre_sistema
   }
 
@@ -61,12 +78,15 @@ import { validateText } from '@/utils/helpers/validateText'
   const desserts4 = ref([]) as any
   const desserts5 = ref([]) as any
   const desserts6 = ref([]) as any
+  const desserts7 = ref([]) as any
   const getrepuestosList = async() => {
     desserts.value = await repuestoStore.filters()
+    
     desserts2.value = await repuestoStore.clase()
     desserts3.value = await repuestoStore.tipo()
     desserts4.value = await repuestoStore.marcas()
     desserts5.value = await repuestoStore.motor()
+    desserts7.value = await repuestoStore.repuestos()
     desserts6.value = await sistemaStore.systems()
   }
 
@@ -74,22 +94,23 @@ import { validateText } from '@/utils/helpers/validateText'
   const sendForm = ref(true)
   const miValidacion = async () => {
   sendForm.value = true
-/*  if(!state.formData.nombre_sistema){
+  if(!state.formData.nombre_sistema || !state.formData.nombre_repuesto ){
     sendForm.value = false
-  }*/
+  }
 }
 
   // BOTON RETORNAR
   const buttonReturnList = () => {
-    router.push({ name: 'systemList' })
+    router.push({ name: 'filtroList' })
   }
 
 const submitButton = ref(false)
 const buttonSendForm = async () => {
+ // console.log(route.params.id_filtro)
   submitButton.value = true
     await miValidacion()
     if(!sendForm.value)return 
-        const { ok, message } = (route.params.id_sistema == '0') ? await repuestoStore.createfilter(state.formData) : await repuestoStore.updatefilter(state.formData)
+        const { ok, message } = (route.params.id_filtro == '0') ? await repuestoStore.createfilter(state.formData) : await repuestoStore.updatefilter(state.formData)
         const icono = (ok ? 'success' : 'error')
         Swal.fire({
         icon: icono,
@@ -101,9 +122,10 @@ const buttonSendForm = async () => {
   }
  
   onMounted(() => {
-    if(route.params.id_sistema != '0'){
-        getrepuestosList()
-      getsystemById(route.params.id_sistema)
+    getrepuestosList()
+    if(route.params.id_filtro != '0'){
+       
+      getsystemById(route.params.id_filtro)
       editar.value = true
     }
   })
@@ -118,20 +140,16 @@ const buttonSendForm = async () => {
         <strong> DATOS DE LA system:</strong> Los campos con <span style="color:red">*</span> son obligatorios
       </h4>
 
-      <v-row><v-col cols="12" md="4">
+      <v-row><v-col cols="12" md="6">
           <v-label class="mb-2 font-weight-medium">Sistema <span style="color:red">*</span></v-label>
           <v-autocomplete
         variant="outlined"
         color="primary"
-       
-     
         :items="desserts6"
           v-model="state.formData.nombre_sistema"
           no-data-text="No existe más opciones para seleccionar"
           item-value="id"
           item-title="nombre_sistema"
-          
-          
         />
          
           <template v-if="submitButton && !state.formData.nombre_sistema">
@@ -142,71 +160,91 @@ const buttonSendForm = async () => {
             </div>
           </template>
         </v-col>
-        <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Clase <span style="color:red">*</span></v-label>
+        <v-col cols="12" md="6">
+          <v-label class="mb-2 font-weight-medium">Clase</v-label>
           <v-autocomplete
         variant="outlined"
         color="primary"
-       
-     
         :items="desserts2"
           v-model="state.formData.nombre_clase"
           no-data-text="No existe más opciones para seleccionar"
           item-value="nombre_clase"
           item-title="nombre_clase"
-          
-          
         />
          
-          <template v-if="submitButton && !state.formData.nombre_clase">
-            <div class="v-messages font-weight-black px-2 py-2">
-              <div class="v-messages__message text-error ">
-                El campo es requerido
-              </div>
-            </div>
-          </template>
+      
         </v-col>
-        <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Tipo <span style="color:red">*</span></v-label>
+
+        <v-col cols="12" md="6">
+          <v-label class="mb-2 font-weight-medium">Marca</v-label>
           <v-autocomplete
-        variant="outlined"
-        color="primary"
-       
-     
-        :items="desserts3"
-          v-model="state.formData.nombre_tipo"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_tipo"
-          item-title="nombre_tipo"
-          
-          
-        />
-         
-          <template v-if="submitButton && !state.formData.nombre_tipo">
-            <div class="v-messages font-weight-black px-2 py-2">
-              <div class="v-messages__message text-error ">
-                El campo es requerido
-              </div>
-            </div>
-          </template>
+            variant="outlined"
+            color="primary"
+            :items="desserts4"
+              v-model="state.formData.nombre_marca"
+              no-data-text="No existe más opciones para seleccionar"
+              item-value="nombre_marca"
+              item-title="nombre_marca"
+              
+            />
         </v-col>
-        <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Marca <span style="color:red">*</span></v-label>
+        <v-col cols="12" md="6">
+          <v-label class="mb-2 font-weight-medium">Tipo </v-label>
           <v-autocomplete
-        variant="outlined"
-        color="primary"
-       
-     
-        :items="desserts4"
-          v-model="state.formData.nombre_marca"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_marca"
-          item-title="nombre_marca"
-          
-          
+            variant="outlined"
+            color="primary"
+            :items="desserts3"
+            v-model="state.formData.nombre_tipo"
+            no-data-text="No existe más opciones para seleccionar"
+            item-value="nombre_tipo"
+            item-title="nombre_tipo"
         />
          
-          <template v-if="submitButton && !state.formData.nombre_marca">
+      
+        </v-col>
+       <template v-if="(state.formData.nombre_marca !='' && state.formData.nombre_tipo != '') || state.formData.union !=''">
+        <v-col cols="12" md= "6">
+          <v-label class="mb-2 font-weight-medium">Caracteristica</v-label>
+          <v-text-field
+                  variant="outlined"
+                  color="primary"
+                  type="text"
+                  :readonly="editar"
+                  v-model.trim="state.formData.union"
+                   :value="state.formData.union ||`${state.formData.nombre_marca}  ${state.formData.nombre_tipo}`"
+                  @input="state.formData.union"
+                  hide-details
+                ></v-text-field>
+        </v-col>
+       </template>
+
+        <v-col cols="12" md="6">
+          <v-label class="mb-2 font-weight-medium">Tipo motor</v-label>
+          <v-autocomplete
+          variant="outlined"
+          color="primary"
+          :items="desserts5"
+          v-model="state.formData.nombre_tm"
+          no-data-text="No existe más opciones para seleccionar"
+          item-value="nombre_tm"
+          item-title="nombre_tm"
+        />
+        </v-col>
+        
+        <v-col cols="12" md="6">
+          <v-label class="mb-2 font-weight-medium">Repuesto<span style="color:red">*</span></v-label>
+          <v-autocomplete
+          variant="outlined"
+          color="primary"
+          :items="desserts7"
+          v-model="state.formData.nombre_repuesto"
+          no-data-text="No existe más opciones para seleccionar"
+          item-value="nombre_materialv"
+          item-title="nombre_materialv"
+         
+        />
+         
+          <template v-if="submitButton && !state.formData.nombre_repuesto">
             <div class="v-messages font-weight-black px-2 py-2">
               <div class="v-messages__message text-error ">
                 El campo es requerido
@@ -216,7 +254,7 @@ const buttonSendForm = async () => {
         </v-col>
       </v-row>
 
-      <p class="mt-2 text-lg-right">
+      <p class="mt-2 text-lg-left">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Cancelar</v-btn>
         <v-btn color="primary" @click.prevent="buttonSendForm()">Enviar</v-btn>
       </p>

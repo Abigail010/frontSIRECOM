@@ -357,6 +357,17 @@ const MainRoutes = {
         },
 
 
+        {
+            name: 'tipo_manList',
+            path: '/tipo_manList',
+            component: () => import('@/views/siib/resources/tipo_man/tipo_manList.vue')
+        },
+        {
+            name: 'tipo_manForm',
+            path: '/tipo_manForm/:id_man',
+            component: () => import('@/views/siib/resources/tipo_man/tipo_manForm.vue')
+        },
+
 
 
         // PERFIL DE USUARIO

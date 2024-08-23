@@ -21,7 +21,7 @@ const authStore = useAuthStore();
         </template>
         <v-sheet rounded="md" width="360" elevation="10">
             <div class="px-8 pt-6">
-                <h6 class="text-h5 font-weight-medium">User Profile</h6>
+                <h6 class="text-h5 font-weight-medium">User Prueba</h6>
                 <div class="d-flex align-center mt-4 pb-6">
                     <v-avatar size="80">
                         <img src="@/assets/images/profile/user-1.jpg" width="80" />
@@ -37,7 +37,7 @@ const authStore = useAuthStore();
                 </div>
                 <v-divider></v-divider>
             </div>
-            <perfect-scrollbar style="height: calc(100vh - 240px); max-height: 240px">
+            <perfect-scrollbar style="height: calc(100vh - 140px); max-height: 60px">
                 <v-list class="py-0 theme-list" lines="two">
                     <v-list-item v-for="item in profileDD" :key="item.title" class="py-4 px-8 custom-text-primary" :to="item.href">
                         <template v-slot:prepend>
@@ -52,7 +52,7 @@ const authStore = useAuthStore();
                     </v-list-item>
                 </v-list>
             </perfect-scrollbar>
-            <div class="px-8 py-3">
+        <!----   <div class="px-8 py-3">
                 <div class="bg-lightprimary rounded-md pa-5 overflow-hidden position-relative">
                     <h5 class="text-h6">
                         Unlimited<br />
@@ -61,7 +61,7 @@ const authStore = useAuthStore();
                     <v-btn variant="flat" color="primary" class="mt-3">Upgrade</v-btn>
                     <img src="@/assets/images/backgrounds/unlimited-bg.png" alt="bg-img" class="right-pos-img" />
                 </div>
-            </div>
+            </div>-->
             <div class="pt-4 pb-6 px-8 text-center">
                 <v-btn color="primary" variant="outlined" block @click="authStore.logout()">Logout</v-btn>
             </div>

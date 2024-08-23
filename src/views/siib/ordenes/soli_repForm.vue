@@ -3,7 +3,7 @@ import { router } from '@/router';
 import { useRoute } from 'vue-router'
 import { ref, reactive, onMounted } from 'vue';
 import { TrashIcon, SearchIcon, PlusIcon, PencilIcon, CheckIcon, SquareCheckIcon, FallIcon, ElevatorIcon } from 'vue-tabler-icons';
-import { format } from 'date-fns'
+
 import { useResourceStore } from '@/stores/resource';
 import { useDocumentaryReceptionStore } from '@/stores/moduleOne/documentaryReception';
 import { useOrdenStore } from '@/stores/orden/orden';
@@ -16,7 +16,8 @@ import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import Swal from 'sweetalert2'
 import { readonly } from 'vue';
 import { useSoliStore } from '@/stores/orden/soli_rep';
-
+import { format, formatDistance } from 'date-fns'
+import { es } from 'date-fns/locale'
 
 const select = ref('');
 const location = ref(['Alaska', 'Arizona', 'Hawaii']);
@@ -67,9 +68,20 @@ const openpanel = ref([0]);
   const permisoFecha = JSON.parse(localStorage.getItem('user') || '').estado
   const permisoEdicion = ref<any>(true)
   const panel = ref<any>(false)
-  const currentDate = (route.params.id_orden != '0') ? '' : format(new Date(),"yyyy-MM-dd")
+
   const currentDate2 = format(new Date(), "yyyy-MM-dd");
   const editar = ref<any>(false)
+    const currentDate = format(new Date(), 'yyyy-MM-dd')
+  const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
+  // console.log('perfil', userProfile);
+
+  const timeAgo = (value: any) => {
+    return formatDistance(new Date(currentDate), new Date(value), {locale:es})
+  }
+const desserts = ref([]) as any
+const getOrdenes_sol = async() => {
+    desserts.value = await orden.getOrdenes_soli()
+}
 
   const state = reactive({
     formData: {
@@ -129,6 +141,7 @@ const openpanel = ref([0]);
         id_accesorios_: []as any, 
         
       cedula_identidad: '',
+        total_c:'', 
    
       
     }, formData2:{
@@ -193,6 +206,18 @@ const openpanel = ref([0]);
     ///const data = await registro.registro_id(id_registro)
    state.formData.id_Rep = await soli_Rep.getsolicitudes(id_orden) 
    state.formData.id_Rep2 = await soli_Rep.getEntregas(id_orden) 
+   const res= await soli_Rep.getEntregas(id_orden) 
+   console.log(res)
+   let num= res.length
+   console.log(num)
+   let s = 0
+   for(let i =0; i< res.length; i++ ){
+    console.log(res.costo) 
+    s = s + parseInt(res[i].costo)
+   }
+   console.log('total '+ s)
+   state.formData.total_c = s 
+
    // console.log(state.formData.id_Rep2)
    /* state.formData.id_registro = data.id
   
@@ -229,10 +254,20 @@ const openpanel = ref([0]);
   const buttonReturnList = () => {
     router.push({ name: 'ordenList' })
   }
-
-
+  const ButtonReport= async (item: any) => {
+   // console.log('clic')
+   //console.log(item)
+  const data2 = await soli_Rep.minutesReport(item);
+  //console.log(data2)
+  }
+  const ButtonReport2 = async (item: any) => {
+    //console.log('clic')
+  // console.log(item)
+  const data2 = await soli_Rep.minutesReport(item);
+ // console.log(data2)
+  }
   const buttonSendForm = async () => {
-    console.log('registroooo')
+    //console.log('registroooo')
     submitButton.value = true
     await validateForm()
     if(!sendForm.value) return
@@ -240,7 +275,7 @@ const openpanel = ref([0]);
     isLoading.value = true
     if(state.formData.id_orden != '0' ){
       // ES NUEVO REGISTRO
-      console.log('actualizar1010101')
+      //console.log('actualizar1010101')
       dialog.value = false
       Swal.fire({
         title: 'Estás seguro?',
@@ -257,8 +292,10 @@ const openpanel = ref([0]);
           const { ok, message } = await soli_Rep.updateRepID(state.formData2)
           const icono = (ok ? 'success' : 'error')
           Toast.fire({ icon: icono, title: message })
-          
+            
+        
         }
+        window.location.reload()
       })
     }
     isLoading.value = false
@@ -406,16 +443,23 @@ function recibido(item: any) {
         title="INFORMACIÓN DEL VEHÍCULO"
         closable
       >
-        - <B>PLACA : </B><span class="text-primary" style='padding-right: 150px'> {{state.formData.dato1}} </span> 
-          <B>CHASIS : </B><span class="text-primary" style='padding-right: 150px'>{{ state.formData.dato2 }} </span>
-          <B>TIPO : </B><span class="text-primary" style='padding-right: 150px'>{{ state.formData.tipo_orden }} </span> <br>
-        - <B>MARCA: </B><span class="text-primary" style='padding-right: 165px'>{{ state.formData.marca }} </span>
-          <B>COLOR  : </B><span class="text-primary" style='padding-right: 270px'>{{ state.formData.color_ve }} </span>
-          <B>FECHA DE INGRESO: </B><span class="text-primary" style='padding-right: 50px'>{{  state.formData.dato3 }}</span><br>
-        - <B>CONDUCTOR : </B><span class="text-primary" style='padding-right: 60px'>{{  state.formData.nombre_completo }}</span> 
-          <B>CEL : </B><span class="text-primary" style='padding-right: 200px'>{{  state.formData.dato3 }}</span>
-        <B>PRE - DIAGNOSTICO : </B><span class="text-primary" style='padding-right: 150px'> {{ state.formData.dato4 }}</span>
-        <br>
+      <div style="display: flex; justify-content: space-between;">
+  <div><b>PLACA :</b> <span class="text-primary">{{state.formData.dato1}}</span></div>
+  <div><b>CHASIS :</b> <span class="text-primary">{{state.formData.dato2}}</span></div>
+  <div><b>TIPO :</b> <span class="text-primary">{{state.formData.tipo_orden}}</span></div>
+</div>
+
+<div style="display: flex; justify-content: space-between;">
+  <div><b>MARCA :</b> <span class="text-primary">{{state.formData.marca}}</span></div>
+  <div><b>COLOR :</b> <span class="text-primary">{{state.formData.color_ve}}</span></div>
+  <div><b>FECHA DE INGRESO :</b> <span class="text-primary">{{state.formData.dato3}}</span></div>
+</div>
+
+<div style="display: flex; justify-content: space-between;">
+  <div><b>CONDUCTOR :</b> <span class="text-primary">{{state.formData.nombre_completo}}</span></div>
+  <div><b>CEL :</b> <span class="text-primary">{{state.formData.dato3}}</span></div>
+  <div><b>PRE - DIAGNOSTICO :</b> <span class="text-primary">{{state.formData.dato4}}</span></div>
+</div>
 
       </v-alert>
     </v-col>
@@ -548,7 +592,7 @@ function recibido(item: any) {
 
               </td>
               <td class="text-center" v-else>ENTREGADO </td>
-              <td class="text-center" v-if="item.entregado === 'PENDIENTE'" >
+              <td class="text-center" v-if="item.entregado === 'PENDIENTE' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('PERSONAL DE ENTREGA')) " >
                 <v-btn
                   class="mr-1"
                   size="x-small"
@@ -561,8 +605,8 @@ function recibido(item: any) {
                 > <PencilIcon style="cursor: pointer;"></PencilIcon>
                 </v-btn>
                 </td>
-                <td class="text-center" v-else>
-                    <v-btn
+                <td class="text-center" v-else-if="item.entregado === 'RECIBIDO' &&( userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ) ">
+                    <v-btn 
                   class="mr-1"
                   size="x-small"
                   title="Editar"
@@ -570,12 +614,24 @@ function recibido(item: any) {
                   width="25"
                   color=""
                   text="hola"
-                 
+                 @click="ButtonRepuesto(item.id)"
                 > <PencilIcon></PencilIcon>
                 </v-btn>
-
-
                 </td>
+                <td class="text-center" v-else>
+                    <v-btn 
+                  class="mr-1"
+                  size="x-small"
+                  title="Editar"
+                  height="25"
+                  width="25"
+                  color=""
+                  text="hola"
+               
+                > <PencilIcon></PencilIcon>
+                </v-btn>
+                </td>
+
 
 
               
@@ -640,6 +696,14 @@ function recibido(item: any) {
                 <TrashIcon style="color: white;" /></td>
             -->
             </tr>
+             <tr>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td class="text-center"><b>Total: </b></td>
+               <td class="text-center">{{ state.formData.total_c }} Bs.</td>
+             </tr>
           </tbody>
         </v-table>
       </v-col>
@@ -654,11 +718,17 @@ function recibido(item: any) {
     
 
   <v-row>
-    <v-col cols="12" class="text-lg-right pt-5">
+    <v-col cols="12" class="text-lg-left pt-5">
+ 
       <template v-if="!isLoading">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Volver</v-btn>
-      
+        <v-btn  color="success"  class="mr-10" @click="ButtonReport2( route.params.id_orden)">
+          <template v-if="state.formData.id_registro != '0' && permisoEdicion">
+            Imprimir 
+          </template>
+        </v-btn>
       </template>
+            
       <template v-else>
         <v-btn color="primary" disabled>
           <v-progress-circular

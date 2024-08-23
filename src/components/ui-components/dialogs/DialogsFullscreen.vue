@@ -45,7 +45,7 @@ const widgets = ref(false);
           <v-list lines="two" subheader>
             General
             <v-list-item
-              title="Notifications"
+              title="Notifications 6767"
               subtitle="Notify me about updates to apps or games that I downloaded"
             >
               <template v-slot:prepend>
