@@ -133,7 +133,7 @@ const tallerStore = useTallerStore()
       </h4>
 
       <v-row>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="6">
           <v-label class="mb-2 font-weight-medium">Nombre</v-label>
           <VTextField
             variant="outlined" 
@@ -146,7 +146,7 @@ const tallerStore = useTallerStore()
           />
         
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="6">
           <v-label class="mb-2 font-weight-medium">Departamento <span style="color:red">*</span></v-label>
           <v-select
             v-model="state.formData.departamento"
@@ -163,31 +163,8 @@ const tallerStore = useTallerStore()
             </div>
           </template>
         </v-col>
-        <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">PROVINCIA </v-label>
-          <VTextField
-            variant="outlined" 
-            color="primary"
-            type="text"
-            v-model.trim="state.formData.provincia"
-            @input="miValidacion(), state.formData.provincia= validateText(state.formData.provincia.toUpperCase())"
-          
-            hide-details
-          />
-          
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">MUNICIPIO</v-label>
-          <VTextField
-            variant="outlined" 
-            color="primary"
-            type="text"
-            v-model.trim="state.formData.municipio"
-            @input="miValidacion(), state.formData.municipio= validateText(state.formData.municipio.toUpperCase())"
-            hide-details
-          />
-        </v-col>
-        <v-col cols="12" md="4">
+       
+        <v-col cols="12" md="6">
           <v-label class="mb-2 font-weight-medium">Dirección <span style="color:red">*</span></v-label>
           <VTextField
             variant="outlined" 
@@ -206,7 +183,7 @@ const tallerStore = useTallerStore()
             </div>
           </template>
         </v-col>
-        <v-col cols="12" md="4">
+        <v-col cols="12" md="6">
           <v-label class="mb-2 font-weight-medium">Tipo <span style="color:red">*</span></v-label>
         
           <v-select
@@ -225,7 +202,7 @@ const tallerStore = useTallerStore()
           </template>
         </v-col>
         <template v-if="state.formData.tipo_taller != '' && state.formData.tipo_taller == 'EXTERNO'">
-          <v-col cols="12" md="4">
+          <v-col cols="12" md="6">
             <v-label class="mb-2 font-weight-medium">FUERZA</v-label>
             <v-select
               :items="fuerza"
@@ -237,7 +214,7 @@ const tallerStore = useTallerStore()
             >
             </v-select>
           </v-col>
-          <v-col cols="12" md="4">
+          <v-col cols="12" md="6">
             <v-label class="mb-2 font-weight-medium">SERVICIO </v-label>
             <v-select
               :items="servicios"
