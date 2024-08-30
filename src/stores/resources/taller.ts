@@ -55,6 +55,19 @@ export const useTallerStore = defineStore({
       return { ok: false, message: message }
     }
   },
+  async updateTallerU(form: any) {
+    try {
+      const { data } = await siibApi.post('tall/update_taller/' + userLogged, form)
+      //router.push({ name: 'tallerList' });
+      return {
+        ok: true,
+        message: data.message
+      }
+    } catch (error: any) {
+      const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+      return { ok: false, message: message }
+    }
+  },
    // ELIMINAR DEPOSITO
    async deleteTaller(form: any) {
     try {

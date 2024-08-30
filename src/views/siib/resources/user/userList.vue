@@ -4,7 +4,7 @@ import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
 import { useUserStore } from '@/stores/resources/user';
 import Swal from 'sweetalert2'
-
+const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
 const userStore = useUserStore()
 
 const page = ref({ title: 'Usuario' });
@@ -23,9 +23,12 @@ const breadcrumbs = ref([
 
 const desserts = ref([]) as any
 const getUsersList = async() => {
+  if(userProfile.includes('SUPER ADMINISTRADOR')){
   desserts.value = await userStore.users()
  /// console.log(desserts.value)
-
+  }else{
+    desserts.value = await userStore.usersM()
+  }
 }
 
   const buttonUserForm = (id_usuario: any) => {

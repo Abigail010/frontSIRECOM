@@ -1,15 +1,18 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
 import { useTallerStore } from '@/stores/resources/taller';
 import { useOrdenStore } from '@/stores/orden/orden';
 import { format, formatDistance } from 'date-fns'
 import { es } from 'date-fns/locale'
-
+import { useRegisterStore } from '@/stores/orden/registro';
+import { useSoliStore } from '@/stores/orden/soli_rep';
+import { ref, reactive, onMounted } from 'vue';
 import Swal from 'sweetalert2'
+const soli_Rep = useSoliStore()
 const orden = useOrdenStore()
-
+const registro = useRegisterStore()
 const tallerStore = useTallerStore()
 const page = ref({ title: 'Orden de Mantenimiento' });
 const breadcrumbs = ref([
@@ -27,13 +30,36 @@ const breadcrumbs = ref([
 const currentDate = format(new Date(), 'yyyy-MM-dd')
   const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
   // console.log('perfil', userProfile);
+  const state = reactive({
+    formData: {
+      total:'', 
+      permiso:'',
+    }, 
+  });
 
   const timeAgo = (value: any) => {
     return formatDistance(new Date(currentDate), new Date(value), {locale:es})
   }
+
+  const ButtonReport2 = async (item: any) => {
+  //  console.log('clic')
+   //console.log(item)
+  ///const data2 = await registro.minutesReport(item);
+  const data2 = await registro.minutesReport(item);
+  console.log(data2)
+  }
 const desserts = ref([]) as any
 const getOrdenes_sol = async() => {
+  if(userProfile.includes('SUPER ADMINISTRADOR')){
     desserts.value = await orden.getOrdenes_soli()
+  }else{
+    if(userProfile.includes('MECANICO')){
+      desserts.value = await orden.getOrdenM()
+    }
+    else{
+    desserts.value = await orden.getOrdenU()
+  }
+  }
 }
 
   const buttonDepositForm = (id_orden: any) => {
@@ -88,8 +114,14 @@ const headers = ref([
     });
 } 
 
-const buttonApprove = (item: any) => {
-    Swal.fire({
+
+const buttonApprove = async (item: any) => {
+    await registro_id(item);  // Wait for the state update
+
+    if (state.formData.permiso === 'entrega exitosa') {
+      //  console.log("puede realizar la entrega");
+        // Add your Swal.fire logic or any other UI logic for successful delivery here.
+        Swal.fire({
       title: 'Estas seguro?',
       text: "",
       icon: 'info',
@@ -112,8 +144,35 @@ const buttonApprove = (item: any) => {
         getOrdenes_sol()
       }
     })
+            
+    }
+   else {
+        //console.log('aun pendiente ' + state.formData.total);
+        // Add your Toast.fire logic or any other UI logic for pending items here.
+        Toast.fire({
+              icon: 'error',
+              title: 'Aun quedan repuestos pendientes de entrega'
+     })
+    }
   }
+
+const registro_id = async (id_orden: any) => {
+    const res2 = await soli_Rep.getTotal(id_orden);
+   // console.log(res2);
+    state.formData.total = res2.total;
+
+    if (state.formData.total === '0') {
+       // console.log('entrega exitosa');
+        state.formData.permiso = 'entrega exitosa';
+    } else {
+      //  console.log('no se puede realizar');
+        state.formData.permiso = 'no se puede realizar';
+    }
+};
+
+
   const buttonApprove2 = (item: any) => {
+
     Swal.fire({
       title: 'Estas seguro?',
       text: "",
@@ -138,6 +197,8 @@ const buttonApprove = (item: any) => {
       }
     })
   }
+
+
 
   const buttonDelete = (item: any) => {
     Swal.fire({
@@ -246,7 +307,7 @@ onMounted(() => {
                 
               </v-btn>
               <v-btn 
-                  v-if="item.estado == 'EN PROCESO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('MECANICO') ) "
+                  v-if="item.estado == 'EN PROCESO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('MECANICO') )  "
                   class="mr-1"
                   size="x-small"
                   title="Entregar"
@@ -285,7 +346,19 @@ onMounted(() => {
                 >
                   <FileCheckIcon style=" cursor: pointer;"></FileCheckIcon>
                 </v-btn>
-                pdf
+                <v-btn 
+                  v-if="item.estado == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') )"
+                  class=""
+                  size="x-small"
+                  title="Reporte de Mantenimiento"
+                  height="25"
+                  width="25"
+                  color="primary"
+                  @click="ButtonReport2(item.id)"
+                >
+                  <FileCheckIcon style=" cursor: pointer;"></FileCheckIcon>
+                </v-btn>
+                
 
           </template>                    
         </v-data-table>

@@ -71,7 +71,7 @@ export const useAuthStore = defineStore({
 
         // console.log(userLogged)
           const { data } = await authApi.post('/menu', { userLogged })
-          //console.log(data)
+         // console.log(data)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

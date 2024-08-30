@@ -169,6 +169,21 @@ export const useRegisterStore = defineStore({
         return { ok: false, message };
       }
     }, 
+    async inventarioReport(id_orden: number) {
+      try {
+        const url = `http://localhost:3001/soli_Rep/inventario_report/${id_orden}`;
+        const newWindow = window.open(url, '_blank');
+    
+        if (!newWindow) {
+          throw new Error('No se pudo abrir la nueva ventana. Puede que el navegador esté bloqueando las ventanas emergentes.');
+        }
+    
+        return { ok: true };
+      } catch (error: any) {
+        const message = error.message || 'Error: sin conexión';
+        return { ok: false, message };
+      }
+    },
 
   }
 });

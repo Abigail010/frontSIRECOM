@@ -1,10 +1,47 @@
 <script setup lang="ts">
 import { MailIcon } from 'vue-tabler-icons';
 import { profileDD } from '@/_mockApis/headerData';
-
+import proUser2 from '@/assets/images/svgs/icon-inbox.svg';
 import { useAuthStore } from '@/stores/auth';
-
+import { useSearchStore } from '@/stores/resources/busqueda';
+import card_icon1 from "@/assets/images/svgs/icon-user-male.svg"
+import { ref, reactive, onMounted } from 'vue';
+const orden = useSearchStore()
+const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
+const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 const authStore = useAuthStore();
+
+const state = reactive({
+    formData: {
+      id: '',
+      nro_usuarios: '',
+      nombre:'',
+      correo:'', 
+      title2:'',
+      dato2:'', 
+      title3:'',
+      dato3:'',
+      title4:'',
+      dato4:'', 
+      title5:'',
+      dato5:'', 
+      title6:'',
+      dato6:'',  
+      estado: '',
+    }
+  });
+
+  const getGen = async () => {
+    const info = await orden.getInfoB();
+    state.formData.nombre = info.nombres+ ' '+ info.apellido_paterno+' ' +info.apellido_materno
+    state.formData.correo = info.correo_electronico
+   //console.log(info)
+}
+
+onMounted(async () => {
+ await getGen()
+  //await buttonReport()
+})
 </script>
 
 <template>
@@ -21,17 +58,17 @@ const authStore = useAuthStore();
         </template>
         <v-sheet rounded="md" width="360" elevation="10">
             <div class="px-8 pt-6">
-                <h6 class="text-h5 font-weight-medium">User Prueba</h6>
+                <h6 class="text-h5 font-weight-medium"><b> Usuario</b> </h6>
                 <div class="d-flex align-center mt-4 pb-6">
                     <v-avatar size="80">
                         <img src="@/assets/images/profile/user-1.jpg" width="80" />
                     </v-avatar>
                     <div class="ml-3">
-                        <h6 class="text-h6 mb-n1">Mathew Anderson</h6>
-                        <span class="text-subtitle-1 font-weight-regular textSecondary">Designer</span>
+                        <h6 class="text-h6 mb-n1">{{ state.formData.nombre }}</h6>
+                        <span class="text-subtitle-1 font-weight-regular textSecondary">{{ userProfile }}</span>
                         <div class="d-flex align-center mt-1">
                             <MailIcon size="18" stroke-width="1.5" />
-                            <span class="text-subtitle-1 font-weight-regular textSecondary ml-2">info@modernize.com</span>
+                            <span class="text-subtitle-1 font-weight-regular textSecondary ml-2">{{ state.formData.correo }}</span>
                         </div>
                     </div>
                 </div>
@@ -52,6 +89,7 @@ const authStore = useAuthStore();
                     </v-list-item>
                 </v-list>
             </perfect-scrollbar>
+     
         <!----   <div class="px-8 py-3">
                 <div class="bg-lightprimary rounded-md pa-5 overflow-hidden position-relative">
                     <h5 class="text-h6">
@@ -63,7 +101,7 @@ const authStore = useAuthStore();
                 </div>
             </div>-->
             <div class="pt-4 pb-6 px-8 text-center">
-                <v-btn color="primary" variant="outlined" block @click="authStore.logout()">Logout</v-btn>
+                <v-btn color="primary" variant="outlined" block @click="authStore.logout()">Salir</v-btn>
             </div>
         </v-sheet>
     </v-menu>

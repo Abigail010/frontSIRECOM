@@ -54,15 +54,15 @@ const profileDD: profileType[] = [
     {
         avatar: proUser1,
         title: 'Mi perfil',
-        subtitle: 'Account settings',
+        subtitle: 'Configuración',
         href: '/apps/user/profile'
     },
- /*   {
+    {
         avatar: proUser2,
         title: 'My Inbox',
         subtitle: 'Messages & Emails',
         href: '/'
-    },*/
+    },
  /*   {
         avatar: proUser3,
         title: 'My Tasks',

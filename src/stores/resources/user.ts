@@ -8,6 +8,7 @@ const direccion_url = 'http://localhost:3009/'  // LOCAL
 // const direccion_url = 'https://edapi.mingobierno.gob.bo/siibapi/'  // PRODUCCION
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
+
 export const useUserStore = defineStore({
   id: 'user',
   actions: {
@@ -22,7 +23,16 @@ export const useUserStore = defineStore({
         return { ok: false, message: message }
       }
     },
-
+    async usersM () {
+      try {
+        const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
+        const { data } = await siibApi.get('user/users_admin/' + userLogged)
+        return data
+      } catch (error: any) {
+        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+        return { ok: false, message: message }
+      }
+    },
      // OBTENER RECEPCION DOCUMENTAL POR ID
      async user (id: any) {
       try {
@@ -63,6 +73,22 @@ export const useUserStore = defineStore({
       }
     },
 
+        // ACTUALIZAR USUARIO
+        async updateOne(form: any) {
+          try {
+            const { data } = await siibApi.post('user/update_one/' + userLogged, form)
+           // router.push({ name: '' });
+            return {
+              ok: true,
+              message: data.message,
+              id: data.id
+            }
+          } catch (error: any) {
+            const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+            return { ok: false, message: message, id: 0}
+          }
+        },
+    
     // ELIMINAR USUARIO
     async deleteUser(form: any) {
 

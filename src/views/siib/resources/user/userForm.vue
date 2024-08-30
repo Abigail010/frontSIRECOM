@@ -169,6 +169,7 @@ import { validateText } from '@/utils/helpers/validateText'
     state.formData.apellido_paterno = respuesta.apellido_paterno
     state.formData.apellido_materno = respuesta.apellido_materno
     state.formData.fecha_nacimiento = respuesta.fecha_nacimiento
+
     state.formData.correo_electronico = respuesta.correo_electronico
     state.formData.celular = respuesta.celular
     state.formData.nombre_usuario = respuesta.nombre_usuario

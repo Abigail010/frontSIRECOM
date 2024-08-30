@@ -119,20 +119,16 @@ const lista_menu = [
     },*/
 
     {
-      title: 'Aprobacion de bienes',
-      icon: TextSpellcheckIcon,
-      to: '/propertyApprovalList'
+      title: 'Busqueda Reporte',
+      icon: SearchIcon,
+      to: '/Busqueda_list'
     },
     {
       title: 'Dashboard',
       icon: ChartBarIcon,
       to: '/home'
     },
-    {
-      title: 'DAB solicitud',
-      icon: CircleIcon,
-      to: '/solicitudList'
-    },
+   
     {
       title: 'Recursos',
       icon: MenuIcon,
@@ -292,23 +288,7 @@ const lista_menu = [
         }
       ]
     },
-    {
-      title: 'Busqueda',
-      icon: SearchIcon,
-      to: '#',
-      children: [
-        {
-          title: 'Tipo de bien',
-          icon: CircleIcon,
-          to: '/byType'
-        },
-        {
-          title: 'Caso',
-          icon: CircleIcon,
-          to: '/byCase'
-        },
-      ]
-    },
+   
     {
       title: 'Entidades Externas',
       icon: ListCheckIcon,

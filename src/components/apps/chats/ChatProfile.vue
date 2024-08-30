@@ -15,7 +15,7 @@ import user1 from '@/assets/images/profile/user-1.jpg';
             <v-badge class="badg-dotDetail" dot color="success"> </v-badge>
             <!---Name & Last seen-->
             <div>
-                <h5 class="text-subtitle-1 font-weight-semibold">Mathew Anderson</h5>
+                <h5 class="text-subtitle-1 font-weight-semibold">pruebba</h5>
                 <h6 class="text-subtitle-2">Designer</h6>
             </div>
         </div>

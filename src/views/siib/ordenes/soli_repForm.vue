@@ -73,7 +73,7 @@ const openpanel = ref([0]);
   const editar = ref<any>(false)
     const currentDate = format(new Date(), 'yyyy-MM-dd')
   const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
-  // console.log('perfil', userProfile);
+ //console.log('perfil', userProfile);
 
   const timeAgo = (value: any) => {
     return formatDistance(new Date(currentDate), new Date(value), {locale:es})
@@ -142,7 +142,7 @@ const getOrdenes_sol = async() => {
         
       cedula_identidad: '',
         total_c:'', 
-   
+        total:'', 
       
     }, formData2:{
         nombre_repuesto:'',
@@ -205,18 +205,17 @@ const getOrdenes_sol = async() => {
   const registro_id = async (id_orden: any) => {
     ///const data = await registro.registro_id(id_registro)
    state.formData.id_Rep = await soli_Rep.getsolicitudes(id_orden) 
+   //console.log(state.formData.id_Rep)
    state.formData.id_Rep2 = await soli_Rep.getEntregas(id_orden) 
    const res= await soli_Rep.getEntregas(id_orden) 
-   console.log(res)
-   let num= res.length
-   console.log(num)
+ 
    let s = 0
    for(let i =0; i< res.length; i++ ){
-    console.log(res.costo) 
+    //console.log(res.costo) 
     s = s + parseInt(res[i].costo)
    }
-   console.log('total '+ s)
-   state.formData.total_c = s 
+   //console.log('total '+ s)
+   state.formData.total_c = String(s) 
 
    // console.log(state.formData.id_Rep2)
    /* state.formData.id_registro = data.id
@@ -230,7 +229,9 @@ const getOrdenes_sol = async() => {
       tipo_filtro.value = tipo_filtro.value.filter( (tipo: any) => tipo.id !=rep[i].id_filtro)
     }*/
     
-   
+    const res2= await soli_Rep.getTotal(id_orden) 
+    //console.log(res2)
+    state.formData.total = res2.total
   }
   const ButtonRepuesto = async (item: any) => {
   
@@ -415,7 +416,7 @@ function recibido(item: any) {
       //.value = editPermission('RECEPCION DOCUMENTAL')
       await verificar_id(route.params.id_orden)
      // console.log(state.formData.id_registro)
-      if(state.formData.id_registro>0){
+      if(parseInt(state.formData.id_registro)>0){
         await registro_id(route.params.id_orden)
       }else{
         console.log('0')
@@ -605,14 +606,14 @@ function recibido(item: any) {
                 > <PencilIcon style="cursor: pointer;"></PencilIcon>
                 </v-btn>
                 </td>
-                <td class="text-center" v-else-if="item.entregado === 'RECIBIDO' &&( userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ) ">
+                <td class="text-center" v-else-if="item.entregado === 'RECIBIDO' &&  (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR')) ">
                     <v-btn 
                   class="mr-1"
                   size="x-small"
                   title="Editar"
                   height="25"
                   width="25"
-                  color=""
+                  color="success"
                   text="hola"
                  @click="ButtonRepuesto(item.id)"
                 > <PencilIcon></PencilIcon>
@@ -722,7 +723,8 @@ function recibido(item: any) {
  
       <template v-if="!isLoading">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Volver</v-btn>
-        <v-btn  color="success"  class="mr-10" @click="ButtonReport2( route.params.id_orden)">
+        <v-btn v-if="state.formData.total == '0'"
+         color="success"  class="mr-10" @click="ButtonReport2( route.params.id_orden)">
           <template v-if="state.formData.id_registro != '0' && permisoEdicion">
             Imprimir 
           </template>

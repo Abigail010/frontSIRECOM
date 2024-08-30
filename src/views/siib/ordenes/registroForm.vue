@@ -17,7 +17,9 @@ import Swal from 'sweetalert2'
 import { readonly } from 'vue';
 const select = ref('');
 const location = ref(['Alaska', 'Arizona', 'Hawaii']);
+const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
 
+//console.log(userProfile)
 const radioColumn = ref('1');
 const radioInline = ref('1');
 const paymentradio = ref('1');
@@ -212,7 +214,7 @@ const openpanel = ref([0]);
  const buttonSearchSistema = async () => {
   state.formData.id_sistema= ''
    state.formData.repuestos= await registro.searchOrden(state.formData)
-   console.log( state.formData.repuestos)
+ //  console.log( state.formData.repuestos)
 }
 
    const basico_id = async (id_orden: any) => {
@@ -247,13 +249,13 @@ const openpanel = ref([0]);
     state.formData.id_registro = data.id_registro
     ///console.log( state.formData.id_registro)
    }else{
-    state.formData.id_registro = size;
+    state.formData.id_registro = String(size);
    }
    }
 
   const registro_id = async (id_registro: any) => {
     const data = await registro.registro_id(id_registro)
-    console.log(data)
+  //  console.log(data)
     state.formData.id_registro = data.id
     state.formData.tipo_man= data.tipo_man
     state.formData.observaciones = data.observacion
@@ -685,9 +687,10 @@ editar.value = false
   }
 
   const ButtonReport2 = async (item: any) => {
-    console.log('clic')
-   console.log(item)
-  const data2 = await registro.minutesReport(item);
+  //  console.log('clic')
+   //console.log(item)
+  ///const data2 = await registro.minutesReport(item);
+  const data2 = await registro.inventarioReport(item);
   console.log(data2)
   }
 
@@ -1092,8 +1095,8 @@ const getMecanicos = async() => {
     if(route.params.id_orden  != '0'){
       //.value = editPermission('RECEPCION DOCUMENTAL')
       await verificar_id(route.params.id_orden)
-      console.log(state.formData.id_registro)
-      if(state.formData.id_registro>0){
+     // console.log(state.formData.id_registro)
+      if(parseInt(state.formData.id_registro)>0){
         await registro_id(route.params.id_orden)
       }else{
         console.log('0')
@@ -2093,15 +2096,25 @@ const getMecanicos = async() => {
             Enviar    
           </template>
         </v-btn>
-        <v-btn v-if="state.formData.id_registro != '0' && state.formData.estado_orden == 'EN PROCESO'  " color="primary" @click="buttonSendForm()">  
-          <template v-if="state.formData.id_registro != '0' && state.formData.estado_orden == 'EN PROCESO'  ">
+        <v-btn  class="mr-3" v-if="state.formData.id_registro != '0' && state.formData.estado_orden == 'EN PROCESO' " color="primary" @click="buttonSendForm() "
+        
+        >  
+          <template v-if="state.formData.id_registro != '0' && state.formData.estado_orden == 'EN PROCESO'   ">
+            Actualizar
+          </template>
+          
+        </v-btn>
+        <v-btn  class="mr-3" v-if=" state.formData.estado_orden == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR')) " color="primary" @click="buttonSendForm()  "
+        
+        >  
+          <template v-if=" state.formData.estado_orden == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR'))  ">
             Actualizar
           </template>
           
         </v-btn>
             
-        <v-btn v-if="state.formData.estado_orden === 'FINALIZADO'"   color="success"  class="mr-10" @click="ButtonReport2( route.params.id_orden)">
-          <template v-if="state.formData.estado_orden === 'FINALIZADO'" >
+        <v-btn v-if="state.formData.estado_orden === 'EN PROCESO'"   color="success"  class="mr-10" @click="ButtonReport2( route.params.id_orden)">
+          <template v-if="state.formData.estado_orden === 'EN PROCESO'" >
             Imprimir 
           </template>
         </v-btn>

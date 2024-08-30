@@ -73,6 +73,17 @@ export const useSoliStore = defineStore({
         }
     
       },
+      async getTotal (id_orden: any) {
+        try {
+          
+          const { data } = await siibApi.get('soli_rep/total_/' + id_orden)
+          return data
+        } catch (error: any) {
+          const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+          return { ok: false, message: message }
+        }
+    
+      },
       async getEntregas (id_repuesto: any) {
         try {
           

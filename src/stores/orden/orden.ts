@@ -48,6 +48,29 @@ export const useOrdenStore = defineStore({
           return { ok: false, message: message }
         }
       },
+            //  OBTENER LISTA DE RECEPCIONES DOCUMENTALES MEDIANTE CASOS
+            async getOrdenU () {
+              try {
+                const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
+                const { data } = await siibApi.get('vehiculo/lista_unica/' + userLogged)
+                return data
+              } catch (error: any) {
+                const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+                return { ok: false, message: message }
+              }
+            },
+              //  OBTENER LISTA DE RECEPCIONES DOCUMENTALES MEDIANTE CASOS
+              async getOrdenM () {
+                try {
+                  const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
+                  const { data } = await siibApi.get('vehiculo/lista_men/' + userLogged)
+                  return data
+                } catch (error: any) {
+                  const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+                  return { ok: false, message: message }
+                }
+              },
+    
   
       async create_orden(form: any) {
         try {

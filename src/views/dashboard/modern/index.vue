@@ -17,7 +17,7 @@ import { ref, reactive, onMounted } from 'vue';
 const orden = useSearchStore()
 const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
- console.log('perfil', userLogged);
+ //onsole.log('perfil', userLogged);
   // DECLARACION DEL STATE
   const state = reactive({
     formData: {
@@ -39,6 +39,15 @@ const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identid
     }
   });
 
+
+const buttonReport = async () => {
+
+    
+///console.log(respuesta_info.length)
+
+
+
+}
 const getGen = async () => {
     const info = await orden.getInfoB();
    // console.log(info.id_taller)
@@ -48,7 +57,7 @@ const getGen = async () => {
     const man2 = await orden.getPendiente();
     const rep1 = await orden.getPedidos_en();
     const rep2 = await orden.getPedidos_pen();
-    console.log(rep2)
+    //console.log(rep2)
     state.formData.title1 ="Usuarios Registrados"
     state.formData.title2 ="Vehículos Registrados"
     state.formData.title3 ="Mantenimientos Finalizado"
@@ -57,19 +66,19 @@ const getGen = async () => {
     state.formData.title6 ="Repuestos Pendientes"
 
     if(userProfile.includes('SUPER ADMINISTRADOR')){
-        console.log('admin')
+       
         let tot = 0 
         for(let i=0;i < users.length; i++){
             tot = tot+ parseInt(users[i].total)
         }
-        console.log('total ' +tot)
+        
         state.formData.dato1 =  String(tot)
          
         let tot1 = 0 
         for(let i=0;i < vehiculo.length; i++){
             tot1 = tot1+ parseInt(vehiculo[i].total)
         }
-        console.log('total ' +tot)
+      
         state.formData.dato2 =  String(tot1)
 
            
@@ -77,21 +86,21 @@ const getGen = async () => {
         for(let i=0;i < man1.length; i++){
             tot2 = tot2+ parseInt(man1[i].total)
         }
-        console.log('total ' +tot)
+       
         state.formData.dato3 =  String(tot2)
         
         let tot3 = 0 
         for(let i=0;i < man2.length; i++){
             tot3 = tot3+ parseInt(man2[i].total)
         }
-        console.log('total ' +tot)
+       
         state.formData.dato4 =  String(tot3)
 
         let tot4 = 0 
         for(let i=0;i < rep1.length; i++){
             tot4 = tot4+ parseInt(rep1[i].cantidad)
         }
-        console.log('total ' +tot)
+       
         state.formData.dato5 =  String(tot4)
 
         
@@ -99,7 +108,7 @@ const getGen = async () => {
         for(let i=0;i < rep2.length; i++){
             tot5 = tot5+ parseInt(rep2[i].cantidad)
         }
-        console.log('total ' +tot)
+        
         state.formData.dato6 =  String(tot5)
     }else{
         let tot = 0 
@@ -109,7 +118,7 @@ const getGen = async () => {
             break;
            }
         }
-        console.log('total ' +tot)
+        
         state.formData.dato1 = String(tot)
 
         let tot1 = 0 
@@ -119,7 +128,7 @@ const getGen = async () => {
             break;
            }
         }
-        console.log('total ' +tot)
+       
         state.formData.dato2 = String(tot1)
        
 
@@ -130,7 +139,7 @@ const getGen = async () => {
             break;
            }
         }
-        console.log('total ' +tot)
+     
         state.formData.dato3 = String(tot2)
 
         let tot3 = 0 
@@ -140,7 +149,7 @@ const getGen = async () => {
             break;
            }
         }
-        console.log('total ' +tot)
+       
         state.formData.dato4 = String(tot3)
 
         let tot4 = 0 
@@ -150,7 +159,7 @@ const getGen = async () => {
             break;
            }
         }
-        console.log('total ' +tot)
+        
         state.formData.dato5 = String(tot4)
 
         let tot5 = 0 
@@ -160,7 +169,7 @@ const getGen = async () => {
             break;
            }
         }
-        console.log('total ' +tot)
+      
         state.formData.dato6 = String(tot5)
     } 
 
@@ -169,6 +178,7 @@ const getGen = async () => {
 
   onMounted(async () => {
    await getGen()
+    await buttonReport()
   })
 </script>
 <template>

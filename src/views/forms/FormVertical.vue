@@ -56,7 +56,7 @@ const breadcrumbs = ref([
             <h5 class="text-h5 mb-6 mt-3">Form with Tabs</h5>
             <v-card elevation="10" class=" " rounded="md">
                 <v-tabs v-model="tab" bg-color="transparent" color="primary">
-                    <v-tab value="PersonalInfo" class="text-medium-emphasis">Personal Info</v-tab>
+                    <v-tab value="PersonalInfo" class="text-medium-emphasis">Personal </v-tab>
                     <v-tab value="AccountDetails" class="text-medium-emphasis">Account Details</v-tab>
                     <v-tab value="SocialLinks" class="text-medium-emphasis">Social Links</v-tab>
                 </v-tabs>

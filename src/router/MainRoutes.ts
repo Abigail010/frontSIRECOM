@@ -307,6 +307,11 @@ const MainRoutes = {
             path: '/soliRepForm/:id_orden',
             component: () => import('@/views/siib/ordenes/soli_repForm.vue')
         },
+        {
+            name: 'Busqueda_list',
+            path: '/Busqueda_list',
+            component: () => import('@/views/siib/ordenes/busqueda.vue')
+        },
 
 
          //DELITO

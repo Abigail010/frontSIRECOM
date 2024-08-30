@@ -13,7 +13,7 @@ import CheckBox from '@/components/forms/form-validation/CheckBox.vue'
 import SelectBox from '@/components/forms/form-validation/Select.vue'
 import { Form } from 'vee-validate';
 // theme breadcrumb
-const page = ref({ title: 'Form Validation' });
+const page = ref({ title: 'Form Validation 2' });
 const breadcrumbs = ref([
     {
         text: 'Dashboard',
@@ -21,7 +21,7 @@ const breadcrumbs = ref([
         href: '#'
     },
     {
-        text: 'Form Validation',
+        text: 'Form Validation 2',
         disabled: true,
         href: '#'
     }
