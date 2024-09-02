@@ -19,7 +19,6 @@ const select = ref('');
 const location = ref(['Alaska', 'Arizona', 'Hawaii']);
 const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
 
-//console.log(userProfile)
 const radioColumn = ref('1');
 const radioInline = ref('1');
 const paymentradio = ref('1');
@@ -49,7 +48,7 @@ const openpanel = ref([0]);
       href: '/home'
     },
     {
-      text: 'Talleres de mecanica',
+      text: 'Registro de Mantenimiento',
       disabled: true,
       href: '#'
     }
@@ -73,13 +72,8 @@ const openpanel = ref([0]);
     formData: {
       id_orden: '',
       id_registro:'', 
-      
-    
         marca:'',
-       
-        
         color_ve:'',
-        
         kilometraje: '',
         nro_ocupantes: '', 
         observaciones:'',
@@ -161,9 +155,6 @@ const openpanel = ref([0]);
     }
   });
 
-
-
-  //const accesorios = [ 'PARRILLA', 'PORTA CARPA', 'CARPA', 'ASIENTOS DE CARROCERÍA', 'MATABURROS', 'ALÓGENOS', 'GUINCHE']
   // RECURSOS
   const lista_unidad = ref([]) as any
   const lista_diagnosticos = ref([]) as any
@@ -180,8 +171,6 @@ const openpanel = ref([0]);
   const tipo_mantenimiento8 = ref([]) as any
   const tipo_mantenimiento9 = ref([]) as any
   const tipo_mantenimiento10 = ref([]) as any
-//  const tipo_mantenimiento7 = ref([]) as any
-  //const tipo_mantenimiento =['MANTENIMIENTO PREVENTIVO', 'MANTENIMIENTO CORRECTIVO', 'REVISIÓN', 'REVISIÓN DE NIVELES']
   const getResourcesList = async () => {
     lista_diagnosticos.value = await registro.gettipo_trabajo() 
     tipo_mantenimiento2.value = await registro.gettipo_mantenimiento()     // LISTA DE accesorios
@@ -214,11 +203,9 @@ const openpanel = ref([0]);
  const buttonSearchSistema = async () => {
   state.formData.id_sistema= ''
    state.formData.repuestos= await registro.searchOrden(state.formData)
- //  console.log( state.formData.repuestos)
 }
 
    const basico_id = async (id_orden: any) => {
-   // const data = await registro.getbasico(id_orden)// console.log(data)
     const data = await registro.getbasico(id_orden)
 
     state.formData.id_orden =data.id
@@ -236,18 +223,14 @@ const openpanel = ref([0]);
     state.formData.dos = data.dos
     state.formData.celular_con = data.celular_conductor
     state.formData.estado_orden = data.estado
-    //console.log(state.formData.estado_orden)
    } 
 
    const verificar_id = async (id_orden: any) => {
-   // const data = await registro.getbasico(id_orden)// console.log(data)
     const data = await registro.verificar_reg(id_orden)
     const size = Object.keys(data).length;
-   // console.log('dfdf '+size)
-   // console.log('..pppp'+ state.formData.id_registro)
+  
    if(size>0){
     state.formData.id_registro = data.id_registro
-    ///console.log( state.formData.id_registro)
    }else{
     state.formData.id_registro = String(size);
    }
@@ -255,7 +238,6 @@ const openpanel = ref([0]);
 
   const registro_id = async (id_registro: any) => {
     const data = await registro.registro_id(id_registro)
-  //  console.log(data)
     state.formData.id_registro = data.id
     state.formData.tipo_man= data.tipo_man
     state.formData.observaciones = data.observacion
@@ -265,7 +247,6 @@ const openpanel = ref([0]);
     state.formData.estado_llantas = data.estado_llantas
     state.formData.sinfonia = data.sintonia_
    const motores = data.id_motor
-
     state.formData.id_motor= []
     for (let i = 0; i < motores.length; i++) {
       state.formData.id_motor.push(motores[i])
@@ -290,15 +271,12 @@ const openpanel = ref([0]);
     state.formData.iddireccion= []
     for (let i = 0; i < dir.length; i++) {
       state.formData.iddireccion.push(dir[i])
-   
       tipo_mantenimiento4.value = tipo_mantenimiento4.value.filter( (tipo: any) => tipo.nombre_diagnostico != dir[i].id_d)
     }
     const trans = data.idtransmision
     state.formData.idtransmision= []
     for (let i = 0; i < trans.length; i++) {
       state.formData.idtransmision.push(trans[i])
-    //  console.log(state.formData.id_motor)
- 
       tipo_mantenimiento5.value = tipo_mantenimiento5.value.filter( (tipo: any) => tipo.nombre_diagnostico != trans[i].id_t)
     }
     
@@ -306,24 +284,18 @@ const openpanel = ref([0]);
     state.formData.idsuspencion= []
     for (let i = 0; i < sus.length; i++) {
       state.formData.idsuspencion.push(sus[i])
-    //  console.log(state.formData.id_motor)
- 
       tipo_mantenimiento6.value = tipo_mantenimiento6.value.filter( (tipo: any) => tipo.nombre_diagnostico != sus[i].id_s)
     }
     const ele = data.idelectricidad
     state.formData.idelectricidad= []
     for (let i = 0; i < ele.length; i++) {
       state.formData.idelectricidad.push(ele[i])
-    //  console.log(state.formData.id_motor)
- 
       tipo_mantenimiento7.value = tipo_mantenimiento7.value.filter( (tipo: any) => tipo.nombre_diagnostico != ele[i].id_e)
     }
     const cha = data.idchaperia
     state.formData.idchaperia= []
     for (let i = 0; i < cha.length; i++) {
       state.formData.idchaperia.push(cha[i])
-    //  console.log(state.formData.id_motor)
- 
       tipo_mantenimiento8.value = tipo_mantenimiento8.value.filter( (tipo: any) => tipo.nombre_diagnostico != cha[i].id_c)
     }
     
@@ -331,8 +303,6 @@ const openpanel = ref([0]);
     state.formData.idtorneria= []
     for (let i = 0; i < ttt.length; i++) {
       state.formData.idtorneria.push(ttt[i])
-    //  console.log(state.formData.id_motor)
- 
       tipo_mantenimiento9.value = tipo_mantenimiento9.value.filter( (tipo: any) => tipo.nombre_diagnostico != ttt[i].id_tt)
     }
     
@@ -340,7 +310,6 @@ const openpanel = ref([0]);
     state.formData.idfrenos= []
     for (let i = 0; i < fre.length; i++) {
       state.formData.idfrenos.push(fre[i])
-  
       tipo_mantenimiento10.value = tipo_mantenimiento10.value.filter( (tipo: any) => tipo.nombre_diagnostico != fre[i].id_f)
     }
       
@@ -350,44 +319,15 @@ const openpanel = ref([0]);
    state.formData.id_accesorios_= []
     for (let i = 0; i < acce.length; i++) {
       state.formData.id_accesorios_.push(n[i])
-    
       lista_accesorios.value = lista_accesorios.value.filter( (tipo: any) => tipo != n[i])
     }
 
     const rep = data.id_Rep
     for (let i = 0; i < rep.length; i++) {
       state.formData.id_Rep.push(rep[i])
-    //  console.log(state.formData.id_motor)
- 
       tipo_filtro.value = tipo_filtro.value.filter( (tipo: any) => tipo.id !=rep[i].id_filtro)
     }
 
-
-/*    state.formData.motor = data.motor
-    state.formData.nombre_conductor = data.nombre_conductor
-state.formData.apellidos_condutor = data.apellidos_conductor
-state.formData.cedula_identidad = data.carnet_conductor
-state.formData.id_mecanico = data.id_mecanico
-state.formData.celular_con= data.celular_conductor
-state.formData.marca = data.marca
-state.formData.modelo = data.modelo
-state.formData.color_ve = data.color
-state.formData.combustible = data.combustible
-state.formData.tipo_orden = data.tipo
-state.formData.anio_fabri = data.año_registro
-state.formData.kilometraje = data.kilometraje
-state.formData.prediagnostico = data.prediagnostigo
-editar.value = false
-
-    const codigos = data.accesorios_orden
-    state.formData.accesorios_orden = []
-    for (let i = 0; i < codigos.length; i++) {
-      state.formData.accesorios_orden.push(codigos[i])
-      lista_accesorios.value = lista_accesorios.value.filter( (tipo: any) => tipo.nombre_accesorio != codigos[i].nombre_accesorio)
-    }
-
-   */
-   // state.formData.investigador_presente = true
   }
 
   const placeholderHojaRuta = () => {
@@ -399,52 +339,17 @@ editar.value = false
   const mifuncion = async () => {
    if(itemsSelected.value.length>0){
       const indice = itemsSelected.value.length-1
-      console.log(indice)
-     // state.formData.fecha_add=itemsSelected.value[indice].fecha_revision
-      //console.log(itemsSelected.value[indice].fecha_revision)
-     // console.log(state.formData.fecha_add)
       state.formData.id_filtro= itemsSelected.value[indice].id
       state.formData.nombre_repuesto= itemsSelected.value[indice].nombre_repuesto
       state.formData.id_sis = itemsSelected.value[indice].id_sistema
-  ///    console.log(state.formData.id_filtro)
-    
     }
 
- /*   for(let i=0; i<itemsSelected.value.length; i++){
-      state.formData.id_filtro= itemsSelected.value[i].id
-      state.formData.nombre_repuesto= itemsSelected.value[i].nombre_repuesto
-      state.formData.id_sis = itemsSelected.value[i].id_sistema
-      console.log(state.formData.id_filtro)
-   //   state.formData.nombre_repuesto= ''
-    //state.formData.id_filtro=''
-    //state.formData.id_sistema=''
-    }
-
-    
-
-/*    const currentItemIndex=0
-    do {
-        currentItemIndex++;
-        if (currentItemIndex >= itemsSelected.value.length) {
-          currentItemIndex = 0; // Reset to first item if we exceed the array length
-        }
-      } while (currentItemIndex < 0 || currentItemIndex >= itemsSelected.value.length);
-      
-      const currentItem = itemsSelected.value[currentItemIndex];
-      // this.state.formData.fecha_add = currentItem.fecha_revision;
-    state.formData.id_filtro = currentItem.id;
-      state.formData.nombre_repuesto = currentItem.nombre_repuesto;
-      state.formData.id_sis = currentItem.id_sistema;
-      
-      console.log(state.formData.id_filtro);
-    }*/}
+ }
   
-
   const setCodeName = () => {
     const registro: any = tipo_mantenimiento.find(
       (id_motor: any) => 
       id_motor.id == state.formData.id_diagnostico
-  
     )
     state.formData.nombre_diagnostico = registro.nombre_diagnostico
 
@@ -452,7 +357,6 @@ editar.value = false
     const registro2: any = tipo_mantenimiento2.find(
       (idalimentacion: any) => 
       idalimentacion.id == state.formData.id_a
-  
     )
     state.formData.nombre_a = registro2.nombre_a
 
@@ -460,7 +364,6 @@ editar.value = false
     const registro3: any = tipo_mantenimiento3.find(
       (idrefreigeracion: any) => 
       idrefreigeracion.id == state.formData.id_r
-  
     )
     state.formData.nombre_r = registro3.nombre_r
 
@@ -468,7 +371,6 @@ editar.value = false
     const registro4: any = tipo_mantenimiento4.find(
       (iddireccion: any) => 
       iddireccion.id == state.formData.id_d
-  
     )
     state.formData.nombre_d = registro4.nombre_d
 
@@ -476,28 +378,24 @@ editar.value = false
     const registro5: any = tipo_mantenimiento5.find(
       (idtransmision: any) => 
       idtransmision.id == state.formData.id_t
-  
     )
     state.formData.nombre_d = registro5.nombre_d
 
     const registro6: any = tipo_mantenimiento6.find(
       (idsuspencion: any) => 
       idsuspencion.id == state.formData.id_s
-  
     )
     state.formData.nombre_s = registro6.nombre_s
 
     const registro7: any = tipo_mantenimiento7.find(
       (idelectricidad: any) => 
       idelectricidad.id == state.formData.id_e
-  
     )
     state.formData.nombre_e = registro7.nombre_e
 
     const registro8: any = tipo_mantenimiento8.find(
       (idchaperia: any) => 
       idchaperia.id == state.formData.id_c
-  
     )
     state.formData.nombre_c = registro8.nombre_c
     const registro9: any = tipo_mantenimiento9.find(
@@ -511,12 +409,10 @@ editar.value = false
     const registro10: any = tipo_mantenimiento10.find(
       (idfrenos: any) => 
       idfrenos.id == state.formData.id_f
-  
     )
     state.formData.nombre_f = registro10.nombre_f
   }
   //trans
-
   // AGREGA TIPO DE CODIGO A LA TABLA DE CODIGOS
   const buttonAddCode = () => {
   
@@ -528,7 +424,6 @@ editar.value = false
       )
       state.formData.id_motor.push({
         id_diagnostico: state.formData.id_diagnostico,
-      
       })
 
       state.formData.id_diagnostico = ''
@@ -542,7 +437,6 @@ editar.value = false
       )
       state.formData.idalimentacion.push({
         id_a: state.formData.id_a,
-        
       })
 
       state.formData.id_a = ''
@@ -556,13 +450,11 @@ editar.value = false
       )
       state.formData.idrefreigeracion.push({
         id_r: state.formData.id_r,
-        
       })
 
       state.formData.id_r = ''
   
     }
-    //console.log(state.formData.id_d)
     if(state.formData.id_d){
       tipo_mantenimiento4.value = tipo_mantenimiento4.value.filter(
         (codigo: any) =>
@@ -570,14 +462,11 @@ editar.value = false
       )
       state.formData.iddireccion.push({
         id_d: state.formData.id_d,
-        
       })
 
       state.formData.id_d = ''
-  
     }
    
-    //console.log(state.formData.id_t)
     if(state.formData.id_t){
       tipo_mantenimiento5.value = tipo_mantenimiento5.value.filter(
         (codigo: any) =>
@@ -585,9 +474,7 @@ editar.value = false
       )
       state.formData.idtransmision.push({
         id_t: state.formData.id_t,
-        
       })
-
       state.formData.id_t = ''
   
     }
@@ -605,7 +492,6 @@ editar.value = false
       state.formData.id_s = ''
     }
 
-   // console.log(state.formData.id_e)
     if(state.formData.id_e){
       tipo_mantenimiento7.value = tipo_mantenimiento7.value.filter(
         (codigo: any) =>
@@ -613,14 +499,11 @@ editar.value = false
       )
       state.formData.idelectricidad.push({
         id_e: state.formData.id_e,
-        
       })
-
       state.formData.id_e = ''
   
     }
 
-    //console.log(state.formData.id_c)
     if(state.formData.id_c){
       tipo_mantenimiento8.value = tipo_mantenimiento8.value.filter(
         (codigo: any) =>
@@ -628,11 +511,8 @@ editar.value = false
       )
       state.formData.idchaperia.push({
         id_c: state.formData.id_c,
-        
       })
-
       state.formData.id_c = ''
-  
     }
 
     if(state.formData.id_tt){
@@ -642,9 +522,7 @@ editar.value = false
       )
       state.formData.idtorneria.push({
         id_tt: state.formData.id_tt,
-        
       })
-
       state.formData.id_tt = ''
   
     }
@@ -656,9 +534,7 @@ editar.value = false
       )
       state.formData.idfrenos.push({
         id_f: state.formData.id_f,
-        
       })
-
       state.formData.id_f = ''
   
     }
@@ -676,7 +552,6 @@ editar.value = false
         observacion_r:state.formData.observacion_r
         
       })
-
       state.formData.id_filtro = ''
       state.formData.nombre_repuesto= ''
       state.formData.cantidad_r= ''
@@ -687,9 +562,6 @@ editar.value = false
   }
 
   const ButtonReport2 = async (item: any) => {
-  //  console.log('clic')
-   //console.log(item)
-  ///const data2 = await registro.minutesReport(item);
   const data2 = await registro.inventarioReport(item);
   console.log(data2)
   }
@@ -991,7 +863,6 @@ if(state.formData.id_Rep.length>0){
 
   }
 
-
   const buttonReturnList = () => {
     router.push({ name: 'ordenList' })
   }
@@ -1021,14 +892,11 @@ if(state.formData.id_Rep.length>0){
           const { ok, message, caso, rd } = await registro.create_mantenimiento(state.formData)
           const icono = (ok ? 'success' : 'error')
           Toast.fire({ icon: icono, title: message })
-          if(caso != 0 && rd != 0){
-           // await documentaryReceptionStore.minutesReport(caso, rd)
-          }
+          
         }
       })
     }else{
-      //console.log('registrooo actualizar')
-      //console.log(state.formData.id_registro)
+     
       if(state.formData.id_registro != '0'){
         console.log(state.formData.id_registro)
             if(permisoEdicion.value){
@@ -1036,12 +904,9 @@ if(state.formData.id_Rep.length>0){
               const { ok, message } = await registro.update_mantenimiento(state.formData)
               const icono = (ok ? 'success' : 'error')
               Toast.fire({ icon: icono, title: message })
-            /* if(caso != 0 && rd != 0){
-                await documentaryReceptionStore.minutesReport(caso, rd)
-              }*/
+          
             }else{
-              // NO TIENE PERMISO DE EDICION, SOLO REPORTE
-            /* await documentaryReceptionStore.minutesReport(Number(state.formData.id_caso), Number(state.formData.id_recepcion_documental))*/
+    
               router.push({ name: 'ordenList' });
             }
 
@@ -1058,9 +923,6 @@ if(state.formData.id_Rep.length>0){
     }
     return  ''
   }
-
-  // VALIDACION PARA INGRESAR UN PERSONAL ASIGNADO A ENTREGA
-
 
   // VALIDACION GENERAL
   const validateForm = async () => {
@@ -1093,15 +955,15 @@ const getMecanicos = async() => {
     await getMecanicos()
     await placeholderHojaRuta()
     if(route.params.id_orden  != '0'){
-      //.value = editPermission('RECEPCION DOCUMENTAL')
+      
       await verificar_id(route.params.id_orden)
-     // console.log(state.formData.id_registro)
+  
       if(parseInt(state.formData.id_registro)>0){
         await registro_id(route.params.id_orden)
       }else{
         console.log('0')
       }
-      //await registro_id(route.params.id_orden)
+    
       await basico_id(route.params.id_orden)
 
       editar.value = true
@@ -1153,7 +1015,7 @@ const getMecanicos = async() => {
     </v-col>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <b> REGISTRO DEL DOCUMENTO: </b> Todos los campos son obligatorios
+        <b> REGISTRO DEL DOCUMENTO: </b> Todos los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
     </v-col>
   </v-row>
@@ -1167,7 +1029,7 @@ const getMecanicos = async() => {
             <v-expansion-panel-text class="mt-4">
              <v-row>
               <v-col cols="12" md="12">
-        <v-label class="mb-2 font-weight-medium">Tipo de mantenimiento <span style="color:red">*</span></v-label>
+        <v-label class="mb-2 font-weight-medium">Tipo de mantenimiento <span style="color:red">(*)</span></v-label>
         <v-radio-group 
           v-model="state.formData.tipo_man"
         
@@ -1753,7 +1615,7 @@ const getMecanicos = async() => {
                
                 <v-row>
                   <v-col cols="12" md="3">
-                  <v-label class="mb-2 font-weight-medium">Sinfonía de Radio<span style="color:red">*</span></v-label>
+                  <v-label class="mb-2 font-weight-medium">Sinfonía de Radio<span style="color:red">(*)</span></v-label>
                   <v-radio-group 
                     v-model="state.formData.sinfonia"
                   
@@ -1776,7 +1638,7 @@ const getMecanicos = async() => {
 
                 </v-col>
                 <v-col cols="12" md="3">
-                  <v-label class="mb-2 font-weight-medium">Estado de llantas<span style="color:red">*</span></v-label>
+                  <v-label class="mb-2 font-weight-medium">Estado de llantas<span style="color:red">(*)</span></v-label>
                   <v-radio-group 
                     v-model="state.formData.estado_llantas"
                   
@@ -1799,7 +1661,7 @@ const getMecanicos = async() => {
 
                 </v-col>
                 <v-col cols="12" md="3">
-                  <v-label class="mb-2 font-weight-medium">Gasolina<span style="color:red">*</span></v-label>
+                  <v-label class="mb-2 font-weight-medium">Gasolina<span style="color:red">(*)</span></v-label>
                   <v-radio-group 
                     v-model="state.formData.gasolina"
                   
@@ -1822,7 +1684,7 @@ const getMecanicos = async() => {
 
                 </v-col>
                 <v-col cols="12" md="3">
-                  <v-label class="mb-2 font-weight-medium">Tanque Auxiliar<span style="color:red">*</span></v-label>
+                  <v-label class="mb-2 font-weight-medium">Tanque Auxiliar<span style="color:red">(*)</span></v-label>
                   <v-radio-group 
                     v-model="state.formData.tanque_aux"
                   
@@ -1969,7 +1831,7 @@ const getMecanicos = async() => {
                        <div id="div_hor">
                         <v-col cols="12" md="6">
                           <v-label class="mb-2 font-weight-medium">
-                            Cantidad
+                            Cantidad <span style="color:red">(*)</span>
                           </v-label>
                           <v-text-field 
                             variant="outlined" 
@@ -1991,7 +1853,7 @@ const getMecanicos = async() => {
                         <v-col cols="12" md="6">
                        
                           <v-label class="mb-2 font-weight-medium">
-                            Unidad
+                            Unidad <span style="color:red">(*)</span>
                           </v-label>
                           <v-autocomplete
                               variant="outlined"
@@ -2043,10 +1905,7 @@ const getMecanicos = async() => {
                       </div>
                     
                   </v-col>
-                  
-              
-
-                  
+               
                 </template>
 
                 <template v-if="state.formData.id_Rep.length>0">

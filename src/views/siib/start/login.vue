@@ -62,49 +62,49 @@ const Toast = Swal.mixin({
 </script>
 
 <template>
-  <div class="pa-3">
-    <v-row class="h-100vh mh-100 auth">
-      <v-col cols="12" lg="7" xl="8" class="d-lg-flex align-center justify-center authentication position-relative">
-        
-        <div class="">
-          <img
-            style="width: 100%; "
-            src="@/assets/images/misimagenes/prueba_vista.gif"
-            class="position-relative d-none d-lg-flex"
-            alt="login-background"
-          />
-        </div>
+<div class="pa-3 prueba" >
+    <v-row class="h-100vh mh-100 auth ">
+      <v-col cols="12" lg="4" xl="4" class="d-lg-flex align-center justify-center authentication position-relative">
+        <div></div>
       </v-col>
-      <v-col cols="12" lg="5" xl="4" class="d-flex align-center justify-center">
-        <div class="mt-xl-0 mt-5 mw-100">
+      
+      <v-col cols="12" lg="5" xl="4" class="d-flex align-center justify-center" style="background-color: #051d39; width: 80%; height: 70%; margin-top: 5%; border-radius: 15px solid black;">
+        <div class="mt-xl-0 mt-5 mw-100" style="background-color: #051d39;">
           <div class="text-center mb-3">
             <img
-              style="width: 80%; height: auto;"
-              alt="siibLogo"
-              src="@/assets/images/misimagenes/diprevcon.jpg"
+              style="width: 30%; height: 50%; border-radius: 50%;"
+              src="@/assets/images/misimagenes/logo.png"
             />
           </div>
-          <h2 class="text-h3 font-weight-bold mb-2 text-center">INICIO DE SESIÓN</h2>
+          
+          <!-- Cambia el color y el tamaño de "INICIO DE SESIÓN" -->
+          <h2 class="text-center mb-2" style="color: black; font-size: 2.5rem; font-weight: bold;">
+            INICIO DE SESIÓN
+          </h2>
+          
           <div class="d-flex align-center text-center mb-6">
             <div class="text-h6 w-100 px-5 font-weight-regular auth-divider position-relative">
               <span class="bg-surface px-5 py-3 position-relative"></span>
             </div>  
           </div>
-          <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">Nombre de Usuario</v-label>
+          
+          <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText"><b>Nombre de Usuario</b></v-label>
           <VTextField
             v-model.trim="state.formData.username"
             @input="miValidacion(), state.formData.username = validateText(state.formData.username)"
             :error="submitButton && !state.formData.username"
             hide-details
           />
+          
           <template v-if="submitButton && !state.formData.username">
             <div class="v-messages font-weight-black px-2 py-2">
-              <div class="v-messages__message text-error ">
+              <div class="v-messages__message text-error">
                 El campo es requerido
               </div>
             </div>
           </template>
-          <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText">Contraseña</v-label>
+          
+          <v-label class="text-subtitle-1 font-weight-semibold pb-2 text-lightText"><b>Contraseña</b></v-label>
           <VTextField
             v-model.trim="state.formData.password"
             :error="submitButton && !state.formData.password"
@@ -115,16 +115,34 @@ const Toast = Swal.mixin({
             @click:append-inner="showPassword = !showPassword"
             @input="state.formData.password = validateText(state.formData.password)"
           />
+          
           <template v-if="submitButton && !state.formData.password">
             <div class="v-messages font-weight-black px-2 py-2">
-              <div class="v-messages__message text-error ">
+              <div class="v-messages__message text-error">
                 El campo es requerido
               </div>
             </div>
           </template>
+          
           <v-btn size="large" class="mt-5" color="primary" block @click="buttonSendForm()">Ingresar</v-btn>
         </div>
       </v-col>
+      
+      <v-col cols="12" lg="4" xl="4" class="d-lg-flex align-center justify-center authentication position-relative">
+        <div></div>
+      </v-col>
     </v-row>
-  </div>
+</div>
+  
 </template>
+
+
+<style lang="css">
+  .prueba{
+   background-image: url('../../../assets/images/misimagenes/prueba_vista.gif');
+  background-size: cover; 
+  background-position: center;
+  }
+</style>
+
+

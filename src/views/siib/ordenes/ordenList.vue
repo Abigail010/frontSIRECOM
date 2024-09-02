@@ -42,9 +42,7 @@ const currentDate = format(new Date(), 'yyyy-MM-dd')
   }
 
   const ButtonReport2 = async (item: any) => {
-  //  console.log('clic')
-   //console.log(item)
-  ///const data2 = await registro.minutesReport(item);
+  
   const data2 = await registro.minutesReport(item);
   console.log(data2)
   }
@@ -119,8 +117,7 @@ const buttonApprove = async (item: any) => {
     await registro_id(item);  // Wait for the state update
 
     if (state.formData.permiso === 'entrega exitosa') {
-      //  console.log("puede realizar la entrega");
-        // Add your Swal.fire logic or any other UI logic for successful delivery here.
+    
         Swal.fire({
       title: 'Estas seguro?',
       text: "",
@@ -147,8 +144,7 @@ const buttonApprove = async (item: any) => {
             
     }
    else {
-        //console.log('aun pendiente ' + state.formData.total);
-        // Add your Toast.fire logic or any other UI logic for pending items here.
+        
         Toast.fire({
               icon: 'error',
               title: 'Aun quedan repuestos pendientes de entrega'
@@ -158,14 +154,14 @@ const buttonApprove = async (item: any) => {
 
 const registro_id = async (id_orden: any) => {
     const res2 = await soli_Rep.getTotal(id_orden);
-   // console.log(res2);
+ 
     state.formData.total = res2.total;
 
     if (state.formData.total === '0') {
-       // console.log('entrega exitosa');
+     
         state.formData.permiso = 'entrega exitosa';
     } else {
-      //  console.log('no se puede realizar');
+     
         state.formData.permiso = 'no se puede realizar';
     }
 };

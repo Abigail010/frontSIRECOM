@@ -10,10 +10,6 @@ import { useSystemStore } from '@/stores/resources/system';
 
 import { validateText } from '@/utils/helpers/validateText'
 import { setDate } from 'date-fns';
-//import { useVuelidate } from '@vuelidate/core'
-//import { required, helpers } from '@vuelidate/validators'
-//import { FORM_REQUIRED_FIELD } from '@/utils/helpers/messages'
-//import { useValidationErrors } from '@/stores/useValidationErrors';
 
   const route = useRoute()
   const repuestoStore = usefilterStore()
@@ -46,7 +42,6 @@ import { setDate } from 'date-fns';
       nombre_sistema:'', 
       id_sistema: '', 
       union:'',
-      //union: nombre_marca + ''+ nombre_tipo,
       estado: '',
       nombre_repuesto:'',
     }
@@ -68,8 +63,6 @@ import { setDate } from 'date-fns';
     state.formData.id_tipo_repuesto = respuesta.id_tipo_repuesto
     state.formData.union = respuesta.tipo
 
-
-    //state.formData.nombre_sistema = respuesta.nombre_sistema
   }
 
   const desserts = ref([]) as any
@@ -81,7 +74,6 @@ import { setDate } from 'date-fns';
   const desserts7 = ref([]) as any
   const getrepuestosList = async() => {
     desserts.value = await repuestoStore.filters()
-    
     desserts2.value = await repuestoStore.clase()
     desserts3.value = await repuestoStore.tipo()
     desserts4.value = await repuestoStore.marcas()
@@ -90,7 +82,6 @@ import { setDate } from 'date-fns';
     desserts6.value = await sistemaStore.systems()
   }
 
- 
   const sendForm = ref(true)
   const miValidacion = async () => {
   sendForm.value = true
@@ -106,7 +97,6 @@ import { setDate } from 'date-fns';
 
 const submitButton = ref(false)
 const buttonSendForm = async () => {
- // console.log(route.params.id_filtro)
   submitButton.value = true
     await miValidacion()
     if(!sendForm.value)return 

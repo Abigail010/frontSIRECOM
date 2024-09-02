@@ -30,7 +30,6 @@ const breadcrumbs = ref([
     router.push({ name: 'repuestoForm', params: { id_filtro: id_filtro }})
   }
 
-
 // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },

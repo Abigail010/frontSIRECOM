@@ -9,10 +9,7 @@ import { useTallerStore } from '@/stores/resources/taller';
 import { useResourceStore } from '@/stores/resource';
 import { validateText } from '@/utils/helpers/validateText'
 import { MapboxMap } from 'vue-mapbox-ts';
-// import { useVuelidate } from '@vuelidate/core'
-// import { required, helpers } from '@vuelidate/validators'
-// import { FORM_REQUIRED_FIELD } from '@/utils/helpers/messages'
-// import { useValidationErrors } from '@/stores/useValidationErrors';
+
 const tallerStore = useTallerStore()
 
   const tipo=['PROPIO', 'EXTERNO']
@@ -32,7 +29,7 @@ const tallerStore = useTallerStore()
       href: '#'
     },
     {
-      text: 'Registro/Edicion de taller',
+      text: 'Información del taller',
       disabled: true,
       href: '#'
     }
@@ -59,14 +56,10 @@ const tallerStore = useTallerStore()
   const getDepartmentsList = async() => {
     departamentos.value = await resourceStore.getDepartments()
   }
-
   const servicios = ref([])
   const getServicios = async() => {
     servicios.value = await resourceStore.getSerivicio_t()
-    
   }
-
-
   // FUNCION QUE OBTIENE LA INFORMACION DEL talle
   const getTallerId = async (id_taller: any) => {
     const respuesta = await tallerStore.taller_id(id_taller)
@@ -80,8 +73,6 @@ const tallerStore = useTallerStore()
     state.formData.fuerza_taller = respuesta.fuerza
     state.formData.servicio_taller = respuesta.servicio
   }
-
-
     // VALIDACIONES
     const sendForm = ref(true)
   const miValidacion = async () => {
@@ -129,12 +120,12 @@ const tallerStore = useTallerStore()
   <v-row>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <strong> DATOS DEL TALLER:</strong> Los campos con <span style="color:red">*</span> son obligatorios
+        <strong> DATOS DEL TALLER:</strong> Los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
 
       <v-row>
         <v-col cols="12" md="6">
-          <v-label class="mb-2 font-weight-medium">Nombre</v-label>
+          <v-label class="mb-2 font-weight-medium">Nombre  <span style="color:red">(*)</span></v-label>
           <VTextField
             variant="outlined" 
             color="primary"
@@ -147,7 +138,7 @@ const tallerStore = useTallerStore()
         
         </v-col>
         <v-col cols="12" md="6">
-          <v-label class="mb-2 font-weight-medium">Departamento <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Departamento <span style="color:red">(*)</span></v-label>
           <v-select
             v-model="state.formData.departamento"
             :items="departamentos"
@@ -165,7 +156,7 @@ const tallerStore = useTallerStore()
         </v-col>
        
         <v-col cols="12" md="6">
-          <v-label class="mb-2 font-weight-medium">Dirección <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Dirección <span style="color:red">(*)</span></v-label>
           <VTextField
             variant="outlined" 
             color="primary"
@@ -184,7 +175,7 @@ const tallerStore = useTallerStore()
           </template>
         </v-col>
         <v-col cols="12" md="6">
-          <v-label class="mb-2 font-weight-medium">Tipo <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Tipo <span style="color:red">(*)</span></v-label>
         
           <v-select
             v-model="state.formData.tipo_taller"

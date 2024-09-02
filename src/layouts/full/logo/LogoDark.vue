@@ -2,7 +2,7 @@
     <div class="logo">
         <RouterLink to="/home">
             <div class="text-center">
-                <img src="@/assets/images/misimagenes/mesaTrabajo4.png" style="width: 80%; height: auto;" class="position-relative d-none d-lg-flex" alt="login-home" />
+                <img src="@/assets/images/misimagenes/min.png" style="width: 80%; height: auto;" class="position-relative d-none d-lg-flex" alt="login-home" />
             </div>
             <!-- <svg width="174" height="26" viewBox="0 0 174 26" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path

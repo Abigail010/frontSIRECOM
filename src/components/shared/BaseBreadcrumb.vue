@@ -30,7 +30,8 @@ const props = defineProps({
                 </div>
                 <div class="d-none py-0 d-lg-block overflow-hidden">
                     <div class="mb-n16 mt-3">
-                        <img src="@/assets/images/breadcrumb/ChatBc.png" alt="breadcrumb" />
+                     <img src="@/assets/images/breadcrumb/emailSv.png" alt="breadcrumb" />
+                      <!----- <img src="@/assets/images/misimagenes/emailSv.png" style="width: 30%; height: 100%;"  alt="breadcrumb" />-->
                     </div>
                 </div>
             </div>

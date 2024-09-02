@@ -8,11 +8,6 @@ import Swal from 'sweetalert2'
 
 import { useManStore } from '@/stores/resources/tipo_man';
 import { validateText } from '@/utils/helpers/validateText'
-//import { useVuelidate } from '@vuelidate/core'
-//import { required, helpers } from '@vuelidate/validators'
-//import { FORM_REQUIRED_FIELD } from '@/utils/helpers/messages'
-//import { useValidationErrors } from '@/stores/useValidationErrors';
-
   const route = useRoute()
   const servicios = useManStore()
 
@@ -49,20 +44,6 @@ import { validateText } from '@/utils/helpers/validateText'
     state.formData.nombre_diagnostico = respuesta.nombre_diagnostico
   }
 
-  // VALIDACIONES
-  
-  // const rules = computed(() => {
-  //   return {
-  //     formData: {
-  //       nombre_delito: { required: helpers.withMessage(FORM_REQUIRED_FIELD, required) }
-  //     }
-  //   }
-  // })
-  // const v$ = useVuelidate(rules, state)
-  // const errors:any = computed(
-  //   () => useValidationErrors(v$.value.$errors)
-  // )
- 
   const sendForm = ref(true)
   const miValidacion = async () => {
   sendForm.value = true
@@ -70,28 +51,10 @@ import { validateText } from '@/utils/helpers/validateText'
     sendForm.value = false
   }
 }
-
   // BOTON RETORNAR
   const buttonReturnList = () => {
     router.push({ name: 'tipo_manList' })
   }
-
-  // BOTON ENVIAR FORMULARIO
-  // const buttonSendForm = async () => {
-  //   const result = await v$.value.$validate()
-  //   if(!result) return
-
-  //   const { ok, message } = (route.params.id_delito == '0') ? await crimeStore.createCrime(state.formData) : await crimeStore.updateCrime(state.formData)
-  //   const icono = (ok ? 'success' : 'error')
-  //   Swal.fire({
-  //     icon: icono,
-  //     title: message,
-  //     timer: 1500,
-  //     showConfirmButton: false,
-  //     timerProgressBar: true
-  //   })
-  // }
-  
 
 const submitButton = ref(false)
 const buttonSendForm = async () => {

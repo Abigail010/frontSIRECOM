@@ -8,10 +8,6 @@ import Swal from 'sweetalert2'
 
 import { useServiceStore } from '@/stores/resources/servicios';
 import { validateText } from '@/utils/helpers/validateText'
-//import { useVuelidate } from '@vuelidate/core'
-//import { required, helpers } from '@vuelidate/validators'
-//import { FORM_REQUIRED_FIELD } from '@/utils/helpers/messages'
-//import { useValidationErrors } from '@/stores/useValidationErrors';
 
   const route = useRoute()
   const servicios = useServiceStore()
@@ -49,20 +45,6 @@ import { validateText } from '@/utils/helpers/validateText'
     state.formData.nombre_servicio = respuesta.nombre_servicio
   }
 
-  // VALIDACIONES
-  
-  // const rules = computed(() => {
-  //   return {
-  //     formData: {
-  //       nombre_delito: { required: helpers.withMessage(FORM_REQUIRED_FIELD, required) }
-  //     }
-  //   }
-  // })
-  // const v$ = useVuelidate(rules, state)
-  // const errors:any = computed(
-  //   () => useValidationErrors(v$.value.$errors)
-  // )
- 
   const sendForm = ref(true)
   const miValidacion = async () => {
   sendForm.value = true
@@ -76,22 +58,6 @@ import { validateText } from '@/utils/helpers/validateText'
     router.push({ name: 'serviciosList' })
   }
 
-  // BOTON ENVIAR FORMULARIO
-  // const buttonSendForm = async () => {
-  //   const result = await v$.value.$validate()
-  //   if(!result) return
-
-  //   const { ok, message } = (route.params.id_delito == '0') ? await crimeStore.createCrime(state.formData) : await crimeStore.updateCrime(state.formData)
-  //   const icono = (ok ? 'success' : 'error')
-  //   Swal.fire({
-  //     icon: icono,
-  //     title: message,
-  //     timer: 1500,
-  //     showConfirmButton: false,
-  //     timerProgressBar: true
-  //   })
-  // }
-  
 
 const submitButton = ref(false)
 const buttonSendForm = async () => {

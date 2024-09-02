@@ -12,50 +12,7 @@ const MainRoutes = {
             path: '/welcome',
             component: () => import('@/views/siib/dashboard/index.vue')
         },
-        // JUZGADO 
-        {
-            name: 'courtList',
-            path: '/courtList',
-            component: () => import('@/views/siib/resources/court/courtList.vue')
-        },
-        {
-            name: 'courtForm',
-            path: '/courtForm/:id_juzgado',
-            component: () => import('@/views/siib/resources/court/courtForm.vue')
-        },
-        //DELITO
-        {
-            name: 'crimeList',
-            path: '/crimeList',
-            component: () => import('@/views/siib/resources/crime/crimeList.vue')
-        },
-        {
-            name: 'crimeForm',
-            path: '/crimeForm/:id_delito',
-            component: () => import('@/views/siib/resources/crime/crimeForm.vue')
-        },
-        // MODULO DEPENDENCIAS
-        {
-            name: 'dependenceList',
-            path: '/dependenceList',
-            component: () => import('@/views/siib/resources/dependence/dependenceList.vue')
-        },
-        {
-            name: 'dependenceForm',
-            path: '/dependenceForm/:id_dependencia',
-            component: () => import('@/views/siib/resources/dependence/dependenceForm.vue')
-        },
-        // MODULO DEPOSITOS
-        {
-            name: 'depositList',
-            path: '/depositList',
-            component: () => import('@/views/siib/resources/deposit/depositList.vue')
-        },
-        {
-            name: 'depositForm',
-            path: '/depositForm/:id_deposito',
-            component: () => import('@/views/siib/resources/deposit/depositForm.vue')
-        },
+       
         // MODULO OBSERVACIONES DE REVISION DOCUMENTAL
         {
             name: 'documentaryReviewObservationList',
@@ -574,25 +531,6 @@ const MainRoutes = {
             path: '/externalRegistrationList/:estado/:tipo',
             component: () => import('@/views/siib/moduleInteroperability/externalRegistrationList.vue')
         },
- // MODULO DAB
- {
-    name: 'solicitud',
-    path: '/solicitudList',
-    component: () => import('@/views/siib/resources/solicitud/solicitudList.vue')
-},
-{
-    name: 'dabForm',
-    path: '/dabForm/:id_usuario',
-    component: () => import('@/views/siib/resources/solicitud/dabForm.vue')
-},
-
-
-
-
-
-
-
-
 
 
 

@@ -8,10 +8,7 @@ import Swal from 'sweetalert2'
 import { format } from 'date-fns'
 import { useSystemStore } from '@/stores/resources/system';
 import { validateText } from '@/utils/helpers/validateText'
-//import { useVuelidate } from '@vuelidate/core'
-//import { required, helpers } from '@vuelidate/validators'
-//import { FORM_REQUIRED_FIELD } from '@/utils/helpers/messages'
-//import { useValidationErrors } from '@/stores/useValidationErrors';
+
 import { useSearchStore } from '@/stores/resources/busqueda';
 
   const orden = useSearchStore()
@@ -59,7 +56,6 @@ import { useSearchStore } from '@/stores/resources/busqueda';
  
     // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
     const buttonGenerarReport2 = async () => {
-
         const respuesta_info = await orden.vehiculosReport(state.formData)
         console.log(respuesta_info)
     }
@@ -72,7 +68,6 @@ import { useSearchStore } from '@/stores/resources/busqueda';
         }
 
   const buttonClear = () => {
-
     state.formData.placa_chasis=''
     state.formData.fuerza=''
     state.formData.fecha_i=''
@@ -86,12 +81,8 @@ import { useSearchStore } from '@/stores/resources/busqueda';
   // FUNCION QUE OBTIENE LA INFORMACION DE LA DEPENDENCIA
   const getsystemById = async (id: any) => {
     const respuesta = await systemStore.systemID(id)
-  
-    //state.formData.id = respuesta.id
-  //  state.formData.nombre_sistema = respuesta.nombre_sistema
   }
 
- 
   const sendForm = ref(true)
   const miValidacion = async () => {
   sendForm.value = true
@@ -99,7 +90,6 @@ import { useSearchStore } from '@/stores/resources/busqueda';
     sendForm.value = false
   }
 }
-
   // BOTON RETORNAR
   const buttonReturnList = () => {
     router.push({ name: 'ordenList' })
@@ -138,13 +128,13 @@ const buttonSendForm = async () => {
     </v-col>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <strong> </strong> Los campos con <span style="color:red">*</span> son obligatorios
+        <strong> </strong> Los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
 
       <v-row>
         <v-col cols="12" md="6">
             
-          <v-label class="mb-2 font-weight-medium">Placa o Chasis <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Placa o Chasis <span style="color:red"></span></v-label>
     
           <v-text-field
             variant="outlined" 
@@ -164,7 +154,7 @@ const buttonSendForm = async () => {
           </template>
         </v-col>
         <v-col cols="12" md="6">
-          <v-label class="mb-2 font-weight-medium">Fuerza <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Fuerza <span style="color:red"></span></v-label>
     
           <v-select
                   v-model="state.formData.fuerza"
@@ -186,7 +176,7 @@ const buttonSendForm = async () => {
         </v-col>
         
         <v-col cols="12" md="3">
-          <v-label class="mb-2 font-weight-medium">Fecha Inicio <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Fecha Inicio <span style="color:red"></span></v-label>
     
           <v-text-field
             variant="outlined" 
@@ -207,7 +197,7 @@ const buttonSendForm = async () => {
           </template>
         </v-col>
         <v-col cols="12" md="3">
-          <v-label class="mb-2 font-weight-medium">Fecha final <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Fecha final <span style="color:red"></span></v-label>
           <v-text-field
             variant="outlined"
             color="primary"
@@ -220,7 +210,7 @@ const buttonSendForm = async () => {
           />
           </v-col>
         <v-col cols="12" md="6">
-          <v-label class="mb-2 font-weight-medium">Estado <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Estado <span style="color:red"></span></v-label>
           <v-select
                   v-model="state.formData.estado_v"
                   :items="estado_ve"
@@ -253,7 +243,7 @@ const buttonSendForm = async () => {
         </v-col>
         <v-row>
             <v-col cols="12" md="5">
-                <v-label class="mb-2 font-weight-medium">Fecha Inicio <span style="color:red">*</span></v-label>
+                <v-label class="mb-2 font-weight-medium">Fecha Inicio <span style="color:red">(*)</span></v-label>
             
                 <v-text-field
                     variant="outlined" 
@@ -274,7 +264,7 @@ const buttonSendForm = async () => {
                 </template>
             </v-col>
             <v-col cols="12" md="7">
-          <v-label class="mb-2 font-weight-medium">Fecha final <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Fecha final <span style="color:red"></span></v-label>
           <v-text-field
                     variant="outlined" 
                     color="primary"
@@ -307,7 +297,7 @@ const buttonSendForm = async () => {
         </v-col>
         <v-row>
             <v-col cols="12" md="12">
-          <v-label class="mb-2 font-weight-medium">Placa o chasis <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Placa o chasis <span style="color:red">(*)</span></v-label>
           <v-text-field
                     variant="outlined" 
                     color="primary"

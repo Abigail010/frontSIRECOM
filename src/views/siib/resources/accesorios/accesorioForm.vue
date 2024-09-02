@@ -8,10 +8,6 @@ import Swal from 'sweetalert2'
 
 import { useaccesorioStore } from '@/stores/resources/accesorio';
 import { validateText } from '@/utils/helpers/validateText'
-//import { useVuelidate } from '@vuelidate/core'
-//import { required, helpers } from '@vuelidate/validators'
-//import { FORM_REQUIRED_FIELD } from '@/utils/helpers/messages'
-//import { useValidationErrors } from '@/stores/useValidationErrors';
 
   const route = useRoute()
   const accesorioStore = useaccesorioStore()
@@ -49,7 +45,6 @@ import { validateText } from '@/utils/helpers/validateText'
     state.formData.nombre_accesorio = respuesta.nombre_accesorio
   }
 
- 
   const sendForm = ref(true)
   const miValidacion = async () => {
   sendForm.value = true
@@ -93,12 +88,12 @@ const buttonSendForm = async () => {
   <v-row>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <strong> DATOS DE LA Accesorio:</strong> Los campos con <span style="color:red">*</span> son obligatorios
+        <strong> DATOS DE LA Accesorio:</strong> Los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
 
       <v-row>
         <v-col cols="12" md="12">
-          <v-label class="mb-2 font-weight-medium">Nombre Accesorio<span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Nombre Accesorio<span style="color:red">(*)</span></v-label>
     
           <VTextField
             variant="outlined" 

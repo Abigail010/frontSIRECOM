@@ -39,7 +39,6 @@ import { readonly } from 'vue';
     }
   ]);
 
-
   const permisoEdicion = ref<any>(true)
   const currentDate = (route.params.id_caso != '0') ? '' : format(new Date(),"yyyy-MM-dd")
   const currentDate2 = format(new Date(), "yyyy-MM-dd");
@@ -85,10 +84,6 @@ import { readonly } from 'vue';
     }
   });
 
-
-  //const accesorios = [ 'PARRILLA', 'PORTA CARPA', 'CARPA', 'ASIENTOS DE CARROCERÍA', 'MATABURROS', 'ALÓGENOS', 'GUINCHE']
-  // RECURSOS
- 
   const lista_accesorios = ref([]) as any
 
   const getResourcesList = async () => {
@@ -98,8 +93,7 @@ import { readonly } from 'vue';
   const ordernes_id = async (id_orden: any) => {
   
     const data = await orden.orden_id(id_orden)
- //console.log(data)
-   // state.formData. = data.id
+
     state.formData.id_orden = data.id_soli
     state.formData.chasis_= data.chasis
     state.formData.fecha_formulario = data.fecha
@@ -129,15 +123,7 @@ import { readonly } from 'vue';
     let dato1  = parseInt(state.formData.comparar_)+1
       let dato2 = dato1* parseInt(state.formData.kilo_)
       state.formData.valido_kilo = dato2
- /*   const codigos = data.accesorios_orden
-    state.formData.accesorios_orden = []
-    for (let i = 0; i < codigos.length; i++) {
-      state.formData.accesorios_orden.push(codigos[i])
-      lista_accesorios.value = lista_accesorios.value.filter( (tipo: any) => tipo.nombre_accesorio != codigos[i].nombre_accesorio)
-    }*/
 
-   
-   // state.formData.investigador_presente = true
   }
 
   const placeholderHojaRuta = () => {
@@ -146,20 +132,15 @@ import { readonly } from 'vue';
     return respuesta
   }
 
-
-
-
-
-
   // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
   const buttonSearchOrden = async () => {
     state.formData.id_persona = ''
     const respuesta_info = await orden.searchInfo(state.formData)
-     ///console.log(respuesta_info.length)
+
     if(!respuesta_info){
-     // console.log('busqueda 2')
+
       const respuesta = await orden.searchOrden(state.formData)
-      //console.log(respuesta)
+   
                 state.formData.color_ve = respuesta.color 
                 state.formData.tipo_orden= respuesta.tipo_v
                 state.formData.chasis_ = respuesta.chasis
@@ -174,7 +155,6 @@ import { readonly } from 'vue';
                 state.formData.combustible = respuesta.combustible
                 editar.value = true
 
-      //console.log('viendo_', JSON.stringify(respuesta, null, 2))
           if(!respuesta){
             Toast.fire({
               icon: 'error',
@@ -210,7 +190,6 @@ import { readonly } from 'vue';
                 state.formData.fuerza_orden = respuesta_info.nombre_fuerza
                 state.formData.combustible = respuesta_info.combustible
                 
-                
                 editar.value = true
                 state.formData.nombre_conductor= respuesta_info.nombre_conductor
                 state.formData.apellidos_condutor = respuesta_info.apellidos_conductor
@@ -222,68 +201,19 @@ import { readonly } from 'vue';
                 state.formData.id_vehiculo = respuesta_info.id_vehiculo
 
       }
-  //  const respuesta = await orden.searchOrden(state.formData)
-  /*  if(Object.prototype.hasOwnProperty.call(respuesta, 'id')){
-      // console.log('UTILIZANDO DESDE DB');
-        Toast.fire({
-          icon: 'success',
-          title: 'Resultado Obtenido Satisfactoriamente'
-        })
-      }else{
-        Toast.fire({
-          icon: 'error',
-          title: 'No se encontro información'
-        })
-      }*/
-
-    /*  if (JSON.stringify(respuesta, null, 2)) {
-  console.log('El objeto está vacío');
-} else {
-  console.log('El objeto no está vacío');
-}*/
-   /*  console.log('viendo_ ' + respuesta)
-      if(!respuesta){
-        Toast.fire({
-          icon: 'error',
-          title: 'No se encontro información'
-        })
-      // DESBLOQUEAR EL INPUT
-      }else{
-        Toast.fire({
-          icon: 'success',
-          title: 'Resultado Obtenido Satisfactoriamente'
-        })
-      }
-
-      //console.log('viendo_', JSON.stringify(respuesta, null, 2));
-    state.formData.color_ve = respuesta.color 
-    state.formData.tipo_orden= respuesta.tipo_v
-    state.formData.chasis_ = respuesta.chasis
- 
-    state.formData.placas = respuesta.placa
-    state.formData.modelo = respuesta.modelo
-    state.formData.marca = respuesta.marca
-    state.formData.motor = respuesta.motor
-    state.formData.anio_fabri = respuesta.anio_registro
-    state.formData.nro_ocupantes = respuesta.nro_ocupantes
-    state.formData.fuerza_orden = respuesta.nombre_fuerza
-    state.formData.combustible = respuesta.combustible
-    editar.value = true*/
-
+  
   }
 
   const validateKilometraje = () => {
-    //verificar que sea distinto de cero 
-
-    //console.log(' ver'+ state.formData.comparar_)
+  
      if(parseInt(state.formData.comparar_)> 0 ){
-   //   console.log('existen registros')
+   
       let dato1  = parseInt(state.formData.comparar_)+1
       let dato2 = dato1* parseInt(state.formData.kilo_)
       state.formData.valido_kilo = dato2
-      //console.log( 'valor '+ state.formData.valido_kilo) 
+     
         if(parseInt(state.formData.kilometraje)>=parseInt(state.formData.kilo_) && parseInt(state.formData.kilometraje)<=dato2  ){
-        //  console.log('registro')
+        
           Toast.fire({
           icon: 'success',
           title: 'Kilometraje valido'
@@ -301,8 +231,7 @@ import { readonly } from 'vue';
           title: 'Primer registro'
         })
      }
-    //const dato1  = parseInt(state.formData.comparar_)* parseInt(state.formData.kilo_)
-   // console.log( 'valor '+ dato1)
+  
   }
 
   const buttonClearOrden = () => {
@@ -333,8 +262,6 @@ import { readonly } from 'vue';
     router.push({ name: 'ordenList' })
   }
 
-
-
   const buttonSendForm = async () => {
     console.log('registroooo')
     submitButton.value = true
@@ -361,24 +288,19 @@ import { readonly } from 'vue';
           const { ok, message, caso, rd } = await orden.create_orden(state.formData)
           const icono = (ok ? 'success' : 'error')
           Toast.fire({ icon: icono, title: message })
-          if(caso != 0 && rd != 0){
-           // await documentaryReceptionStore.minutesReport(caso, rd)
-          }
+         
         }
       })
     }else{
       // NO ES NUEVO REGISTRO
       if(permisoEdicion.value){
-        // SI TIENE PERMISO DE EDICIO
+       
         const { ok, message } = await orden.updateOrdenID(state.formData)
         const icono = (ok ? 'success' : 'error')
         Toast.fire({ icon: icono, title: message })
-       /* if(caso != 0 && rd != 0){
-          await documentaryReceptionStore.minutesReport(caso, rd)
-        }*/
+      
       }else{
-        // NO TIENE PERMISO DE EDICION, SOLO REPORTE
-       /* await documentaryReceptionStore.minutesReport(Number(state.formData.id_caso), Number(state.formData.id_recepcion_documental))*/
+        
         router.push({ name: 'ordenList' });
       }
     }
@@ -424,10 +346,7 @@ const getMecanicos = async() => {
     await getMecanicos()
     await placeholderHojaRuta()
     if(route.params.id_orden  != '0'){
-      //.value = editPermission('RECEPCION DOCUMENTAL')
-      //await getOrdenes_soli()
       await ordernes_id(route.params.id_orden)
-
       editar.value = true
 
     }
@@ -463,7 +382,7 @@ const getMecanicos = async() => {
 
   <v-row>
               <v-col cols="12" md="4">
-                <v-label class="mb-2 font-weight-medium">Chasis o placa <span style="color:red">*</span></v-label>
+                <v-label class="mb-2 font-weight-medium">Chasis o placa <span style="color:red">(*)</span></v-label>
                 <v-text-field
                   variant="outlined"
                   color="primary"
@@ -493,7 +412,7 @@ const getMecanicos = async() => {
               </v-col>
     <v-col cols="12" md="4">
       <v-label class="mb-2 font-weight-medium">
-Fecha de Registro<span style="color:red">*</span>
+Fecha de Registro<span style="color:red">(*)</span>
       </v-label>
       <v-text-field 
         type="date" 
@@ -516,7 +435,7 @@ Fecha de Registro<span style="color:red">*</span>
     </v-col>
     <v-col cols="12" md="4">
       <v-label class="mb-2 font-weight-medium">
-        Tipo  <span style="color:red">*</span>
+        Tipo  <span style="color:red"> (*)</span>
       </v-label>
       <v-text-field 
         variant="outlined" 
@@ -528,7 +447,7 @@ Fecha de Registro<span style="color:red">*</span>
     </v-col>
     <v-col cols="12" md="4">
       <v-label class="mb-2 font-weight-medium">
-        Marca<span style="color:red">*</span>
+        Marca<span style="color:red">(*)</span>
       </v-label>
       <v-text-field 
         variant="outlined" 
@@ -549,7 +468,7 @@ Fecha de Registro<span style="color:red">*</span>
     </v-col>
     <v-col cols="12" md="4">
       <v-label class="mb-2 font-weight-medium">
-        Color<span style="color:red">*</span>
+        Color<span style="color:red">(*)</span>
       </v-label>
       <div v-if="state.formData.color_ve != ''">
         <v-textarea
@@ -590,7 +509,7 @@ Fecha de Registro<span style="color:red">*</span>
 
     </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Año de Ingreso<span style="color:red">*</span></v-label>
+      <v-label class="mb-2 font-weight-medium">Año de Ingreso<span style="color:red">(*)</span></v-label>
       <v-text-field 
         variant="outlined" 
         color="primary"
@@ -602,7 +521,7 @@ Fecha de Registro<span style="color:red">*</span>
       ></v-text-field>
     </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Placa <span style="color:red">*</span></v-label>
+      <v-label class="mb-2 font-weight-medium">Placa <span style="color:red">(*)</span></v-label>
       <v-text-field 
         variant="outlined" 
         color="primary"
@@ -621,7 +540,7 @@ Fecha de Registro<span style="color:red">*</span>
       </template>
     </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Chasis <span style="color:red">*</span></v-label>
+      <v-label class="mb-2 font-weight-medium">Chasis <span style="color:red">(*)</span></v-label>
       <v-textarea
         rows="1"
         auto-grow
@@ -631,7 +550,7 @@ Fecha de Registro<span style="color:red">*</span>
         hide-details
       ></v-textarea>
     </v-col><v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Motor</v-label>
+      <v-label class="mb-2 font-weight-medium">Motor <span style="color:red">(*)</span></v-label>
       <v-textarea
         rows="1"
         auto-grow
@@ -642,7 +561,7 @@ Fecha de Registro<span style="color:red">*</span>
       ></v-textarea>
     </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Kilometraje <b>(Actual)</b> <span style="color:red">*</span></v-label>
+      <v-label class="mb-2 font-weight-medium">Kilometraje <b>(Actual)</b> <span style="color:red">(*)</span></v-label>
       <v-text-field
                   variant="outlined" 
                   color="primary"
@@ -665,7 +584,7 @@ Fecha de Registro<span style="color:red">*</span>
     </v-col>
     <v-col cols="12" md="4">
       <div v-if="state.formData.nro_ocupantes != '0'  ">
-      <v-label class="mb-2 font-weight-medium">N° de ocupantes </v-label>
+      <v-label class="mb-2 font-weight-medium">N° de ocupantes <span style="color:red">(*)</span></v-label>
       <v-text-field 
          variant="outlined" 
          color="primary"
@@ -679,7 +598,7 @@ Fecha de Registro<span style="color:red">*</span>
       </div>
       
       <div v-else>
-      <v-label class="mb-2 font-weight-medium">N° de ocupantes </v-label>
+      <v-label class="mb-2 font-weight-medium">N° de ocupantes <span style="color:red">(*)</span></v-label>
       <v-text-field 
          variant="outlined" 
          color="primary"
@@ -700,7 +619,7 @@ Fecha de Registro<span style="color:red">*</span>
         </div>
       </template>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Tipo de combustible</v-label>
+      <v-label class="mb-2 font-weight-medium">Tipo de combustible<span style="color:red">(*)</span></v-label>
      <div v-if="state.formData.combustible === ''">
       <v-select
             v-model="state.formData.combustible"
@@ -737,7 +656,7 @@ Fecha de Registro<span style="color:red">*</span>
     </v-col>
 
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Licencia  <span style="color:red">*</span></v-label>
+      <v-label class="mb-2 font-weight-medium">Licencia  <span style="color:red">(*)</span></v-label>
       <v-textarea
         rows="1"
         auto-grow
@@ -756,7 +675,7 @@ Fecha de Registro<span style="color:red">*</span>
       </template>
     </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Categoria  <span style="color:red">*</span></v-label>
+      <v-label class="mb-2 font-weight-medium">Categoria  <span style="color:red">(*)</span></v-label>
       <v-select
             v-model="state.formData.categoria_con"
             :items="categorias_conductor"
@@ -776,7 +695,7 @@ Fecha de Registro<span style="color:red">*</span>
     </v-col>
 
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Nombres  <span style="color:red">*</span></v-label>
+      <v-label class="mb-2 font-weight-medium">Nombres  <span style="color:red">(*)</span></v-label>
       <v-textarea
         rows="1"
         auto-grow
@@ -795,7 +714,7 @@ Fecha de Registro<span style="color:red">*</span>
       </template>
     </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Apellidos  <span style="color:red">*</span></v-label>
+      <v-label class="mb-2 font-weight-medium">Apellidos  <span style="color:red">(*)</span></v-label>
       <v-textarea
         rows="1"
         auto-grow
@@ -814,7 +733,7 @@ Fecha de Registro<span style="color:red">*</span>
       </template>
     </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Celular  <span style="color:red">*</span></v-label>
+      <v-label class="mb-2 font-weight-medium">Celular  <span style="color:red">(*)</span></v-label>
       <v-textarea
         rows="1"
         auto-grow
@@ -826,7 +745,7 @@ Fecha de Registro<span style="color:red">*</span>
       ></v-textarea>
     </v-col>
     <v-col class="12" md="4">
-      <v-label class="mb-2 font-weight-medium">Mecanicos disponibles</v-label>
+      <v-label class="mb-2 font-weight-medium">Mecanicos disponibles<span style="color:red">(*)</span></v-label>
 
       <v-select
             v-model="state.formData.id_mecanico"
@@ -850,6 +769,8 @@ Fecha de Registro<span style="color:red">*</span>
     </v-col>
     
     <v-col class="12" md="12">
+      <v-label class="mb-2 font-weight-medium">Pre - diagnostico<span style="color:red">(*)</span></v-label>
+
         <v-text-field 
         variant="outlined" 
         color="primary"

@@ -386,13 +386,13 @@ const buttonSendForm = async () => {
   <v-row>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <strong> DATOS DEL USUARIO:</strong> Los campos con <span style="color:red">*</span> son obligatorios
+        <strong> DATOS DEL USUARIO:</strong> Los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
 
       <v-row>
         <v-col cols="12" md="4">
           <v-label class="mb-2 font-weight-medium">
-            Número de Documento<span style="color:red">*</span>
+            Cedula de Identidad<span style="color:red">(*)</span>
           </v-label>
           <VTextField
             variant="outlined" 
@@ -427,7 +427,7 @@ const buttonSendForm = async () => {
         </v-col>
 
         <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Nombres<span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Nombres<span style="color:red">(*)</span></v-label>
           <VTextField
             variant="outlined" 
             color="primary"
@@ -487,7 +487,7 @@ const buttonSendForm = async () => {
          
         </v-col>
         <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Nombre de usuario<span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Nombre de usuario<span style="color:red">(*)</span></v-label>
           <VTextField
             variant="outlined" 
             color="primary"
@@ -506,7 +506,7 @@ const buttonSendForm = async () => {
           </template>
         </v-col>
         <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Contraseña<span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Contraseña<span style="color:red">(*)</span></v-label>
           <VTextField
             variant="outlined" 
             color="primary"
@@ -525,7 +525,7 @@ const buttonSendForm = async () => {
           </template>
         </v-col>
         <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Correo electrónico<span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Correo electrónico<span style="color:red">(*)</span></v-label>
           <v-text-field
             variant="outlined" 
             color="primary"
@@ -554,7 +554,7 @@ const buttonSendForm = async () => {
           </v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Taller<span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Taller<span style="color:red">(*)</span></v-label>
           <v-select
             :items="taller"
             item-title="nombre_taller"
@@ -571,7 +571,7 @@ const buttonSendForm = async () => {
           </template>
         </v-col>
         <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Rol<span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Rol<span style="color:red">(*)</span></v-label>
           <v-select
             :items="perfiles"
             item-title="nombre_perfil"

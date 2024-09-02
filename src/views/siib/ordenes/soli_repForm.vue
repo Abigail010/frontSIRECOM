@@ -73,15 +73,10 @@ const openpanel = ref([0]);
   const editar = ref<any>(false)
     const currentDate = format(new Date(), 'yyyy-MM-dd')
   const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
- //console.log('perfil', userProfile);
-
   const timeAgo = (value: any) => {
     return formatDistance(new Date(currentDate), new Date(value), {locale:es})
   }
 const desserts = ref([]) as any
-const getOrdenes_sol = async() => {
-    desserts.value = await orden.getOrdenes_soli()
-}
 
   const state = reactive({
     formData: {
@@ -156,13 +151,9 @@ const getOrdenes_sol = async() => {
 
   const lista_unidad = ref([]) as any
   const lista_diagnosticos = ref([]) as any
-
   const tipo_filtro= ref([]) as any
   const tipo_mantenimiento = ref([]) as any
   const tipo_mantenimiento2 = ref([]) as any
-  
-//  const tipo_mantenimiento7 = ref([]) as any
-  //const tipo_mantenimiento =['MANTENIMIENTO PREVENTIVO', 'MANTENIMIENTO CORRECTIVO', 'REVISIÓN', 'REVISIÓN DE NIVELES']
   const getResourcesList = async () => {
     lista_diagnosticos.value = await registro.gettipo_trabajo() 
     tipo_mantenimiento2.value = await registro.gettipo_mantenimiento()     // LISTA DE accesorios
@@ -172,11 +163,8 @@ const getOrdenes_sol = async() => {
    // BUSQUEDA o despliegue de repuestos
    const desser = ref([]) as any
 
-
    const basico_id = async (id_orden: any) => {
-   // const data = await registro.getbasico(id_orden)// console.log(data)
     const data = await registro.getbasico(id_orden)
-
     state.formData.id_orden =data.id
     state.formData.dato1= data.placa
     state.formData.dato2 = data.chasis
@@ -191,50 +179,29 @@ const getOrdenes_sol = async() => {
    } 
 
    const verificar_id = async (id_orden: any) => {
-   // const data = await registro.getbasico(id_orden)// console.log(data)
     const data = await registro.verificar_reg(id_orden)
     const size = Object.keys(data).length;
    if(size>0){
     state.formData.id_registro = data.id_registro
-    ///console.log( state.formData.id_registro)
    }else{
     //state.formData.id_registro = size;
    }
    }
 
   const registro_id = async (id_orden: any) => {
-    ///const data = await registro.registro_id(id_registro)
    state.formData.id_Rep = await soli_Rep.getsolicitudes(id_orden) 
-   //console.log(state.formData.id_Rep)
    state.formData.id_Rep2 = await soli_Rep.getEntregas(id_orden) 
    const res= await soli_Rep.getEntregas(id_orden) 
  
    let s = 0
    for(let i =0; i< res.length; i++ ){
-    //console.log(res.costo) 
     s = s + parseInt(res[i].costo)
    }
-   //console.log('total '+ s)
    state.formData.total_c = String(s) 
-
-   // console.log(state.formData.id_Rep2)
-   /* state.formData.id_registro = data.id
-  
-
-    const rep = data.id_Rep
-    for (let i = 0; i < rep.length; i++) {
-      state.formData.id_Rep.push(rep[i])
-    //  console.log(state.formData.id_motor)
- 
-      tipo_filtro.value = tipo_filtro.value.filter( (tipo: any) => tipo.id !=rep[i].id_filtro)
-    }*/
-    
     const res2= await soli_Rep.getTotal(id_orden) 
-    //console.log(res2)
     state.formData.total = res2.total
   }
   const ButtonRepuesto = async (item: any) => {
-  
     const data2 = await soli_Rep.getID(item);
     state.formData2.id_repuesto = data2.id
     state.formData2.nombre_repuesto = data2.nombre_repuesto
@@ -250,25 +217,15 @@ const getOrdenes_sol = async() => {
     return respuesta
   }
 
-  
-
   const buttonReturnList = () => {
     router.push({ name: 'ordenList' })
   }
-  const ButtonReport= async (item: any) => {
-   // console.log('clic')
-   //console.log(item)
-  const data2 = await soli_Rep.minutesReport(item);
-  //console.log(data2)
-  }
+ 
   const ButtonReport2 = async (item: any) => {
-    //console.log('clic')
-  // console.log(item)
   const data2 = await soli_Rep.minutesReport(item);
  // console.log(data2)
   }
   const buttonSendForm = async () => {
-    //console.log('registroooo')
     submitButton.value = true
     await validateForm()
     if(!sendForm.value) return
@@ -276,7 +233,6 @@ const getOrdenes_sol = async() => {
     isLoading.value = true
     if(state.formData.id_orden != '0' ){
       // ES NUEVO REGISTRO
-      //console.log('actualizar1010101')
       dialog.value = false
       Swal.fire({
         title: 'Estás seguro?',
@@ -294,7 +250,6 @@ const getOrdenes_sol = async() => {
           const icono = (ok ? 'success' : 'error')
           Toast.fire({ icon: icono, title: message })
             
-        
         }
         window.location.reload()
       })
@@ -310,9 +265,6 @@ const getOrdenes_sol = async() => {
     }
     return  ''
   }
-
-  // VALIDACION PARA INGRESAR UN PERSONAL ASIGNADO A ENTREGA
-
 
   // VALIDACION GENERAL
   const validateForm = async () => {
@@ -413,15 +365,12 @@ function recibido(item: any) {
    
     await placeholderHojaRuta()
     if(route.params.id_orden  != '0'){
-      //.value = editPermission('RECEPCION DOCUMENTAL')
       await verificar_id(route.params.id_orden)
-     // console.log(state.formData.id_registro)
       if(parseInt(state.formData.id_registro)>0){
         await registro_id(route.params.id_orden)
       }else{
         console.log('0')
       }
-      //await registro_id(route.params.id_orden)
       await basico_id(route.params.id_orden)
 
       editar.value = true
@@ -679,23 +628,7 @@ function recibido(item: any) {
               <td class="text-center">{{ item.unidad }}</td>
               <td class="text-center">{{ item.costo }}</td>
               <td class="text-center">{{ item.observacion }}</td>
-            <!---- <td class="text-center" v-if="permisoEdicion">
-               
-                <v-btn
-                  
-                  size="small"
-                  title="Eliminar"
-                  height="25"
-                  width="25"
-                  color="error"
-                  text="hola"
-                 @click="ButtonRepuesto(item.id)"
-                > <TrashIcon style="cursor: pointer;"></TrashIcon>
-                </v-btn>
-               
-                       
-                <TrashIcon style="color: white;" /></td>
-            -->
+           
             </tr>
              <tr>
                <td></td>
