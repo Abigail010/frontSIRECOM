@@ -48,6 +48,24 @@ export const useSearchStore = defineStore({
           return { ok: false, message: message }
         }
       },
+      async getPrueba() {
+        try {
+          const { data } = await siibApi.get('search_tot/placas/')
+          return data
+        } catch (error: any) {
+          const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+          return { ok: false, message: message }
+        }
+      },
+      async getPrueba2() {
+        try {
+          const { data } = await siibApi.get('search_tot/fuerzas/')
+          return data
+        } catch (error: any) {
+          const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+          return { ok: false, message: message }
+        }
+      },
       async getPendiente () {
         try {
           const { data } = await siibApi.get('search_tot/tot_pen/')

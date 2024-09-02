@@ -119,7 +119,7 @@ const buttonSendForm = async () => {
         </v-col>
       </v-row>
 
-      <p class="mt-2 text-lg-right">
+      <p class="mt-2 text-lg-left">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Cancelar</v-btn>
         <v-btn color="primary" @click.prevent="buttonSendForm()">Enviar</v-btn>
       </p>

@@ -12,7 +12,8 @@ import { validateText } from '@/utils/helpers/validateText'
  import { required, email, helpers } from '@vuelidate/validators'
  import { FORM_INVALID_EMAIL, FORM_REQUIRED_FIELD } from '@/utils/helpers/messages'
  import { useValidationErrors } from '@/stores/useValidationErrors';
-
+ const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
+ const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
   const route = useRoute()
   const resourceStore = useResourceStore()
   const userStore = useUserStore()
@@ -69,11 +70,25 @@ import { validateText } from '@/utils/helpers/validateText'
   const perfiles = ref([])
   const getProfilesList = async() => {
     perfiles.value = await resourceStore.getProfiles()
+    if(userProfile.includes('SUPER ADMINISTRADOR')){
+      perfiles.value = await resourceStore.getProfiles()
+    }else{
+      perfiles.value = await  userStore.Perfil()
+      
+    }
   }
 
   const taller = ref([])
   const gettaller = async() => {
-    taller.value = await resourceStore.getTalleres()
+    //taller.value = await resourceStore.getTalleres()
+    //console.log(taller.value)
+
+    if(userProfile.includes('SUPER ADMINISTRADOR')){
+      taller.value = await resourceStore.getTalleres()
+    }else{
+      taller.value = await  userStore.Taller()
+      
+    }
   }
 
   const menus = ref([]) as any
@@ -264,7 +279,7 @@ import { validateText } from '@/utils/helpers/validateText'
   const miValidacion = async () => {
     sendForm.value = true
     testEmail.value = true
-    if(!state.formData.cedula_identidad || !state.formData.nombres ||  !state.formData.fecha_nacimiento
+    if(!state.formData.cedula_identidad || !state.formData.nombres 
       ||  !state.formData.nombre_usuario || !state.formData.contrasena || !state.formData.correo_electronico || !state.formData.id_taller
       || !state.formData.id_perfil || !state.formData.apellido_materno && !state.formData.apellido_paterno){
       sendForm.value = false
@@ -458,7 +473,7 @@ const buttonSendForm = async () => {
           </v-text-field>
         </v-col>
         <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Fecha nacimiento<span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Fecha nacimiento</v-label>
           <VTextField
             variant="outlined" 
             color="primary"
@@ -469,13 +484,7 @@ const buttonSendForm = async () => {
             
             hide-details
           />
-          <template v-if="submitButton && !state.formData.fecha_nacimiento">
-            <div class="v-messages font-weight-black px-2 py-2">
-              <div class="v-messages__message text-error ">
-                El campo es requerido
-              </div>
-            </div>
-          </template>
+         
         </v-col>
         <v-col cols="12" md="4">
           <v-label class="mb-2 font-weight-medium">Nombre de usuario<span style="color:red">*</span></v-label>
@@ -705,7 +714,7 @@ const buttonSendForm = async () => {
         </v-col>
       </v-row>
 
-      <p class="text-lg-right">
+      <p class="text-lg-left">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Cancelar</v-btn>
         <v-btn color="primary" @click.prevent="buttonSendForm()">Enviar</v-btn>
       </p>

@@ -191,12 +191,13 @@ import Swal from 'sweetalert2'
   <v-row>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <strong> DATOS DE LA DELITO:</strong> Los campos con <span style="color:red">*</span> son obligatorios
+        <strong> DATOS DEL PERFIL:</strong> Los campos con <span style="color:red">(*)
+        </span> son obligatorios
       </h4>
 
       <v-row>
         <v-col cols="12" md="12">
-          <v-label class="mb-2 font-weight-medium">Nombre perfil<span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Nombre perfil <span style="color:red">(*)</span></v-label>
           <v-text-field
             variant="outlined" 
             color="primary"
@@ -348,7 +349,7 @@ import Swal from 'sweetalert2'
       </v-row>
 
 
-      <p class="text-lg-right">
+      <p class="text-lg-left">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Cancelar</v-btn>
         <v-btn color="primary" @click.prevent="buttonSendForm()">Enviar</v-btn>
       </p>

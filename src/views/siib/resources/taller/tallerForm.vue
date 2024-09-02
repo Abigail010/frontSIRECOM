@@ -230,7 +230,7 @@ const tallerStore = useTallerStore()
       </v-row>
 
 
-      <p class="text-lg-right">
+      <p class="text-lg-left">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Cancelar</v-btn>
         <v-btn color="primary" @click.prevent="buttonSendForm()">Enviar</v-btn>
       </p>

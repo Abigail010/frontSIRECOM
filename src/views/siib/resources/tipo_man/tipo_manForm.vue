@@ -123,12 +123,12 @@ const buttonSendForm = async () => {
   <v-row>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <strong> DATOS DEL TIPO DE MANTENIMIENTO:</strong> Los campos con <span style="color:red">*</span> son obligatorios
+        <strong> DATOS DEL TIPO DE MANTENIMIENTO:</strong> Los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
 
       <v-row>
         <v-col cols="12" md="12">
-          <v-label class="mb-2 font-weight-medium">Nombre mantenimiento<span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Nombre mantenimiento<span style="color:red">(*)</span></v-label>
           <VTextField
             variant="outlined" 
             color="primary"
@@ -148,7 +148,7 @@ const buttonSendForm = async () => {
         </v-col>
       </v-row>
 
-      <p class="mt-2 text-lg-right">
+      <p class="mt-2 text-lg-left">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Cancelar</v-btn>
         <v-btn color="primary" @click.prevent="buttonSendForm()">Enviar</v-btn>
       </p>

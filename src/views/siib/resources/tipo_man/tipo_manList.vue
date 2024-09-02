@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 
 const servicios = useManStore()
 
-const page = ref({ title: 'Servicios Externos' });
+const page = ref({ title: 'Mantenimientos' });
 const breadcrumbs = ref([
   {
     text: 'Dashboard',
@@ -15,7 +15,7 @@ const breadcrumbs = ref([
     href: '#'
   },
   {
-    text: 'Listado de servicios',
+    text: 'Listado de mantenimientos',
     disabled: true,
     href: '#'
   }

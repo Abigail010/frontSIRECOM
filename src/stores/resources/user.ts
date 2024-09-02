@@ -23,6 +23,26 @@ export const useUserStore = defineStore({
         return { ok: false, message: message }
       }
     },
+    async Perfil() {
+      try {
+        // const { data } = await siibApi.get('user/users/' + userLogged)
+        const { data } = await siibApi.get('user/perfil')
+        return data
+      } catch (error: any) {
+        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+        return { ok: false, message: message }
+      }
+    },
+    async Taller () {
+      try {
+        const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
+        const { data } = await siibApi.get('user/taller/' + userLogged)
+        return data
+      } catch (error: any) {
+        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+        return { ok: false, message: message }
+      }
+    },
     async usersM () {
       try {
         const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad

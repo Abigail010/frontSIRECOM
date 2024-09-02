@@ -39,7 +39,7 @@ const getUsersList = async() => {
 // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
-  {title: 'ID', key: 'id_user'},
+ 
   { title: 'Nombres', key: 'nombres' },
   { title: 'Apellido Paterno', key: 'apellido_paterno' },
   { title: 'Apellido Materno', key: 'apellido_materno' },

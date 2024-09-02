@@ -137,11 +137,11 @@ const buttonSendForm = async () => {
   <v-row>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <strong> DATOS DE LA system:</strong> Los campos con <span style="color:red">*</span> son obligatorios
+        <strong> DATOS DEL FILTRO:</strong> Los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
 
       <v-row><v-col cols="12" md="6">
-          <v-label class="mb-2 font-weight-medium">Sistema <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Sistema <span style="color:red">(*)</span></v-label>
           <v-autocomplete
         variant="outlined"
         color="primary"
@@ -232,7 +232,7 @@ const buttonSendForm = async () => {
         </v-col>
         
         <v-col cols="12" md="6">
-          <v-label class="mb-2 font-weight-medium">Repuesto<span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Repuesto<span style="color:red">(*)</span></v-label>
           <v-autocomplete
           variant="outlined"
           color="primary"

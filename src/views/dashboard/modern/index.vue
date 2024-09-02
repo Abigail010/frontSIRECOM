@@ -14,6 +14,8 @@ import TopProjects from "../dashboardComponents/modern/TopProjects.vue";
 import { useSearchStore } from '@/stores/resources/busqueda';
 import card_icon1 from "@/assets/images/svgs/icon-user-male.svg"
 import { ref, reactive, onMounted } from 'vue';
+import { getPrimary, getSecondary } from '@/utils/UpdateColors';
+import { computed } from 'vue';
 const orden = useSearchStore()
 const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
@@ -48,6 +50,11 @@ const buttonReport = async () => {
 
 
 }
+
+const fuerzas = []
+const pendientes = [] 
+const finalizados = []
+const prueba = ref([]) as any
 const getGen = async () => {
     const info = await orden.getInfoB();
    // console.log(info.id_taller)
@@ -57,7 +64,15 @@ const getGen = async () => {
     const man2 = await orden.getPendiente();
     const rep1 = await orden.getPedidos_en();
     const rep2 = await orden.getPedidos_pen();
-    //console.log(rep2)
+    prueba.value = await orden.getPrueba2();
+    console.log(prueba.value)
+    for(let i=0; i< prueba.value.length; i++){
+        pendientes[i] = parseInt(prueba.value[i].pendientes)
+        finalizados[i] = prueba.value[i].finalizado
+        fuerzas[i] = prueba.value[i].placa
+       // console.log(prueba.value[i].pendientes )
+      // console.log(pendientes[i] )
+    }
     state.formData.title1 ="Usuarios Registrados"
     state.formData.title2 ="Vehículos Registrados"
     state.formData.title3 ="Mantenimientos Finalizado"
@@ -175,7 +190,96 @@ const getGen = async () => {
 
    // console.log(users)
   }
+  const select = ref('March 2023');
+const items = ref(['March 2023', 'April 2023', 'May 2023']);
 
+/* Chart */
+
+
+const chartOptions = computed(() => {
+    return {
+        chart: {
+            height: 400,
+            type: 'bar',
+            fontFamily: `inherit`,
+            foreColor: '#051d49',
+            stacked: true
+        },
+        colors: [getPrimary.value, getSecondary.value], // Puedes reemplazar este color con el que prefieras
+        plotOptions: {
+            bar: {
+                horizontal: false,
+                barHeight: '50%',
+                columnWidth: '10%',
+                borderRadius: [3],
+                borderRadiusApplication: 'end',
+                borderRadiusWhenStacked: 'all'
+            }
+        },
+        stroke: {
+            show: false
+        },
+        dataLabels: {
+            enabled: false
+        },
+        legend: {
+            show: false
+        },
+        grid: {
+            borderColor: 'rgba(0,0,1,0.1)',
+            strokeDashArray: 3,
+            xaxis: {
+                lines: {
+                    show: false
+                }
+            }
+        },
+        yaxis: {
+            min: Math.min(...prueba.value.map(item => item.total)),
+            max: Math.max(...prueba.value.map(item => item.total)), // Establecer el valor máximo de las barras
+            tickAmount: Math.max(...prueba.value.map(item => item.total))
+        },
+        xaxis: {
+            categories: prueba.value.map(item => item.fuerza), 
+            axisBorder: {
+                show: false
+            }
+        },
+        tooltip: {
+            theme: 'dark',
+            x: {
+                format: 'dd/MM/yy HH:mm'
+            }
+        },
+        responsive: [
+            {
+                breakpoint: 991,
+                options: {
+                    xaxis: {
+                        labels: {
+                            rotate: -45
+                        },
+                        categories: prueba.value.map(item => item.fuerza)
+                    }
+                }
+            }
+        ]
+    };
+});
+
+
+const lineChart = {
+    series: [
+        {
+            name: 'Mantenimientos Pendientes',
+            data: pendientes
+        },
+        {
+            name: 'Mantenimientos Entregados',
+            data: finalizados
+        }
+    ]
+};
   onMounted(async () => {
    await getGen()
     await buttonReport()
@@ -259,7 +363,53 @@ const getGen = async () => {
            <v-row>
                 <!-- Revenue Updates -->
                 <v-col cols="12" lg="12" md="12">
-                    <RevenueUpdates/>
+                    <v-card elevation="10" >
+        <v-card-item>
+            <div class="d-sm-flex align-center justify-space-between">
+                <div>
+                    <v-card-title class="text-h5">Cuadro de registros</v-card-title>
+                    <v-card-subtitle class="text-subtitle-1 textSecondary">Fuerzas</v-card-subtitle>
+                </div>
+                <div class="my-sm-0 my-2">
+                    <v-select v-model="select" :items="items" variant="outlined" density="compact" hide-details></v-select>
+                </div>
+            </div>
+
+            <v-row>
+                <v-col cols="12" sm="12" class="pt-7">
+                    <apexchart type="bar" height="375" :options="chartOptions" :series="lineChart.series"> </apexchart>
+                </v-col>
+                <v-col cols="12" sm="4" class="pt-7">
+                    <div class="d-flex align-center mt-md-6 mt-3">
+                        <v-avatar class="rounded-md bg-lightprimary text-primary">
+                            <GridDotsIcon size="22" />
+                        </v-avatar>
+                        <div class="pl-4">
+                            <h3 class="text-h3">$63,489.50</h3>
+                            <h6 class="text-subtitle-1 textSecondary">Total Earnings</h6>
+                        </div>
+                    </div>
+                    <div class="mt-sm-10 mb-sm-10 mt-10 mb-0">
+                        <div class="d-flex align-baseline">
+                            <v-icon icon="mdi mdi-checkbox-blank-circle" size="10" color="primary"></v-icon>
+                            <div class="pl-4">
+                                <h6 class="text-subtitle-1 textSecondary">Earnings this month</h6>
+                                <h5 class="text-h5 mt-1">$48,820</h5>
+                            </div>
+                        </div>
+                        <div class="d-flex mt-8 align-baseline">
+                            <v-icon icon="mdi mdi-checkbox-blank-circle" size="10" color="secondary"></v-icon>
+                            <div class="pl-4">
+                                <h6 class="text-subtitle-1 textSecondary">Expense this month</h6>
+                                <h5 class="text-h5 mt-1">$26,498</h5>
+                            </div>
+                        </div>
+                        <v-btn color="primary" class="mt-10" variant="flat" block>View Full Report</v-btn>
+                    </div>
+                </v-col>
+            </v-row>
+        </v-card-item>
+    </v-card>
                 </v-col>
             
               
