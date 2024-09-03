@@ -87,6 +87,7 @@ onMounted(async () => {
                         </div>
                         <p class="text-subtitle-1 font-weight-regular textSecondary">{{ item.subtitle }}</p>
                     </v-list-item>
+                    <br>
                 </v-list>
             </perfect-scrollbar>
      

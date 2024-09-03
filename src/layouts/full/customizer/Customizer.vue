@@ -70,9 +70,9 @@ const DarkthemeColors = ref([
                     <v-btn :value="false" variant="text" elevation="9" class="rounded-md">
                         <LayoutColumnsIcon stroke-width="1.5" size="21" class="mr-2 icon" /> Vertical
                     </v-btn>
-                    <v-btn :value="true" variant="text" elevation="9" class="rounded-md">
+                 <!-----  <v-btn :value="true" variant="text" elevation="9" class="rounded-md">
                         <LayoutNavbarIcon stroke-width="1.5" size="21" class="mr-2 icon" /> Horizontal
-                    </v-btn>
+                    </v-btn>---->
                 </v-btn-toggle>
 
                 <!------Theme Direction------>
@@ -103,7 +103,7 @@ const DarkthemeColors = ref([
                         </v-item>
                     </v-col>
                 </v-item-group>
-                <h6 class="text-h6 mt-11 mb-5">Color de interfaz oscuro</h6>
+              <!----  <h6 class="text-h6 mt-11 mb-5">Color de interfaz oscuro</h6>
                 <v-item-group mandatory v-model="customizer.actTheme" class="ml-n2 v-row">
                     <v-col cols="4" v-for="theme in DarkthemeColors" :key="theme.name" class="pa-2">
                         <v-item v-slot="{ isSelected, toggle }" :value="theme.name">

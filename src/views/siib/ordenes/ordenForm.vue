@@ -5,7 +5,7 @@ import { ref, reactive, onMounted } from 'vue';
 import { TrashIcon, SearchIcon, PlusIcon } from 'vue-tabler-icons';
 import { format } from 'date-fns'
 import { useResourceStore } from '@/stores/resource';
-import { useDocumentaryReceptionStore } from '@/stores/moduleOne/documentaryReception';
+
 import { useOrdenStore } from '@/stores/orden/orden';
 import { validateText } from '@/utils/helpers/validateText'
 import { editPermission } from '@/utils/helpers/editPermission' 
@@ -122,7 +122,7 @@ import { readonly } from 'vue';
     state.formData.estado_orden = data.estado
     let dato1  = parseInt(state.formData.comparar_)+1
       let dato2 = dato1* parseInt(state.formData.kilo_)
-      state.formData.valido_kilo = dato2
+      state.formData.valido_kilo = String(dato2)
 
   }
 
@@ -210,7 +210,7 @@ import { readonly } from 'vue';
    
       let dato1  = parseInt(state.formData.comparar_)+1
       let dato2 = dato1* parseInt(state.formData.kilo_)
-      state.formData.valido_kilo = dato2
+       state.formData.valido_kilo = String(dato2)
      
         if(parseInt(state.formData.kilometraje)>=parseInt(state.formData.kilo_) && parseInt(state.formData.kilometraje)<=dato2  ){
         
