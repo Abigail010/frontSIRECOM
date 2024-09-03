@@ -161,6 +161,11 @@ const lista_menu = [
           to: '/filtroList'
         },
         {
+          title: 'Repuestos',
+          icon: CircleIcon,
+          to: '/repuestoList'
+        },
+        {
           title: 'Tipos de mantenimiento',
           icon: CircleIcon,
           to: '/tipo_manList'

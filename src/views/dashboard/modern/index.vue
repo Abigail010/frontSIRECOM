@@ -12,10 +12,13 @@ import BestSellingProducts from "../dashboardComponents/modern/BestSellingProduc
 import WeeklyStats from "../dashboardComponents/modern/WeeklyStats.vue";
 import TopProjects from "../dashboardComponents/modern/TopProjects.vue";
 import { useSearchStore } from '@/stores/resources/busqueda';
-import card_icon1 from "@/assets/images/svgs/icon-user-male.svg"
+import UiChildCard from '@/components/shared/UiChildCard.vue';
+import card_icon1  from "@/assets/images/svgs/icon-user-male.svg"
+import card_icon12  from "@/assets/images/svgs/icon-zip-folder.svg"
 import { ref, reactive, onMounted } from 'vue';
 import { getPrimary, getSecondary } from '@/utils/UpdateColors';
 import { computed } from 'vue';
+import { useTheme } from 'vuetify';
 const orden = useSearchStore()
 const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
@@ -38,6 +41,7 @@ const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identid
       title6:'',
       dato6:'',  
       estado: '',
+      extra:'', 
     }
   });
 
@@ -51,10 +55,59 @@ const buttonReport = async () => {
 
 }
 
+// Crear un nuevo objeto de fecha
+const fechaActual = new Date();
+
+// Array con los nombres de los meses
+const nombresMeses = [
+  "Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio",
+  "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"
+];
+
+// Obtener el mes actual (sin necesidad de sumar 1)
+const mesActualNombre = nombresMeses[fechaActual.getMonth()];
+
+// Obtener el año actual
+const añoActual = fechaActual.getFullYear();
+// Imprimir el mes y año actual
+//console.log(`Mes actual: ${mesActualNombre}`);
+//console.log(`Año actual: ${añoActual}`);
+const select = ref('');
+ select.value = mesActualNombre;
+//const items = ref(['March 2023', 'April 2023', 'May 2023']);
+
+
+
 const fuerzas = []
 const pendientes = [] 
 const finalizados = []
 const prueba = ref([]) as any
+
+const getEncargado = async (id: any) => {
+    //console.log('info... '+id)
+   // prueba.value = await orden.getPrueba2(mesActualNombre);
+    if(id!=''){
+       // console.log('info2... '+id)
+        prueba.value = await orden.getPrueba2(id);
+        for(let i=0; i< prueba.value.length; i++){
+        pendientes[i] = parseInt(prueba.value[i].pendientes)
+        finalizados[i] = prueba.value[i].finalizado
+        fuerzas[i] = prueba.value[i].placa
+       // console.log(prueba.value[i].pendientes )
+      // console.log(pendientes[i] )
+    }
+    }else{
+        prueba.value = await orden.getPrueba2(mesActualNombre);
+        for(let i=0; i< prueba.value.length; i++){
+        pendientes[i] = parseInt(prueba.value[i].pendientes)
+        finalizados[i] = prueba.value[i].finalizado
+        fuerzas[i] = prueba.value[i].placa
+       // console.log(prueba.value[i].pendientes )
+      // console.log(pendientes[i] )
+    }
+    }
+     
+  }
 const getGen = async () => {
     const info = await orden.getInfoB();
    // console.log(info.id_taller)
@@ -64,8 +117,8 @@ const getGen = async () => {
     const man2 = await orden.getPendiente();
     const rep1 = await orden.getPedidos_en();
     const rep2 = await orden.getPedidos_pen();
-    prueba.value = await orden.getPrueba2();
-    console.log(prueba.value)
+    prueba.value = await orden.getPrueba2(mesActualNombre);
+    //console.log(prueba.value)
     for(let i=0; i< prueba.value.length; i++){
         pendientes[i] = parseInt(prueba.value[i].pendientes)
         finalizados[i] = prueba.value[i].finalizado
@@ -190,10 +243,11 @@ const getGen = async () => {
 
    // console.log(users)
   }
-  const select = ref('March 2023');
-const items = ref(['March 2023', 'April 2023', 'May 2023']);
-
+ 
 /* Chart */
+
+
+
 
 
 const chartOptions = computed(() => {
@@ -280,6 +334,106 @@ const lineChart = {
         }
     ]
 };
+
+const theme = useTheme();
+const success = theme.current.value.colors.success;
+const accent = theme.current.value.colors.accent;
+const warning = theme.current.value.colors.warning;
+
+const donutchartOptions = computed(() => {
+    return {
+        chart: {
+            type: 'donut',
+            height: 300,
+            fontFamily: `inherit`,
+            foreColor: '#adb0bb'
+        },
+        dataLabels: {
+            enabled: false
+        },
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '70px'
+                }
+            }
+        },
+        legend: {
+            show: true,
+            position: 'bottom',
+            width: '50px'
+        },
+        colors: ['#6ac3fd', '#0b70fb', '#f64e60', '#26c6da', '#ffa800'],
+        responsive: [
+            {
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        ]
+    };
+});
+
+const donutChart = {
+    series: [44, 55, 41, 17, 15]
+};
+
+const piechartOptions = computed(() => {
+    return {
+        chart: {
+            type: 'pie',
+            height: 300,
+            fontFamily: `inherit`,
+            foreColor: '#adb0bb',
+            toolbar: {
+                show: false
+            }
+        },
+        dataLabels: {
+            enabled: false
+        },
+        plotOptions: {
+            pie: {
+                donut: {
+                    size: '70px'
+                }
+            }
+        },
+        legend: {
+            show: true,
+            position: 'bottom',
+            width: '50px'
+        },
+        colors: ['#6ac3fd', '#0b70fb', '#f64e60', '#26c6da', '#ffa800'],
+        tooltip: {
+            fillSeriesColor: false
+        },
+        labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+        responsive: [
+            {
+                breakpoint: 480,
+                options: {
+                    chart: {
+                        width: 200
+                    },
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        ]
+    };
+});
+
+const pieChart = {
+    series: [44, 55, 13, 43, 22]
+};
   onMounted(async () => {
    await getGen()
     await buttonReport()
@@ -287,7 +441,6 @@ const lineChart = {
 </script>
 <template>
 
-    Modificar vista 
     <v-row>
         <!-- Top cards -->
 
@@ -296,7 +449,7 @@ const lineChart = {
                 :class="'text-decoration-none d-flex align-center justify-center text-center rounded-md pa-6  bg-lightprimary'"
             >
                 <div :class="'bg-lightprimary'">
-                    <img :src="card_icon1" alt="icon" />
+                    <img   src="@/assets/images/misimagenes/logo.png" class="imagen"/>
                     <div :class="'text-subtitle-1 text-capitalize font-weight-bold mt-3 text-primary'"  v-text="state.formData.title1"></div>
                     <h4 :class="'text-h4 mt-1 text-primary' " v-text="state.formData.dato1"></h4>
                 </div>
@@ -307,7 +460,7 @@ const lineChart = {
                 :class="'text-decoration-none d-flex align-center justify-center text-center rounded-md pa-6  bg-lightwarning'"
             >
                 <div :class="'bg-lightwarning'">
-                    <img :src="card_icon1" alt="icon" />
+                    <img src="@/assets/images/misimagenes/75704.png" class="imagen"/>
                     <div :class="'text-subtitle-1 text-capitalize font-weight-bold mt-3 text-warning'"  v-text="state.formData.title2"></div>
                     <h4 :class="'text-h4 mt-1 text-warning' " v-text="state.formData.dato2"></h4>
                 </div>
@@ -318,7 +471,7 @@ const lineChart = {
                 :class="'text-decoration-none d-flex align-center justify-center text-center rounded-md pa-6  bg-lightsecondary'"
             >
                 <div :class="'bg-lightsecondary'">
-                    <img :src="card_icon1" alt="icon" />
+                    <img src="@/assets/images/misimagenes/prueba2.png" class="imagen" />
                     <div :class="'text-subtitle-1 text-capitalize font-weight-bold mt-3 text-secondary'"  v-text="state.formData.title3"></div>
                     <h4 :class="'text-h4 mt-1 text-secondary' " v-text="state.formData.dato3"></h4>
                 </div>
@@ -329,7 +482,7 @@ const lineChart = {
                 :class="'text-decoration-none d-flex align-center justify-center text-center rounded-md pa-6  bg-lighterror'"
             >
                 <div :class="'bg-lighterror'">
-                    <img :src="card_icon1" alt="icon" />
+                    <img  src="@/assets/images/misimagenes/prueba2.png" class="imagen" />
                     <div :class="'text-subtitle-1 text-capitalize font-weight-bold mt-3 text-error'"  v-text="state.formData.title4"></div>
                     <h4 :class="'text-h4 mt-1 text-error' " v-text="state.formData.dato4"></h4>
                 </div>
@@ -340,7 +493,7 @@ const lineChart = {
                 :class="'text-decoration-none d-flex align-center justify-center text-center rounded-md pa-6  bg-lightsuccess'"
             >
                 <div :class="'bg-lightsuccess'">
-                    <img :src="card_icon1" alt="icon" />
+                    <img  src="@/assets/images/misimagenes/prueba4.png" class="imagen" />
                     <div :class="'text-subtitle-1 text-capitalize font-weight-bold mt-3 text-success'"  v-text="state.formData.title5"></div>
                     <h4 :class="'text-h4 mt-1 text-success' " v-text="state.formData.dato5"></h4>
                 </div>
@@ -351,7 +504,7 @@ const lineChart = {
                 :class="'text-decoration-none d-flex align-center justify-center text-center rounded-md pa-6  bg-lightprimary'"
             >
                 <div :class="'bg-lightprimary'">
-                    <img :src="card_icon1" alt="icon" />
+                    <img  src="@/assets/images/misimagenes/prueba4.png" class="imagen" />
                     <div :class="'text-subtitle-1 text-capitalize font-weight-bold mt-3 text-primary'"  v-text="state.formData.title6"></div>
                     <h4 :class="'text-h4 mt-1 text-primary' " v-text="state.formData.dato6"></h4>
                 </div>
@@ -371,7 +524,14 @@ const lineChart = {
                     <v-card-subtitle class="text-subtitle-1 textSecondary">Fuerzas</v-card-subtitle>
                 </div>
                 <div class="my-sm-0 my-2">
-                    <v-select v-model="select" :items="items" variant="outlined" density="compact" hide-details></v-select>
+                    <v-select 
+                    v-model="select"
+                    item-text="text"
+                    :items="nombresMeses" 
+                    variant="outlined" 
+                    density="compact" 
+                    @update:model-value="getEncargado(select);"
+                    hide-details></v-select>
                 </div>
             </div>
 
@@ -379,7 +539,7 @@ const lineChart = {
                 <v-col cols="12" sm="12" class="pt-7">
                     <apexchart type="bar" height="375" :options="chartOptions" :series="lineChart.series"> </apexchart>
                 </v-col>
-                <v-col cols="12" sm="4" class="pt-7">
+              <!---  <v-col cols="12" sm="4" class="pt-7">
                     <div class="d-flex align-center mt-md-6 mt-3">
                         <v-avatar class="rounded-md bg-lightprimary text-primary">
                             <GridDotsIcon size="22" />
@@ -406,8 +566,64 @@ const lineChart = {
                         </div>
                         <v-btn color="primary" class="mt-10" variant="flat" block>View Full Report</v-btn>
                     </div>
-                </v-col>
+                </v-col>-->
             </v-row>
+            <v-row>
+        <v-col cols="12">
+            <v-row>
+                <v-col cols="12" lg="6">
+                    <!-- ---------------------------------------------------- -->
+                    <!-- Donut Chart -->
+                    <!-- ---------------------------------------------------- -->
+                    <v-card elevation="10" >
+        <v-card-item class="py-4 px-6">
+            <div class="d-sm-flex align-center justify-space-between">
+                <v-card-title class="text-h5"> Mantenimientos finalizados</v-card-title>
+                <!-- <template v-slot:append> -->
+                <slot name="action">
+                    dfdf
+                </slot>
+                <!-- </template> -->
+            </div>
+        </v-card-item>
+        <v-divider>
+            dfdfdf
+        </v-divider>
+        <v-card-text>
+            <slot />
+            <apexchart type="donut" height="300" :options="donutchartOptions" :series="donutChart.series"> </apexchart>
+        </v-card-text>
+    </v-card>
+                </v-col>
+                <v-col cols="12" lg="6">
+                    <!-- ---------------------------------------------------- -->
+                    <!-- Pie Chart -->
+                    <!-- ---------------------------------------------------- -->
+                   
+                    <v-card elevation="10" >
+        <v-card-item class="py-4 px-6">
+            <div class="d-sm-flex align-center justify-space-between">
+                <v-card-title class="text-h5"> Mantenimientos pendientes</v-card-title>
+                <!-- <template v-slot:append> -->
+                <slot name="action">
+                    dfdf
+                </slot>
+                <!-- </template> -->
+            </div>
+        </v-card-item>
+        <v-divider>
+            dfdfdf
+        </v-divider>
+        <v-card-text>
+            <slot />
+            <apexchart type="pie" height="300" :options="piechartOptions" :series="pieChart.series"> </apexchart>
+        </v-card-text>
+    </v-card>
+                </v-col>
+              
+            </v-row>
+        </v-col>
+    </v-row>
         </v-card-item>
     </v-card>
                 </v-col>
@@ -417,3 +633,11 @@ const lineChart = {
         </v-col>    
     </v-row>
 </template>
+
+<style>
+  .imagen{
+    width: 50%;
+    height: 50%;
+   
+  }
+</style>

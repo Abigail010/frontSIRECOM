@@ -340,6 +340,12 @@ import { readonly } from 'vue';
   const desserts = ref([]) as any
 const getMecanicos = async() => {
     desserts.value = await orden.getDisponibles() 
+    let n = desserts.value.length;
+   //console.log('numero '+n)
+    if(n==0){
+     // console.log('despliegue de todo')
+      desserts.value = await orden.getMecanicos() 
+    }
 }
   onMounted(async () => {
     await getResourcesList()

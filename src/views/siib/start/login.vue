@@ -64,21 +64,21 @@ const Toast = Swal.mixin({
 <template>
 <div class="pa-3 prueba" >
     <v-row class="h-100vh mh-100 auth ">
-      <v-col cols="12" lg="4" xl="4" class="d-lg-flex align-center justify-center authentication position-relative">
+      <v-col cols="12" lg="4" xl="4" class="d-lg-flex align-center justify-center  position-relative">
         <div></div>
       </v-col>
       
-      <v-col cols="12" lg="5" xl="4" class="d-flex align-center justify-center" style="background-color: #051d39; width: 80%; height: 70%; margin-top: 5%; border-radius: 15px solid black;">
-        <div class="mt-xl-0 mt-5 mw-100" style="background-color: #051d39;">
+      <v-col cols="12" lg="3" xl="4" class="d-flex align-center justify-center login_" >
+        <div class="mt-xl-0 mt-5 mw-100" >
           <div class="text-center mb-3">
             <img
-              style="width: 30%; height: 50%; border-radius: 50%;"
+              class="imagen"
               src="@/assets/images/misimagenes/logo.png"
             />
           </div>
           
           <!-- Cambia el color y el tamaño de "INICIO DE SESIÓN" -->
-          <h2 class="text-center mb-2" style="color: black; font-size: 2.5rem; font-weight: bold;">
+          <h2 class="text-center mb-2" style="color: black; font-size: 2.1rem; font-weight: bold;">
             INICIO DE SESIÓN
           </h2>
           
@@ -128,7 +128,7 @@ const Toast = Swal.mixin({
         </div>
       </v-col>
       
-      <v-col cols="12" lg="4" xl="4" class="d-lg-flex align-center justify-center authentication position-relative">
+      <v-col cols="12" lg="5" xl="4" class="d-lg-flex align-center justify-center  position-relative">
         <div></div>
       </v-col>
     </v-row>
@@ -139,9 +139,27 @@ const Toast = Swal.mixin({
 
 <style lang="css">
   .prueba{
-   background-image: url('../../../assets/images/misimagenes/prueba_vista.gif');
-  background-size: cover; 
+   background-image: url('../../../assets/images/misimagenes/opcion1.png');
+   background-size: 1600px 800px; /* Ajusta el tamaño a 300px de ancho y 200px de alto */
   background-position: center;
+  background-repeat: no-repeat;
+  width: 100%;
+  height: 100%; /* Asegúrate de que el contenedor tenga una altura definida */
+  
+  }
+
+  .login_{
+    background-color: white; 
+    width:  80%;
+     height: 70%;
+     margin-top: 10%;
+    
+     border-radius: 40px ;
+  }
+  .imagen{
+    width: 30%; 
+    height: 50%; 
+    border-radius: 50%;
   }
 </style>
 

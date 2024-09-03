@@ -173,11 +173,7 @@ submitButton.value = true
     
    })
    window.location.reload()
-
-
-
 }
-
 
 const buttonSendFormT = async () => {
   submitButton.value = true
@@ -194,7 +190,6 @@ const buttonSendFormT = async () => {
      })
      window.location.reload()
   }
-
 
   onMounted( async () => {
     await getDepartmentsList()
@@ -322,8 +317,8 @@ const buttonSendFormT = async () => {
             </div>
         </v-col>
         <v-col cols="12">
-            <v-btn color="primary" @click.prevent="buttonSendForm()" flat>Submit</v-btn>
-            <v-btn class="bg-lighterror text-error ml-4" flat>Cancel</v-btn>
+            <v-btn color="primary" @click.prevent="buttonSendForm()" flat>Enviar</v-btn>
+            <v-btn class="bg-lighterror text-error ml-4" flat>Cancelar</v-btn>
         </v-col>
     </v-row>
                         </v-window-item>
@@ -393,8 +388,8 @@ const buttonSendFormT = async () => {
       
         
         <v-col cols="12">
-            <v-btn color="primary" flat @click.prevent="buttonSendForm()">Submit</v-btn>
-            <v-btn class="bg-lighterror text-error ml-4" flat>Cancel</v-btn>
+            <v-btn color="primary" flat @click.prevent="buttonSendForm()">Enviar</v-btn>
+            <v-btn class="bg-lighterror text-error ml-4" flat>Cancelar</v-btn>
         </v-col>
     </v-row>
                         </v-window-item>
@@ -495,8 +490,8 @@ const buttonSendFormT = async () => {
           </v-col>
   </template>
   <v-col cols="12">
-            <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR')" color="primary" @click.prevent="buttonSendFormT()" flat>Submit</v-btn>
-            <v-btn class="bg-lighterror text-error ml-4" flat>Cancel</v-btn>
+            <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR')" color="primary" @click.prevent="buttonSendFormT()" flat>Enviar</v-btn>
+            <v-btn class="bg-lighterror text-error ml-4" flat>Cancelar</v-btn>
         </v-col>
       </v-row>
                         </v-window-item>

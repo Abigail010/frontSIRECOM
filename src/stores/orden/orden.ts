@@ -48,6 +48,17 @@ export const useOrdenStore = defineStore({
           return { ok: false, message: message }
         }
       },
+         //  OBTENER LISTA DE RECEPCIONES DOCUMENTALES MEDIANTE CASOS
+         async getMecanicos () {
+          try {
+            const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
+            const { data } = await siibApi.get('vehiculo/mecanicos/' + userLogged)
+            return data
+          } catch (error: any) {
+            const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+            return { ok: false, message: message }
+          }
+        },
             //  OBTENER LISTA DE RECEPCIONES DOCUMENTALES MEDIANTE CASOS
             async getOrdenU () {
               try {

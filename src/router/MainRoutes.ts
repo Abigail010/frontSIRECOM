@@ -317,7 +317,16 @@ const MainRoutes = {
             path: '/repuestoForm/:id_filtro',
             component: () => import('@/views/siib/resources/filtros/repuestoForm.vue')
         },
-
+        {
+            name: 'repuestoList',
+            path: '/repuestoList',
+            component: () => import('@/views/siib/resources/filtros/repuestoList.vue')
+        },
+        {
+            name: 'formulario',
+            path: '/formulario/:id',
+            component: () => import('@/views/siib/resources/filtros/formulario.vue')
+        },
 
         {
             name: 'tipo_manList',

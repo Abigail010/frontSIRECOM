@@ -57,9 +57,9 @@ export const useSearchStore = defineStore({
           return { ok: false, message: message }
         }
       },
-      async getPrueba2() {
+      async getPrueba2(mes: any) {
         try {
-          const { data } = await siibApi.get('search_tot/fuerzas/')
+          const { data } = await siibApi.get('search_tot/fuerzas/'+mes)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -166,7 +166,7 @@ export const useSearchStore = defineStore({
 
       async ReportVe(form:any) {
         try {
-          const url = 'http://localhost:3001/search_tot/report_vehi';
+          const url = 'http://localhost:3001/search_tot/report_vehi/';
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
