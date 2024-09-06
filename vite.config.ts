@@ -26,5 +26,5 @@ export default defineConfig({
         exclude: ['vuetify'],
         entries: ['./src/**/*.vue']
     },
-    base: `/siib/`,
+    base: `/sirecom/`,
 });

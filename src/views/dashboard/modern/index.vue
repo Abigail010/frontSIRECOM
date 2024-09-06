@@ -1,16 +1,6 @@
 <script setup lang="ts">
 /*Call Components*/
-import Topcards from "../dashboardComponents/modern/TopCards.vue";
-import RevenueUpdates from "../dashboardComponents/modern/RevenueUpdates.vue";
-import YearlyBreakup from "../dashboardComponents/modern/YearlyBreakup.vue";
-import MonthlyEarnings from "../dashboardComponents/modern/MonthlyEarnings.vue";
-import EmployeeSalary from "../dashboardComponents/modern/EmployeeSalary.vue";
-import Customers from "../dashboardComponents/modern/Customers.vue";
-import Projects from "../dashboardComponents/modern/Projects.vue";
-import UserCard from "../dashboardComponents/modern/UserCard.vue";
-import BestSellingProducts from "../dashboardComponents/modern/BestSellingProducts.vue";
-import WeeklyStats from "../dashboardComponents/modern/WeeklyStats.vue";
-import TopProjects from "../dashboardComponents/modern/TopProjects.vue";
+
 import { useSearchStore } from '@/stores/resources/busqueda';
 import UiChildCard from '@/components/shared/UiChildCard.vue';
 import card_icon1  from "@/assets/images/svgs/icon-user-male.svg"
@@ -539,6 +529,7 @@ const pieChart = {
                 <v-col cols="12" sm="12" class="pt-7">
                     <apexchart type="bar" height="375" :options="chartOptions" :series="lineChart.series"> </apexchart>
                 </v-col>
+               
               <!---  <v-col cols="12" sm="4" class="pt-7">
                     <div class="d-flex align-center mt-md-6 mt-3">
                         <v-avatar class="rounded-md bg-lightprimary text-primary">

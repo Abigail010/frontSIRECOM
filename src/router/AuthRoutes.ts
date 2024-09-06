@@ -8,7 +8,7 @@ const AuthRoutes = {
         {
             name: 'Login',
             path: '/',
-            component: () => import('@/views/siib/start/login.vue')
+            component: () => import('@/views/sirecom/start/login.vue')
         },
         {
             name: 'Landing Page',
@@ -18,7 +18,7 @@ const AuthRoutes = {
         {
             name: 'Landin',
             path: '/LandingSiib',
-            component: () => import('@/views/siib/landingPage/index.vue')
+            component: () => import('@/views/sirecom/landingPage/index.vue')
         },
        
         // {
@@ -76,11 +76,7 @@ const AuthRoutes = {
             path: '/auth/maintenance',
             component: () => import('@/views/authentication/Maintenance.vue')
         },
-        {
-            name: 'externalRegistrationForm',
-            path: '/externalRegistrationForm/:id',
-            component: () => import('@/views/siib/moduleInteroperability/externalRegistrationForm.vue')
-        }
+       
     ]
 };
 

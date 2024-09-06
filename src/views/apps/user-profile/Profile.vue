@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
-import back2 from '@/assets/images/misimagenes/back2.png';
+
 // components
 import ProfileBanner from '@/components/apps/user-profile/ProfileBanner.vue';
 import IntroCard from '@/components/apps/user-profile/IntroCard.vue';

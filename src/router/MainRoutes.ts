@@ -10,7 +10,7 @@ const MainRoutes = {
         {
             name: 'welcome',
             path: '/welcome',
-            component: () => import('@/views/siib/dashboard/index.vue')
+            component: () => import('@/views/sirecom/dashboard/index.vue')
         },
        
     
@@ -18,60 +18,60 @@ const MainRoutes = {
         {
             name: 'profileList',
             path: '/profileList',
-            component: () => import('@/views/siib/resources/profile/profileList.vue')
+            component: () => import('@/views/sirecom/resources/profile/profileList.vue')
         },
         {
             name: 'profileForm',
             path: '/profileForm/:id_perfil',
-            component: () => import('@/views/siib/resources/profile/profileForm.vue')
+            component: () => import('@/views/sirecom/resources/profile/profileForm.vue')
         },
         
         // MODULO USUARIOS
         {
             name: 'userList',
             path: '/userList',
-            component: () => import('@/views/siib/resources/user/userList.vue')
+            component: () => import('@/views/sirecom/resources/user/userList.vue')
         },
         {
             name: 'userForm',
             path: '/userForm/:id_usuario',
-            component: () => import('@/views/siib/resources/user/userForm.vue')
+            component: () => import('@/views/sirecom/resources/user/userForm.vue')
         },
                 // MODULO USUARIOS
         {
             name: 'tallerList',
             path: '/tallerList',
-            component: () => import('@/views/siib/resources/taller/tallerList.vue')
+            component: () => import('@/views/sirecom/resources/taller/tallerList.vue')
         },
         {
             name: 'tallerForm',
             path: '/tallerForm/:id_taller',
-            component: () => import('@/views/siib/resources/taller/tallerForm.vue')
+            component: () => import('@/views/sirecom/resources/taller/tallerForm.vue')
         },
         {
             name: 'ordenList',
             path: '/ordenList',
-            component: () => import('@/views/siib/ordenes/ordenList.vue')
+            component: () => import('@/views/sirecom/ordenes/ordenList.vue')
         },
         {
             name: 'ordenForm',
             path: '/ordenForm/:id_orden',
-            component: () => import('@/views/siib/ordenes/ordenForm.vue')
+            component: () => import('@/views/sirecom/ordenes/ordenForm.vue')
         },
         {
             name: 'registroForm',
             path: '/registroForm/:id_orden',
-            component: () => import('@/views/siib/ordenes/registroForm.vue')
+            component: () => import('@/views/sirecom/ordenes/registroForm.vue')
         },
         {
             name: 'soliRepForm',
             path: '/soliRepForm/:id_orden',
-            component: () => import('@/views/siib/ordenes/soli_repForm.vue')
+            component: () => import('@/views/sirecom/ordenes/soli_repForm.vue')
         },
         {
             name: 'Busqueda_list',
             path: '/Busqueda_list',
-            component: () => import('@/views/siib/ordenes/busqueda.vue')
+            component: () => import('@/views/sirecom/ordenes/busqueda.vue')
         },
 
 
@@ -79,68 +79,68 @@ const MainRoutes = {
          {
             name: 'serviciosList',
             path: '/serviciosList',
-            component: () => import('@/views/siib/resources/servicios/serviciosList.vue')
+            component: () => import('@/views/sirecom/resources/servicios/serviciosList.vue')
         },
         {
             name: 'serviciosForm',
             path: '/serviciosForm/:id_servicio',
-            component: () => import('@/views/siib/resources/servicios/serviciosForm.vue')
+            component: () => import('@/views/sirecom/resources/servicios/serviciosForm.vue')
         },
         //DELITO
         {
             name: 'accesorioList',
             path: '/accesorioList',
-            component: () => import('@/views/siib/resources/accesorios/accesoriosList.vue')
+            component: () => import('@/views/sirecom/resources/accesorios/accesoriosList.vue')
         },
         {
             name: 'accesorioForm',
             path: '/accesorioForm/:id_accesorio',
-            component: () => import('@/views/siib/resources/accesorios/accesorioForm.vue')
+            component: () => import('@/views/sirecom/resources/accesorios/accesorioForm.vue')
         },
 
          //DELITO
          {
             name: 'systemList',
             path: '/systemList',
-            component: () => import('@/views/siib/resources/sistemas/systemList.vue')
+            component: () => import('@/views/sirecom/resources/sistemas/systemList.vue')
         },
         {
             name: 'systemForm',
             path: '/systemForm/:id_sistema',
-            component: () => import('@/views/siib/resources/sistemas/systemForm.vue')
+            component: () => import('@/views/sirecom/resources/sistemas/systemForm.vue')
         },
 
           //DELITO
           {
             name: 'filtroList',
             path: '/filtroList',
-            component: () => import('@/views/siib/resources/filtros/filtroList.vue')
+            component: () => import('@/views/sirecom/resources/filtros/filtroList.vue')
         },
         {
             name: 'repuestoForm',
             path: '/repuestoForm/:id_filtro',
-            component: () => import('@/views/siib/resources/filtros/repuestoForm.vue')
+            component: () => import('@/views/sirecom/resources/filtros/repuestoForm.vue')
         },
         {
             name: 'repuestoList',
             path: '/repuestoList',
-            component: () => import('@/views/siib/resources/filtros/repuestoList.vue')
+            component: () => import('@/views/sirecom/resources/filtros/repuestoList.vue')
         },
         {
             name: 'formulario',
             path: '/formulario/:id',
-            component: () => import('@/views/siib/resources/filtros/formulario.vue')
+            component: () => import('@/views/sirecom/resources/filtros/formulario.vue')
         },
 
         {
             name: 'tipo_manList',
             path: '/tipo_manList',
-            component: () => import('@/views/siib/resources/tipo_man/tipo_manList.vue')
+            component: () => import('@/views/sirecom/resources/tipo_man/tipo_manList.vue')
         },
         {
             name: 'tipo_manForm',
             path: '/tipo_manForm/:id_man',
-            component: () => import('@/views/siib/resources/tipo_man/tipo_manForm.vue')
+            component: () => import('@/views/sirecom/resources/tipo_man/tipo_manForm.vue')
         },
 
 
@@ -149,7 +149,7 @@ const MainRoutes = {
         {
             name: 'userProfile',
             path: '/userProfile',
-            component: () => import('@/views/siib/resources/user/userProfile.vue')
+            component: () => import('@/views/sirecom/resources/user/userProfile.vue')
         },
          
      
@@ -160,12 +160,12 @@ const MainRoutes = {
         {
             name: 'vehicleMileageList',
             path: '/vehicleMileageList',
-            component: () => import('@/views/siib/resources/vehicleMileage/vehicleMileageList.vue')
+            component: () => import('@/views/sirecom/resources/vehicleMileage/vehicleMileageList.vue')
         },
         {
             name: 'vehicleMileageForm',
             path: '/vehicleMileageForm/:id_kilometraje',
-            component: () => import('@/views/siib/resources/vehicleMileage/vehicleMileageForm.vue')
+            component: () => import('@/views/sirecom/resources/vehicleMileage/vehicleMileageForm.vue')
         },
 
 
