@@ -430,10 +430,10 @@ const encargados = [{ ID_EU: 1, ENCARGADO:'USUARIO 1', ID_E: 1 },
  // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
  const buttonSearchBien = async () => {
   state.formData.id_bien= ''
- console.log(state.formData)
+ //console.log(state.formData)
   
     const respuesta = await userStore.bienes(state.formData)
-    console.log(respuesta)
+   // console.log(respuesta)
 }
 
   const getDescriptionProperty = (id:number) => {

@@ -29,6 +29,7 @@ import { useSearchStore } from '@/stores/resources/busqueda';
       href: '#'
     }
   ]);
+  const tipo=['PROPIO', 'EXTERNO']
   const estado_ve = ['EN PROCESO', 'ENTREGADO', 'FINALIZADO']
   const fuerzas = [{SIGLA:'UELICN', NOMBRE:'UELICN' }, {SIGLA:'DAZULES',NOMBRE:'DIABLOS AZULES' }, {SIGLA:'DNEGROS', NOMBRE:'DIABLOS NEGROS'}, {SIGLA:'DROJOS', NOMBRE:'DIABLOS ROJOS'}, {SIGLA:'DVERDES', NOMBRE:'DIABLOS VERDES'}, {SIGLA: 'C.E.O.', NOMBRE:'C.E.O.'}, {SIGLA:'FELCN', NOMBRE:'FELCN'} ]
   const currentDate2 = format(new Date(), "yyyy-MM-dd");
@@ -41,8 +42,12 @@ import { useSearchStore } from '@/stores/resources/busqueda';
       fecha_f:currentDate2, 
       fuerza:'', 
       estado_v:'', 
+      tipo_man:'',
   
     }, formData2: {
+      marca:'', 
+      clase:'',
+      tipo:'', 
       fecha_i1:'', 
       fecha_f1:currentDate2, 
     }, formData3:{
@@ -145,7 +150,7 @@ const buttonSendForm = async () => {
       </h4>
 
       <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="4">
             
           <v-label class="mb-2 font-weight-medium">Placa o Chasis <span style="color:red"></span></v-label>
     
@@ -166,7 +171,7 @@ const buttonSendForm = async () => {
             </div>
           </template>
         </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="4">
           <v-label class="mb-2 font-weight-medium">Fuerza <span style="color:red"></span></v-label>
     
           <v-select
@@ -187,8 +192,29 @@ const buttonSendForm = async () => {
             </div>
           </template>
         </v-col>
+        <v-col cols="12" md="4">
+          <v-label class="mb-2 font-weight-medium">Tipo de Taller <span style="color:red"></span></v-label>
+    
+          <v-select
+                  v-model="state.formData.tipo_man"
+                  :items="tipo"
+                  item-title="NOMBRE"
+                  item-value="NOMBRE"
+                
+                  @input="miValidacion()"
+                  :error="submitButton && !state.formData.tipo_man"
+                  hide-details
+          ></v-select>
+          <template v-if="submitButton && !state.formData.fuerza">
+            <div class="v-messages font-weight-black px-2 py-2">
+              <div class="v-messages__message text-error ">
+                El campo es requerido
+              </div>
+            </div>
+          </template>
+        </v-col>
         
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="4">
           <v-label class="mb-2 font-weight-medium">Fecha Inicio <span style="color:red"></span></v-label>
     
           <v-text-field
@@ -209,7 +235,7 @@ const buttonSendForm = async () => {
             </div>
           </template>
         </v-col>
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="4">
           <v-label class="mb-2 font-weight-medium">Fecha final <span style="color:red"></span></v-label>
           <v-text-field
             variant="outlined"
@@ -222,7 +248,7 @@ const buttonSendForm = async () => {
            
           />
           </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="4">
           <v-label class="mb-2 font-weight-medium">Estado <span style="color:red"></span></v-label>
           <v-select
                   v-model="state.formData.estado_v"
@@ -238,7 +264,7 @@ const buttonSendForm = async () => {
               <v-btn
                 color="primary"
                 @click= buttonGenerarReport()
-                :disabled="!state.formData.placa_chasis && !state.formData.fuerza && !state.formData.fecha_i && !state.formData.estado_v"
+                :disabled="!state.formData.placa_chasis && !state.formData.fuerza && !state.formData.fecha_i && !state.formData.estado_v && !state.formData.tipo_man"
                 readonly="true"
                 ><SearchIcon/>Generar Reporte
               </v-btn>
@@ -256,7 +282,71 @@ const buttonSendForm = async () => {
           <v-col cols="12" lg="12">
             <h3 class="my-3 text-primary">GENERAR REPORTE DE INGRESO DE VEHÍCULOS</h3>
           </v-col>
+          <v-col cols="12" md="4">
+          <v-label class="mb-2 font-weight-medium">Clase <span style="color:red"></span></v-label>
+    
+          <v-select
+                  v-model="state.formData.fuerza"
+                  :items="fuerzas"
+                  item-title="NOMBRE"
+                  item-value="NOMBRE"
+                
+                  @input="miValidacion()"
+                  :error="submitButton && !state.formData.fuerza"
+                  hide-details
+          ></v-select>
+          <template v-if="submitButton && !state.formData.fuerza">
+            <div class="v-messages font-weight-black px-2 py-2">
+              <div class="v-messages__message text-error ">
+                El campo es requerido
+              </div>
+            </div>
+          </template>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-label class="mb-2 font-weight-medium">Marca <span style="color:red"></span></v-label>
+    
+          <v-select
+                  v-model="state.formData.fuerza"
+                  :items="fuerzas"
+                  item-title="NOMBRE"
+                  item-value="NOMBRE"
+                
+                  @input="miValidacion()"
+                  :error="submitButton && !state.formData.fuerza"
+                  hide-details
+          ></v-select>
+          <template v-if="submitButton && !state.formData.fuerza">
+            <div class="v-messages font-weight-black px-2 py-2">
+              <div class="v-messages__message text-error ">
+                El campo es requerido
+              </div>
+            </div>
+          </template>
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-label class="mb-2 font-weight-medium">Tipo <span style="color:red"></span></v-label>
+    
+          <v-select
+                  v-model="state.formData.fuerza"
+                  :items="fuerzas"
+                  item-title="NOMBRE"
+                  item-value="NOMBRE"
+                
+                  @input="miValidacion()"
+                  :error="submitButton && !state.formData.fuerza"
+                  hide-details
+          ></v-select>
+          <template v-if="submitButton && !state.formData.fuerza">
+            <div class="v-messages font-weight-black px-2 py-2">
+              <div class="v-messages__message text-error ">
+                El campo es requerido
+              </div>
+            </div>
+          </template>
+        </v-col>
             <v-col cols="12" md="5">
+              
                 <v-label class="mb-2 font-weight-medium">Fecha Inicio <span style="color:red">(*)</span></v-label>
             
                 <v-text-field

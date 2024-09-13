@@ -21,7 +21,7 @@ export const useTallerStore = defineStore({
       // OBTENER INFORMACION DE DEPOSITO POR ID
       async taller_id (id_taller: any) {
         try {          
-                   const { data } = await siibApi.get('tall/taller_id/' + id_taller)
+          const { data } = await siibApi.get('tall/taller_id/' + id_taller)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

@@ -2,17 +2,12 @@
 import { ref, onMounted} from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
-import { useVehicleStore } from '@/stores/resources/vehicle';
+import { useProcedenciasStore } from '@/stores/resources/proce';
 import Swal from 'sweetalert2'
-import { useTallerStore } from '@/stores/resources/taller';
-import { useResourceStore } from '@/stores/resource';
-import { validateText } from '@/utils/helpers/validateText'
-import { MapboxMap } from 'vue-mapbox-ts';
 
-const tallerStore = useTallerStore()
-const sistemaStore = useVehicleStore()
+const Procedencias = useProcedenciasStore()
 
-const page = ref({ title: 'Vehículos' });
+const page = ref({ title: 'Procedencias' });
 const breadcrumbs = ref([
   {
     text: 'Dashboard',
@@ -20,30 +15,26 @@ const breadcrumbs = ref([
     href: '#'
   },
   {
-    text: 'Listado de vehículos',
+    text: 'Listado de Procedencias',
     disabled: true,
     href: '#'
   }
 ]);
 
   const desserts = ref([]) as any
-  const getsistemasList = async() => {
-    desserts.value = await sistemaStore.getvehicle()
+  const getList = async() => {
+    desserts.value = await Procedencias.Procedencia()
   }
 
-  const buttonsistemaForm = (id_v: any) => {
-    router.push({ name: 'vehiculoForm', params: { id_v: id_v }})
+  const buttonProcedenciaForm = (id_procedencia: any) => {
+    router.push({ name: 'proceForm', params: { id_procedencia: id_procedencia }})
   }
 
 
 // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
-  { title: 'Fuerza', key: 'nombre_fuerza' },
-  { title: 'Placa', key: 'placa' },
-  { title: 'Chasis', key: 'chasis' },
-  { title: 'Tipo', key: 'tipo_v' },
-  { title: 'Color', key: 'color' },
+  { title: 'Procedencias', key: 'nombre_procedencia' },
 ])
 
 function deleteItem(item: any) {
@@ -57,10 +48,10 @@ function deleteItem(item: any) {
         confirmButtonText: "Si, eliminar!"
     }).then(async (result) => {
     if (result.isConfirmed) {
-      const { ok, message } = await sistemaStore.deleteVehiculo({"id":item})
+      const { ok, message } = await Procedencias.deleteProcedencias({"id":item})
       const icono = (ok ? 'success' : 'error')
       if(ok){
-        await getsistemasList()
+        await getList()
       }
       Toast.fire({
         icon: icono,
@@ -81,8 +72,7 @@ const Toast = Swal.mixin({
 });
 
 onMounted(() => {
-    
-  getsistemasList()
+  getList()
 });
 </script>
 
@@ -94,7 +84,7 @@ onMounted(() => {
             class="border rounded-md" 
             :headers="headers" 
             :items="desserts" 
-            :sort-by="[{ key: 'nombre_sistema', order: 'asc' }]" 
+            :sort-by="[{ key: 'nombre_Procedencia', order: 'asc' }]" 
             :search="search"
           >
             <template v-slot:top>
@@ -112,15 +102,15 @@ onMounted(() => {
                   color="primary"  
                   variant="flat" 
                   dark   
-                  @click="buttonsistemaForm(0)" 
-                >Nuevo vehículo</v-btn>
+                  @click="buttonProcedenciaForm(0)" 
+                >Nuevo Procedencia</v-btn>
               </v-toolbar>                        
             </template>
             <template v-slot:item.actions="{ item }">
-                <v-icon color="info" size="large" class="me-2" @click="buttonsistemaForm(item.id_v)">
+                <v-icon color="info" size="large" class="me-2" @click="buttonProcedenciaForm(item.id_procedencia)">
                     mdi-pencil
                 </v-icon>
-                <v-icon color="error" size="large"  @click="deleteItem(item.id_v)">
+                <v-icon color="error" size="large"  @click="deleteItem(item.id_procedencia)">
                     mdi-delete
                 </v-icon>
             </template>                    

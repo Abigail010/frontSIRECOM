@@ -143,6 +143,69 @@ const MainRoutes = {
             component: () => import('@/views/sirecom/resources/tipo_man/tipo_manForm.vue')
         },
 
+         //DELITO
+         {
+            name: 'VehiculoList',
+            path: '/VehiculoList',
+            component: () => import('@/views/sirecom/resources/Vehiculos/vehiculoList.vue')
+        },
+        {
+            name: 'vehiculoForm',
+            path: '/vehiculoForm/:id_v',
+            component: () => import('@/views/sirecom/resources/Vehiculos/vehiculoForm.vue')
+        },
+        {
+            name: 'FuerzasList',
+            path: '/FuerzasList',
+            component: () => import('@/views/sirecom/resources/Fuerzas/FuerzasList.vue')
+        },
+        {
+            name: 'FuerzasForm',
+            path: '/FuerzasForm/:id_fuerza',
+            component: () => import('@/views/sirecom/resources/Fuerzas/FuerzasForm.vue')
+        },
+        {
+            name: 'MarcaList',
+            path: '/MarcaList',
+            component: () => import('@/views/sirecom/resources/Marcas/marcasList.vue')
+        },
+        {
+            name: 'MarcaForm',
+            path: '/MarcaForm/:id_marca',
+            component: () => import('@/views/sirecom/resources/Marcas/marcaForm.vue')
+        },
+        {
+            name: 'ClaseList',
+            path: '/ClaseList',
+            component: () => import('@/views/sirecom/resources/Clases/clasesList.vue')
+        },
+        {
+            name: 'ClaseForm',
+            path: '/ClaseForm/:id_clase',
+            component: () => import('@/views/sirecom/resources/Clases/claseForm.vue')
+        },
+        {
+            name: 'TipoList',
+            path: '/TipoList',
+            component: () => import('@/views/sirecom/resources/Tipo/tipoList.vue')
+        },
+        {
+            name: 'TipoForm',
+            path: '/TipoForm/:id_tipo',
+            component: () => import('@/views/sirecom/resources/Tipo/tipoForm.vue')
+        },
+        {
+            name: 'proceList',
+            path: '/proceList',
+            component: () => import('@/views/sirecom/resources/procedencias/proceList.vue')
+        },
+        {
+            name: 'proceForm',
+            path: '/proceForm/:id_procedencia',
+            component: () => import('@/views/sirecom/resources/procedencias/proceForm.vue')
+        },
+
+
 
 
         // PERFIL DE USUARIO
@@ -153,9 +216,6 @@ const MainRoutes = {
         },
          
      
-            
-      
-       
         // MODULO KILOMETRAJE DE VEHICULO
         {
             name: 'vehicleMileageList',

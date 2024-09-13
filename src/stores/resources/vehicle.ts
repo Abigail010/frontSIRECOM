@@ -13,6 +13,35 @@ const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identid
 export const useVehicleStore = defineStore({
   id: 'vehicle',
   actions: {
+     // OBTENER INFORMACION DEL BIEN VEHICULO
+     async getvehicle () {
+      try {
+        const { data } = await siibApi.get('vehicle/getvehi_/' )
+        return data
+      } catch (error: any) {
+        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+        return { ok: false, message: message, id: 0}
+      }
+    },
+     // OBTENER INFORMACION DEL BIEN VEHICULO
+     async getFuerza () {
+      try {
+        const { data } = await siibApi.get('vehicle/getFuerza/' )
+        return data
+      } catch (error: any) {
+        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+        return { ok: false, message: message, id: 0}
+      }
+    },
+    async getProce () {
+      try {
+        const { data } = await siibApi.get('vehicle/getpro/' )
+        return data
+      } catch (error: any) {
+        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+        return { ok: false, message: message, id: 0}
+      }
+    },
 
     // OBTENER INFORMACION DEL BIEN VEHICULO
     async vehicle (id_bien_registro: number) {
@@ -24,38 +53,111 @@ export const useVehicleStore = defineStore({
         return { ok: false, message: message, id: 0}
       }
     },
+        // CREAR USUARIO
+       /* async createUser(form: any) {
+          try {
+            const { data } = await siibApi.post('user/create_user/' + userLogged, form)
+            router.push({ name: 'userList' });
+            return { ok: true, message: data.message }
+          } catch (error: any) {
+            const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+            return { ok: false, message: message }
+          }
+        },*/
 
     // CREAR INFORMACION DEL BIEN VEHICULO
+  /*  async createVehicle (form: any) {
+      try {
+        const { data } = await siibApi.post(`vehicle/create_vehicle/${userLogged}`, form);
+        router.push({ name: 'vehiculoList' });
+        return { ok: true, message: data.message };
+      } catch (error: any) {
+        // Check if error has a response and data property
+        const message = error?.response?.data?.message || 'error: sin conexion';
+        return { ok: false, message: message, id: 0 };
+      }
+    },*/
     async createVehicle (form: any) {
       try {
-        const formData = renameFiles(form, form.formulario_10, 'vehiculo')
-        const { data } = await siibApi.post('vehicle/create_vehicle/' + userLogged, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        return { ok: true, message: data.message, id: data.id }
+        const { data } = await siibApi.post('vehicle/create_vehicle/' + userLogged, form);
+       // router.push({ name: 'vehiculoList' });
+         router.push({ name: 'VehiculoList' });
+        return { ok: true, message: data.message };
+      } catch (error: any) {
+        // Agregar un log para ver la estructura completa del error
+        console.log(error);
+    
+        // Si existe error.response y error.response.data, obtén el mensaje. Si no, muestra 'sin conexion'.
+        const message = error.response?.data?.message || 'error: sin conexion';
+        
+        console.log(message);
+        return { ok: false, message: message };
+      }
+    },
+
+    async getIDv (id: any) {
+      try {
+        
+        const { data } = await siibApi.get('vehicle/vehicle/' + id)
+        return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-        return { ok: false, message: message, id: 0}
+        return { ok: false, message: message }
       }
     },
 
     // ACTUALIZAR INFORMACION DEL BIEN VEHICULO
+/*  async updateVehicle (form: any) {
+      try {
+        console.log('aqui')
+        const { data } = await siibApi.post('vehicle/update_vehicle/' + userLogged, form)
+        router.push({ name: 'vehiculoList' });
+        console.log(data)
+        return { ok: true, message: data.message }
+      } catch (error: any) {
+        const message = error.response && error.response.data
+        ? error.response.data.message
+        : 'error: sin conexion';
+        console.log(message)
+        return { ok: false, message: message}
+      }
+    },*/
     async updateVehicle (form: any) {
       try {
-        const formData = renameFiles(form, form.formulario_10, 'vehiculo')
-        const { data } = await siibApi.post('vehicle/update_vehicle/' + userLogged, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        })
-        return { ok: true, message: data.message, id: data.id }
+        const { data } = await siibApi.post('vehicle/update_vehicle/' + userLogged, form);
+       // router.push({ name: 'vehiculoList' });
+          router.push({ name: 'VehiculoList' });
+        return { ok: true, message: data.message };
       } catch (error: any) {
-        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-        return { ok: false, message: message, id: 0}
+        // Agregar un log para ver la estructura completa del error
+        console.log(error);
+    
+        // Si existe error.response y error.response.data, obtén el mensaje. Si no, muestra 'sin conexion'.
+        const message = error.response?.data?.message || 'error: sin conexion';
+        
+        console.log(message);
+        return { ok: false, message: message };
       }
     },
+    
+        // ELIMINAR USUARIO
+        async deleteVehiculo(form: any) {
+
+          try {
+            console.log(form)
+            const { data } = await siibApi.post('vehicle/delete_vehicle/' + userLogged, form)
+            router.push({ name: 'VehiculoList' });
+            return {
+              ok: true,
+              message: data.message,
+              id: data.id
+            }
+          } catch (error: any) {
+            const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+            return { ok: false, message: message, id: 0}
+          }
+        },
+    
 
     // REPORTE DEL BIEN VEHICULO
     async vehicleReport(id_bien_registro: number) {
@@ -102,6 +204,18 @@ export const useVehicleStore = defineStore({
         return { ok: false, message: message}
       }
     },
+
+   // CREAR INFORMACION DEL BIEN VEHICULO
+   async deleteVehicle (form: any) {
+    try {
+      const { data } = await siibApi.post('vehicle/delete_vehicle/' + userLogged, form)
+      return { ok: true, message: data.message }
+    } catch (error: any) {
+      const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+      return { ok: false, message: message }
+    }
+  },
+
 
     // CREAR INFORMACION DEL BIEN VEHICULO
     async deleteVehicleImage (form: any) {

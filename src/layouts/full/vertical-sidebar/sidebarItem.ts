@@ -171,6 +171,46 @@ const lista_menu = [
           to: '/tipo_manList'
         },
         {
+          title: 'Registro de vehículos',
+          icon: CircleIcon,
+          to: '/3level',
+          children: [
+            
+            
+                {
+                  title: 'Vehículos',
+                  icon: CircleXIcon,
+                  to: '/vehiculoList'
+                },
+                {
+                  title: 'Fuerzas',
+                  icon: CircleXIcon,
+                  to: '/FuerzasList'
+                },
+                {
+                  title: 'Marcas',
+                  icon: CircleXIcon,
+                  to: '/MarcaList'
+                },
+                {
+                  title: 'Clase',
+                  icon: CircleXIcon,
+                  to: '/ClaseList'
+                },
+                {
+                  title: 'Tipo',
+                  icon: CircleXIcon,
+                  to: '/TipoList'
+                },
+                {
+                  title: 'Procedencia',
+                  icon: CircleXIcon,
+                  to: '/proceList'
+                },        
+    
+          ]
+        },
+        {
           title: 'Bienes',
           icon: CircleIcon,
           to: '/3level',
