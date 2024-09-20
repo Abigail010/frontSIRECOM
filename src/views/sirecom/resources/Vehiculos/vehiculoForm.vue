@@ -42,6 +42,8 @@ const vehicleStore = useVehicleStore()
     }
   ]);
 
+
+  
   const permisoEdicion = ref<any>(true)
   const currentDate = (route.params.id_caso != '0') ? '' : format(new Date(),"yyyy-MM-dd")
   const currentDate2 = format(new Date(), "yyyy-MM-dd");
@@ -192,7 +194,7 @@ console.log(route.params.id_v)
   }
 
   const buttonSendForm = async () => {
-    console.log('registroooo')
+   // console.log('registroooo')
     submitButton.value = true
     await validateForm()
     if(!sendForm.value) return
@@ -200,7 +202,7 @@ console.log(route.params.id_v)
     isLoading.value = true
     if(route.params.id_v == '0'){
       // ES NUEVO REGISTRO
-      console.log('registroooo2')
+     // console.log('registroooo2')
 
       Swal.fire({
         title: 'Estás seguro?',

@@ -204,6 +204,16 @@ const MainRoutes = {
             path: '/proceForm/:id_procedencia',
             component: () => import('@/views/sirecom/resources/procedencias/proceForm.vue')
         },
+        {
+            name: 'registerList',
+            path: '/registerList',
+            component: () => import('@/views/sirecom/resources/repuesto/registroList.vue')
+        },
+        {
+            name: 'registerForm',
+            path: '/registerForm/:id',
+            component: () => import('@/views/sirecom/resources/repuesto/registroForm.vue')
+        },
 
 
 

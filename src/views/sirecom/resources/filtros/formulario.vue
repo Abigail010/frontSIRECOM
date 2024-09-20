@@ -54,7 +54,7 @@ import { setDate } from 'date-fns';
     const respuesta = await repuestoStore.Repuesto(id)
    
     state.formData.id = respuesta.id
-    state.formData.nombre_repuesto=respuesta.nombre_materialv
+    state.formData.nombre_repuesto=respuesta.nombre_repuesto
    
   }
 

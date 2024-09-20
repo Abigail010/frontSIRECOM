@@ -216,8 +216,8 @@ const buttonSendForm = async () => {
           :items="desserts5"
           v-model="state.formData.nombre_tm"
           no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_tm"
-          item-title="nombre_tm"
+          item-value="nombre_tipo"
+          item-title="nombre_tipo"
         />
         </v-col>
         
@@ -229,8 +229,8 @@ const buttonSendForm = async () => {
           :items="desserts7"
           v-model="state.formData.nombre_repuesto"
           no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_materialv"
-          item-title="nombre_materialv"
+          item-value="nombre_repuesto"
+          item-title="nombre_repuesto"
          
         />
          

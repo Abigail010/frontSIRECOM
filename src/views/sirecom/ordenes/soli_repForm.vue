@@ -141,11 +141,15 @@ const desserts = ref([]) as any
       
     }, formData2:{
         nombre_repuesto:'',
+        id_registro:'', 
         id_repuesto: '', 
+        id_solicitud:'', 
         cantidad:'', 
         unidad:'', 
         costo:'', 
         observacion:'', 
+        precio:'',
+        id_det:'', 
     }
   });
 
@@ -203,19 +207,25 @@ const desserts = ref([]) as any
   }
   const ButtonRepuesto = async (item: any) => {
     const data2 = await soli_Rep.getID(item);
-    state.formData2.id_repuesto = data2.id
+    console.log(data2)
+    state.formData2.id_registro = data2.id
+    state.formData2.id_repuesto = data2.id_tipo_repuesto
+    state.formData2.id_solicitud = data2.id_solicitud
     state.formData2.nombre_repuesto = data2.nombre_repuesto
     state.formData2.cantidad = data2.cantidad
     state.formData2.unidad = data2.unidad
-    state.formData2.costo = data2.costo
+    state.formData2.precio = data2.precio
+    state.formData2.id_det = data2.id_det
     dialog.value = true
   }
 
-  const placeholderHojaRuta = () => {
-    const arrayfechas = currentDate.split('-')
-    const respuesta = 'MG-'+arrayfechas[0]+arrayfechas[1]+arrayfechas[2]+'-###'
-    return respuesta
-  }
+  const precio = () => {
+    const cantidad = parseFloat(state.formData2.cantidad) || 0;
+      const precio_u = parseFloat(state.formData2.precio) || 0;
+      state.formData2.costo = (cantidad * precio_u).toFixed(2); // Calcula y formatea el subtotal
+      //state.formData.
+}
+
 
   const buttonReturnList = () => {
     router.push({ name: 'ordenList' })
@@ -235,7 +245,7 @@ const desserts = ref([]) as any
       // ES NUEVO REGISTRO
       dialog.value = false
       Swal.fire({
-        title: 'Estás seguro?',
+        title: '¿Estás seguro?',
         text: "Verifica que la información registrada sea correcta",
         icon: 'warning',
         showCancelButton: true,
@@ -251,7 +261,7 @@ const desserts = ref([]) as any
           Toast.fire({ icon: icono, title: message })
             
         }
-        window.location.reload()
+     //   window.location.reload()
       })
     }
     isLoading.value = false
@@ -288,7 +298,7 @@ const desserts = ref([]) as any
   function entregar(item: any) {
   Swal.fire({
      
-      text: "El proceso no podra ser revertido!",
+      text: "¡El proceso no podra ser revertido!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -313,7 +323,7 @@ const desserts = ref([]) as any
 function recibido(item: any) {
   Swal.fire({
      
-      text: "Recibio el repuesto!",
+      text: "¡Recibio el repuesto!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
@@ -363,7 +373,6 @@ function recibido(item: any) {
   onMounted(async () => {
     await getResourcesList()
    
-    await placeholderHojaRuta()
     if(route.params.id_orden  != '0'){
       await verificar_id(route.params.id_orden)
       if(parseInt(state.formData.id_registro)>0){
@@ -435,15 +444,18 @@ function recibido(item: any) {
                                             </v-col>
                                             <v-col cols="12"  md="3">
                                                 <v-text-field
+                                                @input="precio(), state.formData2.cantidad"
                                                 v-model="state.formData2.cantidad"
                                                 label="Cantidad"
                                                 type="number"
+                                                 :min = 1
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col cols="12"  md="3">
                                         
                                                 <v-autocomplete
                                                     variant="outlined"
+                                                     label="Unidad"
                                                     color="primary"
                                                     hide-details
                                                     :items="lista_unidad"
@@ -461,6 +473,7 @@ function recibido(item: any) {
                                                 min:0
                                                 label="Costo"
                                                  type="number"
+                                                 readonly
                                                 ></v-text-field>
                                             </v-col>
                                             </v-row>
@@ -581,10 +594,6 @@ function recibido(item: any) {
                 > <PencilIcon></PencilIcon>
                 </v-btn>
                 </td>
-
-
-
-              
             </tr>
           </tbody>
         </v-table>

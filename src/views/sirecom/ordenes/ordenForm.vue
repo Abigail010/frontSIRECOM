@@ -40,7 +40,6 @@ import { readonly } from 'vue';
   ]);
 
   const permisoEdicion = ref<any>(true)
-  const currentDate = (route.params.id_caso != '0') ? '' : format(new Date(),"yyyy-MM-dd")
   const currentDate2 = format(new Date(), "yyyy-MM-dd");
   const editar = ref<any>(false)
 
@@ -126,12 +125,6 @@ import { readonly } from 'vue';
 
   }
 
-  const placeholderHojaRuta = () => {
-    const arrayfechas = currentDate.split('-')
-    const respuesta = 'MG-'+arrayfechas[0]+arrayfechas[1]+arrayfechas[2]+'-###'
-    return respuesta
-  }
-
   // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
   const buttonSearchOrden = async () => {
     state.formData.id_persona = ''
@@ -158,7 +151,7 @@ import { readonly } from 'vue';
           if(!respuesta){
             Toast.fire({
               icon: 'error',
-              title: 'No se encontro información'
+              title: 'No se encontro la información'
             })
           // DESBLOQUEAR EL INPUT
           
@@ -221,7 +214,7 @@ import { readonly } from 'vue';
         }else{
           Toast.fire({
               icon: 'error',
-              title: 'No corresponde el registro, verifique información'
+              title: '¡Solicitar el informe anterior, kilometraje en exceso!'
             })
         }
      }else{
@@ -350,7 +343,7 @@ const getMecanicos = async() => {
   onMounted(async () => {
     await getResourcesList()
     await getMecanicos()
-    await placeholderHojaRuta()
+    
     if(route.params.id_orden  != '0'){
       await ordernes_id(route.params.id_orden)
       editar.value = true

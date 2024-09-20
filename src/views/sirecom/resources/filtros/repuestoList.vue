@@ -2,11 +2,11 @@
 import { ref, onMounted} from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
-import { usefilterStore } from '@/stores/resources/filtro';
+//import { usefilterStore } from '@/stores/resources/filtro';
 import { useRepuestoStore } from '@/stores/resources/repuesto';
 import Swal from 'sweetalert2'
 
-const repuestoStore = usefilterStore()
+//const repuestoStore = usefilterStore()
 const repuesto = useRepuestoStore()
 const page = ref({ title: 'Repuestos' });
 const breadcrumbs = ref([
@@ -24,7 +24,10 @@ const breadcrumbs = ref([
 
   const desserts = ref([]) as any
   const getrepuestosList = async() => {
-    desserts.value = await repuestoStore.repuestos()
+    console.log('aqui')
+    desserts.value = await repuesto.getRepuestos()
+    console.log(desserts.value
+    )
   }
 
   const buttonrepuestoForm = (id: any) => {
@@ -34,7 +37,8 @@ const breadcrumbs = ref([
 // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
-  { title: 'Nombre', key: 'nombre_materialv' },
+  { title: 'Nombre', key: 'nombre_repuesto' },
+  { title: 'Cantidad', key: 'cantidad' },
  
 ])
 

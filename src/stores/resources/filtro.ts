@@ -37,6 +37,16 @@ export const usefilterStore = defineStore({
           return { ok: false, message: message }
         }
       },
+       // OBTENER LISTA DE DELITOS
+       async Unidad () {
+        try {
+          const { data } = await siibApi.get('repuestos/unidad')
+          return data
+        } catch (error: any) {
+          const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+          return { ok: false, message: message }
+        }
+      },
   // OBTENER LISTA DE DELITOS
   async tipo () {
     try {

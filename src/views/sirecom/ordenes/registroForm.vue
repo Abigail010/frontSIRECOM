@@ -330,12 +330,6 @@ const openpanel = ref([0]);
 
   }
 
-  const placeholderHojaRuta = () => {
-    const arrayfechas = currentDate.split('-')
-    const respuesta = 'MG-'+arrayfechas[0]+arrayfechas[1]+arrayfechas[2]+'-###'
-    return respuesta
-  }
-
   const mifuncion = async () => {
    if(itemsSelected.value.length>0){
       const indice = itemsSelected.value.length-1
@@ -626,27 +620,27 @@ const openpanel = ref([0]);
   const buttonDeleteR = (index: number) => {
     if(state.formData.idrefreigeracion.length>0){
 
-const registro3: any = state.formData.idrefreigeracion[index]
+    const registro3: any = state.formData.idrefreigeracion[index]
 
-  tipo_mantenimiento3.value.push({
-    id: registro3.id_r,
-    nombre_diagnostico: registro3.id_r
-  })
+    tipo_mantenimiento3.value.push({
+      id: registro3.id_r,
+      nombre_diagnostico: registro3.id_r
+    })
   // REORDENAMIENTO DE LISTA
-  tipo_mantenimiento3.value.sort(function(aa: any, bb: any) {
-    const codigo_a = aa.nombre_diagnostico
-    const codigo_b = bb.nombre_diagnostico
-  
-    if(codigo_a < codigo_b){
-      return -1
+    tipo_mantenimiento3.value.sort(function(aa: any, bb: any) {
+      const codigo_a = aa.nombre_diagnostico
+      const codigo_b = bb.nombre_diagnostico
+    
+        if(codigo_a < codigo_b){
+          return -1
+        }
+        if(codigo_a > codigo_b){
+          return 1
+        }
+        return 0
+      })
+      state.formData.idrefreigeracion.splice(index,1)
     }
-    if(codigo_a > codigo_b){
-      return 1
-    }
-    return 0
-  })
-  state.formData.idrefreigeracion.splice(index,1)
-}
   }
 
   const buttonDeleteD = (index: number) => {
@@ -831,10 +825,10 @@ if(state.formData.id_Rep.length>0){
 
         tipo_filtro.value.push({
           id: registro2.id_filtro,
-          nombre_repuesto: registro2.id_f
+          nombre_repuesto: registro2.nombre_repuesto
         })
         // REORDENAMIENTO DE LISTA
-        tipo_mantenimiento10.value.sort(function(aa: any, bb: any) {
+        tipo_filtro.value.sort(function(aa: any, bb: any) {
           const codigo_a = aa.nombre_repuesto
           const codigo_b = bb.nombre_repuesto
         
@@ -851,7 +845,6 @@ if(state.formData.id_Rep.length>0){
 
 }
  
-
   const buttonClearSistema = () => {
 
     state.formData.sistema_select= ''
@@ -915,15 +908,6 @@ if(state.formData.id_Rep.length>0){
     isLoading.value = false
   }
 
-  const birthDate = (date: string) => {
-    if(date !== undefined){
-      let format = date.split("/")
-      let lastFormat = format[2] + "-" + format[1] + "-" + format[0];
-      return lastFormat;
-    }
-    return  ''
-  }
-
   // VALIDACION GENERAL
   const validateForm = async () => {
     sendForm.value = true
@@ -953,7 +937,7 @@ const getMecanicos = async() => {
   onMounted(async () => {
     await getResourcesList()
     await getMecanicos()
-    await placeholderHojaRuta()
+    
     if(route.params.id_orden  != '0'){
       
       await verificar_id(route.params.id_orden)

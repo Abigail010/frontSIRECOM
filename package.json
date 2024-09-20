@@ -33,6 +33,7 @@
         "lodash": "^4.17.21",
         "mapbox-gl": "^3.4.0",
         "maska": "^1.5.0",
+        "modernize": "file:",
         "moment": "^2.30.1",
         "pinia": "2.1.7",
         "remixicon": "4.1.0",

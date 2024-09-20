@@ -107,21 +107,7 @@ export const useVehicleStore = defineStore({
     },
 
     // ACTUALIZAR INFORMACION DEL BIEN VEHICULO
-/*  async updateVehicle (form: any) {
-      try {
-        console.log('aqui')
-        const { data } = await siibApi.post('vehicle/update_vehicle/' + userLogged, form)
-        router.push({ name: 'vehiculoList' });
-        console.log(data)
-        return { ok: true, message: data.message }
-      } catch (error: any) {
-        const message = error.response && error.response.data
-        ? error.response.data.message
-        : 'error: sin conexion';
-        console.log(message)
-        return { ok: false, message: message}
-      }
-    },*/
+
     async updateVehicle (form: any) {
       try {
         const { data } = await siibApi.post('vehicle/update_vehicle/' + userLogged, form);

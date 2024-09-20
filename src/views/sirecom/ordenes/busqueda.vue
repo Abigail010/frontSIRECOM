@@ -6,14 +6,16 @@ import { router } from '@/router';
 import { useRoute } from 'vue-router'
 import Swal from 'sweetalert2'
 import { format } from 'date-fns'
-
+import { useResourceStore } from '@/stores/resource';
 import { validateText } from '@/utils/helpers/validateText'
-
+import { useVehicleStore } from '@/stores/resources/vehicle';
 import { useSearchStore } from '@/stores/resources/busqueda';
-
+import { usefilterStore } from '@/stores/resources/filtro';
+const repuestoStore = usefilterStore()
+const openpanel = ref([0]);
   const orden = useSearchStore()
   const route = useRoute()
-
+  const resourceStore = useResourceStore()
 
   // BREADCRUMB  
   const page = ref({ title: 'Busqueda' });
@@ -33,6 +35,7 @@ import { useSearchStore } from '@/stores/resources/busqueda';
   const estado_ve = ['EN PROCESO', 'ENTREGADO', 'FINALIZADO']
   const fuerzas = [{SIGLA:'UELICN', NOMBRE:'UELICN' }, {SIGLA:'DAZULES',NOMBRE:'DIABLOS AZULES' }, {SIGLA:'DNEGROS', NOMBRE:'DIABLOS NEGROS'}, {SIGLA:'DROJOS', NOMBRE:'DIABLOS ROJOS'}, {SIGLA:'DVERDES', NOMBRE:'DIABLOS VERDES'}, {SIGLA: 'C.E.O.', NOMBRE:'C.E.O.'}, {SIGLA:'FELCN', NOMBRE:'FELCN'} ]
   const currentDate2 = format(new Date(), "yyyy-MM-dd");
+  const vehicleStore = useVehicleStore()
   // DECLARACION DEL STATE
   const state = reactive({
     formData: {
@@ -43,7 +46,8 @@ import { useSearchStore } from '@/stores/resources/busqueda';
       fuerza:'', 
       estado_v:'', 
       tipo_man:'',
-  
+      departamento:'', 
+      id_taller:'', 
     }, formData2: {
       marca:'', 
       clase:'',
@@ -54,7 +58,15 @@ import { useSearchStore } from '@/stores/resources/busqueda';
       placa_chasis2:'', 
       fecha_i2:'',
       fecha_f2:currentDate2, 
-    } 
+      marca:'', 
+      clase:'',
+      tipo:'',
+    } , formData4:{
+      id_mecanico:'',
+      fecha_i3:'',
+      fecha_f3:currentDate2, 
+       
+    }
   });
 
     // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
@@ -77,18 +89,28 @@ import { useSearchStore } from '@/stores/resources/busqueda';
         console.log(respuesta_info)
         }
 
+        const buttonGenerarReport4 = async () => {
+
+const respuesta_info = await orden.ReportMan(state.formData4)
+console.log(respuesta_info)
+}
+
   const buttonClear = () => {
-    state.formData.placa_chasis=''
+    state.formData.id_taller=''
+     state.formData.departamento=''
     state.formData.fuerza=''
     state.formData.fecha_i=''
     state.formData.fecha_f=currentDate2
-    state.formData.estado_v = ''
+    
 
 }
 
 const buttonClear2 = () => {
    state.formData2.fecha_i1=''
     state.formData2.fecha_f1=currentDate2
+    state.formData2.clase =''
+    state.formData2.tipo = '' 
+    state.formData2.marca =''
 }
 
 const buttonClear3 = () => {
@@ -96,9 +118,29 @@ const buttonClear3 = () => {
     state.formData3.fecha_f2=currentDate2
 }
 
+const buttonClear4 = () => {
+   state.formData4.fecha_i3=''
+    state.formData4.fecha_f3=currentDate2
+    state.formData4.id_mecanico =''
+}
+
   const editar = ref<any>(false)
-
-
+    const desserts1 = ref([]) as any
+    const desserts2 = ref([]) as any
+    const desserts3 = ref([]) as any
+    const desserts4 = ref([]) as any
+    const desserts5 = ref([]) as any
+    const desserts6 = ref([]) as any
+  const departamentos = ref([])
+  const getDepartmentsList = async() => {
+    departamentos.value = await resourceStore.getDepartments()
+    desserts1.value= await repuestoStore.clase()
+    desserts2.value= await repuestoStore.marcas()
+    desserts6.value= await repuestoStore.tipo()
+    desserts5.value= await vehicleStore.getFuerza()
+    desserts3.value= await orden.getT()
+    desserts4.value= await orden.getM()
+  }
 
   const sendForm = ref(true)
   const miValidacion = async () => {
@@ -129,11 +171,9 @@ const buttonSendForm = async () => {
      })
   }*/
  
-  onMounted(() => {
-    if(route.params.id_sistema != '0'){
-    //  getsystemById(route.params.id_sistema)
-      editar.value = true
-    }
+  onMounted(async () => {
+    await getDepartmentsList()
+    
   })
 
 </script>
@@ -141,77 +181,63 @@ const buttonSendForm = async () => {
 <template>
   <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
   <v-row>
-    <v-col cols="12" lg="12">
-      <h3 class="my-3 text-primary">GENERAR REPORTE DE REGISTROS DE MANTENIMIENTOS</h3>
-    </v-col>
-    <v-col cols="12" lg="12">
+
+    <v-col cols="12" md="12">
       <h4 class="mb-5 mt-2 font-weight-light">
         <strong> </strong> Los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
-
-      <v-row>
+    </v-col>
+    <v-expansion-panels v-model="openpanel">
+    <!---Delivery Address--->
+    <v-expansion-panel elevation="10"  >
+        <v-expansion-panel-title class="text-h6">Reportes de registros de mantenimientos</v-expansion-panel-title>
+        <v-expansion-panel-text class="mt-4">
+          <v-row>
         <v-col cols="12" md="4">
             
-          <v-label class="mb-2 font-weight-medium">Placa o Chasis <span style="color:red"></span></v-label>
+          <v-label class="mb-2 font-weight-medium">Taller <span style="color:red">(*)</span></v-label>
     
-          <v-text-field
-            variant="outlined" 
-            color="primary"
-            type="text"
-            v-model.trim="state.formData.placa_chasis"
-            @input="miValidacion(), state.formData.placa_chasis= validateText(state.formData.placa_chasis.toUpperCase())"
-            :error="submitButton && !state.formData.placa_chasis"
-            hide-details
-          />
-          <template v-if="submitButton && !state.formData.placa_chasis">
-            <div class="v-messages font-weight-black px-2 py-2">
-              <div class="v-messages__message text-error ">
-                El campo es requerido
-              </div>
-            </div>
-          </template>
+          <v-select
+                  v-model="state.formData.id_taller"
+                  :items="desserts3"
+                  item-title="nombre_taller"
+                  item-value="nombre_taller"
+                
+                  @input="miValidacion()"
+                  :error="submitButton && !state.formData.id_taller"
+                  hide-details
+          ></v-select>
+         
         </v-col>
         <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Fuerza <span style="color:red"></span></v-label>
+          <v-label class="mb-2 font-weight-medium">Fuerza <span style="color:red">(*)</span></v-label>
     
           <v-select
                   v-model="state.formData.fuerza"
-                  :items="fuerzas"
-                  item-title="NOMBRE"
-                  item-value="NOMBRE"
+                  :items="desserts5"
+                  item-title="nombre_fuerza"
+                  item-value="nombre_fuerza"
                 
                   @input="miValidacion()"
                   :error="submitButton && !state.formData.fuerza"
                   hide-details
           ></v-select>
-          <template v-if="submitButton && !state.formData.fuerza">
-            <div class="v-messages font-weight-black px-2 py-2">
-              <div class="v-messages__message text-error ">
-                El campo es requerido
-              </div>
-            </div>
-          </template>
+         
         </v-col>
         <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Tipo de Taller <span style="color:red"></span></v-label>
+          <v-label class="mb-2 font-weight-medium"> Departamento <span style="color:red">(*)</span></v-label>
     
           <v-select
-                  v-model="state.formData.tipo_man"
-                  :items="tipo"
-                  item-title="NOMBRE"
-                  item-value="NOMBRE"
+                  v-model="state.formData.departamento"
+                  :items="departamentos"
+                  item-title="nombre_region"
+                  item-value="nombre_region"
                 
                   @input="miValidacion()"
-                  :error="submitButton && !state.formData.tipo_man"
+                  :error="submitButton && !state.formData.departamento"
                   hide-details
           ></v-select>
-          <template v-if="submitButton && !state.formData.fuerza">
-            <div class="v-messages font-weight-black px-2 py-2">
-              <div class="v-messages__message text-error ">
-                El campo es requerido
-              </div>
-            </div>
-          </template>
+         
         </v-col>
         
         <v-col cols="12" md="4">
@@ -235,9 +261,11 @@ const buttonSendForm = async () => {
             </div>
           </template>
         </v-col>
-        <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Fecha final <span style="color:red"></span></v-label>
+       
+        <v-col cols="12" md="8">
+          <v-label class="mb-2 font-weight-medium">Fecha final<span style="color:red"></span></v-label>
           <v-text-field
+         
             variant="outlined"
             color="primary"
             type="date"
@@ -246,104 +274,75 @@ const buttonSendForm = async () => {
             @input="state.formData.fecha_f = validateText(state.formData.fecha_f)"
             @keydown.enter=buttonGenerarReport()
            
-          />
-          </v-col>
-        <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Estado <span style="color:red"></span></v-label>
-          <v-select
-                  v-model="state.formData.estado_v"
-                  :items="estado_ve"
-                  item-title="NOMBRE"
-                  item-value="SIGLA"
-                
-                  @input="miValidacion()"
-                  :error="submitButton && !state.formData.estado_v"
-                  hide-details
           >
             <template v-slot:append >
               <v-btn
+               class="mr-3"
                 color="primary"
                 @click= buttonGenerarReport()
-                :disabled="!state.formData.placa_chasis && !state.formData.fuerza && !state.formData.fecha_i && !state.formData.estado_v && !state.formData.tipo_man"
+                :disabled="!state.formData.id_taller && !state.formData.fuerza && !state.formData.departamento && !state.formData.fecha_i"
                 readonly="true"
                 ><SearchIcon/>Generar Reporte
               </v-btn>
               <v-btn
                 color="secondary"
                 @click= buttonClear()
-                :disabled="!state.formData.placa_chasis && !state.formData.fuerza && !state.formData.fecha_i && !state.formData.estado_v"><TrashIcon/>Limpiar
+                :disabled="!state.formData.id_taller && !state.formData.fuerza && !state.formData.departamento && !state.formData.fecha_i "><TrashIcon/>Limpiar
               </v-btn>
             </template>
-          </v-select>
+          </v-text-field>
         </v-col>
       </v-row>
-        
-        <v-row>
-          <v-col cols="12" lg="12">
-            <h3 class="my-3 text-primary">GENERAR REPORTE DE INGRESO DE VEHÍCULOS</h3>
-          </v-col>
-          <v-col cols="12" md="4">
+        </v-expansion-panel-text>
+    </v-expansion-panel>
+
+      <!---Payment Method--->
+    <v-expansion-panel elevation="10" class=" mt-3">
+        <v-expansion-panel-title class="text-h6" style="color:black;">Reporte de ingreso de vehículos</v-expansion-panel-title>
+        <v-expansion-panel-text class="mt-4">
+           <v-row>
+            <v-col cols="12" md="4">
           <v-label class="mb-2 font-weight-medium">Clase <span style="color:red"></span></v-label>
     
-          <v-select
-                  v-model="state.formData.fuerza"
-                  :items="fuerzas"
-                  item-title="NOMBRE"
-                  item-value="NOMBRE"
-                
-                  @input="miValidacion()"
-                  :error="submitButton && !state.formData.fuerza"
-                  hide-details
-          ></v-select>
-          <template v-if="submitButton && !state.formData.fuerza">
-            <div class="v-messages font-weight-black px-2 py-2">
-              <div class="v-messages__message text-error ">
-                El campo es requerido
-              </div>
-            </div>
-          </template>
+          <v-autocomplete
+            variant="outlined"
+            color="primary"
+            :items="desserts1"
+            v-model="state.formData2.clase"
+            no-data-text="No existe más opciones para seleccionar"
+            item-value="nombre_clase"
+            item-title="nombre_clase"
+            :error="submitButton && !state.formData2.clase"
+          /> 
+          
         </v-col>
         <v-col cols="12" md="4">
           <v-label class="mb-2 font-weight-medium">Marca <span style="color:red"></span></v-label>
-    
-          <v-select
-                  v-model="state.formData.fuerza"
-                  :items="fuerzas"
-                  item-title="NOMBRE"
-                  item-value="NOMBRE"
-                
-                  @input="miValidacion()"
-                  :error="submitButton && !state.formData.fuerza"
-                  hide-details
-          ></v-select>
-          <template v-if="submitButton && !state.formData.fuerza">
-            <div class="v-messages font-weight-black px-2 py-2">
-              <div class="v-messages__message text-error ">
-                El campo es requerido
-              </div>
-            </div>
-          </template>
+          <v-autocomplete
+            variant="outlined"
+            color="primary"
+            :items="desserts2"
+            v-model="state.formData2.marca"
+            no-data-text="No existe más opciones para seleccionar"
+            item-value="nombre_marca"
+            item-title="nombre_marca"
+            :error="submitButton && !state.formData2.marca"
+          /> 
+        
+          
         </v-col>
         <v-col cols="12" md="4">
           <v-label class="mb-2 font-weight-medium">Tipo <span style="color:red"></span></v-label>
-    
-          <v-select
-                  v-model="state.formData.fuerza"
-                  :items="fuerzas"
-                  item-title="NOMBRE"
-                  item-value="NOMBRE"
-                
-                  @input="miValidacion()"
-                  :error="submitButton && !state.formData.fuerza"
-                  hide-details
-          ></v-select>
-          <template v-if="submitButton && !state.formData.fuerza">
-            <div class="v-messages font-weight-black px-2 py-2">
-              <div class="v-messages__message text-error ">
-                El campo es requerido
-              </div>
-            </div>
-          </template>
+          <v-autocomplete
+            variant="outlined"
+            color="primary"
+            :items="desserts6"
+            v-model="state.formData2.tipo"
+            no-data-text="No existe más opciones para seleccionar"
+            item-value="nombre_tipo"
+            item-title="nombre_tipo"
+            :error="submitButton && !state.formData2.tipo"
+          /> 
         </v-col>
             <v-col cols="12" md="5">
               
@@ -380,27 +379,30 @@ const buttonSendForm = async () => {
                 >
             <template v-slot:append >
               <v-btn
+               class="mr-3"
                 color="primary"
                 @click= buttonGenerarReport2()
-                :disabled=" !state.formData2.fecha_i1 "
+                :disabled=" !state.formData2.fecha_i1  && !state.formData2.clase && !state.formData2.marca && !state.formData2.tipo "
                 readonly="true"
                 ><SearchIcon/>Generar Reporte
               </v-btn>
               <v-btn
                 color="secondary"
                 @click= buttonClear2()
-                :disabled="!state.formData2.fecha_i1 "><TrashIcon/>Limpiar
+                :disabled="!state.formData2.fecha_i1 && !state.formData2.clase && !state.formData2.marca && !state.formData2.tipo"><TrashIcon/>Limpiar
               </v-btn>
             </template>
           </v-text-field>
         </v-col>
-        </v-row>
-
-        <v-row>
-          <v-col cols="12" lg="12">
-        <h3 class="my-3 text-primary">GENERAR REPORTE DE UN VEHÍCULO</h3>
-        </v-col>
-          <v-col cols="12" md="3">
+           </v-row>
+        </v-expansion-panel-text>
+    </v-expansion-panel>
+    <!---Delivery Options--->
+    <v-expansion-panel elevation="10" class=" mt-3">
+        <v-expansion-panel-title class="text-h6" style="color:black;">Reporte de kardex de vehículo</v-expansion-panel-title>
+        <v-expansion-panel-text class="mt-4">
+           <v-row>
+            <v-col cols="12" md="3">
           <v-label class="mb-2 font-weight-medium">Placa o chasis <span style="color:red">(*)</span></v-label>
           <v-text-field
                     variant="outlined" 
@@ -430,6 +432,7 @@ const buttonSendForm = async () => {
           <v-col cols="12" md="6">
           <v-label class="mb-2 font-weight-medium">Fecha final </v-label>
           <v-text-field
+                     
                     variant="outlined" 
                     color="primary"
                     type="date"
@@ -440,6 +443,7 @@ const buttonSendForm = async () => {
                 >
             <template v-slot:append >
               <v-btn
+               class="mr-3"
                 color="primary"
                 @click= buttonGenerarReport3()
                 :disabled="!state.formData3.placa_chasis2  "
@@ -454,8 +458,83 @@ const buttonSendForm = async () => {
             </template>
           </v-text-field>
         </v-col>
-        </v-row>
-         <p class="mt-2 text-lg-left">
+           </v-row>
+        </v-expansion-panel-text>
+    </v-expansion-panel>
+    <!---Delivery Options--->
+    <v-expansion-panel elevation="10" class=" mt-3">
+        <v-expansion-panel-title class="text-h6" style="color:black;">Reporte de kardex de Mecánico</v-expansion-panel-title>
+        <v-expansion-panel-text class="mt-4">
+           <v-row>
+            <v-col cols="12" md="3">
+          <v-label class="mb-2 font-weight-medium">Mecánico <span style="color:red">(*)</span></v-label>
+          <v-autocomplete
+            variant="outlined"
+            color="primary"
+            :items="desserts4"
+            v-model="state.formData4.id_mecanico"
+            no-data-text="No existe más opciones para seleccionar"
+            item-value="id"
+            item-title="mecanico_disponible"
+            :error="submitButton && !state.formData4.id_mecanico"
+          /> 
+          </v-col>
+          <v-col cols="12" md="3">
+                <v-label class="mb-2 font-weight-medium">Fecha Inicio </v-label>
+            
+                <v-text-field
+                    variant="outlined" 
+                    color="primary"
+                    type="date"
+                    :max="currentDate2"
+                    v-model.trim="state.formData4.fecha_i3"
+                    @input="miValidacion(), state.formData4.fecha_i3= validateText(state.formData4.fecha_i3.toUpperCase())"
+                    :error="submitButton && !state.formData4.fecha_i3"
+                    hide-details
+                />
+               
+            </v-col>
+          <v-col cols="12" md="6">
+          <v-label class="mb-2 font-weight-medium">Fecha final </v-label>
+          <v-text-field
+                    variant="outlined" 
+                    color="primary"
+                    type="date"
+                    v-model.trim="state.formData4.fecha_f3"
+                    @input="miValidacion(), state.formData4.fecha_f3= validateText(state.formData4.fecha_f3.toUpperCase())"
+                    :error="submitButton && !state.formData4.fecha_f3"
+                    hide-details
+                >
+            <template v-slot:append >
+              <v-btn
+               class="mr-3"
+                color="primary"
+                @click= buttonGenerarReport4()
+                :disabled="!state.formData4.id_mecanico && !state.formData4.fecha_i3  "
+                readonly="true"
+                ><SearchIcon/>Generar Reporte
+              </v-btn>
+              <v-btn
+                color="secondary"
+                @click= buttonClear4()
+                :disabled="!state.formData4.id_mecanico && !state.formData4.fecha_i3"><TrashIcon/>Limpiar
+              </v-btn>
+            </template>
+          </v-text-field>
+        </v-col>
+           </v-row>
+        </v-expansion-panel-text>
+    </v-expansion-panel>
+    <!---Delivery Options--->
+    
+</v-expansion-panels>
+
+
+
+   
+    <v-col cols="12" lg="12">
+      
+       <p class="mt-2 text-lg-left">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">volver</v-btn>
        
       </p>

@@ -160,10 +160,29 @@ const lista_menu = [
           icon: CircleIcon,
           to: '/filtroList'
         },
-        {
+        /*{
           title: 'Repuestos',
           icon: CircleIcon,
           to: '/repuestoList'
+        },*/
+        {
+          title: 'Repuestos',
+          icon: CircleIcon,
+          to: '/3level',
+          children: [
+            
+            
+                {
+                  title: 'Repuesto',
+                  icon: CircleXIcon,
+                  to: '/repuestoList'
+                },
+                {
+                  title: 'Ingreso de repuestos',
+                  icon: CircleXIcon,
+                  to: '/registerList'
+                },
+        ]
         },
         {
           title: 'Tipos de mantenimiento',
