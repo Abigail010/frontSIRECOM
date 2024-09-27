@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 
 const servicios = useServiceStore()
 
-const page = ref({ title: 'Servicios Externos' });
+const page = ref({ title: 'Servicios para talleres externos' });
 const breadcrumbs = ref([
   {
     text: 'Dashboard',

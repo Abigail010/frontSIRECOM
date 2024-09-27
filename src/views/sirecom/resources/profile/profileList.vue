@@ -23,14 +23,13 @@ const breadcrumbs = ref([
 
 const desserts = ref([]) as any
 const getProfilesList = async() => {
-    desserts.value = await profileStore.profiles()
-  }
+  desserts.value = await profileStore.profiles()
+}
 
-  const buttonProfileForm = (id_perfil: any) => {
-    router.push({ name: 'profileForm', params: { id_perfil: id_perfil }})
-  }
+const buttonProfileForm = (id_perfil: any) => {
+  router.push({ name: 'profileForm', params: { id_perfil: id_perfil }})
+}
 
-  // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
   { title: 'Perfil', key: 'nombre_perfil' },
@@ -109,7 +108,7 @@ const Toast = Swal.mixin({
                 <v-icon color="info" size="large" class="me-2" @click="buttonProfileForm(item.id)">
                     mdi-pencil
                 </v-icon>
-                <v-icon color="error" size="large"  @click="deleteItem(item.id)">
+                <v-icon v-if="item.id!=1" color="error" size="large"  @click="deleteItem(item.id)">
                     mdi-delete
                 </v-icon>
             </template>                    

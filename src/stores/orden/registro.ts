@@ -27,7 +27,7 @@ export const useRegisterStore = defineStore({
        async getFiltros () {
         try {
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await siibApi.get('repuestos/geter/')
+          const { data } = await siibApi.get('repuestos/filter')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

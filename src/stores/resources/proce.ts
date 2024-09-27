@@ -31,7 +31,7 @@ export const useProcedenciasStore = defineStore({
 
     async createProcedencias(form: any) {
       try {
-        const { data } = await siibApi.post('proce/create_Procedencias/' + userLogged, form)
+        const { data } = await siibApi.post('proce/create_Procedencia/' + userLogged, form)
         router.push({ name: 'proceList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -43,7 +43,7 @@ export const useProcedenciasStore = defineStore({
    
     async updateProcedencias(form: any) {
       try {
-        const { data } = await siibApi.post('proce/update_Procedencias/' + userLogged, form)
+        const { data } = await siibApi.post('proce/update_Procedencia/' + userLogged, form)
         router.push({ name: 'proceList' });
         return {
           ok: true,
@@ -59,7 +59,7 @@ export const useProcedenciasStore = defineStore({
     // ELIMINAR DELITO
     async deleteProcedencias(form: any) {
       try {
-        const { data } = await siibApi.post('proce/delete_Procedencias/' + userLogged, form)
+        const { data } = await siibApi.post('proce/delete_Procedencia/' + userLogged, form)
         router.push({ name: 'proceList' });
         return {
           ok: true,

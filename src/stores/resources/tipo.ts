@@ -31,8 +31,8 @@ export const useTiposStore = defineStore({
 
     async createTipos(form: any) {
       try {
-        const { data } = await siibApi.post('tipo_v/create_Tipos/' + userLogged, form)
-        router.push({ name: 'tiposList' });
+        const { data } = await siibApi.post('tipo_v/create_Tipo/' + userLogged, form)
+        router.push({ name: 'TipoList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -43,8 +43,8 @@ export const useTiposStore = defineStore({
    
     async updateTipos(form: any) {
       try {
-        const { data } = await siibApi.post('tipo_v/update_Tipos/' + userLogged, form)
-        router.push({ name: 'tiposList' });
+        const { data } = await siibApi.post('tipo_v/update_Tipo/' + userLogged, form)
+        router.push({ name: 'TipoList' });
         return {
           ok: true,
           message: data.message,
@@ -59,8 +59,8 @@ export const useTiposStore = defineStore({
     // ELIMINAR DELITO
     async deleteTipos(form: any) {
       try {
-        const { data } = await siibApi.post('tipo_v/delete_Tipos/' + userLogged, form)
-        router.push({ name: 'tiposList' });
+        const { data } = await siibApi.post('tipo_v/delete_Tipo/' + userLogged, form)
+        router.push({ name: 'TipoList' });
         return {
           ok: true,
           message: data.message,

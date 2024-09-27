@@ -223,7 +223,7 @@ const buttonSendFormT = async () => {
   
  
     <v-row>
-        <v-col cols="12">
+        <v-col cols="12" >
           
             <v-card elevation="10" class=" " rounded="md">
                

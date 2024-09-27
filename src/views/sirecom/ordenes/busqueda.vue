@@ -31,9 +31,7 @@ const openpanel = ref([0]);
       href: '#'
     }
   ]);
-  const tipo=['PROPIO', 'EXTERNO']
-  const estado_ve = ['EN PROCESO', 'ENTREGADO', 'FINALIZADO']
-  const fuerzas = [{SIGLA:'UELICN', NOMBRE:'UELICN' }, {SIGLA:'DAZULES',NOMBRE:'DIABLOS AZULES' }, {SIGLA:'DNEGROS', NOMBRE:'DIABLOS NEGROS'}, {SIGLA:'DROJOS', NOMBRE:'DIABLOS ROJOS'}, {SIGLA:'DVERDES', NOMBRE:'DIABLOS VERDES'}, {SIGLA: 'C.E.O.', NOMBRE:'C.E.O.'}, {SIGLA:'FELCN', NOMBRE:'FELCN'} ]
+
   const currentDate2 = format(new Date(), "yyyy-MM-dd");
   const vehicleStore = useVehicleStore()
   // DECLARACION DEL STATE
@@ -70,30 +68,27 @@ const openpanel = ref([0]);
   });
 
     // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
-    const buttonGenerarReport = async () => {
-
+const buttonGenerarReport = async () => {
         const respuesta_info = await orden.minutesReport(state.formData)
         console.log(respuesta_info)
-  }
+}
  
     // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
-    const buttonGenerarReport2 = async () => {
-        const respuesta_info = await orden.vehiculosReport(state.formData2)
-        console.log(respuesta_info)
-    }
+const buttonGenerarReport2 = async () => {
+      const respuesta_info = await orden.vehiculosReport(state.formData2)
+      console.log(respuesta_info)
+}
 
         // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
-        const buttonGenerarReport3 = async () => {
-
+const buttonGenerarReport3 = async () => {
         const respuesta_info = await orden.ReportVe(state.formData3)
         console.log(respuesta_info)
         }
 
-        const buttonGenerarReport4 = async () => {
-
-const respuesta_info = await orden.ReportMan(state.formData4)
-console.log(respuesta_info)
-}
+const buttonGenerarReport4 = async () => {
+      const respuesta_info = await orden.ReportMan(state.formData4)
+      console.log(respuesta_info)
+    }
 
   const buttonClear = () => {
     state.formData.id_taller=''
@@ -101,8 +96,6 @@ console.log(respuesta_info)
     state.formData.fuerza=''
     state.formData.fecha_i=''
     state.formData.fecha_f=currentDate2
-    
-
 }
 
 const buttonClear2 = () => {
@@ -202,7 +195,6 @@ const buttonSendForm = async () => {
                   :items="desserts3"
                   item-title="nombre_taller"
                   item-value="nombre_taller"
-                
                   @input="miValidacion()"
                   :error="submitButton && !state.formData.id_taller"
                   hide-details
@@ -217,7 +209,6 @@ const buttonSendForm = async () => {
                   :items="desserts5"
                   item-title="nombre_fuerza"
                   item-value="nombre_fuerza"
-                
                   @input="miValidacion()"
                   :error="submitButton && !state.formData.fuerza"
                   hide-details
@@ -232,7 +223,6 @@ const buttonSendForm = async () => {
                   :items="departamentos"
                   item-title="nombre_region"
                   item-value="nombre_region"
-                
                   @input="miValidacion()"
                   :error="submitButton && !state.formData.departamento"
                   hide-details
@@ -432,7 +422,6 @@ const buttonSendForm = async () => {
           <v-col cols="12" md="6">
           <v-label class="mb-2 font-weight-medium">Fecha final </v-label>
           <v-text-field
-                     
                     variant="outlined" 
                     color="primary"
                     type="date"
@@ -528,12 +517,8 @@ const buttonSendForm = async () => {
     <!---Delivery Options--->
     
 </v-expansion-panels>
-
-
-
-   
     <v-col cols="12" lg="12">
-      
+    
        <p class="mt-2 text-lg-left">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">volver</v-btn>
        

@@ -24,7 +24,7 @@ const breadcrumbs = ref([
   const desserts = ref([]) as any
   const getList = async() => {
     desserts.value = await Clases.Clase()
-    console.log(desserts)
+   // console.log(desserts)
    
   }
 

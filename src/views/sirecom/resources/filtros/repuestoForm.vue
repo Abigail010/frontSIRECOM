@@ -160,9 +160,7 @@ const buttonSendForm = async () => {
           no-data-text="No existe más opciones para seleccionar"
           item-value="nombre_clase"
           item-title="nombre_clase"
-        />
-         
-      
+        />        
         </v-col>
 
         <v-col cols="12" md="6">
@@ -189,8 +187,7 @@ const buttonSendForm = async () => {
             item-value="nombre_tipo"
             item-title="nombre_tipo"
         />
-         
-      
+
         </v-col>
        <template v-if="(state.formData.nombre_marca !='' && state.formData.nombre_tipo != '') || state.formData.union !=''">
         <v-col cols="12" md= "6">

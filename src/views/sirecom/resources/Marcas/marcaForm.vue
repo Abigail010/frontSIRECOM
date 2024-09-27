@@ -40,9 +40,7 @@ import { validateText } from '@/utils/helpers/validateText'
 
   // FUNCION QUE OBTIENE LA INFORMACION DE LA DEPENDENCIA
   const getMarcaById = async (id: any) => {
-    console.log(+id)
     const respuesta = await Marcas.MarcasID(route.params.id_marca)
-    //console.log(respuesta)
     state.formData.id = respuesta.id_marca
     state.formData.nombre_Marca = respuesta.nombre_marca
   }
@@ -91,7 +89,7 @@ const buttonSendForm = async () => {
   <v-row>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <strong> DATOS DEL Marca:</strong> Los campos con <span style="color:red">(*)</span> son obligatorios
+        <strong> DATOS DE LA MARCA:</strong> Los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
 
       <v-row>

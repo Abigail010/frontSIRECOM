@@ -146,7 +146,7 @@ const vehicleStore = useVehicleStore()
   const ordernes_id = async (id_v: any) => {
   
     const data = await vehicleStore.getIDv(id_v)
-    console.log(data)
+    //console.log(data)
 
     state.formData.id_vehiculo = data.id_v
     state.formData.chasis_= data.chasis
@@ -182,13 +182,9 @@ const vehicleStore = useVehicleStore()
 
   }
 
-  const placeholderHojaRuta = () => {
-    const arrayfechas = currentDate.split('-')
-    const respuesta = 'MG-'+arrayfechas[0]+arrayfechas[1]+arrayfechas[2]+'-###'
-    return respuesta
-  }
 
-console.log(route.params.id_v)
+
+//console.log(route.params.id_v)
   const buttonReturnList = () => {
     router.push({ name: 'VehiculoList' })
   }
@@ -226,7 +222,7 @@ console.log(route.params.id_v)
     }else{
       // NO ES NUEVO REGISTRO
       if(permisoEdicion.value){
-       console.log('actualizar ')
+//console.log('actualizar ')
         const { ok, message } = await vehicleStore.updateVehicle(state.formData)
         const icono = (ok ? 'success' : 'error')
         Toast.fire({ icon: icono, title: message })
@@ -279,7 +275,7 @@ console.log(route.params.id_v)
   <v-row>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <b> REGISTRO DEL VEHÍCULO: </b> Todos los campos con (*) son obligatorios
+        <b> REGISTRO DEL VEHÍCULO: </b> Todos los campos con <span style="color:red">(*)</span>son obligatorios
       </h4>
     </v-col>
   </v-row>

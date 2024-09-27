@@ -31,8 +31,10 @@ export const useFuerzasStore = defineStore({
 
     async createFuerzas(form: any) {
       try {
-        const { data } = await siibApi.post('fuerza/create_Fuerzas/' + userLogged, form)
-        router.push({ name: 'fuerzasList' });
+        console.log(form)
+        const { data } = await siibApi.post('fuerza/create_Fuerza/' + userLogged, form)
+        console.log(data)
+        router.push({ name: 'FuerzasList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -43,8 +45,8 @@ export const useFuerzasStore = defineStore({
    
     async updateFuerzas(form: any) {
       try {
-        const { data } = await siibApi.post('fuerza/update_Fuerzas/' + userLogged, form)
-        router.push({ name: 'fuerzasList' });
+        const { data } = await siibApi.post('fuerza/update_Fuerza/' + userLogged, form)
+        router.push({ name: 'FuerzasList' });
         return {
           ok: true,
           message: data.message,
@@ -59,8 +61,8 @@ export const useFuerzasStore = defineStore({
     // ELIMINAR DELITO
     async deleteFuerzas(form: any) {
       try {
-        const { data } = await siibApi.post('fuerza/delete_Fuerzas/' + userLogged, form)
-        router.push({ name: 'fuerzasList' });
+        const { data } = await siibApi.post('fuerza/delete_Fuerza/' + userLogged, form)
+        router.push({ name: 'FuerzasList' });
         return {
           ok: true,
           message: data.message,

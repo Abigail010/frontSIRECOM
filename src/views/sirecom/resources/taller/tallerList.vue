@@ -4,6 +4,9 @@ import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
 import { useTallerStore } from '@/stores/resources/taller';
 import Swal from 'sweetalert2'
+const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
+const usertaller:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
+const usert:any = JSON.parse(localStorage.getItem('user') || '').id_taller
 
 const tallerStore = useTallerStore()
 
@@ -23,7 +26,14 @@ const breadcrumbs = ref([
 
 const desserts = ref([]) as any
 const getTallerList = async() => {
-    desserts.value = await tallerStore.tallers() 
+   // desserts.value = await tallerStore.tallers() 
+   if( (usert==1  ||  usertaller ==1 )){
+  desserts.value = await tallerStore.tallers() 
+  
+  }else{
+    desserts.value = await tallerStore.tallersD() 
+  }
+   
 }
 
   const buttonDepositForm = (id_taller: any) => {
@@ -41,7 +51,6 @@ const headers = ref([
   { title: 'Fuerza', key: 'fuerza' },
   { title: 'Departamento', key: 'ciudad' },
   { title: 'Direccion', key: 'direccion' },
-
   { title: 'Servicio', key: 'servicio' },
     { title: 'Tipo', key: 'tipo' },
 
@@ -111,7 +120,7 @@ onMounted(() => {
               />
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <v-btn 
+              <v-btn v-if="usertaller==1 || usert==1"
                 color="primary"  
                 variant="flat" 
                 dark   
@@ -123,7 +132,7 @@ onMounted(() => {
               <v-icon color="info" size="large" class="me-2" @click="buttonDepositForm(item.id_taller)">
                   mdi-pencil
               </v-icon>
-              <v-icon color="error" size="large"  @click="deleteItem(item.id_taller)">
+              <v-icon v-if="item.id_taller != 1" color="error" size="large"  @click="deleteItem(item.id_taller)">
                   mdi-delete
               </v-icon>
           </template>                    

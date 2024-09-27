@@ -55,7 +55,7 @@ import { validateText } from '@/utils/helpers/validateText'
 
   // BOTON RETORNAR
   const buttonReturnList = () => {
-    router.push({ name: 'ProcedenciasList' })
+    router.push({ name: 'proceList' })
   }
 
 

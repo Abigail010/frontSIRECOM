@@ -184,7 +184,7 @@ export const useSearchStore = defineStore({
 
       async ReportVe(form:any) {
         try {
-          const url = 'http://localhost:3001/search_tot/report_vehi/';
+          const url = 'http://localhost:3001/search_tot/report_vehi';
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
@@ -219,7 +219,7 @@ export const useSearchStore = defineStore({
       
       async ReportMan(form:any) {
         try {
-          const url = 'http://localhost:3001/search_tot/report_meca/';
+          const url = 'http://localhost:3001/search_tot/report_meca';
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');

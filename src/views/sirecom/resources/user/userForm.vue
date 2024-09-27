@@ -66,11 +66,12 @@ import { validateText } from '@/utils/helpers/validateText'
   });
 
   const editar = ref<any>(false)
-
+    const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
+    const us2:any = JSON.parse(localStorage.getItem('user') || '').id_taller
   const perfiles = ref([])
   const getProfilesList = async() => {
     perfiles.value = await resourceStore.getProfiles()
-    if(userProfile.includes('SUPER ADMINISTRADOR')){
+    if(us==1 || us2==1){
       perfiles.value = await resourceStore.getProfiles()
     }else{
       perfiles.value = await  userStore.Perfil()
@@ -80,16 +81,20 @@ import { validateText } from '@/utils/helpers/validateText'
 
   const taller = ref([])
   const gettaller = async() => {
-    //taller.value = await resourceStore.getTalleres()
-    //console.log(taller.value)
-
-    if(userProfile.includes('SUPER ADMINISTRADOR')){
+  
+    if(us==1 || us2==1){
       taller.value = await resourceStore.getTalleres()
     }else{
       taller.value = await  userStore.Taller()
       
     }
   }
+
+  const usertaller:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
+
+const usert:any = JSON.parse(localStorage.getItem('user') || '').id_taller
+
+console.log('id_user '+ usertaller+ ' id_taller ' + usert )
 
   const menus = ref([]) as any
   const menu_independiente = ref([]) as any
@@ -106,9 +111,14 @@ import { validateText } from '@/utils/helpers/validateText'
     // LISTADO DE MENUS INDEPENDIENTES
     for (let i = 0; i < lista.length; i++) {
       if(lista[i].titulo && lista[i].direccion && !lista[i].padre){
+        console.log(lista[i].titulo)
+        if(lista[i].titulo =='Busqueda Reporte'){
+
+        }
         menu_independiente.value.push(lista[i])
       }
       if(lista[i].titulo && !lista[i].direccion && !lista[i].padre){
+        console.log(lista[i].titulo)
         menu_padre.value.push(lista[i])
       }
     }
@@ -129,7 +139,7 @@ import { validateText } from '@/utils/helpers/validateText'
         }
       }
     }
-
+   
     // LISTADO SUBMENUS (3ER NIVEL)
     for (let i = 0; i < submenu_padre.value.length; i++) {
       const padre = submenu_padre.value[i]
@@ -142,7 +152,7 @@ import { validateText } from '@/utils/helpers/validateText'
         }
       }
     }
-    
+  
     // LISTADO SUBMENUS (4TO NIVEL)
     for (let i = 0; i < s_submenu_padre.value.length; i++) {
       const padre = s_submenu_padre.value[i]
@@ -256,24 +266,7 @@ import { validateText } from '@/utils/helpers/validateText'
     }
   }
 
-  const buttonClearPerson = () => {
-    state.formData.id_persona = ''
-    state.formData.cedula_identidad = ''
-    state.formData.complemento = ''
-    state.formData.nombres = ''
-    state.formData.apellido_paterno = ''
-    state.formData.apellido_materno = ''
-    state.formData.genero = ''
-    state.formData.fecha_nacimiento = ''
-    state.formData.pais = ''
-    state.formData.departamento = ''
-    state.formData.provincia = ''
-    state.formData.localidad = ''
-    state.formData.domicilio = ''
-    state.formData.imagen = ''
-    editar.value = false
-  }
-
+ 
   const sendForm = ref(true)
   const testEmail = ref(true)
   const miValidacion = async () => {
@@ -335,12 +328,7 @@ const buttonSendForm = async () => {
        showConfirmButton: false,
       timerProgressBar: true
      })
-
-
-
   }
- 
-
 
   const evaluateCheckbox = (id_permiso: any) => {
     const checkPermiso = state.formData.menu.find((permiso:any) => permiso == id_permiso)
@@ -597,26 +585,31 @@ const buttonSendForm = async () => {
           <v-container fluid>
             <v-row>
               <template v-for="menu in menu_independiente" :key="menu.id">
-                <v-col cols="12" md="4" class="low-col">
-                  <v-checkbox
-                    v-model="state.formData.menu"
-                    :label="menu.titulo"
-                    color="error"
-                    v-bind:value="menu.id"
-                    hide-details
-                    @click="evaluateCheckbox(menu.id)"
-                  />
-                  <v-switch
-                    class="pl-3 my-0"
-                    v-model="state.formData.ediciones"
-                    label="Editar"
-                    color="secondary"
-                    v-bind:value="menu.id"
-                    hide-details
-                    :disabled="evaluateCheckbox(menu.id)"
-                  />
-                </v-col>
-              </template>
+  <!-- Si el menú es 'Talleres' o 'Busqueda Reporte', y no cumple la condición, se deshabilita -->
+              <v-col cols="12" md="4" class="low-col">
+                <v-checkbox
+                  v-model="state.formData.menu"
+                  :label="menu.titulo"
+                  color="error"
+                  :value="menu.id"
+                  hide-details
+                  @click="evaluateCheckbox(menu.id)"
+                  :disabled="(menu.titulo == 'Talleres' || menu.titulo == 'Busqueda Reporte') && !(usertaller == 1 || usert == 1)" 
+             
+                />
+                <v-switch
+                  class="pl-3 my-0"
+                  v-model="state.formData.ediciones"
+                  label="Editar"
+                  color="secondary"
+                  :value="menu.id"
+                  hide-details
+                  :disabled="evaluateCheckbox(menu.id) || ((menu.titulo == 'Talleres' || menu.titulo == 'Busqueda Reporte') && !(usertaller == 1 || usert == 1))"
+                  
+                />
+              </v-col>
+            </template>
+
             </v-row>
           </v-container>
 
@@ -634,6 +627,7 @@ const buttonSendForm = async () => {
                         v-bind:value="submenu.id"
                         hide-details
                         @click="evaluateCheckbox(submenu.id)"
+                        :disabled="(submenu.titulo == 'Perfil' || submenu.titulo == 'Servicios') && !(usertaller == 1 || usert == 1)" 
                       />
                       <v-switch
                         class="pl-3 my-0"
@@ -642,12 +636,14 @@ const buttonSendForm = async () => {
                         color="secondary"
                         v-bind:value="submenu.id"
                         hide-details
-                        :disabled="evaluateCheckbox(submenu.id)"
+                        :disabled="evaluateCheckbox(submenu.id) || (submenu.titulo == 'Perfil'  || submenu.titulo == 'Servicios') && !(usertaller == 1 || usert == 1)"
+                        
                       />
                     </v-col>
                   </template>
                 </template>
               </v-row>
+              <template v-if="usertaller == 1  || usert == 1">
               <template v-for="submenu in submenu_padre" :key="submenu.id">
                 <template v-if="menu.id == submenu.padre">
                   <h3 class="mb-5 text-primary">{{ submenu.titulo }}</h3>
@@ -676,7 +672,9 @@ const buttonSendForm = async () => {
                       </template>
                     </template>
                   </v-row>
-                  <template v-for="s_submenu in s_submenu_padre" :key="s_submenu.id">
+
+                  
+                    <template v-for="s_submenu in s_submenu_padre" :key="s_submenu.id">
                     <template v-if="submenu.id == s_submenu.padre">
                       <h3 class="my-3 text-info">- {{ s_submenu.titulo }}</h3>
                       <v-row>
@@ -705,6 +703,7 @@ const buttonSendForm = async () => {
                         </template>
                       </v-row>
                     </template>
+                  </template>
                   </template>
                 </template>
               </template>

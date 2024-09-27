@@ -24,7 +24,7 @@ const breadcrumbs = ref([
   const desserts = ref([]) as any
   const getList = async() => {
     desserts.value = await Marcas.Marca()
-    console.log(desserts)
+   
   }
 
   const buttonMarcaForm = (id_marca: any) => {

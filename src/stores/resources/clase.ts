@@ -31,8 +31,8 @@ export const useClasesStore = defineStore({
 
     async createClases(form: any) {
       try {
-        const { data } = await siibApi.post('clase/create_Clases/' + userLogged, form)
-        router.push({ name: 'ClasesList' });
+        const { data } = await siibApi.post('clase/create_clase/' + userLogged, form)
+        router.push({ name: 'ClaseList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -43,12 +43,11 @@ export const useClasesStore = defineStore({
    
     async updateClases(form: any) {
       try {
-        const { data } = await siibApi.post('Clase/update_Clases/' + userLogged, form)
-        router.push({ name: 'ClasesList' });
+        const { data } = await siibApi.post('Clase/update_clase/' + userLogged, form)
+        router.push({ name: 'ClaseList' });
         return {
           ok: true,
           message: data.message,
-          id: data.id
         }
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -59,12 +58,11 @@ export const useClasesStore = defineStore({
     // ELIMINAR DELITO
     async deleteClases(form: any) {
       try {
-        const { data } = await siibApi.post('clase/delete_Clases/' + userLogged, form)
-        router.push({ name: 'ClasesList' });
+        const { data } = await siibApi.post('clase/delete_clase/' + userLogged, form)
+        router.push({ name: 'ClaseList' });
         return {
           ok: true,
           message: data.message,
-          id: data.id
         }
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

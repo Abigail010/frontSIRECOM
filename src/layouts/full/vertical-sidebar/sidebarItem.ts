@@ -99,25 +99,7 @@ const lista_menu = [
         to: '/ordenList'
         
         }, 
-  /* {
-      title: 'Gasto administrativo',
-      icon: BrowserCheckIcon,
-      // subCaption: 'This is the subtitle',
-      to: '/administrativeExpenseList'
-    },
-    {
-      title: 'Recepcion documental',
-      icon: BrowserCheckIcon,
-      // subCaption: 'This is the subtitle',
-      to: '/documentaryReceptionList'
-    },
-    {
-      title: 'Revision documental',
-      icon: ListCheckIcon,
-      // subCaption: 'This is the subtitle',
-      to: '/documentaryReviewList'
-    },*/
-
+ 
     {
       title: 'Busqueda Reporte',
       icon: SearchIcon,
@@ -134,6 +116,8 @@ const lista_menu = [
       icon: MenuIcon,
       to: '#',
       children: [
+
+       
         {
           title: 'Perfil',
           icon: CircleIcon,
@@ -160,30 +144,25 @@ const lista_menu = [
           icon: CircleIcon,
           to: '/filtroList'
         },
-        /*{
-          title: 'Repuestos',
-          icon: CircleIcon,
-          to: '/repuestoList'
-        },*/
+       
         {
           title: 'Repuestos',
           icon: CircleIcon,
           to: '/3level',
           children: [
-            
-            
-                {
-                  title: 'Repuesto',
-                  icon: CircleXIcon,
-                  to: '/repuestoList'
-                },
-                {
-                  title: 'Ingreso de repuestos',
-                  icon: CircleXIcon,
-                  to: '/registerList'
-                },
-        ]
+            {
+              title: 'Repuesto',
+              icon: CircleXIcon,
+              to: '/repuestoList'
+            },
+            {
+              title: 'Ingreso de repuestos',
+              icon: CircleXIcon,
+              to: '/registerList'
+            }
+          ]
         },
+
         {
           title: 'Tipos de mantenimiento',
           icon: CircleIcon,
@@ -991,9 +970,10 @@ const sidebarItem: menu[] = [
 ];
 
 const getMenu = async () => {
+  
   const response = await authStore.getUserMenu()
   for (let i = 0; i < response.length; i++) {
-
+   
    if(response[i].header){
       sidebarItem.push(response[i])
     }
@@ -1014,6 +994,7 @@ const getMenu = async () => {
       const menu_nivel_2 = []
       // ITERAREMOS SOBRE LOS HIJOS QUE TIENE EL USUARIO
       for (let j = 0; j < response[i].children.length; j++) {
+       
         // EN LA VARIABLE submenu ALMACENAREMOS EL MENU HIJO
         const submenu: any = registro.children.find(
           (menu: any) => menu.title == response[i].children[j].title
@@ -1022,26 +1003,30 @@ const getMenu = async () => {
         if(response[i].children[j].children){
           // EL 2DO NIVEL TIENE HIJOS DE 3ER NIVEL
           // console.log(response[i].children[j]);
-          const menu_nivel_3 = []
-          for (let k = 0; k < response[i].children[j].children.length; k++) {
-            // console.log(response[i].children[j].children[k]);
-            const submenu_2: any = submenu.children.find(
-              (menu: any) => menu.title == response[i].children[j].children[k].title
-            )
-            // console.log('submenu2:',submenu_2);
-            if(response[i].children[j].children[k].children){
-              const menu_nivel_4 = []
-              for (let l = 0; l < response[i].children[j].children[k].children.length; l++) {
-                const submenu_3: any = submenu_2.children.find(
-                  (menu: any) => menu.title == response[i].children[j].children[k].children[l].title
+        
+         
+          
+              const menu_nivel_3 = []
+              for (let k = 0; k < response[i].children[j].children.length; k++) {
+                // console.log(response[i].children[j].children[k]);
+                const submenu_2: any = submenu.children.find(
+                  (menu: any) => menu.title == response[i].children[j].children[k].title
                 )
-                menu_nivel_4.push(submenu_3)
+                // console.log('submenu2:',submenu_2);
+                if(response[i].children[j].children[k].children){
+                  const menu_nivel_4 = []
+                  for (let l = 0; l < response[i].children[j].children[k].children.length; l++) {
+                    const submenu_3: any = submenu_2.children.find(
+                      (menu: any) => menu.title == response[i].children[j].children[k].children[l].title
+                    )
+                    menu_nivel_4.push(submenu_3)
+                  }
+                  submenu_2.children = menu_nivel_4
+                }
+                menu_nivel_3.push(submenu_2)
               }
-              submenu_2.children = menu_nivel_4
-            }
-            menu_nivel_3.push(submenu_2)
-          }
-          submenu.children = menu_nivel_3
+              submenu.children = menu_nivel_3
+            
         }
         menu_nivel_2.push(submenu)
       }

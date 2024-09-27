@@ -485,12 +485,10 @@ Fecha de Registro<span style="color:red">(*)</span>
     
           <v-autocomplete
             variant="outlined"
-           
                   v-model="state.formData.id_repuesto"
                   :items="desserts7"
                   item-title="nombre_repuesto"
                   item-value="id"
-                
                   @input="miValidacion()"
                   :error="submitButton && !state.formData.id_repuesto"
                   hide-details

@@ -17,7 +17,7 @@ import { validateText } from '@/utils/helpers/validateText'
   const systemStore = useSystemStore()
 
   // BREADCRUMB  
-  const page = ref({ title: 'system' });
+  const page = ref({ title: 'Sistemas para mantenimiento' });
   const breadcrumbs = ref([
     {
       text: 'Dashboard',

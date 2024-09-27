@@ -13,7 +13,7 @@ import { editPermission } from '@/utils/helpers/editPermission'
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import Swal from 'sweetalert2'
 import { readonly } from 'vue';
-
+const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
   const route = useRoute()
   const resourceStore = useResourceStore()
   const orden = useOrdenStore()
@@ -129,15 +129,11 @@ import { readonly } from 'vue';
   const buttonSearchOrden = async () => {
     state.formData.id_persona = ''
     const respuesta_info = await orden.searchInfo(state.formData)
-
     if(!respuesta_info){
-
       const respuesta = await orden.searchOrden(state.formData)
-   
                 state.formData.color_ve = respuesta.color 
                 state.formData.tipo_orden= respuesta.tipo_v
                 state.formData.chasis_ = respuesta.chasis
-            
                 state.formData.placas = respuesta.placa
                 state.formData.modelo = respuesta.modelo
                 state.formData.marca = respuesta.marca
@@ -256,7 +252,7 @@ import { readonly } from 'vue';
   }
 
   const buttonSendForm = async () => {
-    console.log('registroooo')
+  //  console.log('registroooo')
     submitButton.value = true
     await validateForm()
     if(!sendForm.value) return
@@ -264,7 +260,7 @@ import { readonly } from 'vue';
     isLoading.value = true
     if(route.params.id_orden == '0'){
       // ES NUEVO REGISTRO
-      console.log('registroooo')
+      //console.log('registroooo')
 
       Swal.fire({
         title: 'Estás seguro?',
@@ -300,14 +296,7 @@ import { readonly } from 'vue';
     isLoading.value = false
   }
 
-  const birthDate = (date: string) => {
-    if(date !== undefined){
-      let format = date.split("/")
-      let lastFormat = format[2] + "-" + format[1] + "-" + format[0];
-      return lastFormat;
-    }
-    return  ''
-  }
+  
   // VALIDACION GENERAL
   const validateForm = async () => {
     sendForm.value = true
@@ -367,6 +356,7 @@ const getMecanicos = async() => {
         closable
       >
         - <span class="text-primary">Debe ingresar para el registro del vehículo la placa o chasis</span><br>
+        - <span class="text-primary">El vehículo debe encontrarse registrado en el sistema para poder registrar su ingreso</span><br>
       </v-alert>
     </v-col>
   </v-row>
@@ -476,7 +466,6 @@ Fecha de Registro<span style="color:red">(*)</span>
         v-model.trim="state.formData.color_ve"
         @input="state.formData.color_ve = validateText(state.formData.color_ve.toUpperCase())"
         :error="submitButton && !state.formData.color_ve"
-
         hide-details
          />
           <template v-if="submitButton && !state.formData.color_ve">
@@ -789,32 +778,21 @@ Fecha de Registro<span style="color:red">(*)</span>
         </div>
       </template>
 </v-col>
-
-
-  
-
   </v-row>
 
   <v-row>
     <v-col cols="12" class="text-lg-left pt-5">
       <template v-if="!isLoading">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Volver</v-btn>
-        <v-btn v-if="route.params.id_orden == '0' "
-        color="primary" @click="buttonSendForm()">
+        <v-btn v-if="route.params.id_orden == '0' " color="primary" @click="buttonSendForm()">
           <template v-if="route.params.id_orden == '0' ">
             Enviar    
           </template>
-         
-         
         </v-btn>
-        <v-btn  v-if="route.params.id_orden != '0' && state.formData.estado_orden==='EN PROCESO'"
-        color="primary" @click="buttonSendForm()" >
-      
-          
-          <template v-if="(route.params.id_orden != '0' && state.formData.estado_orden==='EN PROCESO') || userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ">
+        <v-btn  v-if="route.params.id_orden != '0' && state.formData.estado_orden==='EN PROCESO'" color="primary" @click="buttonSendForm()" >
+          <template v-if="(route.params.id_orden != '0' && state.formData.estado_orden==='EN PROCESO') || us == 1 || us == 2 ">
             Actualizar
           </template>
-         
         </v-btn>
       </template>
       <template v-else>

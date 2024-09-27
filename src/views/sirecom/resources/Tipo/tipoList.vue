@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 
 const Tipos = useTiposStore()
 
-const page = ref({ title: 'Tipos Externos' });
+const page = ref({ title: 'Tipos' });
 const breadcrumbs = ref([
   {
     text: 'Dashboard',
@@ -15,7 +15,7 @@ const breadcrumbs = ref([
     href: '#'
   },
   {
-    text: 'Listado de Tipos',
+    text: 'Listado de Tipos ',
     disabled: true,
     href: '#'
   }
@@ -110,9 +110,12 @@ onMounted(() => {
                 <v-icon color="info" size="large" class="me-2" @click="buttonTipoForm(item.id_tipo)">
                     mdi-pencil
                 </v-icon>
-                <v-icon color="error" size="large"  @click="deleteItem(item.id_tipo)">
+               
+                  <v-icon color="error" size="large"  @click="deleteItem(item.id_tipo)">
                     mdi-delete
                 </v-icon>
+               
+               
             </template>                    
           </v-data-table>
         </v-col>

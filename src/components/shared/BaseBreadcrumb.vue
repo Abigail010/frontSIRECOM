@@ -29,8 +29,9 @@ const props = defineProps({
                     </div>
                 </div>
                 <div class="d-none py-0 d-lg-block overflow-hidden">
-                    <div class="mb-n16 mt-3">
-                     <img src="@/assets/images/breadcrumb/emailSv.png" alt="breadcrumb" />
+                    <div class="mb-n16 mt-3 image-container">
+                        <img src="@/assets/images/breadcrumb/probar.png" class="breadcrumb-image"  />
+
                       <!----- <img src="@/assets/images/misimagenes/emailSv.png" style="width: 30%; height: 100%;"  alt="breadcrumb" />-->
                     </div>
                 </div>
@@ -45,4 +46,25 @@ const props = defineProps({
         background: transparent;
     }
 }
+
+
+.image-container {
+  display: flex;
+  justify-content: center; /* Centrar la imagen horizontalmente */
+  align-items: center;     /* Centrar la imagen verticalmente */
+  width: 100%;             /* Asegurar que ocupe todo el ancho disponible */
+  height: 100%;            /* Asegurar que ocupe todo el alto disponible */
+  overflow: hidden;        /* Evitar que la imagen se desborde */
+}
+
+.breadcrumb-image {
+  max-width: 30%;         /* Asegurar que la imagen no se haga más grande que su contenedor */
+  max-height: 1000%;        /* Limitar la altura para que no se desborde */
+  width: auto;             /* Ajusta el ancho automáticamente */
+  height: auto;            /* Ajusta la altura automáticamente */
+  object-fit: contain;     /* Mantiene la imagen completa dentro del contenedor */
+}
+
+
+
 </style>

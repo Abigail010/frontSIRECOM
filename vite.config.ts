@@ -26,5 +26,9 @@ export default defineConfig({
         exclude: ['vuetify'],
         entries: ['./src/**/*.vue']
     },
+   /* server: {
+        host: '165.172.65.62',
+       // port: 3001 // Cambia el puerto si es necesario
+      },*/
     base: `/sirecom/`,
 });

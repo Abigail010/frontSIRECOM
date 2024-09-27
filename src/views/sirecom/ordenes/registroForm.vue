@@ -15,14 +15,8 @@ import type { Header } from "vue3-easy-data-table";
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import Swal from 'sweetalert2'
 import { readonly } from 'vue';
-const select = ref('');
-const location = ref(['Alaska', 'Arizona', 'Hawaii']);
+const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
 const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
-
-const radioColumn = ref('1');
-const radioInline = ref('1');
-const paymentradio = ref('1');
-const checkedNames = ref([])
 const openpanel = ref([0]);
   const route = useRoute()
   const resourceStore = useResourceStore()
@@ -30,17 +24,13 @@ const openpanel = ref([0]);
   const orden = useOrdenStore()
   const registro = useRegisterStore()
   const getSystem = useSystemStore()
-  const tipos_combustible = ['GASOLINA', 'DIESEL', 'KEROSENE']
   const submitButton = ref(false)
   const addButton = ref(false)
   const sendForm = ref(true)
-  const sendPerson = ref(true)
-  const testEmail = ref(true)
-  const searchLoading = ref(false)
   const isLoading = ref(false)
 
   // BREADCRUMB
-  const page = ref({ title: 'Orden de trabajo y servicios' });
+  const page = ref({ title: 'Orden de Mantenimiento' });
   const breadcrumbs = ref([
     {
       text: 'Dashboard',
@@ -55,17 +45,12 @@ const openpanel = ref([0]);
   ]);
  
   const sendForm1 = ref(true)
-  const sendForm8 = ref(true)
-  const sendForm9 = ref(true)
+  const sendForm2 = ref(true)
+  const sendForm3 = ref(true)
   const sendForm10 = ref(true)
   // DECLARACION DE VARIABLES Y STATE
-  const perfilUsuario = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
-  const oficinaUsuario = JSON.parse(localStorage.getItem('user') || '').nombre_oficina
-  const permisoFecha = JSON.parse(localStorage.getItem('user') || '').estado
   const permisoEdicion = ref<any>(true)
-  const panel = ref<any>(false)
-  const currentDate = (route.params.id_orden != '0') ? '' : format(new Date(),"yyyy-MM-dd")
-  const currentDate2 = format(new Date(), "yyyy-MM-dd");
+
   const editar = ref<any>(false)
 
   const state = reactive({
@@ -148,10 +133,9 @@ const openpanel = ref([0]);
         tanque_aux:'', 
         id_accesorios_: []as any, 
         estado_orden:'', 
+        prueba_:'',  
+
         
-   
-   
-      
     }
   });
 
@@ -189,7 +173,7 @@ const openpanel = ref([0]);
     lista_sistemas.value = await getSystem.systems()
     //console.log(lista_sistemas.value)
     tipo_filtro.value=await registro.getFiltros()
-    //lista unidades
+
     lista_unidad.value=await registro.getUnidad()
   }
   
@@ -203,6 +187,8 @@ const openpanel = ref([0]);
  const buttonSearchSistema = async () => {
   state.formData.id_sistema= ''
    state.formData.repuestos= await registro.searchOrden(state.formData)
+
+   //console.log( state.formData.repuestos)
 }
 
    const basico_id = async (id_orden: any) => {
@@ -325,92 +311,92 @@ const openpanel = ref([0]);
     const rep = data.id_Rep
     for (let i = 0; i < rep.length; i++) {
       state.formData.id_Rep.push(rep[i])
-      tipo_filtro.value = tipo_filtro.value.filter( (tipo: any) => tipo.id !=rep[i].id_filtro)
+      tipo_filtro.value = tipo_filtro.value.filter( (tipo: any) => tipo.nombre_repuesto !=rep[i].id_filtro)
     }
 
   }
 
   const mifuncion = async () => {
+  //  console.log('aqui')
    if(itemsSelected.value.length>0){
       const indice = itemsSelected.value.length-1
       state.formData.id_filtro= itemsSelected.value[indice].id
       state.formData.nombre_repuesto= itemsSelected.value[indice].nombre_repuesto
       state.formData.id_sis = itemsSelected.value[indice].id_sistema
+    //  console.log( state.formData.id_filtro)
     }
 
  }
   
   const setCodeName = () => {
-    const registro: any = tipo_mantenimiento.find(
+    const registro: any = tipo_mantenimiento.value.find(
       (id_motor: any) => 
       id_motor.id == state.formData.id_diagnostico
     )
-    state.formData.nombre_diagnostico = registro.nombre_diagnostico
-
+   // state.formData.nombre_diagnostico = registro.nombre_diagnostico
+ 
     //al
-    const registro2: any = tipo_mantenimiento2.find(
+    const registro2: any = tipo_mantenimiento2.value.find(
       (idalimentacion: any) => 
       idalimentacion.id == state.formData.id_a
     )
-    state.formData.nombre_a = registro2.nombre_a
+   // state.formData.nombre_a = registro2.nombre_a
 
     //refri
-    const registro3: any = tipo_mantenimiento3.find(
+    const registro3: any = tipo_mantenimiento3.value.find(
       (idrefreigeracion: any) => 
       idrefreigeracion.id == state.formData.id_r
     )
-    state.formData.nombre_r = registro3.nombre_r
+   // state.formData.nombre_r = registro3.nombre_r
 
     //direccion
-    const registro4: any = tipo_mantenimiento4.find(
+    const registro4: any = tipo_mantenimiento4.value.find(
       (iddireccion: any) => 
       iddireccion.id == state.formData.id_d
     )
-    state.formData.nombre_d = registro4.nombre_d
+    //state.formData.nombre_d = registro4.nombre_d
 
     //trans 
-    const registro5: any = tipo_mantenimiento5.find(
+    const registro5: any = tipo_mantenimiento5.value.find(
       (idtransmision: any) => 
       idtransmision.id == state.formData.id_t
     )
-    state.formData.nombre_d = registro5.nombre_d
+   // state.formData.nombre_d = registro5.nombre_d
 
-    const registro6: any = tipo_mantenimiento6.find(
+    const registro6: any = tipo_mantenimiento6.value.find(
       (idsuspencion: any) => 
       idsuspencion.id == state.formData.id_s
     )
-    state.formData.nombre_s = registro6.nombre_s
+    //state.formData.nombre_s = registro6.nombre_s
 
-    const registro7: any = tipo_mantenimiento7.find(
+    const registro7: any = tipo_mantenimiento7.value.find(
       (idelectricidad: any) => 
       idelectricidad.id == state.formData.id_e
     )
-    state.formData.nombre_e = registro7.nombre_e
+   // state.formData.nombre_e = registro7.nombre_e
 
-    const registro8: any = tipo_mantenimiento8.find(
+    const registro8: any = tipo_mantenimiento8.value.find(
       (idchaperia: any) => 
       idchaperia.id == state.formData.id_c
     )
-    state.formData.nombre_c = registro8.nombre_c
-    const registro9: any = tipo_mantenimiento9.find(
+   // state.formData.nombre_c = registro8.nombre_c
+    const registro9: any = tipo_mantenimiento9.value.find(
       (idtorneria: any) => 
       idtorneria.id == state.formData.id_tt
   
     )
-    state.formData.nombre_tt = registro9.nombre_tt
+   // state.formData.nombre_tt = registro9.nombre_tt
 
-    state.formData.nombre_c = registro8.nombre_c
-    const registro10: any = tipo_mantenimiento10.find(
+ //   state.formData.nombre_c = registro8.nombre_c
+    const registro10: any = tipo_mantenimiento10.value.find(
       (idfrenos: any) => 
       idfrenos.id == state.formData.id_f
     )
-    state.formData.nombre_f = registro10.nombre_f
+    //state.formData.nombre_f = registro10.nombre_f
   }
   //trans
   // AGREGA TIPO DE CODIGO A LA TABLA DE CODIGOS
   const buttonAddCode = () => {
-  
-
     if(state.formData.id_diagnostico){
       tipo_mantenimiento.value = tipo_mantenimiento.value.filter(
         (codigo: any) =>
@@ -419,11 +405,12 @@ const openpanel = ref([0]);
       state.formData.id_motor.push({
         id_diagnostico: state.formData.id_diagnostico,
       })
-
       state.formData.id_diagnostico = ''
     
     }
+  }
 
+  const buttonAddCodeA = () => {
     if(state.formData.id_a){
       tipo_mantenimiento2.value = tipo_mantenimiento2.value.filter(
         (codigo: any) =>
@@ -436,6 +423,8 @@ const openpanel = ref([0]);
       state.formData.id_a = ''
   
     }
+  }
+    const buttonAddCodeR = () => {
 
     if(state.formData.id_r){
       tipo_mantenimiento3.value = tipo_mantenimiento3.value.filter(
@@ -449,6 +438,8 @@ const openpanel = ref([0]);
       state.formData.id_r = ''
   
     }
+  }
+  const buttonAddCodeD = () => {
     if(state.formData.id_d){
       tipo_mantenimiento4.value = tipo_mantenimiento4.value.filter(
         (codigo: any) =>
@@ -460,7 +451,8 @@ const openpanel = ref([0]);
 
       state.formData.id_d = ''
     }
-   
+  }
+  const buttonAddCodeT = () => {
     if(state.formData.id_t){
       tipo_mantenimiento5.value = tipo_mantenimiento5.value.filter(
         (codigo: any) =>
@@ -472,7 +464,8 @@ const openpanel = ref([0]);
       state.formData.id_t = ''
   
     }
-
+  }
+  const buttonAddCodeS = () => {
     if(state.formData.id_s){
       tipo_mantenimiento6.value = tipo_mantenimiento6.value.filter(
         (codigo: any) =>
@@ -485,7 +478,8 @@ const openpanel = ref([0]);
 
       state.formData.id_s = ''
     }
-
+  }
+  const buttonAddCodeE = () => {
     if(state.formData.id_e){
       tipo_mantenimiento7.value = tipo_mantenimiento7.value.filter(
         (codigo: any) =>
@@ -497,7 +491,8 @@ const openpanel = ref([0]);
       state.formData.id_e = ''
   
     }
-
+  }
+    const buttonAddCodeC = () => {
     if(state.formData.id_c){
       tipo_mantenimiento8.value = tipo_mantenimiento8.value.filter(
         (codigo: any) =>
@@ -508,7 +503,8 @@ const openpanel = ref([0]);
       })
       state.formData.id_c = ''
     }
-
+  }
+  const buttonAddCodeTT = () => {
     if(state.formData.id_tt){
       tipo_mantenimiento9.value = tipo_mantenimiento9.value.filter(
         (codigo: any) =>
@@ -520,7 +516,8 @@ const openpanel = ref([0]);
       state.formData.id_tt = ''
   
     }
-
+  }
+  const buttonAddCodeFR = () => {
     if(state.formData.id_f){
       tipo_mantenimiento10.value = tipo_mantenimiento10.value.filter(
         (codigo: any) =>
@@ -532,9 +529,44 @@ const openpanel = ref([0]);
       state.formData.id_f = ''
   
     }
+  }
+  const buttonAddCodeF = () => {
+        if (state.formData.id_filtro && state.formData.cantidad_r && state.formData.unidad_r) {
+      // Filtrar el array de repuestos, excluyendo el que tiene el id_filtro
+      state.formData.repuestos = state.formData.repuestos.filter(
+        (repuesto:any) => repuesto.id != state.formData.id_filtro
+      );
+      //console.log('state.form '+ state.formData.repuestos)
+    
+      let padre = tipo_filtro.value.find(
+      (region:any) => region.id === state.formData.id_filtro
+      )
+     
+      if (padre) {
+     //   console.log('....... ',  padre.nombre_repuesto);
+        state.formData.nombre_repuesto = padre.nombre_repuesto; // Asignar el nombre_repuesto si se encuentra el objeto
+      } else {
+        //console.log('No se encontró el repuesto con ese id_filtro');
+      }
+      // Agregar el nuevo repuesto a la lista de id_Rep
+      state.formData.id_Rep.push({
+        id_filtro: state.formData.id_filtro,
+        nombre_repuesto: state.formData.nombre_repuesto,
+        cantidad_r: state.formData.cantidad_r,
+        unidad_r: state.formData.unidad_r,
+        observacion_r: state.formData.observacion_r
+      });
 
-    if(state.formData.id_filtro && state.formData.cantidad_r && state.formData.unidad_r){
-      tipo_filtro.value = tipo_filtro.value.filter(
+      // Limpiar los campos
+      state.formData.id_filtro = '';
+      state.formData.nombre_repuesto = '';
+      state.formData.cantidad_r = '';
+      state.formData.unidad_r = '';
+      state.formData.observacion_r = '';
+    }
+
+   /* if(state.formData.nombre_repuesto && state.formData.cantidad_r && state.formData.unidad_r){
+      state.formData.repuestos=state.formData.repuestos.filter(
         (codigo: any) =>
         codigo.id != state.formData.id_filtro
       )
@@ -552,7 +584,7 @@ const openpanel = ref([0]);
       state.formData.unidad_r = ''
       state.formData.observacion_r = ''
   
-    }
+    }*/
   }
 
   const ButtonReport2 = async (item: any) => {
@@ -861,14 +893,14 @@ if(state.formData.id_Rep.length>0){
   }
 
   const buttonSendForm = async () => {
-    console.log('registroooo')
+  //  console.log('registroooo')
     submitButton.value = true
     await validateForm()
     if(!sendForm.value) return
     isLoading.value = true
     if(state.formData.id_registro == '0' ){
       // ES NUEVO REGISTRO
-      console.log('registroooo1010101')
+    //  console.log('registroooo1010101')
 
       Swal.fire({
         title: 'Estás seguro?',
@@ -891,7 +923,7 @@ if(state.formData.id_Rep.length>0){
     }else{
      
       if(state.formData.id_registro != '0'){
-        console.log(state.formData.id_registro)
+        //console.log(state.formData.id_registro)
             if(permisoEdicion.value){
               // SI TIENE PERMISO DE EDICIO
               const { ok, message } = await registro.update_mantenimiento(state.formData)
@@ -910,7 +942,31 @@ if(state.formData.id_Rep.length>0){
 
   // VALIDACION GENERAL
   const validateForm = async () => {
+
+    sendForm1.value = true
+    sendForm2.value = true
+    sendForm3.value = true
     sendForm.value = true
+    if( !state.formData.tipo_man || 
+       (state.formData.id_motor.length ==0 && state.formData.idsuspencion.length==0 
+        && state.formData.idalimentacion.length == 0 && state.formData.idrefreigeracion.length==0 
+        && state.formData.idelectricidad.length ==0 && state.formData.iddireccion.length ==0 
+        && state.formData.idchaperia.length ==0 && state.formData.idtransmision.length ==0   
+        && state.formData.idtorneria.length ==0 && state.formData.idfrenos.length ==0) ){
+      sendForm.value = false
+      sendForm1.value = false
+    }
+    if(  !state.formData.gasolina || !state.formData.tanque_aux || 
+       !state.formData.sinfonia || !state.formData.estado_llantas ){
+      sendForm.value = false
+      sendForm2.value = false
+    }
+
+    if( state.formData.id_Rep.length ==0 ){
+      sendForm.value = false
+      sendForm3.value = false
+    }
+/*
     if( !state.formData.tipo_man || 
        (state.formData.id_motor.length ==0 && state.formData.idsuspencion.length==0 
         && state.formData.idalimentacion.length == 0 && state.formData.idrefreigeracion.length==0 
@@ -920,7 +976,10 @@ if(state.formData.id_Rep.length>0){
        !state.formData.gasolina || !state.formData.tanque_aux || 
        !state.formData.sinfonia || !state.formData.estado_llantas || state.formData.id_Rep.length ==0 ){
       sendForm.value = false
-    }
+      sendForm1.value = false
+      sendForm2.value = false
+      sendForm3.value = false
+    }*/
   }
 
   const Toast = Swal.mixin({
@@ -930,13 +989,10 @@ if(state.formData.id_Rep.length>0){
     timer: 2000,
     timerProgressBar: true,
   });
-  const desserts = ref([]) as any
-const getMecanicos = async() => {
-    desserts.value = await orden.getDisponibles() 
-}
+  
   onMounted(async () => {
     await getResourcesList()
-    await getMecanicos()
+    //await getMecanicos()
     
     if(route.params.id_orden  != '0'){
       
@@ -971,23 +1027,22 @@ const getMecanicos = async() => {
         closable
       >
       <div style="display: flex; justify-content: space-between;">
-  <div><b>PLACA :</b> <span class="text-primary">{{state.formData.dato1}}</span></div>
-  <div><b>CHASIS :</b> <span class="text-primary">{{state.formData.dato2}}</span></div>
-  <div><b>TIPO :</b> <span class="text-primary">{{state.formData.tipo_orden}}</span></div>
-</div>
+          <div><b>PLACA :</b> <span class="text-primary">{{state.formData.dato1}}</span></div>
+          <div><b>CHASIS :</b> <span class="text-primary">{{state.formData.dato2}}</span></div>
+          <div><b>TIPO :</b> <span class="text-primary">{{state.formData.tipo_orden}}</span></div>
+      </div>
 
-<div style="display: flex; justify-content: space-between;">
-  <div><b>MARCA :</b> <span class="text-primary">{{state.formData.marca}}</span></div>
-  <div><b>COLOR :</b> <span class="text-primary">{{state.formData.color_ve}}</span></div>
-  <div><b>FECHA DE INGRESO :</b> <span class="text-primary">{{state.formData.dato3}}</span></div>
-</div>
+      <div style="display: flex; justify-content: space-between;">
+        <div><b>MARCA :</b> <span class="text-primary">{{state.formData.marca}}</span></div>
+        <div><b>COLOR :</b> <span class="text-primary">{{state.formData.color_ve}}</span></div>
+        <div><b>FECHA DE INGRESO :</b> <span class="text-primary">{{state.formData.dato3}}</span></div>
+      </div>
 
-<div style="display: flex; justify-content: space-between;">
-  <div><b>CONDUCTOR :</b> <span class="text-primary">{{state.formData.nombre_completo}}</span></div>
-  <div><b>CEL :</b> <span class="text-primary">{{state.formData.celular_con}}</span></div>
-  <div><b>PRE - DIAGNOSTICO :</b> <span class="text-primary">{{state.formData.dato4}}</span></div>
-</div>
-     
+      <div style="display: flex; justify-content: space-between;">
+        <div><b>CONDUCTOR :</b> <span class="text-primary">{{state.formData.nombre_completo}}</span></div>
+        <div><b>CEL :</b> <span class="text-primary">{{state.formData.celular_con}}</span></div>
+        <div><b>PRE - DIAGNOSTICO :</b> <span class="text-primary">{{state.formData.dato4}}</span></div>
+      </div>
 
       </v-alert>
     </v-col>
@@ -1013,683 +1068,682 @@ const getMecanicos = async() => {
             <v-expansion-panel-text class="mt-4">
              <v-row>
               <v-col cols="12" md="12">
-        <v-label class="mb-2 font-weight-medium">Tipo de mantenimiento <span style="color:red">(*)</span></v-label>
-        <v-radio-group 
-          v-model="state.formData.tipo_man"
-        
-          class="ml-n3"
-          inline
-          :error="submitButton && !state.formData.tipo_man"
-          hide-details
-        >
-          <v-radio label="CORRECTIVO" color="primary" value="CORRECTIVO"></v-radio>
-          <v-radio label="PREVENTIVO" color="secondary" value="PREVENTIVO"></v-radio>
-          <v-radio label="PREVENTIVO/CORRECTIVO" color="primary" value="PREVENTIVO/CORRECTIVO"></v-radio>
-        </v-radio-group>
-        <template v-if="submitButton && !state.formData.tipo_man">
-          <div class="v-messages font-weight-black px-2 py-2">
-            <div class="v-messages__message text-error ">
-              El campo es requerido
-            </div>
-          </div>
-        </template>
+                <v-label class="mb-2 font-weight-medium">Tipo de mantenimiento <span style="color:red">(*)</span></v-label>
+                  <v-radio-group 
+                    v-model="state.formData.tipo_man"
+                    class="ml-n3"
+                    inline
+                    :error="submitButton && !state.formData.tipo_man"
+                    hide-details
+                  >
+                    <v-radio label="CORRECTIVO" color="primary" value="CORRECTIVO"></v-radio>
+                    <v-radio label="PREVENTIVO" color="secondary" value="PREVENTIVO"></v-radio>
+                    <v-radio label="PREVENTIVO/CORRECTIVO" color="primary" value="PREVENTIVO/CORRECTIVO"></v-radio>
+                  </v-radio-group>
+                  <template v-if="submitButton && !state.formData.tipo_man">
+                    <div class="v-messages font-weight-black px-2 py-2">
+                      <div class="v-messages__message text-error ">
+                        El campo es requerido
+                      </div>
+                    </div>
+                  </template>
 
-      </v-col>
+                </v-col>
               <template v-if="permisoEdicion">
-      <v-col cols="12" md="6">
-        <v-label class="mb-2 font-weight-medium">
-          Motor
-        </v-label>
-        <v-autocomplete
-        variant="outlined"
-        color="primary"
-       
-     
-        :items="tipo_mantenimiento"
-          v-model="state.formData.id_diagnostico"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_diagnostico"
-          item-title="nombre_diagnostico"
-          @update:model-value="setCodeName()"
-          
-        > <template v-slot:append>
-          <v-btn 
-            color="primary"
-            @click= buttonAddCode()
-            :disabled="!state.formData.id_diagnostico">
-            <PlusIcon/> Agregar
-          </v-btn>
-        </template>
-      
-      </v-autocomplete>
-       
-      </v-col>
-     
-    </template>
-
-    <template v-if="state.formData.id_motor.length>0">
-      <v-col cols="12" md="6">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">N° Motor</th>
-              <th class="text-center"><b> Descripción de trabajo</b></th>
-              
-              <th class="text-center" v-if="permisoEdicion">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.id_motor"
-              :key="index"
-            >
-              <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.id_diagnostico }}</td>
+                    <v-col cols="12" md="6">
+                      <v-label class="mb-2 font-weight-medium">
+                        Motor
+                        </v-label>
+                        <v-autocomplete
+                          variant="outlined"
+                          color="primary"
+                          :items="tipo_mantenimiento"
+                          v-model="state.formData.id_diagnostico"
+                          no-data-text="No existe más opciones para seleccionar"
+                          item-value="nombre_diagnostico"
+                          item-title="nombre_diagnostico"
+                          @update:model-value="setCodeName()"
+                          
+                        > <template v-slot:append>
+                          <v-btn 
+                            color="primary"
+                            @click= buttonAddCode()
+                            :disabled="!state.formData.id_diagnostico">
+                            <PlusIcon/> Agregar
+                          </v-btn>
+                        </template>
+                      
+                      </v-autocomplete>
             
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteCode(index)"/></td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-    </template>
-
-
-    <template v-if="permisoEdicion">
-      <v-col cols="12" md="6">
-        <v-label class="mb-2 font-weight-medium">
-          Alimentación
-        </v-label>
-        <v-autocomplete
-        variant="outlined"
-        color="primary"
-        :items="tipo_mantenimiento2"
-          v-model="state.formData.id_a"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_diagnostico"
-          item-title="nombre_diagnostico"
-          @update:model-value="setCodeName()"
-          
-        > <template v-slot:append>
-          <v-btn 
-            color="primary"
-            @click= buttonAddCode()
-            :disabled="!state.formData.id_a">
-            <PlusIcon/> Agregar
-          </v-btn>
-        </template>
-      
-      </v-autocomplete>
-       
-      </v-col>
+                    </v-col>
      
-    </template>
+              </template>
 
-    <template v-if="state.formData.idalimentacion.length>0">
-      <v-col cols="12" md="6">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">N° Alimentación</th>
-              <th class="text-center"><b> Descripción de trabajo</b></th>
+              <template v-if="state.formData.id_motor.length>0">
+                <v-col cols="12" md="6">
+                  <v-table density="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-center">N° Motor</th>
+                        <th class="text-center"><b> Descripción de trabajo</b></th>
+                        
+                        <th class="text-center" v-if="permisoEdicion">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in state.formData.id_motor"
+                        :key="index"
+                      >
+                        <td class="text-center">{{ index+1 }}</td>
+                        <td class="text-center">{{ item.id_diagnostico }}</td>
+                      
+                        <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteCode(index)"/></td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-col>
+              </template>
+
+              <template v-if="permisoEdicion">
+                <v-col cols="12" md="6">
+                  <v-label class="mb-2 font-weight-medium">
+                    Alimentación
+                  </v-label>
+                  <v-autocomplete
+                  variant="outlined"
+                  color="primary"
+                  :items="tipo_mantenimiento2"
+                    v-model="state.formData.id_a"
+                    no-data-text="No existe más opciones para seleccionar"
+                    item-value="nombre_diagnostico"
+                    item-title="nombre_diagnostico"
+                    @update:model-value="setCodeName()"
+                    
+                  > <template v-slot:append>
+                    <v-btn 
+                      color="primary"
+                      @click= buttonAddCodeA()
+                      :disabled="!state.formData.id_a">
+                      <PlusIcon/> Agregar
+                    </v-btn>
+                  </template>
+                
+                </v-autocomplete>
+                
+                </v-col>
               
-              <th class="text-center" v-if="permisoEdicion">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.idalimentacion"  :key="index"
-            >
-              <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.id_a }}</td>
-            
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteA(index)"/></td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-    </template>
+              </template>
 
-    <template v-if="permisoEdicion">
-      <v-col cols="12" md="6">
-        <v-label class="mb-2 font-weight-medium">
-          Refrigeración
-        </v-label>
-        <v-autocomplete
-        variant="outlined"
-        color="primary"
-        :items="tipo_mantenimiento3"
-          v-model="state.formData.id_r"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_diagnostico"
-          item-title="nombre_diagnostico"
-          @update:model-value="setCodeName()"
-          
-        > <template v-slot:append>
-          <v-btn 
-            color="primary"
-            @click= buttonAddCode()
-            :disabled="!state.formData.id_r">
-            <PlusIcon/> Agregar
-          </v-btn>
-        </template>
-      
-      </v-autocomplete>
-       
-      </v-col>
-     
-    </template>
+              <template v-if="state.formData.idalimentacion.length>0">
+                <v-col cols="12" md="6">
+                  <v-table density="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-center">N° Alimentación</th>
+                        <th class="text-center"><b> Descripción de trabajo</b></th>
+                        
+                        <th class="text-center" v-if="permisoEdicion">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in state.formData.idalimentacion"  :key="index"
+                      >
+                        <td class="text-center">{{ index+1 }}</td>
+                        <td class="text-center">{{ item.id_a }}</td>
+                      
+                        <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteA(index)"/></td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-col>
+              </template>
 
-    <template v-if="state.formData.idrefreigeracion.length>0">
-      <v-col cols="12" md="6">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">N° Refrigeración</th>
-              <th class="text-center"><b> Descripción de trabajo</b></th>
+              <template v-if="permisoEdicion">
+                <v-col cols="12" md="6">
+                  <v-label class="mb-2 font-weight-medium">
+                    Refrigeración
+                  </v-label>
+                  <v-autocomplete
+                  variant="outlined"
+                  color="primary"
+                  :items="tipo_mantenimiento3"
+                    v-model="state.formData.id_r"
+                    no-data-text="No existe más opciones para seleccionar"
+                    item-value="nombre_diagnostico"
+                    item-title="nombre_diagnostico"
+                    @update:model-value="setCodeName()"
+                    
+                  > <template v-slot:append>
+                    <v-btn 
+                      color="primary"
+                      @click= buttonAddCodeR()
+                      :disabled="!state.formData.id_r">
+                      <PlusIcon/> Agregar
+                    </v-btn>
+                  </template>
+                
+                </v-autocomplete>
+                
+                </v-col>
               
-              <th class="text-center" v-if="permisoEdicion">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.idrefreigeracion"  :key="index"
-            >
-              <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.id_r }}</td>
-            
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteR(index)"/></td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-    </template>
-    <template v-if="permisoEdicion">
-      <v-col cols="12" md="6">
-        <v-label class="mb-2 font-weight-medium">
-          Dirección
-        </v-label>
-        <v-autocomplete
-        variant="outlined"
-        color="primary"
-        :items="tipo_mantenimiento4"
-          v-model="state.formData.id_d"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_diagnostico"
-          item-title="nombre_diagnostico"
-          @update:model-value="setCodeName()"
-          
-        > <template v-slot:append>
-          <v-btn 
-            color="primary"
-            @click= buttonAddCode()
-            :disabled="!state.formData.id_d">
-            <PlusIcon/> Agregar
-          </v-btn>
-        </template>
-      
-      </v-autocomplete>
-       
-      </v-col>
-     
-    </template>
+              </template>
 
-    <template v-if="state.formData.iddireccion.length>0">
-      <v-col cols="12" md="6">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">N° Dirección</th>
-              <th class="text-center"><b> Descripción de trabajo</b></th>
+              <template v-if="state.formData.idrefreigeracion.length>0">
+                <v-col cols="12" md="6">
+                  <v-table density="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-center">N° Refrigeración</th>
+                        <th class="text-center"><b> Descripción de trabajo</b></th>
+                        
+                        <th class="text-center" v-if="permisoEdicion">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in state.formData.idrefreigeracion"  :key="index"
+                      >
+                        <td class="text-center">{{ index+1 }}</td>
+                        <td class="text-center">{{ item.id_r }}</td>
+                      
+                        <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteR(index)"/></td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-col>
+              </template>
+
+              <template v-if="permisoEdicion">
+                <v-col cols="12" md="6">
+                  <v-label class="mb-2 font-weight-medium">
+                    Dirección
+                  </v-label>
+                  <v-autocomplete
+                  variant="outlined"
+                  color="primary"
+                  :items="tipo_mantenimiento4"
+                    v-model="state.formData.id_d"
+                    no-data-text="No existe más opciones para seleccionar"
+                    item-value="nombre_diagnostico"
+                    item-title="nombre_diagnostico"
+                    @update:model-value="setCodeName()"
+                    
+                  > <template v-slot:append>
+                    <v-btn 
+                      color="primary"
+                      @click= buttonAddCodeD()
+                      :disabled="!state.formData.id_d">
+                      <PlusIcon/> Agregar
+                    </v-btn>
+                  </template>
+                
+                </v-autocomplete>
+                
+                </v-col>
               
-              <th class="text-center" v-if="permisoEdicion">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.iddireccion"  :key="index"
-            >
-              <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.id_d }}</td>
-            
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteD(index)"/></td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-    </template>
+              </template>
 
-    <template v-if="permisoEdicion">
-      <v-col cols="12" md="6">
-        <v-label class="mb-2 font-weight-medium">
-        <b>Transmisión</b>
-        </v-label>
-        <v-autocomplete
-        variant="outlined"
-        color="primary"
-        :items="tipo_mantenimiento5"
-          v-model="state.formData.id_t"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_diagnostico"
-          item-title="nombre_diagnostico"
-          @update:model-value="setCodeName()"
-          
-        > <template v-slot:append>
-          <v-btn 
-            color="primary"
-            @click= buttonAddCode()
-            :disabled="!state.formData.id_t">
-            <PlusIcon/> Agregar
-          </v-btn>
-        </template>
-      
-      </v-autocomplete>
-       
-      </v-col>
-     
-    </template>
+              <template v-if="state.formData.iddireccion.length>0">
+                <v-col cols="12" md="6">
+                  <v-table density="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-center">N° Dirección</th>
+                        <th class="text-center"><b> Descripción de trabajo</b></th>
+                        
+                        <th class="text-center" v-if="permisoEdicion">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in state.formData.iddireccion"  :key="index"
+                      >
+                        <td class="text-center">{{ index+1 }}</td>
+                        <td class="text-center">{{ item.id_d }}</td>
+                      
+                        <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteD(index)"/></td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-col>
+              </template>
 
-    <template v-if="state.formData.idtransmision.length>0">
-      <v-col cols="12" md="6">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">N° Transmisión</th>
-              <th class="text-center"><b> Descripción de trabajo</b></th>
+              <template v-if="permisoEdicion">
+                <v-col cols="12" md="6">
+                  <v-label class="mb-2 font-weight-medium">
+                  <b>Transmisión</b>
+                  </v-label>
+                  <v-autocomplete
+                  variant="outlined"
+                  color="primary"
+                  :items="tipo_mantenimiento5"
+                    v-model="state.formData.id_t"
+                    no-data-text="No existe más opciones para seleccionar"
+                    item-value="nombre_diagnostico"
+                    item-title="nombre_diagnostico"
+                    @update:model-value="setCodeName()"
+                    
+                  > <template v-slot:append>
+                    <v-btn 
+                      color="primary"
+                      @click= buttonAddCodeT()
+                      :disabled="!state.formData.id_t">
+                      <PlusIcon/> Agregar
+                    </v-btn>
+                  </template>
+                
+                </v-autocomplete>
+                
+                </v-col>
               
-              <th class="text-center" v-if="permisoEdicion">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.idtransmision"  :key="index"
-            >
-              <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.id_t }}</td>
-            
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteT(index)"/></td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-    </template>
-    <template v-if="permisoEdicion">
-      <v-col cols="12" md="6">
-        <v-label class="mb-2 font-weight-medium">
-        <b>Suspensión</b>
-        </v-label>
-        <v-autocomplete
-        variant="outlined"
-        color="primary"
-        :items="tipo_mantenimiento6"
-          v-model="state.formData.id_s"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_diagnostico"
-          item-title="nombre_diagnostico"
-          @update:model-value="setCodeName()"
-          
-        > <template v-slot:append>
-          <v-btn 
-            color="primary"
-            @click= buttonAddCode()
-            :disabled="!state.formData.id_s">
-            <PlusIcon/> Agregar
-          </v-btn>
-        </template>
-      
-      </v-autocomplete>
-       
-      </v-col>
-     
-    </template>
+              </template>
 
-    <template v-if="state.formData.idsuspencion.length>0">
-      <v-col cols="12" md="6">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">N° Suspensión</th>
-              <th class="text-center"><b> Descripción de trabajo</b></th>
+              <template v-if="state.formData.idtransmision.length>0">
+                <v-col cols="12" md="6">
+                  <v-table density="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-center">N° Transmisión</th>
+                        <th class="text-center"><b> Descripción de trabajo</b></th>
+                        
+                        <th class="text-center" v-if="permisoEdicion">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in state.formData.idtransmision"  :key="index"
+                      >
+                        <td class="text-center">{{ index+1 }}</td>
+                        <td class="text-center">{{ item.id_t }}</td>
+                      
+                        <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteT(index)"/></td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-col>
+              </template>
+              <template v-if="permisoEdicion">
+                <v-col cols="12" md="6">
+                  <v-label class="mb-2 font-weight-medium">
+                  <b>Suspensión</b>
+                  </v-label>
+                  <v-autocomplete
+                  variant="outlined"
+                  color="primary"
+                  :items="tipo_mantenimiento6"
+                    v-model="state.formData.id_s"
+                    no-data-text="No existe más opciones para seleccionar"
+                    item-value="nombre_diagnostico"
+                    item-title="nombre_diagnostico"
+                    @update:model-value="setCodeName()"
+                    
+                  > <template v-slot:append>
+                    <v-btn 
+                      color="primary"
+                      @click= buttonAddCodeS()
+                      :disabled="!state.formData.id_s">
+                      <PlusIcon/> Agregar
+                    </v-btn>
+                  </template>
+                
+                </v-autocomplete>
+                
+                </v-col>
               
-              <th class="text-center" v-if="permisoEdicion">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.idsuspencion"  :key="index"
-            >
-              <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.id_s }}</td>
-            
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteS(index)"/></td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-    </template>
+              </template>
 
-    <template v-if="permisoEdicion">
-      <v-col cols="12" md="6">
-        <v-label class="mb-2 font-weight-medium">
-        <b> Electricidad</b>
-        </v-label>
-        <v-autocomplete
+              <template v-if="state.formData.idsuspencion.length>0">
+                <v-col cols="12" md="6">
+                  <v-table density="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-center">N° Suspensión</th>
+                        <th class="text-center"><b> Descripción de trabajo</b></th>
+                        
+                        <th class="text-center" v-if="permisoEdicion">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in state.formData.idsuspencion"  :key="index"
+                      >
+                        <td class="text-center">{{ index+1 }}</td>
+                        <td class="text-center">{{ item.id_s }}</td>
+                      
+                        <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteS(index)"/></td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-col>
+              </template>
 
-        variant="outlined"
-        color="primary"
-        :items="tipo_mantenimiento7"
-          v-model="state.formData.id_e"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_diagnostico"
-          item-title="nombre_diagnostico"
-          @update:model-value="setCodeName()"
-          
-        > <template v-slot:append>
-          <v-btn 
-            color="primary"
-            @click= buttonAddCode()
-            :disabled="!state.formData.id_e">
-            <PlusIcon/> Agregar
-          </v-btn>
-        </template>
-      
-      </v-autocomplete>
-       
-      </v-col>
-     
-    </template>
+              <template v-if="permisoEdicion">
+                <v-col cols="12" md="6">
+                  <v-label class="mb-2 font-weight-medium">
+                  <b> Electricidad</b>
+                  </v-label>
+                  <v-autocomplete
 
-    <template v-if="state.formData.idelectricidad.length>0">
-      <v-col cols="12" md="6">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">N° Electricidad</th>
-              <th class="text-center"><b> Descripción de trabajo</b></th>
+                  variant="outlined"
+                  color="primary"
+                  :items="tipo_mantenimiento7"
+                    v-model="state.formData.id_e"
+                    no-data-text="No existe más opciones para seleccionar"
+                    item-value="nombre_diagnostico"
+                    item-title="nombre_diagnostico"
+                    @update:model-value="setCodeName()"
+                    
+                  > <template v-slot:append>
+                    <v-btn 
+                      color="primary"
+                      @click= buttonAddCodeE()
+                      :disabled="!state.formData.id_e">
+                      <PlusIcon/> Agregar
+                    </v-btn>
+                  </template>
+                
+                </v-autocomplete>
+                
+                </v-col>
               
-              <th class="text-center" v-if="permisoEdicion">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.idelectricidad"  :key="index"
-            >
-              <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.id_e }}</td>
-            
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteE(index)"/></td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-    </template>
+              </template>
 
-    <template v-if="permisoEdicion">
-      <v-col cols="12" md="6">
-        <v-label class="mb-2 font-weight-medium">
-        <b>Chaperia</b>
-        </v-label>
-        <v-autocomplete
-        variant="outlined"
-        color="primary"
-        :items="tipo_mantenimiento8"
-          v-model="state.formData.id_c"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_diagnostico"
-          item-title="nombre_diagnostico"
-          @update:model-value="setCodeName()"
-          
-        > <template v-slot:append>
-          <v-btn 
-            color="primary"
-            @click= buttonAddCode()
-            :disabled="!state.formData.id_c">
-            <PlusIcon/> Agregar
-          </v-btn>
-        </template>
-      
-      </v-autocomplete>
-       
-      </v-col>
-     
-    </template>
+              <template v-if="state.formData.idelectricidad.length>0">
+                <v-col cols="12" md="6">
+                  <v-table density="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-center">N° Electricidad</th>
+                        <th class="text-center"><b> Descripción de trabajo</b></th>
+                        
+                        <th class="text-center" v-if="permisoEdicion">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in state.formData.idelectricidad"  :key="index"
+                      >
+                        <td class="text-center">{{ index+1 }}</td>
+                        <td class="text-center">{{ item.id_e }}</td>
+                      
+                        <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteE(index)"/></td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-col>
+              </template>
 
-    <template v-if="state.formData.idchaperia.length>0">
-      <v-col cols="12" md="6">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">N° Chaperia</th>
-              <th class="text-center"><b> Descripción de trabajo</b></th>
+              <template v-if="permisoEdicion">
+                <v-col cols="12" md="6">
+                  <v-label class="mb-2 font-weight-medium">
+                  <b>Chaperia</b>
+                  </v-label>
+                  <v-autocomplete
+                  variant="outlined"
+                  color="primary"
+                  :items="tipo_mantenimiento8"
+                    v-model="state.formData.id_c"
+                    no-data-text="No existe más opciones para seleccionar"
+                    item-value="nombre_diagnostico"
+                    item-title="nombre_diagnostico"
+                    @update:model-value="setCodeName()"
+                    
+                  > <template v-slot:append>
+                    <v-btn 
+                      color="primary"
+                      @click= buttonAddCodeC()
+                      :disabled="!state.formData.id_c">
+                      <PlusIcon/> Agregar
+                    </v-btn>
+                  </template>
+                
+                </v-autocomplete>
+                
+                </v-col>
               
-              <th class="text-center" v-if="permisoEdicion">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.idchaperia"  :key="index"
-            >
-              <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.id_c }}</td>
-            
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteC(index)"/></td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-    </template>
+              </template>
 
-    <template v-if="permisoEdicion">
-      <v-col cols="12" md="6">
-        <v-label class="mb-2 font-weight-medium">
-        <b> Tornería</b>
-        </v-label>
-        <v-autocomplete
-        variant="outlined"
-        color="primary"
-        :items="tipo_mantenimiento9"
-          v-model="state.formData.id_tt"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_diagnostico"
-          item-title="nombre_diagnostico"
-          @update:model-value="setCodeName()"
-          
-        > <template v-slot:append>
-          <v-btn 
-            color="primary"
-            @click= buttonAddCode()
-            :disabled="!state.formData.id_tt">
-            <PlusIcon/> Agregar
-          </v-btn>
-        </template>
-      
-      </v-autocomplete>
-       
-      </v-col>
-     
-    </template>
+              <template v-if="state.formData.idchaperia.length>0">
+                <v-col cols="12" md="6">
+                  <v-table density="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-center">N° Chaperia</th>
+                        <th class="text-center"><b> Descripción de trabajo</b></th>
+                        
+                        <th class="text-center" v-if="permisoEdicion">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in state.formData.idchaperia"  :key="index"
+                      >
+                        <td class="text-center">{{ index+1 }}</td>
+                        <td class="text-center">{{ item.id_c }}</td>
+                      
+                        <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteC(index)"/></td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-col>
+              </template>
 
-    <template v-if="state.formData.idtorneria.length>0">
-      <v-col cols="12" md="6">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">N° Torneria</th>
-              <th class="text-center"><b> Descripción de trabajo</b></th>
+              <template v-if="permisoEdicion">
+                <v-col cols="12" md="6">
+                  <v-label class="mb-2 font-weight-medium">
+                  <b> Tornería</b>
+                  </v-label>
+                  <v-autocomplete
+                  variant="outlined"
+                  color="primary"
+                  :items="tipo_mantenimiento9"
+                    v-model="state.formData.id_tt"
+                    no-data-text="No existe más opciones para seleccionar"
+                    item-value="nombre_diagnostico"
+                    item-title="nombre_diagnostico"
+                    @update:model-value="setCodeName()"
+                    
+                  > <template v-slot:append>
+                    <v-btn 
+                      color="primary"
+                      @click= buttonAddCodeTT()
+                      :disabled="!state.formData.id_tt">
+                      <PlusIcon/> Agregar
+                    </v-btn>
+                  </template>
+                
+                </v-autocomplete>
+                
+                </v-col>
               
-              <th class="text-center" v-if="permisoEdicion">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.idtorneria"  :key="index"
-            >
-              <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.id_tt }}</td>
-            
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteTT(index)"/></td>
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-    </template>
+              </template>
 
-    <template v-if="permisoEdicion">
-      <v-col cols="12" md="6">
-        <v-label class="mb-2 font-weight-medium">
-        <b> Frenos</b>
-        </v-label>
-        <v-autocomplete
-        variant="outlined"
-        color="primary"
-        :items="tipo_mantenimiento10"
-          v-model="state.formData.id_f"
-          no-data-text="No existe más opciones para seleccionar"
-          item-value="nombre_diagnostico"
-          item-title="nombre_diagnostico"
-          @update:model-value="setCodeName()"
-          
-        > <template v-slot:append>
-          <v-btn 
-            color="primary"
-            @click= buttonAddCode()
-            :disabled="!state.formData.id_f">
-            <PlusIcon/> Agregar
-          </v-btn>
-        </template>
-      
-      </v-autocomplete>
-       
-      </v-col>
-     
-    </template>
+              <template v-if="state.formData.idtorneria.length>0">
+                <v-col cols="12" md="6">
+                  <v-table density="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-center">N° Torneria</th>
+                        <th class="text-center"><b> Descripción de trabajo</b></th>
+                        
+                        <th class="text-center" v-if="permisoEdicion">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in state.formData.idtorneria"  :key="index"
+                      >
+                        <td class="text-center">{{ index+1 }}</td>
+                        <td class="text-center">{{ item.id_tt }}</td>
+                      
+                        <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteTT(index)"/></td>
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-col>
+              </template>
 
-    <template v-if="state.formData.idfrenos.length>0">
-      <v-col cols="12" md="6">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">N° Frenos</th>
-              <th class="text-center"><b> Descripción de trabajo</b></th>
+              <template v-if="permisoEdicion">
+                <v-col cols="12" md="6">
+                  <v-label class="mb-2 font-weight-medium">
+                  <b> Frenos</b>
+                  </v-label>
+                  <v-autocomplete
+                  variant="outlined"
+                  color="primary"
+                  :items="tipo_mantenimiento10"
+                    v-model="state.formData.id_f"
+                    no-data-text="No existe más opciones para seleccionar"
+                    item-value="nombre_diagnostico"
+                    item-title="nombre_diagnostico"
+                    @update:model-value="setCodeName()"
+                    
+                  > <template v-slot:append>
+                    <v-btn 
+                      color="primary"
+                      @click= buttonAddCodeFR()
+                      :disabled="!state.formData.id_f">
+                      <PlusIcon/> Agregar
+                    </v-btn>
+                  </template>
+                
+                </v-autocomplete>
+                
+                </v-col>
               
-              <th class="text-center" v-if="permisoEdicion">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.idfrenos"  :key="index"
-            >
-              <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.id_f }}</td>
-            
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteF(index)"/></td>
-              
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-    </template>
+              </template>
+
+              <template v-if="state.formData.idfrenos.length>0">
+                <v-col cols="12" md="6">
+                  <v-table density="compact">
+                    <thead>
+                      <tr>
+                        <th class="text-center">N° Frenos</th>
+                        <th class="text-center"><b> Descripción de trabajo</b></th>
+                        
+                        <th class="text-center" v-if="permisoEdicion">Acción</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-for="(item, index) in state.formData.idfrenos"  :key="index"
+                      >
+                        <td class="text-center">{{ index+1 }}</td>
+                        <td class="text-center">{{ item.id_f }}</td>
+                      
+                        <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteF(index)"/></td>
+                        
+                      </tr>
+                    </tbody>
+                  </v-table>
+                </v-col>
+              </template>
              </v-row>
             </v-expansion-panel-text>
         </v-expansion-panel>
-
+        <template v-if="submitButton && !sendForm1">
+          <div class="v-messages font-weight-black px-2 py-2">
+            <div class="v-messages__message text-error ">
+              Debe seleccionar al menos 1 
+            </div>
+          </div>
+        </template>
           <!---Payment Method--->
-          <v-expansion-panel elevation="10" class=" mt-3">
+          <v-expansion-panel elevation="10" class="mt-3">
             <v-expansion-panel-title class="text-h6" style="color:black;">Inventario del vehículo</v-expansion-panel-title>
             <v-expansion-panel-text class="mt-4">
-               
                 <v-row>
                   <v-col cols="12" md="3">
-                  <v-label class="mb-2 font-weight-medium">Sinfonía de Radio<span style="color:red">(*)</span></v-label>
-                  <v-radio-group 
-                    v-model="state.formData.sinfonia"
-                  
-                    class="ml-n3"
-                    inline
-                    :error="submitButton && !state.formData.sinfonia"
-                    hide-details
-                  >
-                    <v-radio label="AM" color="primary" value="AM"></v-radio>
-                    <v-radio label="FM" color="secondary" value="FM"></v-radio>
-                    <v-radio label="AM/FM" color="primary" value="AM/FM"></v-radio>
-                  </v-radio-group>
-                  <template v-if="submitButton && !state.formData.sinfonia">
-                    <div class="v-messages font-weight-black px-2 py-2">
-                      <div class="v-messages__message text-error ">
-                        El campo es requerido
+                      <v-label class="mb-2 font-weight-medium">Sinfonía de Radio<span style="color:red">(*)</span></v-label>
+                      <v-radio-group 
+                        v-model="state.formData.sinfonia"
+                        class="ml-n3"
+                        inline
+                        :error="submitButton && !state.formData.sinfonia"
+                        hide-details
+                      >
+                        <v-radio label="AM" color="primary" value="AM"></v-radio>
+                        <v-radio label="FM" color="secondary" value="FM"></v-radio>
+                        <v-radio label="AM/FM" color="primary" value="AM/FM"></v-radio>
+                      </v-radio-group>
+                      <template v-if="submitButton && !state.formData.sinfonia">
+                        <div class="v-messages font-weight-black px-2 py-2">
+                          <div class="v-messages__message text-error ">
+                            El campo es requerido
+                          </div>
+                        </div>
+                      </template>
+                  </v-col>
+                  <v-col cols="12" md="3">
+                    <v-label class="mb-2 font-weight-medium">Estado de llantas<span style="color:red">(*)</span></v-label>
+                    <v-radio-group 
+                      v-model="state.formData.estado_llantas"
+                      class="ml-n3"
+                      inline
+                      :error="submitButton && !state.formData.estado_llantas"
+                      hide-details
+                    >
+                      <v-radio label="B" color="primary" value="B"></v-radio>
+                      <v-radio label="M" color="secondary" value="M"></v-radio>
+                      <v-radio label="R" color="primary" value="R"></v-radio>
+                    </v-radio-group>
+                    <template v-if="submitButton && !state.formData.estado_llantas">
+                      <div class="v-messages font-weight-black px-2 py-2">
+                        <div class="v-messages__message text-error ">
+                          El campo es requerido
+                        </div>
                       </div>
-                    </div>
-                  </template>
+                    </template>
 
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-label class="mb-2 font-weight-medium">Estado de llantas<span style="color:red">(*)</span></v-label>
-                  <v-radio-group 
-                    v-model="state.formData.estado_llantas"
-                  
-                    class="ml-n3"
-                    inline
-                    :error="submitButton && !state.formData.estado_llantas"
-                    hide-details
-                  >
-                    <v-radio label="B" color="primary" value="B"></v-radio>
-                    <v-radio label="M" color="secondary" value="M"></v-radio>
-                    <v-radio label="R" color="primary" value="R"></v-radio>
-                  </v-radio-group>
-                  <template v-if="submitButton && !state.formData.estado_llantas">
-                    <div class="v-messages font-weight-black px-2 py-2">
-                      <div class="v-messages__message text-error ">
-                        El campo es requerido
+                  </v-col>
+                  <v-col cols="12" md="3">
+                    <v-label class="mb-2 font-weight-medium">Gasolina<span style="color:red">(*)</span></v-label>
+                    <v-radio-group 
+                      v-model="state.formData.gasolina"
+                    
+                      class="ml-n3"
+                      inline
+                      :error="submitButton && !state.formData.gasolina"
+                      hide-details
+                    >
+                      <v-radio label="1/4" color="primary" value="1/4"></v-radio>
+                      <v-radio label="1/2" color="secondary" value="1/2"></v-radio>
+                      <v-radio label="3/4" color="primary" value="3/4"></v-radio>
+                    </v-radio-group>
+                    <template v-if="submitButton && !state.formData.gasolina">
+                      <div class="v-messages font-weight-black px-2 py-2">
+                        <div class="v-messages__message text-error ">
+                          El campo es requerido
+                        </div>
                       </div>
-                    </div>
-                  </template>
+                    </template>
 
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-label class="mb-2 font-weight-medium">Gasolina<span style="color:red">(*)</span></v-label>
-                  <v-radio-group 
-                    v-model="state.formData.gasolina"
-                  
-                    class="ml-n3"
-                    inline
-                    :error="submitButton && !state.formData.gasolina"
-                    hide-details
-                  >
-                    <v-radio label="1/4" color="primary" value="1/4"></v-radio>
-                    <v-radio label="1/2" color="secondary" value="1/2"></v-radio>
-                    <v-radio label="3/4" color="primary" value="3/4"></v-radio>
-                  </v-radio-group>
-                  <template v-if="submitButton && !state.formData.gasolina">
-                    <div class="v-messages font-weight-black px-2 py-2">
-                      <div class="v-messages__message text-error ">
-                        El campo es requerido
+                  </v-col>
+                  <v-col cols="12" md="3">
+                    <v-label class="mb-2 font-weight-medium">Tanque Auxiliar<span style="color:red">(*)</span></v-label>
+                    <v-radio-group 
+                      v-model="state.formData.tanque_aux"
+                    
+                      class="ml-n3"
+                      inline
+                      :error="submitButton && !state.formData.tanque_aux"
+                      hide-details
+                    >
+                      <v-radio label="1/4" color="primary" value="1/4"></v-radio>
+                      <v-radio label="1/2" color="secondary" value="1/2"></v-radio>
+                      <v-radio label="3/4" color="primary" value="3/4"></v-radio>
+                    </v-radio-group>
+                    <template v-if="submitButton && !state.formData.tanque_aux">
+                      <div class="v-messages font-weight-black px-2 py-2">
+                        <div class="v-messages__message text-error ">
+                          El campo es requerido
+                        </div>
                       </div>
-                    </div>
-                  </template>
+                    </template>
 
-                </v-col>
-                <v-col cols="12" md="3">
-                  <v-label class="mb-2 font-weight-medium">Tanque Auxiliar<span style="color:red">(*)</span></v-label>
-                  <v-radio-group 
-                    v-model="state.formData.tanque_aux"
-                  
-                    class="ml-n3"
-                    inline
-                    :error="submitButton && !state.formData.tanque_aux"
-                    hide-details
-                  >
-                    <v-radio label="1/4" color="primary" value="1/4"></v-radio>
-                    <v-radio label="1/2" color="secondary" value="1/2"></v-radio>
-                    <v-radio label="3/4" color="primary" value="3/4"></v-radio>
-                  </v-radio-group>
-                  <template v-if="submitButton && !state.formData.tanque_aux">
-                    <div class="v-messages font-weight-black px-2 py-2">
-                      <div class="v-messages__message text-error ">
-                        El campo es requerido
-                      </div>
-                    </div>
-                  </template>
-
-                </v-col>
+                  </v-col>
 
                   <div class="checkbox-container">
                         <div v-for="item in lista_accesorios" :key="item" class="checkbox-item">
@@ -1719,79 +1773,85 @@ const getMecanicos = async() => {
                     </v-col>
               
                 </v-row>
-
             </v-expansion-panel-text>
         </v-expansion-panel>
+        <template v-if="submitButton && !sendForm2">
+          <div class="v-messages font-weight-black px-2 py-2">
+            <div class="v-messages__message text-error ">
+              Campos de formulario incompletos
+            </div>
+          </div>
+        </template>
         <!---Delivery Options--->
-        <v-expansion-panel elevation="10" class=" mt-3">
+      <!----  <v-expansion-panel elevation="10" class=" mt-3">
             <v-expansion-panel-title class="text-h6">Solicitud de Repuestos</v-expansion-panel-title>
             <v-expansion-panel-text class="mt-4">
                <v-row>
                 <v-col cols="12" md="12">
          
-         <v-select
-             v-model.trim="state.formData.sistema_select"
-             :items="lista_sistemas"
-             item-title="nombre_sistema"
-             item-value="id"
-             no-data-text="No existe más opciones para seleccionar"
-             :error="submitButton && !state.formData.sistema_select"
-             clearable
-          >
-         <template v-slot:append v-if="route.params.id_orden != '0'">
-             <v-btn
-               color="primary"
-               @click= buttonSearchSistema()
-               :disabled="!state.formData.sistema_select"
-               readonly="true"
-               ><SearchIcon/>Buscar
-             </v-btn>
-             <v-btn
-               color="secondary"
-               @click= buttonClearSistema()
-               :disabled="!state.formData.sistema_select"
-               readonly="true"
-             ><TrashIcon/>Limpiar
-             </v-btn>
-           </template>
-         </v-select>
-         <template v-if="submitButton && !state.formData.sistema_select">
-           <div class="v-messages font-weight-black px-2 py-2">
-             <div class="v-messages__message text-error ">
-               El campo es requerido
-             </div>
-           </div>
-         </template>
-       </v-col>
+                  <v-select
+                      v-model.trim="state.formData.sistema_select"
+                      :items="lista_sistemas"
+                      item-title="nombre_sistema"
+                      item-value="id"
+                      no-data-text="No existe más opciones para seleccionar"
+                      :error="submitButton && !state.formData.sistema_select"
+                      clearable
+                    >
+                  <template v-slot:append v-if="route.params.id_orden != '0'">
+                      <v-btn
+                        color="primary"
+                        @click= buttonSearchSistema()
+                        :disabled="!state.formData.sistema_select"
+                        readonly="true"
+                        ><SearchIcon/>Buscar
+                      </v-btn>
+                      <v-btn
+                        color="secondary"
+                        @click= buttonClearSistema()
+                        :disabled="!state.formData.sistema_select"
+                        readonly="true"
+                      ><TrashIcon/>Limpiar
+                      </v-btn>
+                    </template>
+                  </v-select>
+                  <template v-if="submitButton && !state.formData.sistema_select">
+                    <div class="v-messages font-weight-black px-2 py-2">
+                      <div class="v-messages__message text-error ">
+                        El campo es requerido
+                      </div>
+                    </div>
+                  </template>
+                </v-col>
                </v-row>
                <v-row>
                 <template v-if=" state.formData.repuestos.length > 0">
 
                   <v-col cols="12" md="8">
-        <v-card variant="flat" color="primary" :style="submitButton && !state.formData.sistema_select ? 'border: 1px solid #FA896B;' : ''">
-          <v-card-title class="text-white">Repuestos disponibles para realizar el Mantenimiento</v-card-title>
+                    <v-card variant="flat" color="primary" :style="submitButton && !state.formData.sistema_select ? 'border: 1px solid #FA896B;' : ''">
+                      <v-card-title class="text-white">Repuestos disponibles para realizar el Mantenimiento</v-card-title>
 
-          <EasyDataTable
-            v-model:items-selected="itemsSelected"
-            :headers="headers"
-            :items="state.formData.repuestos"
-            header-text-direction="left"
-            body-text-direction="left"
-            @update-page-items="mifuncion()"
-            select-strategy="single" 
-          >
-        
-          </EasyDataTable>
-        
-        </v-card>
-        <template v-if="submitButton && !state.formData.sistema_select">
-          <div class="text-center v-messages font-weight-black px-2 py-2">
-            <div class="v-messages__message text-error ">
-              Debe seleccionar al menos un repuesto
-            </div>
-          </div>
-        </template>
-      </v-col>
+                      <EasyDataTable
+                        v-model:items-selected="itemsSelected"
+                        :headers="headers"
+                        :items="state.formData.repuestos"
+                        header-text-direction="left"
+                        body-text-direction="left"
+                        @update-page-items="mifuncion()"
+                        select-strategy="single" 
+                      >
+                    
+                      </EasyDataTable>
+                    
+                    </v-card>
+                    <template v-if="submitButton && !state.formData.sistema_select">
+                      <div class="text-center v-messages font-weight-black px-2 py-2">
+                        <div class="v-messages__message text-error ">
+                          Debe seleccionar al menos un repuesto
+                        </div>
+                      </div>
+                    </template>
+                  </v-col>
 
                 </template>
                 <template v-if="itemsSelected.length===1">
@@ -1849,7 +1909,7 @@ const getMecanicos = async() => {
                               item-value="nombre_unidad"
                               item-title="nombre_unidad"
                               @input="state.formData.unidad_r = validateText(state.formData.unidad_r.toUpperCase())"
-                              @update:model-value="setCodeName()"
+                              
                               
                             /> 
                           <template v-if="submitButton && !state.formData.cantidad_r">
@@ -1893,43 +1953,227 @@ const getMecanicos = async() => {
                 </template>
 
                 <template v-if="state.formData.id_Rep.length>0">
-      <v-col cols="12" md="12">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">N° </th>
-              <th class="text-center"><b> Repuesto</b></th>
-              <th class="text-center"><b> Cantidad</b></th>
-              <th class="text-center"><b> Unidad</b></th>
-              <th class="text-center"><b> Observación</b></th>
-              <th class="text-center" v-if="permisoEdicion">Acción</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.id_Rep"  :key="index"
-            >
-              <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.nombre_repuesto }}</td>
-              <td class="text-center">{{ item.cantidad_r }}</td>
-              <td class="text-center">{{ item.unidad_r }}</td>
-              <td class="text-center">{{ item.observacion_r }}</td>
-              <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteRep(index)"/></td>
-              
-            </tr>
-          </tbody>
-        </v-table>
-      </v-col>
-    </template>
+                  <v-col cols="12" md="12">
+                    <v-table density="compact">
+                      <thead>
+                        <tr>
+                          <th class="text-center">N° </th>
+                          <th class="text-center"><b> Repuesto</b></th>
+                          <th class="text-center"><b> Cantidad</b></th>
+                          <th class="text-center"><b> Unidad</b></th>
+                          <th class="text-center"><b> Observación</b></th>
+                          <th class="text-center" v-if="permisoEdicion">Acción</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr
+                          v-for="(item, index) in state.formData.id_Rep"  :key="index"
+                        >
+                          <td class="text-center">{{ index+1 }}</td>
+                          <td class="text-center">{{ item.nombre_repuesto }}</td>
+                          <td class="text-center">{{ item.cantidad_r }}</td>
+                          <td class="text-center">{{ item.unidad_r }}</td>
+                          <td class="text-center">{{ item.observacion_r }}</td>
+                          <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteRep(index)"/></td>
+                          
+                        </tr>
+                      </tbody>
+                    </v-table>
+                  </v-col>
+                </template>
+               </v-row>
+               
+            </v-expansion-panel-text>
+        </v-expansion-panel>---->
+         
+        <v-expansion-panel elevation="10" class=" mt-3">
+            <v-expansion-panel-title class="text-h6">Solicitud de Repuestos</v-expansion-panel-title>
+            <v-expansion-panel-text class="mt-4">
+               <v-row>
+                <v-col cols="12" md="12">
+         
+                    <v-select
+                        v-model.trim="state.formData.sistema_select"
+                        :items="lista_sistemas"
+                        item-title="nombre_sistema"
+                        item-value="id"
+                        no-data-text="No existe más opciones para seleccionar"
+                        :error="submitButton && !state.formData.sistema_select"
+                        clearable
+                      >
+                      <template v-slot:append v-if="route.params.id_orden != '0'">
+                        <v-btn
+                          color="primary"
+                          @click= buttonSearchSistema()
+                          :disabled="!state.formData.sistema_select"
+                          readonly="true"
+                          ><SearchIcon/>Buscar
+                        </v-btn>
+                        <v-btn
+                          color="secondary"
+                          @click= buttonClearSistema()
+                          :disabled="!state.formData.sistema_select"
+                          readonly="true"
+                        ><TrashIcon/>Limpiar
+                        </v-btn>
+                      </template>
+                    </v-select>
+                    <template v-if="submitButton && !state.formData.sistema_select">
+                      <div class="v-messages font-weight-black px-2 py-2">
+                        <div class="v-messages__message text-error ">
+                          El campo es requerido
+                        </div>
+                      </div>
+                    </template>
+                 </v-col>
+               </v-row>
+               <v-row>
+                <template v-if=" state.formData.repuestos.length > 0">
+                 
+                  <v-col cols="12" md="4">
+                       
+                       <v-label class="mb-2 font-weight-medium">
+                        Repuesto <span style="color:red">(*)</span>
+                       </v-label>
+                       <v-autocomplete
+                           variant="outlined"
+                           color="primary"
+                           hide-details
+                            :items="state.formData.repuestos"
+                           v-model="state.formData.id_filtro"
+                           no-data-text="No existe más opciones para seleccionar"
+                           item-value="id"
+                           item-title="nombre_repuesto"
+                           @input="state.formData.id_filtro = validateText(state.formData.id_filtro.toUpperCase())"
+                           @update:model-value="setCodeName()"
+                         /> 
+                       <template v-if="submitButton && !state.formData.nombre_repuesto">
+                         <div class="v-messages font-weight-black px-2 py-2">
+                           <div class="v-messages__message text-error ">
+                             El campo es requerido
+                           </div>
+                         </div>
+                       </template>
+                  </v-col>
+
+                  <v-col cols="12" md="2">
+                          <v-label class="mb-2 font-weight-medium">
+                            Cantidad <span style="color:red">(*)</span>
+                          </v-label>
+                          <v-text-field 
+                            variant="outlined" 
+                            color="primary"
+                            v-model="state.formData.cantidad_r"
+                            type="number"
+                            min="1"
+                            hide-details
+                            :error="submitButton && !state.formData.cantidad_r"
+                          />
+                          <template v-if="submitButton && !state.formData.cantidad_r">
+                            <div class="v-messages font-weight-black px-2 py-2">
+                              <div class="v-messages__message text-error ">
+                                El campo es requerido
+                              </div>
+                            </div>
+                          </template>
+                  </v-col>
+                  <v-col cols="12" md="2">
+                       
+                       <v-label class="mb-2 font-weight-medium">
+                         Unidad <span style="color:red">(*)</span>
+                       </v-label>
+                       <v-autocomplete
+                           variant="outlined"
+                           color="primary"
+                           hide-details
+                            :items="lista_unidad"
+                           v-model="state.formData.unidad_r"
+                           no-data-text="No existe más opciones para seleccionar"
+                           item-value="nommbre_unidad"
+                           item-title="nombre_unidad"
+                           @input="state.formData.unidad_r = validateText(state.formData.unidad_r.toUpperCase())"
+                          
+                         /> 
+                       <template v-if="submitButton && !state.formData.cantidad_r">
+                         <div class="v-messages font-weight-black px-2 py-2">
+                           <div class="v-messages__message text-error ">
+                             El campo es requerido
+                           </div>
+                         </div>
+                       </template>
+                  </v-col>
+                  <v-col cols="12" md="4">
+                          <v-label class="mb-2 font-weight-medium">
+                            Observacion
+                          </v-label>
+                        
+                          <v-text-field 
+                              variant="outlined"
+                              color="primary"
+                              v-model.trim="state.formData.observacion_r"
+                              @input="state.formData.observacion_r = validateText(state.formData.observacion_r.toUpperCase())"
+                            
+                            >
+                          
+                          <template v-slot:append>
+                            <v-btn 
+                              color="success"
+                              @click= buttonAddCodeF()
+                              :disabled="!state.formData.id_filtro || !state.formData.cantidad_r || !state.formData.unidad_r">
+                              <PlusIcon/>Adicionar
+                            </v-btn>
+                          </template>
+                        </v-text-field>
+                  </v-col>
+                </template>
+                <template v-else>
+                 <v-col cols="12" md="12">
+                     <b> No se encontro ningún registro</b>
+                 </v-col>
+                </template>
+                
+                <template v-if="state.formData.id_Rep.length>0">
+                  <v-col cols="12" md="12">
+                    <v-table density="compact">
+                      <thead>
+                        <tr>
+                          <th class="text-center">N° </th>
+                          <th class="text-center"><b> Repuesto</b></th>
+                          <th class="text-center"><b> Cantidad</b></th>
+                          <th class="text-center"><b> Unidad</b></th>
+                          <th class="text-center"><b> Observación</b></th>
+                          <th class="text-center" v-if="permisoEdicion">Acción</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr v-for="(item, index) in state.formData.id_Rep"  :key="index" >
+                          <td class="text-center">{{ index+1 }}</td>
+                          <td class="text-center">{{ item.nombre_repuesto }}</td>
+                          <td class="text-center">{{ item.cantidad_r }}</td>
+                          <td class="text-center">{{ item.unidad_r }}</td>
+                          <td class="text-center">{{ item.observacion_r }}</td>
+                          <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteRep(index)"/></td>
+                          
+                        </tr>
+                      </tbody>
+                    </v-table>
+                  </v-col>
+                </template>
                </v-row>
                
             </v-expansion-panel-text>
         </v-expansion-panel>
-       
+        <template v-if="submitButton && !sendForm3">
+          <div class="v-messages font-weight-black px-2 py-2">
+            <div class="v-messages__message text-error ">
+              Debe solicitar al menos un repuesto
+            </div>
+          </div>
+        </template>
     </v-expansion-panels>
+        
 </v-rom>
     
-
   <v-row>
     <v-col cols="12" class="text-lg-left pt-5">
       <template v-if="!isLoading">
@@ -1939,30 +2183,23 @@ const getMecanicos = async() => {
             Enviar    
           </template>
         </v-btn>
-        <v-btn  class="mr-3" v-if="state.formData.id_registro != '0' && state.formData.estado_orden == 'EN PROCESO' " color="primary" @click="buttonSendForm() "
-        
-        >  
+        <v-btn  class="mr-3" v-if="state.formData.id_registro != '0' && state.formData.estado_orden == 'EN PROCESO' " color="primary" @click="buttonSendForm() " >  
           <template v-if="state.formData.id_registro != '0' && state.formData.estado_orden == 'EN PROCESO'   ">
             Actualizar
           </template>
-          
         </v-btn>
-        <v-btn  class="mr-3" v-if=" state.formData.estado_orden == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR')) " color="primary" @click="buttonSendForm()  "
-        
-        >  
-          <template v-if=" state.formData.estado_orden == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR'))  ">
+        <v-btn  class="mr-3 prueba" v-if=" state.formData.estado_orden == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || (us == 1 || us == 2)) "  @click="buttonSendForm()  "    >  
+          <template v-if=" state.formData.estado_orden == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || (us == 1 || us == 2))  ">
             Actualizar
           </template>
-          
         </v-btn>
             
-        <v-btn v-if="state.formData.estado_orden === 'EN PROCESO'"   color="success"  class="mr-10" @click="ButtonReport2( route.params.id_orden)">
-          <template v-if="state.formData.estado_orden === 'EN PROCESO'" >
+        <v-btn v-if="state.formData.id_registro != '0'" color="success" class="mr-10" @click="ButtonReport2( route.params.id_orden)">
+          <template v-if="state.formData.id_registro != '0'" >
             Imprimir 
           </template>
         </v-btn>
         
-       
       </template>
       <template v-else>
         <v-btn color="primary" disabled>
@@ -2032,5 +2269,11 @@ align-items: center;
 .white-background .v-select__selections,
 .white-background .v-input__slot {
   background-color: rgb(194, 33, 33) !important;
+}
+
+
+.prueba {
+  background-color: rgb(47, 84, 206);
+  color:white;
 }
 </style>

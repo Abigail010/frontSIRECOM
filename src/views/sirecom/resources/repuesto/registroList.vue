@@ -4,7 +4,9 @@ import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
 import { useRegisterRStore } from '@/stores/resources/register_rep';
 import Swal from 'sweetalert2'
+const usertaller:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
 
+const usert:any = JSON.parse(localStorage.getItem('user') || '').id_taller
 const RegisterRStore = useRegisterRStore()
 
 const page = ref({ title: 'Registro de repuestos' });
@@ -104,7 +106,7 @@ onMounted(() => {
               />
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <v-btn 
+              <v-btn  v-if="usertaller == 1 || usert == 1"
                 color="primary"  
                 variant="flat" 
                 dark   

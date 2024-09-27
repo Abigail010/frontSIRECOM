@@ -15,6 +15,8 @@ import {
     PointIcon,
     BrandAirtableIcon,
     BrowserCheckIcon,
+    BuildingFactory2Icon,
+    ChartDonut3Icon,
     ListCheckIcon,
     TextSpellcheckIcon,
     ChartBarIcon,
@@ -45,11 +47,20 @@ export interface menu {
 const lista_menu = [
     { header: 'Menu' },
     {
-      title: 'Gasto administrativo',
-      icon: BrowserCheckIcon,
-      // subCaption: 'This is the subtitle',
-      to: '/administrativeExpenseList'
-    },
+      title: 'Usuarios',
+      icon: ChartDonut3Icon,
+      to: '/userList'
+  },
+     { title: 'Talleres',
+      icon: BuildingFactory2Icon,
+      to: '/tallerList'
+  },
+      {
+          title:'Ordenes',
+          icon: ChartDonut3Icon,
+      to: '/ordenList'
+      
+      }, 
    /* {
       title: 'Recepcion documental',
       icon: BrowserCheckIcon,
@@ -61,240 +72,244 @@ const lista_menu = [
       icon: ListCheckIcon,
       // subCaption: 'This is the subtitle',
       to: '/documentaryReviewList'
-*/    {
-      title: 'Aprobacion de bienes',
-      icon: TextSpellcheckIcon,
-      to: '/propertyApprovalList'
+*/ 
+{
+  title: 'Busqueda Reporte',
+  icon: SearchIcon,
+  to: '/Busqueda_list'
+},
+{
+  title: 'Dashboard',
+  icon: ChartBarIcon,
+  to: '/home'
+},
+
+
+{
+  title: 'Recursos',
+  icon: MenuIcon,
+  to: '#',
+  children: [
+    {
+      title: 'Perfil',
+      icon: CircleIcon,
+      to: '/profileList'
     },
     {
-      title: 'Dashboard',
-      icon: ChartBarIcon,
-      to: '/home'
+      title: 'Servicios',
+      icon: CircleIcon,
+      to: '/serviciosList'
+    },
+
+    {
+      title: 'Accesorios',
+      icon: CircleIcon,
+      to: '/accesorioList'
     },
     {
-        title: 'DAB solicitud',
-        icon: CircleIcon,
-        to: '/solicitudList'
-      },
+      title: 'Sistemas',
+      icon: CircleIcon,
+      to: '/systemList'
+    },
     {
-      title: 'Recursos',
-      icon: MenuIcon,
-      to: '#',
+      title: 'Filtros',
+      icon: CircleIcon,
+      to: '/filtroList'
+    },
+    /*{
+      title: 'Repuestos',
+      icon: CircleIcon,
+      to: '/repuestoList'
+    },*/
+    {
+      title: 'Repuestos',
+      icon: CircleIcon,
+      to: '/3level',
       children: [
-        {
-          title: 'Perfil',
-          icon: CircleIcon,
-          to: '/profileList'
-        },
-        {
-          title: 'Usuario',
-          icon: CircleIcon,
-          to: '/userList'
-        },
+        
+        
+            {
+              title: 'Repuesto',
+              icon: CircleXIcon,
+              to: '/repuestoList'
+            },
+            {
+              title: 'Ingreso de repuestos',
+              icon: CircleXIcon,
+              to: '/registerList'
+            },
+    ]
+    },
+    {
+      title: 'Tipos de mantenimiento',
+      icon: CircleIcon,
+      to: '/tipo_manList'
+    },
+    {
+      title: 'Registro de vehículos',
+      icon: CircleIcon,
+      to: '/3level',
+      children: [
+        
+        
+            {
+              title: 'Vehículos',
+              icon: CircleXIcon,
+              to: '/vehiculoList'
+            },
+            {
+              title: 'Fuerzas',
+              icon: CircleXIcon,
+              to: '/FuerzasList'
+            },
+            {
+              title: 'Marcas',
+              icon: CircleXIcon,
+              to: '/MarcaList'
+            },
+            {
+              title: 'Clase',
+              icon: CircleXIcon,
+              to: '/ClaseList'
+            },
+            {
+              title: 'Tipo',
+              icon: CircleXIcon,
+              to: '/TipoList'
+            },
+            {
+              title: 'Procedencia',
+              icon: CircleXIcon,
+              to: '/proceList'
+            },        
 
-      
-
-        {
-          title: 'Delito',
-          icon: CircleIcon,
-          to: '/crimeList'
-        },
-        {
-          title: 'Dependencia',
-          icon: CircleIcon,
-          to: '/dependenceList'
-        },
-        {
-          title: 'Deposito',
-          icon: CircleIcon,
-          to: '/depositList'
-        },
-        {
-          title: 'Juzgado',
-          icon: CircleIcon,
-          to: '/courtList'
-        },
-        {
-          title: 'Bienes',
-          icon: CircleIcon,
-          to: '/3level',
-          children: [
-            {
-              title: 'Sustancia controlada',
-              icon: CircleTriangleIcon,
-              to: '/4level',
-              children: [
-                {
-                  title: 'Tipos',
-                  icon: CircleXIcon,
-                  to: '/substanceTypeList'
-                },
-                {
-                  title: 'Contenedores',
-                  icon: CircleXIcon,
-                  to: '/substanceContainerList'
-                },
-              ]
-            },
-            {
-              title: 'Semoviente',
-              icon: CircleTriangleIcon,
-              to: '/4level',
-              children: [
-                {
-                  title: 'Tipos',
-                  icon: CircleXIcon,
-                  to: '/selfMovingTypeList'
-                },
-              ]
-            },
-            {
-              title: 'Inmueble',
-              icon: CircleTriangleIcon,
-              to: '/4level',
-              children: [
-                {
-                  title: 'Acabados',
-                  icon: CircleXIcon,
-                  to: '/immovablePropertyBrickworkList'
-                },
-                {
-                  title: 'Ambientes',
-                  icon: CircleXIcon,
-                  to: '/immovablePropertyEnviromentList'
-                },
-                {
-                  title: 'Tipos',
-                  icon: CircleXIcon,
-                  to: '/immovablePropertyTypeList'
-                },
-              ]
-            },
-            {
-              title: 'Joya',
-              icon: CircleTriangleIcon,
-              to: '/4level',
-              children: [
-                {
-                  title: 'Metales',
-                  icon: CircleXIcon,
-                  to: '/jewelMaterialMetalList'
-                },
-                {
-                  title: 'Piedras',
-                  icon: CircleXIcon,
-                  to: '/jewelMaterialStoneList'
-                },
-                {
-                  title: 'Tipos',
-                  icon: CircleXIcon,
-                  to: '/jewelTypeList'
-                },
-              ]
-            },
-            {
-              title: 'Vehiculo',
-              icon: CircleTriangleIcon,
-              to: '/4level',
-              children: [
-                {
-                  title: 'Industrias',
-                  icon: CircleXIcon,
-                  to: '/vehicleIndustryList'
-                },
-                {
-                  title: 'Kilometrajes',
-                  icon: CircleXIcon,
-                  to: '/vehicleMileageList'
-                },
-              ]
-            },
-          ]
-        },
-        {
-          title: 'Revision documental',
-          icon: CircleIcon,
-          to: '/2level',
-          children: [
-            {
-              title: 'Observaciones',
-              icon: CircleTriangleIcon,
-              to: '/documentaryReviewObservationList'
-            },
-          ]
-        },
-        {
-          title: 'Logistica de recepcion',
-          icon: CircleIcon,
-          to: '/2level',
-          children: [
-            {
-              title: 'Motivos',
-              icon: CircleTriangleIcon,
-              to: '/receptionLogisticsReasonList'
-            },
-          ]
-        }
       ]
     },
     {
-      title: 'Busqueda',
-      icon: SearchIcon,
-      to: '#',
+      title: 'Bienes',
+      icon: CircleIcon,
+      to: '/3level',
       children: [
         {
-          title: 'Tipo de bien',
-          icon: CircleIcon,
-          to: '/byType'
+          title: 'Sustancia controlada',
+          icon: CircleTriangleIcon,
+          to: '/4level',
+          children: [
+            {
+              title: 'Tipos',
+              icon: CircleXIcon,
+              to: '/substanceTypeList'
+            },
+            {
+              title: 'Contenedores',
+              icon: CircleXIcon,
+              to: '/substanceContainerList'
+            },
+          ]
         },
         {
-          title: 'Caso',
-          icon: CircleIcon,
-          to: '/byCase'
+          title: 'Semoviente',
+          icon: CircleTriangleIcon,
+          to: '/4level',
+          children: [
+            {
+              title: 'Tipos',
+              icon: CircleXIcon,
+              to: '/selfMovingTypeList'
+            },
+          ]
+        },
+        {
+          title: 'Inmueble',
+          icon: CircleTriangleIcon,
+          to: '/4level',
+          children: [
+            {
+              title: 'Acabados',
+              icon: CircleXIcon,
+              to: '/immovablePropertyBrickworkList'
+            },
+            {
+              title: 'Ambientes',
+              icon: CircleXIcon,
+              to: '/immovablePropertyEnviromentList'
+            },
+            {
+              title: 'Tipos',
+              icon: CircleXIcon,
+              to: '/immovablePropertyTypeList'
+            },
+          ]
+        },
+        {
+          title: 'Joya',
+          icon: CircleTriangleIcon,
+          to: '/4level',
+          children: [
+            {
+              title: 'Metales',
+              icon: CircleXIcon,
+              to: '/jewelMaterialMetalList'
+            },
+            {
+              title: 'Piedras',
+              icon: CircleXIcon,
+              to: '/jewelMaterialStoneList'
+            },
+            {
+              title: 'Tipos',
+              icon: CircleXIcon,
+              to: '/jewelTypeList'
+            },
+          ]
+        },
+        {
+          title: 'Vehiculo',
+          icon: CircleTriangleIcon,
+          to: '/4level',
+          children: [
+            {
+              title: 'Industrias',
+              icon: CircleXIcon,
+              to: '/vehicleIndustryList'
+            },
+            {
+              title: 'Kilometrajes',
+              icon: CircleXIcon,
+              to: '/vehicleMileageList'
+            },
+          ]
         },
       ]
     },
     {
-        title: 'Entidades Externas',
-        icon: ListCheckIcon,
-        to: '#',
-        children: [
-          {
-            title: 'Aprobados',
-            icon: CircleIcon,
-            to: '#',
-            children: [
-              {
-                title: 'Persona Natural',
-                icon: CircleIcon,
-                to: '/externalRegistrationList/aprobado/natural'
-              },
-              {
-                title: 'Persona Juridica',
-                icon: CircleIcon,
-                to: '/externalRegistrationList/aprobado/juridica'
-              },
-            ]
-          },
-          {
-            title: 'Pendientes',
-            icon: CircleIcon,
-            to: '#',
-            children: [
-              {
-                title: 'Persona Natural',
-                icon: CircleIcon,
-                to: '/externalRegistrationList/pendiente/natural'
-              },
-              {
-                title: 'Persona Juridica',
-                icon: CircleIcon,
-                to: '/externalRegistrationList/pendiente/juridica'
-              },
-            ]
-          },
-        ]
-      },
+      title: 'Revision documental',
+      icon: CircleIcon,
+      to: '/2level',
+      children: [
+        {
+          title: 'Observaciones',
+          icon: CircleTriangleIcon,
+          to: '/documentaryReviewObservationList'
+        },
+      ]
+    },
+    {
+      title: 'Logistica de recepcion',
+      icon: CircleIcon,
+      to: '/2level',
+      children: [
+        {
+          title: 'Motivos',
+          icon: CircleTriangleIcon,
+          to: '/receptionLogisticsReasonList'
+        },
+      ]
+    }
+  ]
+},
+
+    
 ]
 
 const authStore = useAuthStore()

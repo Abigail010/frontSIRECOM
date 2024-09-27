@@ -8,7 +8,7 @@ import { useResourceStore } from '@/stores/resource';
 
 import { useOrdenStore } from '@/stores/orden/orden';
 import { useRegisterStore } from '@/stores/orden/registro';
-import { useSystemStore } from '@/stores/resources/system';
+
 import { validateText } from '@/utils/helpers/validateText'
 import { editPermission } from '@/utils/helpers/editPermission' 
 import type { Header } from "vue3-easy-data-table";
@@ -18,29 +18,17 @@ import { readonly } from 'vue';
 import { useSoliStore } from '@/stores/orden/soli_rep';
 import { format, formatDistance } from 'date-fns'
 import { es } from 'date-fns/locale'
-
-const select = ref('');
-const location = ref(['Alaska', 'Arizona', 'Hawaii']);
 const dialog = ref(false);
-const radioColumn = ref('1');
-const radioInline = ref('1');
-const paymentradio = ref('1');
-const checkedNames = ref([])
+const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
+const us2:any = JSON.parse(localStorage.getItem('user') || '').id_taller
 const openpanel = ref([0]);
   const route = useRoute()
   const resourceStore = useResourceStore()
- 
-  const orden = useOrdenStore()
   const registro = useRegisterStore()
   const soli_Rep = useSoliStore()
-  const getSystem = useSystemStore()
-  const tipos_combustible = ['GASOLINA', 'DIESEL', 'KEROSENE']
   const submitButton = ref(false)
   const addButton = ref(false)
   const sendForm = ref(true)
-  const sendPerson = ref(true)
-  const testEmail = ref(true)
-  const searchLoading = ref(false)
   const isLoading = ref(false)
 
   // BREADCRUMB
@@ -58,25 +46,10 @@ const openpanel = ref([0]);
     }
   ]);
  
-  const sendForm1 = ref(true)
-  const sendForm8 = ref(true)
-  const sendForm9 = ref(true)
-  const sendForm10 = ref(true)
   // DECLARACION DE VARIABLES Y STATE
-  const perfilUsuario = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
-  const oficinaUsuario = JSON.parse(localStorage.getItem('user') || '').nombre_oficina
-  const permisoFecha = JSON.parse(localStorage.getItem('user') || '').estado
   const permisoEdicion = ref<any>(true)
-  const panel = ref<any>(false)
-
-  const currentDate2 = format(new Date(), "yyyy-MM-dd");
   const editar = ref<any>(false)
-    const currentDate = format(new Date(), 'yyyy-MM-dd')
   const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
-  const timeAgo = (value: any) => {
-    return formatDistance(new Date(currentDate), new Date(value), {locale:es})
-  }
-const desserts = ref([]) as any
 
   const state = reactive({
     formData: {
@@ -155,8 +128,6 @@ const desserts = ref([]) as any
 
   const lista_unidad = ref([]) as any
   const lista_diagnosticos = ref([]) as any
-  const tipo_filtro= ref([]) as any
-  const tipo_mantenimiento = ref([]) as any
   const tipo_mantenimiento2 = ref([]) as any
   const getResourcesList = async () => {
     lista_diagnosticos.value = await registro.gettipo_trabajo() 
@@ -165,10 +136,9 @@ const desserts = ref([]) as any
   }
   
    // BUSQUEDA o despliegue de repuestos
-   const desser = ref([]) as any
-
    const basico_id = async (id_orden: any) => {
     const data = await registro.getbasico(id_orden)
+    console.log(data)
     state.formData.id_orden =data.id
     state.formData.dato1= data.placa
     state.formData.dato2 = data.chasis
@@ -181,6 +151,7 @@ const desserts = ref([]) as any
     state.formData.color_ve = data.color
     state.formData.prueba= data.prueba
    } 
+  
 
    const verificar_id = async (id_orden: any) => {
     const data = await registro.verificar_reg(id_orden)
@@ -226,7 +197,6 @@ const desserts = ref([]) as any
       //state.formData.
 }
 
-
   const buttonReturnList = () => {
     router.push({ name: 'ordenList' })
   }
@@ -261,19 +231,10 @@ const desserts = ref([]) as any
           Toast.fire({ icon: icono, title: message })
             
         }
-     //   window.location.reload()
+       window.location.reload()
       })
     }
     isLoading.value = false
-  }
-
-  const birthDate = (date: string) => {
-    if(date !== undefined){
-      let format = date.split("/")
-      let lastFormat = format[2] + "-" + format[1] + "-" + format[0];
-      return lastFormat;
-    }
-    return  ''
   }
 
   // VALIDACION GENERAL
@@ -555,7 +516,7 @@ function recibido(item: any) {
 
               </td>
               <td class="text-center" v-else>ENTREGADO </td>
-              <td class="text-center" v-if="item.entregado === 'PENDIENTE' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('PERSONAL DE ENTREGA')) " >
+              <td class="text-center" v-if="item.entregado === 'PENDIENTE' && (us==1 || us==2 ||  us==5) " >
                 <v-btn
                   class="mr-1"
                   size="x-small"
@@ -568,7 +529,7 @@ function recibido(item: any) {
                 > <PencilIcon style="cursor: pointer;"></PencilIcon>
                 </v-btn>
                 </td>
-                <td class="text-center" v-else-if="item.entregado === 'RECIBIDO' &&  (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR')) ">
+                <td class="text-center" v-else-if="item.entregado === 'RECIBIDO' &&  (us==1 ||  us==2) ">
                     <v-btn 
                   class="mr-1"
                   size="x-small"

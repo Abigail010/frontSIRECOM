@@ -6,7 +6,8 @@ import { useUserStore } from '@/stores/resources/user';
 import Swal from 'sweetalert2'
 const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
 const userStore = useUserStore()
-
+const usertaller:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
+const usert:any = JSON.parse(localStorage.getItem('user') || '').id_taller
 const page = ref({ title: 'Usuario' });
 const breadcrumbs = ref([
   {
@@ -23,9 +24,9 @@ const breadcrumbs = ref([
 
 const desserts = ref([]) as any
 const getUsersList = async() => {
-  if(userProfile.includes('SUPER ADMINISTRADOR')){
+  if(usert == 1 || usertaller == 1){
   desserts.value = await userStore.users()
- /// console.log(desserts.value)
+  
   }else{
     desserts.value = await userStore.usersM()
   }
@@ -123,7 +124,7 @@ onMounted(() => {
                 <v-icon color="info" size="large" class="me-2" @click="buttonUserForm(item.id_user)">
                     mdi-pencil
                 </v-icon>
-                <v-icon color="error" size="large"  @click="deleteItem(item.id_user)">
+                <v-icon v-if="item.id_user !=1" color="error" size="large"  @click="deleteItem(item.id_user)">
                     mdi-delete
                 </v-icon>
             </template>                    

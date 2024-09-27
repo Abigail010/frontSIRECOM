@@ -14,7 +14,8 @@ const soli_Rep = useSoliStore()
 const orden = useOrdenStore()
 const registro = useRegisterStore()
 const tallerStore = useTallerStore()
-const page = ref({ title: 'Orden de Mantenimiento' });
+const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
+const page = ref({ title: 'Mantenimientos' });
 const breadcrumbs = ref([
   {
     text: 'Dashboard',
@@ -27,7 +28,7 @@ const breadcrumbs = ref([
     href: '#'
   }
 ]);
-const currentDate = format(new Date(), 'yyyy-MM-dd')
+
   const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
   // console.log('perfil', userProfile);
   const state = reactive({
@@ -37,10 +38,6 @@ const currentDate = format(new Date(), 'yyyy-MM-dd')
     }, 
   });
 
-  const timeAgo = (value: any) => {
-    return formatDistance(new Date(currentDate), new Date(value), {locale:es})
-  }
-
   const ButtonReport2 = async (item: any) => {
   
   const data2 = await registro.minutesReport(item);
@@ -48,10 +45,10 @@ const currentDate = format(new Date(), 'yyyy-MM-dd')
   }
 const desserts = ref([]) as any
 const getOrdenes_sol = async() => {
-  if(userProfile.includes('SUPER ADMINISTRADOR')){
+  if(userProfile.includes('SUPER ADMINISTRADOR') || us == 1){
     desserts.value = await orden.getOrdenes_soli()
   }else{
-    if(userProfile.includes('MECANICO')){
+    if(userProfile.includes('MECANICO') || us == 4){
       desserts.value = await orden.getOrdenM()
     }
     else{
@@ -262,24 +259,24 @@ onMounted(() => {
               />
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile == 'SUPERVISOR DE MANTENIMIENTO'"
+              <v-btn v-if="(userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile == 'SUPERVISOR DE MANTENIMIENTO') || ( us == 1 || us==2 || us== 3)"
                 color="primary"  
                 variant="flat" 
                 dark   
                 @click="buttonDepositForm(0)" 
-              > Nueva orden </v-btn>
+              > Nuevo ingreso</v-btn>
             </v-toolbar>                        
           </template>
           
           <template v-slot:item.actions="{ item }">
-              <v-icon v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') "
+              <v-icon v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3) "
               color="info" size="large" class="me-2" @click="buttonDepositForm(item.id)">
                   mdi-pencil
               </v-icon>
-              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') ||  userProfile.includes('MECANICO')"
+              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') ||  userProfile.includes('MECANICO')  || (us==1 || us==2 || us==3 || us== 4)"
                   class="mr-1"
                   size="x-small"
-                  title="Descripcion de trabajo"
+                  title="Orden de Mantenimiento"
                   height="25"
                   width="25"
                   color="secondary"
@@ -289,10 +286,10 @@ onMounted(() => {
                 <ReportIcon style="cursor: pointer;"></ReportIcon>
 
               </v-btn>
-              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('PERSONAL DE ENTREGA')  "
+              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('PERSONAL DE ENTREGA') || (us==1 || us == 2 || us == 5) "
                   class="mr-1"
                   size="x-small"
-                  title="Estado de repuestos"
+                  title="Entrega de repuestos"
                   height="25"
                   width="25"
                   color="warning"
@@ -303,7 +300,7 @@ onMounted(() => {
                 
               </v-btn>
               <v-btn 
-                  v-if="item.estado == 'EN PROCESO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('MECANICO') )  "
+                  v-if="item.estado == 'EN PROCESO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('MECANICO') || (us==1 || us == 2 || us == 4) )   "
                   class="mr-1"
                   size="x-small"
                   title="Entregar"
@@ -318,20 +315,20 @@ onMounted(() => {
 
                 
                 <v-btn 
-                  v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') )"
-                  class=""
+                  v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO')  || (us==1 || us == 2 || us == 3)) "
+                  class="estado-3"
                   size="x-small"
                   title="Rechazar entrega de mantenimiento"
                   height="25"
                   width="25"
-                  color="primary"
+                
                   @click="buttonDelete(item.id)"
                 >
                   <FileIcon style=" cursor: pointer;"></FileIcon>
                 </v-btn>
 
                 <v-btn 
-                  v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') )"
+                  v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3) ) "
                   class=""
                   size="x-small"
                   title="Entrega de vehiculo"
@@ -343,7 +340,7 @@ onMounted(() => {
                   <FileCheckIcon style=" cursor: pointer;"></FileCheckIcon>
                 </v-btn>
                 <v-btn 
-                  v-if="item.estado == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') )"
+                  v-if="item.estado == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3)) "
                   class=""
                   size="x-small"
                   title="Reporte de Mantenimiento"

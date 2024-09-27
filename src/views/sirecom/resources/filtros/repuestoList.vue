@@ -24,10 +24,8 @@ const breadcrumbs = ref([
 
   const desserts = ref([]) as any
   const getrepuestosList = async() => {
-    console.log('aqui')
     desserts.value = await repuesto.getRepuestos()
-    console.log(desserts.value
-    )
+    
   }
 
   const buttonrepuestoForm = (id: any) => {

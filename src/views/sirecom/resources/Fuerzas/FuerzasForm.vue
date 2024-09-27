@@ -41,7 +41,7 @@ import { validateText } from '@/utils/helpers/validateText'
   // FUNCION QUE OBTIENE LA INFORMACION DE LA DEPENDENCIA
   const getfuerzaById = async (id: any) => {
     const respuesta = await fuerzas.FuerzasID(id)
-    console.log(respuesta)
+    
     state.formData.id = respuesta.id_fuerza
     state.formData.nombre_fuerza = respuesta.nombre_fuerza
   }

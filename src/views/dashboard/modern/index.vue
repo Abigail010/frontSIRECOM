@@ -510,7 +510,7 @@ const pieChart = {
         <v-card-item>
             <div class="d-sm-flex align-center justify-space-between">
                 <div>
-                    <v-card-title class="text-h5">Cuadro de registros</v-card-title>
+                    <v-card-title class="text-h5">Cuadro de Mantenimiento por mes</v-card-title>
                     <v-card-subtitle class="text-subtitle-1 textSecondary">Fuerzas</v-card-subtitle>
                 </div>
                 <div class="my-sm-0 my-2">
@@ -559,62 +559,7 @@ const pieChart = {
                     </div>
                 </v-col>-->
             </v-row>
-            <v-row>
-        <v-col cols="12">
-            <v-row>
-                <v-col cols="12" lg="6">
-                    <!-- ---------------------------------------------------- -->
-                    <!-- Donut Chart -->
-                    <!-- ---------------------------------------------------- -->
-                    <v-card elevation="10" >
-        <v-card-item class="py-4 px-6">
-            <div class="d-sm-flex align-center justify-space-between">
-                <v-card-title class="text-h5"> Mantenimientos finalizados</v-card-title>
-                <!-- <template v-slot:append> -->
-                <slot name="action">
-                    dfdf
-                </slot>
-                <!-- </template> -->
-            </div>
-        </v-card-item>
-        <v-divider>
-            dfdfdf
-        </v-divider>
-        <v-card-text>
-            <slot />
-            <apexchart type="donut" height="300" :options="donutchartOptions" :series="donutChart.series"> </apexchart>
-        </v-card-text>
-    </v-card>
-                </v-col>
-                <v-col cols="12" lg="6">
-                    <!-- ---------------------------------------------------- -->
-                    <!-- Pie Chart -->
-                    <!-- ---------------------------------------------------- -->
-                   
-                    <v-card elevation="10" >
-        <v-card-item class="py-4 px-6">
-            <div class="d-sm-flex align-center justify-space-between">
-                <v-card-title class="text-h5"> Mantenimientos pendientes</v-card-title>
-                <!-- <template v-slot:append> -->
-                <slot name="action">
-                    dfdf
-                </slot>
-                <!-- </template> -->
-            </div>
-        </v-card-item>
-        <v-divider>
-            dfdfdf
-        </v-divider>
-        <v-card-text>
-            <slot />
-            <apexchart type="pie" height="300" :options="piechartOptions" :series="pieChart.series"> </apexchart>
-        </v-card-text>
-    </v-card>
-                </v-col>
-              
-            </v-row>
-        </v-col>
-    </v-row>
+       
         </v-card-item>
     </v-card>
                 </v-col>

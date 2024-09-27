@@ -33,7 +33,7 @@ export const useMarcasStore = defineStore({
     async createMarcas(form: any) {
       try {
         const { data } = await siibApi.post('marca/create_Marca/' + userLogged, form)
-        router.push({ name: 'MarcasList' });
+        router.push({ name: 'MarcaList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -45,11 +45,10 @@ export const useMarcasStore = defineStore({
     async updateMarcas(form: any) {
       try {
         const { data } = await siibApi.post('marca/update_Marca/' + userLogged, form)
-        router.push({ name: 'MarcasList' });
+        router.push({ name: 'MarcaList' });
         return {
           ok: true,
           message: data.message,
-          id: data.id
         }
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -61,11 +60,10 @@ export const useMarcasStore = defineStore({
     async deleteMarcas(form: any) {
       try {
         const { data } = await siibApi.post('marca/delete_Marca/' + userLogged, form)
-        router.push({ name: 'MarcasList' });
+        router.push({ name: 'MarcaList' });
         return {
           ok: true,
           message: data.message,
-          id: data.id
         }
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
