@@ -123,6 +123,7 @@ const openpanel = ref([0]);
         observacion:'', 
         precio:'',
         id_det:'', 
+        estado:'',
     }
   });
 
@@ -138,7 +139,7 @@ const openpanel = ref([0]);
    // BUSQUEDA o despliegue de repuestos
    const basico_id = async (id_orden: any) => {
     const data = await registro.getbasico(id_orden)
-    console.log(data)
+   // console.log(data)
     state.formData.id_orden =data.id
     state.formData.dato1= data.placa
     state.formData.dato2 = data.chasis
@@ -178,7 +179,7 @@ const openpanel = ref([0]);
   }
   const ButtonRepuesto = async (item: any) => {
     const data2 = await soli_Rep.getID(item);
-    console.log(data2)
+    //console.log(data2)
     state.formData2.id_registro = data2.id
     state.formData2.id_repuesto = data2.id_tipo_repuesto
     state.formData2.id_solicitud = data2.id_solicitud
@@ -187,14 +188,17 @@ const openpanel = ref([0]);
     state.formData2.unidad = data2.unidad
     state.formData2.precio = data2.precio
     state.formData2.id_det = data2.id_det
+    state.formData2.estado = data2.entregado
     dialog.value = true
   }
 
   const precio = () => {
     const cantidad = parseFloat(state.formData2.cantidad) || 0;
       const precio_u = parseFloat(state.formData2.precio) || 0;
-      state.formData2.costo = (cantidad * precio_u).toFixed(2); // Calcula y formatea el subtotal
+      state.formData2.costo = (cantidad * precio_u).toFixed(2) || state.formData.id_Rep.costo; // Calcula y formatea el subtotal
       //state.formData.
+      console.log( 'costo ' )
+      console.log( state.formData.id_Rep.costo)
 }
 
   const buttonReturnList = () => {
@@ -236,7 +240,37 @@ const openpanel = ref([0]);
     }
     isLoading.value = false
   }
+  const buttonSendForm2 = async () => {
+    submitButton.value = true
+    await validateForm()
+    if(!sendForm.value) return
 
+    isLoading.value = true
+    if(state.formData.id_orden != '0' ){
+      // ES NUEVO REGISTRO
+      dialog.value = false
+      Swal.fire({
+        title: '¿Estás seguro?',
+        text: "Verifica que la información registrada sea correcta",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonColor: '#FA896B',
+        confirmButtonColor: '#5D87FF',
+        cancelButtonText: 'No, volver',
+        confirmButtonText: 'Si, actualizar',
+      }).then(async (result) => {
+        if(result.isConfirmed){
+          
+          const { ok, message } = await soli_Rep.updateRepID(state.formData2)
+          const icono = (ok ? 'success' : 'error')
+          Toast.fire({ icon: icono, title: message })
+            
+        }
+       window.location.reload()
+      })
+    }
+    isLoading.value = false
+  }
   // VALIDACION GENERAL
   const validateForm = async () => {
     sendForm.value = true
@@ -401,6 +435,7 @@ function recibido(item: any) {
                                                 <v-text-field
                                                 v-model="state.formData2.nombre_repuesto"
                                                 label="Repuesto"
+                                                readonly
                                                 ></v-text-field>
                                             </v-col>
                                             <v-col cols="12"  md="3">
@@ -429,6 +464,16 @@ function recibido(item: any) {
                                                     /> 
                                             </v-col>
                                             <v-col cols="12"  md="2">
+                                               <template v-if="us==1 || us==2">
+                                                <v-text-field
+                                                v-model="state.formData2.costo"
+                                                min:0
+                                                label="Costo"
+                                                 type="number"
+                                                
+                                                ></v-text-field>
+                                               </template>
+                                               <template v-else>
                                                 <v-text-field
                                                 v-model="state.formData2.costo"
                                                 min:0
@@ -436,8 +481,10 @@ function recibido(item: any) {
                                                  type="number"
                                                  readonly
                                                 ></v-text-field>
+                                               </template>
                                             </v-col>
                                             </v-row>
+
                                         </v-container>
                                     </v-card-text>
                                     <v-card-actions>
@@ -445,8 +492,13 @@ function recibido(item: any) {
                                         <v-btn color="error" variant="flat" dark   @click="buttonClose()">
                                             Cancel
                                         </v-btn>
-                                        <v-btn color="success" variant="flat" dark   @click="buttonSendForm()">
-                                            Save
+                                        <v-btn v-if="state.formData2.estado == 'RECIBIDO' && ( us==1 || us==2 )"
+                                         color="success" variant="flat" dark   @click="buttonSendForm2()">
+                                            Guardar
+                                        </v-btn>
+                                        <v-btn v-else
+                                         color="primary" variant="flat" dark   @click="buttonSendForm()">
+                                            Guardar
                                         </v-btn>
                                     </v-card-actions>
                                 </v-card>

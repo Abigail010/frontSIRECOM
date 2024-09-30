@@ -15,12 +15,13 @@ import type { Header } from "vue3-easy-data-table";
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import Swal from 'sweetalert2'
 import { readonly } from 'vue';
+import { useSoliStore } from '@/stores/orden/soli_rep';
 const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
 const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
 const openpanel = ref([0]);
   const route = useRoute()
   const resourceStore = useResourceStore()
-  
+  const dialog = ref(false);
   const orden = useOrdenStore()
   const registro = useRegisterStore()
   const getSystem = useSystemStore()
@@ -28,7 +29,7 @@ const openpanel = ref([0]);
   const addButton = ref(false)
   const sendForm = ref(true)
   const isLoading = ref(false)
-
+  const soli_Rep = useSoliStore()
   // BREADCRUMB
   const page = ref({ title: 'Orden de Mantenimiento' });
   const breadcrumbs = ref([
@@ -134,10 +135,15 @@ const openpanel = ref([0]);
         id_accesorios_: []as any, 
         estado_orden:'', 
         prueba_:'',  
+        id_reg_rep:'',
 
         
     }
   });
+
+  const buttonClose = () => {
+    dialog.value = false
+  }
 
   // RECURSOS
   const lista_unidad = ref([]) as any
@@ -589,7 +595,8 @@ const openpanel = ref([0]);
 
   const ButtonReport2 = async (item: any) => {
   const data2 = await registro.inventarioReport(item);
-  console.log(data2)
+  console.log(data2) 
+ 
   }
 
   // ELIMINA TIPO DE CODIGO DE LA TABLA DE CODIGOS
@@ -939,6 +946,44 @@ if(state.formData.id_Rep.length>0){
     }
     isLoading.value = false
   }
+  const ButtonRepuesto = async (item: any) => {
+    const data2 = await soli_Rep.getID(item);
+    //console.log(data2)
+    state.formData.id_reg_rep = data2.id
+    state.formData.nombre_repuesto =  String(data2.nombre_repuesto)
+    state.formData.observacion_r =  String(data2.observacion)
+    dialog.value = true
+  }
+ 
+
+  const buttonSendObs = async () => {
+    submitButton.value = true
+  
+    if(state.formData.id_registro != '0' ){
+      // ES NUEVO REGISTRO
+      dialog.value = false
+      Swal.fire({
+        title: 'Estás seguro?',
+        text: "Verifica que la información registrada sea correcta",
+        icon: 'warning',
+        showCancelButton: true,
+        cancelButtonColor: '#FA896B',
+        confirmButtonColor: '#5D87FF',
+        cancelButtonText: 'No, volver',
+        confirmButtonText: 'Si, actualizar',
+      }).then(async (result) => {
+        if(result.isConfirmed){
+          
+          const { ok, message } = await soli_Rep.updateobs(state.formData)
+          const icono = (ok ? 'success' : 'error')
+//Toast.fire({ icon: icono, title: message })
+            
+        }
+        window.location.reload()
+      })
+    }
+   //isLoading.value = false
+  }
 
   // VALIDACION GENERAL
   const validateForm = async () => {
@@ -1060,7 +1105,47 @@ if(state.formData.id_Rep.length>0){
   </v-row>
 
 <v-rom>
+  <v-dialog v-model="dialog" max-width="1000px">
+                                <v-card>
+                                    <v-card-title class="pa-2 bg-success">
+                                        <span class="text-h5">Información del Repuesto</span>
+                                    </v-card-title>
 
+                                    <v-card-text>
+                                        <v-container>
+                                            <v-row>
+                                            <v-col cols="12"  md="4">
+                                                <v-text-field
+                                                v-model="state.formData.nombre_repuesto"
+                                                label="Repuesto"
+                                                readonly
+                                                ></v-text-field>
+                                            </v-col>
+                                            
+                                           
+                                            <v-col cols="12"  md="8">
+                                                <v-text-field
+                                                v-model="state.formData.observacion_r"
+                                                min:0
+                                                label="Observación"
+                                                 type="text"
+                                                 
+                                                ></v-text-field>
+                                            </v-col>
+                                            </v-row>
+                                        </v-container>
+                                    </v-card-text>
+                                    <v-card-actions>
+                                        <v-spacer></v-spacer>
+                                        <v-btn color="error" variant="flat" dark   @click="buttonClose()">
+                                            Cancel
+                                        </v-btn>
+                                        <v-btn color="success" variant="flat" dark   @click="buttonSendObs()">
+                                            Guardar
+                                        </v-btn>
+                                    </v-card-actions>
+                                </v-card>
+                            </v-dialog>
     <v-expansion-panels v-model="openpanel">
         <!---Delivery Address--->
         <v-expansion-panel elevation="10"  >
@@ -2152,8 +2237,31 @@ if(state.formData.id_Rep.length>0){
                           <td class="text-center">{{ item.cantidad_r }}</td>
                           <td class="text-center">{{ item.unidad_r }}</td>
                           <td class="text-center">{{ item.observacion_r }}</td>
-                          <td class="text-center" v-if="permisoEdicion"><TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteRep(index)"/></td>
-                          
+                          <td class="text-center" >
+                            <v-btn v-if="item.entregado === 'PENDIENTE'"
+                              class="mr-1"
+                              size="x-small"
+                              title="Editar"
+                              height="25"
+                              width="25"
+                              color="error"
+                              text="hola"
+                              @click="buttonDeleteRep(index)"
+                            > <TrashIcon  style="cursor: pointer;"></TrashIcon >
+                            </v-btn>
+                            <v-btn v-else
+                              class="mr-1"
+                              size="x-small"
+                              title="Modificar la observación"
+                              height="25"
+                              width="25"
+                              color="success"
+                              text="hola"
+                              @click="ButtonRepuesto(item.id)"
+                            > <PencilIcon  style="cursor: pointer;"></PencilIcon>
+                            </v-btn>
+                          <!---<TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteRep(index)"/></td>-->
+                          </TD>
                         </tr>
                       </tbody>
                     </v-table>

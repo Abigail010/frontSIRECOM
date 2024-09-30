@@ -292,7 +292,7 @@ const buttonSendForm = async () => {
         <v-expansion-panel-text class="mt-4">
            <v-row>
             <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Clase <span style="color:red"></span></v-label>
+          <v-label class="mb-2 font-weight-medium">Tipo <span style="color:red"></span></v-label>
     
           <v-autocomplete
             variant="outlined"
@@ -322,7 +322,7 @@ const buttonSendForm = async () => {
           
         </v-col>
         <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Tipo <span style="color:red"></span></v-label>
+          <v-label class="mb-2 font-weight-medium">Modelo <span style="color:red"></span></v-label>
           <v-autocomplete
             variant="outlined"
             color="primary"
