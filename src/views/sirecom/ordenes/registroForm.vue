@@ -315,6 +315,7 @@ const openpanel = ref([0]);
     }
 
     const rep = data.id_Rep
+    console.log(data.id_Rep)
     for (let i = 0; i < rep.length; i++) {
       state.formData.id_Rep.push(rep[i])
       tipo_filtro.value = tipo_filtro.value.filter( (tipo: any) => tipo.nombre_repuesto !=rep[i].id_filtro)
@@ -2249,7 +2250,7 @@ if(state.formData.id_Rep.length>0){
                               @click="buttonDeleteRep(index)"
                             > <TrashIcon  style="cursor: pointer;"></TrashIcon >
                             </v-btn>
-                            <v-btn v-else
+                            <v-btn v-else-if="item.entregado === 'RECIBIDO'"
                               class="mr-1"
                               size="x-small"
                               title="Modificar la observación"
@@ -2259,6 +2260,17 @@ if(state.formData.id_Rep.length>0){
                               text="hola"
                               @click="ButtonRepuesto(item.id)"
                             > <PencilIcon  style="cursor: pointer;"></PencilIcon>
+                            </v-btn>
+                            <v-btn v-else
+                              class="mr-1"
+                              size="x-small"
+                              title="Editar"
+                              height="25"
+                              width="25"
+                              color="error"
+                              text="hola"
+                              @click="buttonDeleteRep(index)"
+                            > <TrashIcon  style="cursor: pointer;"></TrashIcon >
                             </v-btn>
                           <!---<TrashIcon style="color: red; cursor: pointer;" @click="buttonDeleteRep(index)"/></td>-->
                           </TD>

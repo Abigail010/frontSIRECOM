@@ -166,6 +166,7 @@ const openpanel = ref([0]);
 
   const registro_id = async (id_orden: any) => {
    state.formData.id_Rep = await soli_Rep.getsolicitudes(id_orden) 
+   //console.log(state.formData.id_Rep)
    state.formData.id_Rep2 = await soli_Rep.getEntregas(id_orden) 
    const res= await soli_Rep.getEntregas(id_orden) 
  
@@ -189,16 +190,19 @@ const openpanel = ref([0]);
     state.formData2.precio = data2.precio
     state.formData2.id_det = data2.id_det
     state.formData2.estado = data2.entregado
+    if(parseInt(data2.costo)>0){
+      state.formData2.costo=data2.costo  
+    }
     dialog.value = true
   }
 
   const precio = () => {
     const cantidad = parseFloat(state.formData2.cantidad) || 0;
       const precio_u = parseFloat(state.formData2.precio) || 0;
-      state.formData2.costo = (cantidad * precio_u).toFixed(2) || state.formData.id_Rep.costo; // Calcula y formatea el subtotal
+      state.formData2.costo = (cantidad * precio_u).toFixed(2) ; // Calcula y formatea el subtotal
       //state.formData.
-      console.log( 'costo ' )
-      console.log( state.formData.id_Rep.costo)
+   //   console.log( 'costo ' )
+     // console.log( state.formData.id_Rep.costo)
 }
 
   const buttonReturnList = () => {
@@ -479,11 +483,19 @@ function recibido(item: any) {
                                                 min:0
                                                 label="Costo"
                                                  type="number"
-                                                 readonly
+                                               readonly
                                                 ></v-text-field>
                                                </template>
                                             </v-col>
-                                            </v-row>
+                                            <v-col cols="12"  md="12">
+                                                <v-text-field
+                                                v-model="state.formData2.observacion"
+                                                label="Observación"
+                                                 type="text"
+                                                 @input="state.formData2.observacion = validateText(state.formData2.observacion.toUpperCase())"
+                                                ></v-text-field>
+                                            </v-col>
+                                          </v-row>
 
                                         </v-container>
                                     </v-card-text>
@@ -493,7 +505,7 @@ function recibido(item: any) {
                                             Cancel
                                         </v-btn>
                                         <v-btn v-if="state.formData2.estado == 'RECIBIDO' && ( us==1 || us==2 )"
-                                         color="success" variant="flat" dark   @click="buttonSendForm2()">
+                                         color="success" variant="flat" dark   @click="buttonSendForm()">
                                             Guardar
                                         </v-btn>
                                         <v-btn v-else
