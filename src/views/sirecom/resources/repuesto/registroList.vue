@@ -114,7 +114,7 @@ onMounted(() => {
               >Registro de Repuestos</v-btn>
             </v-toolbar>                        
           </template>
-          <template v-slot:item.actions="{ item }">
+          <template  v-if="usertaller == 1 || usert == 1" v-slot:item.actions="{ item }">
               <v-icon color="info" size="large" class="me-2" @click="buttonDepositForm(item.id)">
                   mdi-pencil
               </v-icon>

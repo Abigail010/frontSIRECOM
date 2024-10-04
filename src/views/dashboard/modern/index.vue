@@ -12,6 +12,9 @@ import { useTheme } from 'vuetify';
 const orden = useSearchStore()
 const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
+const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
+const us2:any = JSON.parse(localStorage.getItem('user') || '').id_taller
+console.log(us2)
  //onsole.log('perfil', userLogged);
   // DECLARACION DEL STATE
   const state = reactive({
@@ -123,7 +126,7 @@ const getGen = async () => {
     state.formData.title5 ="Repuestos Entregados"
     state.formData.title6 ="Repuestos Pendientes"
 
-    if(userProfile.includes('SUPER ADMINISTRADOR')){
+    if(userProfile.includes('SUPER ADMINISTRADOR') || (us==1)){
        
         let tot = 0 
         for(let i=0;i < users.length; i++){
@@ -219,7 +222,7 @@ const getGen = async () => {
         }
         
         state.formData.dato5 = String(tot4)
-
+        console.log( state.formData.dato5)
         let tot5 = 0 
         for(let i=0;i < rep2.length; i++){
            if(rep2[i].id_taller == info.id_taller){
@@ -503,30 +506,31 @@ const pieChart = {
          
        
          <v-col cols="12">
-           <v-row>
+           <v-row v-if="(us==1 || us2==1)">
                 <!-- Revenue Updates -->
                 <v-col cols="12" lg="12" md="12">
                     <v-card elevation="10" >
         <v-card-item>
             <div class="d-sm-flex align-center justify-space-between">
-                <div>
+                <div >
                     <v-card-title class="text-h5">Cuadro de Mantenimiento por mes</v-card-title>
                     <v-card-subtitle class="text-subtitle-1 textSecondary">Fuerzas</v-card-subtitle>
                 </div>
                 <div class="my-sm-0 my-2">
-                    <v-select 
+                    <v-select v-if="(us==1 || us2==1)"
                     v-model="select"
                     item-text="text"
                     :items="nombresMeses" 
                     variant="outlined" 
                     density="compact" 
                     @update:model-value="getEncargado(select);"
+                    
                     hide-details></v-select>
                 </div>
             </div>
 
             <v-row>
-                <v-col cols="12" sm="12" class="pt-7">
+                <v-col v-if="(us==1 || us2==1)" cols="12" sm="12" class="pt-7">
                     <apexchart type="bar" height="375" :options="chartOptions" :series="lineChart.series"> </apexchart>
                 </v-col>
                

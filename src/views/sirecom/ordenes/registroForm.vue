@@ -315,7 +315,7 @@ const openpanel = ref([0]);
     }
 
     const rep = data.id_Rep
-    console.log(data.id_Rep)
+  
     for (let i = 0; i < rep.length; i++) {
       state.formData.id_Rep.push(rep[i])
       tipo_filtro.value = tipo_filtro.value.filter( (tipo: any) => tipo.nombre_repuesto !=rep[i].id_filtro)

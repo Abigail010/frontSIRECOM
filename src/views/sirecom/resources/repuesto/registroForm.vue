@@ -644,7 +644,7 @@ Fecha de Registro<span style="color:red">(*)</span>
                > <TrashIcon ></TrashIcon >
                </v-btn>
                 
-            </td>
+              </td>
               
             </tr>
             <tr>

@@ -124,11 +124,11 @@ const Toast = Swal.mixin({
             </div>
           </template>
           
-          <v-btn size="large" class="mt-5" color="primary" block @click="buttonSendForm()">Ingresar</v-btn>
+          <v-btn size="large" class="mt-3" color="primary" block @click="buttonSendForm()">Ingresar</v-btn>
         </div>
       </v-col>
       
-      <v-col cols="12" lg="5" xl="4" class="d-lg-flex align-center justify-center  position-relative">
+      <v-col cols="12" lg="5" xl="5" class="d-lg-flex align-center justify-center  position-relative">
         <div></div>
       </v-col>
     </v-row>
@@ -138,13 +138,19 @@ const Toast = Swal.mixin({
 
 
 <style lang="css">
+html, body {
+height: 100%;  /* Asegura que el html y el body ocupen el 100% de la altura de la pantalla */
+margin: 0;
+   padding: 0;
+   overflow: hidden;  /* Evita cualquier scroll */
+}
 .prueba {
    background-image: url('../../../assets/images/misimagenes/probar3.png');
    background-size: cover; /* La imagen cubrirá completamente el área del contenedor */
    background-position: center center; /* Centrará la imagen tanto vertical como horizontalmente */
    background-repeat: no-repeat; /* Evitará que la imagen se repita */
    width: 100vw; /* Ancho de la ventana del navegador */
-   height: 100vh; /* Alto de la ventana del navegador */
+   height: 105vh; /* Alto de la ventana del navegador */
    margin: 0 auto; /* Centrará el contenedor si es necesario */
 }
 
