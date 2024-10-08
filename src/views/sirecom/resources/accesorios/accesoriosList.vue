@@ -30,8 +30,6 @@ const breadcrumbs = ref([
     router.push({ name: 'accesorioForm', params: { id_accesorio: id_accesorio }})
   }
 
-
-// nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
   { title: 'Accesorioss', key: 'nombre_accesorio' },
@@ -39,13 +37,13 @@ const headers = ref([
 
 function deleteItem(item: any) {
     Swal.fire({
-        title: "Estas seguro?",
-        text: "El proceso no podra ser revertido!",
+        title: "¿Estas seguro?",
+        text: "¡El proceso no podra ser revertido!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!"
+        confirmButtonText: "¡Si, eliminar!"
     }).then(async (result) => {
     if (result.isConfirmed) {
       const { ok, message } = await AccesorioStore.deleteaccesorio({"id":item})

@@ -22,7 +22,7 @@ export const useRegisterRStore = defineStore({
      // OBTENER INFORMACION DE DELITO POR ID
      async RegisterR (id: any) {
       try {
-        console.log(id)
+       
         const { data } = await siibApi.get('register/Register/' + id)
         return data
       } catch (error: any) {
@@ -33,7 +33,7 @@ export const useRegisterRStore = defineStore({
      // OBTENER INFORMACION DE DELITO POR ID
      async infoR (id: any) {
         try {
-          console.log(id)
+          
           const { data } = await siibApi.get('register/info/' + id)
           return data
         } catch (error: any) {
@@ -85,12 +85,12 @@ export const useRegisterRStore = defineStore({
     // ELIMINAR DELITO
     async deleteRegisterR(form: any) {
       try {
-        const { data } = await siibApi.post('register/delete_RegisteR/' + userLogged, form)
+        const { data } = await siibApi.post('register/delete_Register/' + userLogged, form)
         router.push({ name: 'registerList' });
         return {
           ok: true,
           message: data.message,
-          id: data.id
+         
         }
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

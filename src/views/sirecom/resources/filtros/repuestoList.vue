@@ -2,11 +2,9 @@
 import { ref, onMounted} from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
-//import { usefilterStore } from '@/stores/resources/filtro';
 import { useRepuestoStore } from '@/stores/resources/repuesto';
 import Swal from 'sweetalert2'
 
-//const repuestoStore = usefilterStore()
 const repuesto = useRepuestoStore()
 const page = ref({ title: 'Repuestos' });
 const breadcrumbs = ref([
@@ -43,12 +41,12 @@ const headers = ref([
 function deleteItem(item: any) {
     Swal.fire({
         title: "Estas seguro?",
-        text: "El proceso no podra ser revertido!",
+        text: "¡El proceso no podra ser revertido!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!"
+        confirmButtonText: "¡Si, eliminar!"
     }).then(async (result) => {
     if (result.isConfirmed) {
       const { ok, message } = await repuesto.deleteRepuesto({"id":item})

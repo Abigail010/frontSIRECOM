@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 
 const Clases = useClasesStore()
 
-const page = ref({ title: 'Tipo de vehículo' });
+const page = ref({ title: 'Tipo' });
 const breadcrumbs = ref([
   {
     text: 'Dashboard',
@@ -15,7 +15,7 @@ const breadcrumbs = ref([
     href: '#'
   },
   {
-    text: 'Listado',
+    text: 'Tipo de vehículo',
     disabled: true,
     href: '#'
   }
@@ -24,30 +24,26 @@ const breadcrumbs = ref([
   const desserts = ref([]) as any
   const getList = async() => {
     desserts.value = await Clases.Clase()
-   // console.log(desserts)
-   
   }
 
   const buttonClaseForm = (id_clase: any) => {
     router.push({ name: 'ClaseForm', params: { id_clase: id_clase }})
   }
-
-
 // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
-  { title: 'Clases', key: 'nombre_clase' },
+  { title: 'Tipo', key: 'nombre_clase' },
 ])
 
 function deleteItem(item: any) {
     Swal.fire({
-        title: "Estas seguro?",
-        text: "El proceso no podra ser revertido!",
+        title: "¿Estas seguro?",
+        text: "¡El proceso no podra ser revertido!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!"
+        confirmButtonText: "¡Si, eliminar!"
     }).then(async (result) => {
     if (result.isConfirmed) {
       const { ok, message } = await Clases.deleteClases({"id":item})

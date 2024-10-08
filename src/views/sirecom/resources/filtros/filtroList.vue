@@ -24,6 +24,7 @@ const breadcrumbs = ref([
   const desserts = ref([]) as any
   const getrepuestosList = async() => {
     desserts.value = await repuestoStore.filters()
+    console.log(desserts.value)
   }
 
   const buttonrepuestoForm = (id_filtro: any) => {
@@ -33,21 +34,22 @@ const breadcrumbs = ref([
 // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
-  { title: 'Clase', key: 'clase' },
-  { title: 'Tipo', key: 'tipo' },
+  { title: 'Tipo', key: 'clase' },
+  { title: 'Marca/Modelo', key: 'tipo' },
   { title: 'Repuesto', key: 'nombre_repuesto' },
   { title: 'Pertenece', key: 'nombre_sistema' },
+  { title: 'Tipo de motor', key: 'tipo_motor' },
 ])
 
 function deleteItem(item: any) {
     Swal.fire({
-        title: "Estas seguro?",
-        text: "El proceso no podra ser revertido!",
+        title: "¿Estas seguro?",
+        text: "¡El proceso no podra ser revertido!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!"
+        confirmButtonText: "¡Si, eliminar!"
     }).then(async (result) => {
     if (result.isConfirmed) {
       const { ok, message } = await repuestoStore.deletefilter({"id":item})

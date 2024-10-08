@@ -7,12 +7,9 @@ export const useLogsruterStore = defineStore({
     id: 'Logsruter',
     actions: { 
       
-  
-  
       // CREAR LOGRUTE
       async createLogrutes(ruta: any) {
         try {
-          //console.log("holaaaxd")
           
           const { data } = await pruebaApi.post('rutalog/create_logrute' , ruta)
          

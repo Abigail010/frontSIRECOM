@@ -1,15 +1,11 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
-import {TrashIcon, SearchIcon, PlusIcon } from 'vue-tabler-icons';
 import { router } from '@/router';
 import { useRoute } from 'vue-router'
 import Swal from 'sweetalert2'
 import { useRepuestoStore } from '@/stores/resources/repuesto';
-
-
 import { validateText } from '@/utils/helpers/validateText'
-import { setDate } from 'date-fns';
 
   const route = useRoute()
   const repuestoStore = useRepuestoStore()

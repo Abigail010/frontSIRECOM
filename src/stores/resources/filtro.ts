@@ -106,11 +106,10 @@ export const usefilterStore = defineStore({
     async updatefilter(form: any) {
       try {
         const { data } = await siibApi.post('repuestos/update_filter/' + userLogged, form)
-        router.push({ name: 'filterList' });
+        router.push({ name: 'filtroList' });
         return {
           ok: true,
           message: data.message,
-          id: data.id
         }
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -122,7 +121,7 @@ export const usefilterStore = defineStore({
     async deletefilter(form: any) {
       try {
         const { data } = await siibApi.post('repuestos/delete_filter/' + userLogged, form)
-        router.push({ name: 'filterList' });
+        router.push({ name: 'filtroList' });
         return {
           ok: true,
           message: data.message,

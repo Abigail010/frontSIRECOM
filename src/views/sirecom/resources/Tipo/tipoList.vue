@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 
 const Tipos = useTiposStore()
 
-const page = ref({ title: 'Tipos' });
+const page = ref({ title: 'Modelo' });
 const breadcrumbs = ref([
   {
     text: 'Dashboard',
@@ -15,7 +15,7 @@ const breadcrumbs = ref([
     href: '#'
   },
   {
-    text: 'Listado de Tipos ',
+    text: 'Modelos de vehículo ',
     disabled: true,
     href: '#'
   }
@@ -34,18 +34,18 @@ const breadcrumbs = ref([
 // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
-  { title: 'Tipos', key: 'nombre_tipo' },
+  { title: 'Modelo', key: 'nombre_tipo' },
 ])
 
 function deleteItem(item: any) {
     Swal.fire({
         title: "Estas seguro?",
-        text: "El proceso no podra ser revertido!",
+        text: "¡El proceso no podra ser revertido!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!"
+        confirmButtonText: "¡Si, eliminar!"
     }).then(async (result) => {
     if (result.isConfirmed) {
       const { ok, message } = await Tipos.deleteTipos({"id":item})

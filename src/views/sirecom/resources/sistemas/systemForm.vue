@@ -1,17 +1,10 @@
 <script setup lang="ts">
 import { ref, reactive, computed, onMounted } from 'vue';
-import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
-import {TrashIcon, SearchIcon, PlusIcon } from 'vue-tabler-icons';
-import { router } from '@/router';
+import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';import { router } from '@/router';
 import { useRoute } from 'vue-router'
 import Swal from 'sweetalert2'
-
 import { useSystemStore } from '@/stores/resources/system';
 import { validateText } from '@/utils/helpers/validateText'
-//import { useVuelidate } from '@vuelidate/core'
-//import { required, helpers } from '@vuelidate/validators'
-//import { FORM_REQUIRED_FIELD } from '@/utils/helpers/messages'
-//import { useValidationErrors } from '@/stores/useValidationErrors';
 
   const route = useRoute()
   const systemStore = useSystemStore()

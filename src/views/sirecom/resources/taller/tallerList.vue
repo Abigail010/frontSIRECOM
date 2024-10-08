@@ -4,7 +4,6 @@ import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
 import { useTallerStore } from '@/stores/resources/taller';
 import Swal from 'sweetalert2'
-const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
 const usertaller:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
 const usert:any = JSON.parse(localStorage.getItem('user') || '').id_taller
 
@@ -35,7 +34,6 @@ const getTallerList = async() => {
   }
    
 }
-
   const buttonDepositForm = (id_taller: any) => {
     router.push({ name: 'tallerForm', params: { id_taller: id_taller }})
   }
@@ -58,13 +56,13 @@ const headers = ref([
 
   function deleteItem(item: any) {
     Swal.fire({
-        title: "Estas seguro?",
-        text: "El proceso no podra ser revertido!",
+        title: "¿Estas seguro?",
+        text: "¡El proceso no podra ser revertido!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!"
+        confirmButtonText: "Si, ¡eliminar!"
     }).then(async (result) => {
     if (result.isConfirmed) {
       const { ok, message } = await tallerStore.deleteTaller({"id":item})

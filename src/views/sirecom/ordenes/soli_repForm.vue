@@ -3,31 +3,22 @@ import { router } from '@/router';
 import { useRoute } from 'vue-router'
 import { ref, reactive, onMounted } from 'vue';
 import { TrashIcon, SearchIcon, PlusIcon, PencilIcon, CheckIcon, SquareCheckIcon, FallIcon, ElevatorIcon } from 'vue-tabler-icons';
-
-import { useResourceStore } from '@/stores/resource';
-
-import { useOrdenStore } from '@/stores/orden/orden';
 import { useRegisterStore } from '@/stores/orden/registro';
-
 import { validateText } from '@/utils/helpers/validateText'
-import { editPermission } from '@/utils/helpers/editPermission' 
-import type { Header } from "vue3-easy-data-table";
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import Swal from 'sweetalert2'
 import { readonly } from 'vue';
 import { useSoliStore } from '@/stores/orden/soli_rep';
-import { format, formatDistance } from 'date-fns'
-import { es } from 'date-fns/locale'
+
 const dialog = ref(false);
 const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
 const us2:any = JSON.parse(localStorage.getItem('user') || '').id_taller
 const openpanel = ref([0]);
   const route = useRoute()
-  const resourceStore = useResourceStore()
   const registro = useRegisterStore()
   const soli_Rep = useSoliStore()
   const submitButton = ref(false)
-  const addButton = ref(false)
+
   const sendForm = ref(true)
   const isLoading = ref(false)
 
@@ -200,9 +191,6 @@ const openpanel = ref([0]);
     const cantidad = parseFloat(state.formData2.cantidad) || 0;
       const precio_u = parseFloat(state.formData2.precio) || 0;
       state.formData2.costo = (cantidad * precio_u).toFixed(2) ; // Calcula y formatea el subtotal
-      //state.formData.
-   //   console.log( 'costo ' )
-     // console.log( state.formData.id_Rep.costo)
 }
 
   const buttonReturnList = () => {
@@ -302,7 +290,7 @@ const openpanel = ref([0]);
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si, entregar!"
+      confirmButtonText: "¡Si, entregar!"
   }).then(async (result) => {
   if (result.isConfirmed) {
     const { ok, message } = await soli_Rep.updateEstado1({"id":item})
@@ -347,13 +335,13 @@ function recibido(item: any) {
 
   function deleteItem(item: any) {
   Swal.fire({
-      title: "Estas seguro?",
-      text: "El proceso no podra ser revertido!",
+      title: "¿Estas seguro?",
+      text: "¡El proceso no podra ser revertido!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "Si, eliminar!"
+      confirmButtonText: "Si, ¡eliminar!"
   }).then(async (result) => {
   if (result.isConfirmed) {
     const { ok, message } = await soli_Rep.updateEstado1({"id":item})
@@ -380,7 +368,6 @@ function recibido(item: any) {
         console.log('0')
       }
       await basico_id(route.params.id_orden)
-
       editar.value = true
 
     }
@@ -422,7 +409,6 @@ function recibido(item: any) {
       </v-alert>
     </v-col>
   </v-row>
-
 
 <v-rom>
     
@@ -472,7 +458,7 @@ function recibido(item: any) {
                                                 <v-text-field
                                                 v-model="state.formData2.costo"
                                                 min:0
-                                                label="Costo"
+                                                label="Precio Unitario"
                                                  type="number"
                                                 
                                                 ></v-text-field>

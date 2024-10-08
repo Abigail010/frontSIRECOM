@@ -4,8 +4,6 @@ import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
 import { useTallerStore } from '@/stores/resources/taller';
 import { useOrdenStore } from '@/stores/orden/orden';
-import { format, formatDistance } from 'date-fns'
-import { es } from 'date-fns/locale'
 import { useRegisterStore } from '@/stores/orden/registro';
 import { useSoliStore } from '@/stores/orden/soli_rep';
 import { ref, reactive, onMounted } from 'vue';
@@ -41,7 +39,7 @@ const breadcrumbs = ref([
   const ButtonReport2 = async (item: any) => {
   
   const data2 = await registro.minutesReport(item);
-  console.log(data2)
+  //console.log(data2)
   }
 const desserts = ref([]) as any
 const getOrdenes_sol = async() => {
@@ -67,7 +65,7 @@ const getOrdenes_sol = async() => {
     router.push({ name: 'soliRepForm', params: { id_orden: id_orden }})
   }
   const getestado = (estado: any) => {
-      return estado === 'EN PROCESO' ? 'estado-1' : estado === 'ENTREGADO' ? 'estado-2' : estado === 'FINALIZADO' ? 'estado-3' :'';
+      return estado === 'EN PROCESO' ? 'estado-1' : estado === 'ENTREGADO' ? 'estado-2' : estado === 'FINALIZADO' ? 'estado-33' :'';
     };
   // nuevo data table
 // nuevo data table
@@ -88,12 +86,12 @@ const headers = ref([
   function deleteItem(item: any) {
     Swal.fire({
         title: "Estas seguro?",
-        text: "El proceso no podra ser revertido!",
+        text: "¡El proceso no podra ser revertido!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!"
+        confirmButtonText: "¡Si, eliminar!"
     }).then(async (result) => {
     if (result.isConfirmed) {
       const { ok, message } = await tallerStore.deleteTaller({"id":item})
@@ -195,7 +193,7 @@ const registro_id = async (id_orden: any) => {
 
   const buttonDelete = (item: any) => {
     Swal.fire({
-      title: 'Estas seguro?',
+      title: '¿Estas seguro?',
       text: "",
       icon: 'info',
       showCancelButton: true,
@@ -316,7 +314,8 @@ onMounted(() => {
                 
                 <v-btn 
                   v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO')  || (us==1 || us == 2 || us == 3)) "
-                  class="estado-3"
+                
+                  class="mr-1 estado-3"
                   size="x-small"
                   title="Rechazar entrega de mantenimiento"
                   height="25"
@@ -352,7 +351,6 @@ onMounted(() => {
                   <FileCheckIcon style=" cursor: pointer;"></FileCheckIcon>
                 </v-btn>
                 
-
           </template>                    
         </v-data-table>
       </v-col>
@@ -374,11 +372,16 @@ onMounted(() => {
   variant:"flat"; 
   color: white; text-align: center;
 }
-.estado-3{
-  background-color: rgb(194, 26, 35);
+.estado-33{
+  background-color: #051d49;
   padding: 8px 5px;
   border-radius: 10px; 
   variant:"flat"; 
+  color: white; text-align: center;
+}
+.estado-3{
+  background-color: rgb(194, 26, 35);
+
   color: white; text-align: center;
 }
 </style>

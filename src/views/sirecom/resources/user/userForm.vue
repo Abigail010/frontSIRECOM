@@ -94,7 +94,7 @@ import { validateText } from '@/utils/helpers/validateText'
 
 const usert:any = JSON.parse(localStorage.getItem('user') || '').id_taller
 
-console.log('id_user '+ usertaller+ ' id_taller ' + usert )
+
 
   const menus = ref([]) as any
   const menu_independiente = ref([]) as any
@@ -111,14 +111,14 @@ console.log('id_user '+ usertaller+ ' id_taller ' + usert )
     // LISTADO DE MENUS INDEPENDIENTES
     for (let i = 0; i < lista.length; i++) {
       if(lista[i].titulo && lista[i].direccion && !lista[i].padre){
-        console.log(lista[i].titulo)
+        
         if(lista[i].titulo =='Busqueda Reporte'){
 
         }
         menu_independiente.value.push(lista[i])
       }
       if(lista[i].titulo && !lista[i].direccion && !lista[i].padre){
-        console.log(lista[i].titulo)
+       
         menu_padre.value.push(lista[i])
       }
     }
@@ -215,7 +215,7 @@ console.log('id_user '+ usertaller+ ' id_taller ' + usert )
 
     const respuesta = await resourceStore.getPerson(state.formData)
     if(Object.prototype.hasOwnProperty.call(respuesta, 'id')){
-      // console.log('UTILIZANDO DESDE DB');
+     
       Toast.fire({
         icon: 'success',
         title: 'Resultado Obtenido Satisfactoriamente'

@@ -8,17 +8,12 @@ import { usefilterStore } from '@/stores/resources/filtro';
 import { useRegisterRStore } from '@/stores/resources/register_rep';
 import { useResourceStore } from '@/stores/resource';
 import { validateText } from '@/utils/helpers/validateText'
-import { MapboxMap } from 'vue-mapbox-ts';
 import { format } from 'date-fns'
 const RegisterRStore = useRegisterRStore()
 const dialog = ref(false);
-  const tipo=['PROPIO', 'EXTERNO']
-  const fuerza = ['CEO', 'DIABLOS VERDES', 'FELCN']
   const route = useRoute()
   const repuestoStore = usefilterStore()
   const resourceStore = useResourceStore()
-  const myAccessToken = 'pk.eyJ1IjoiYXJpZWwxMTEiLCJhIjoiY2xmaDZpdnZoMHRvNzN1bnZyeXFwazgydyJ9.cgyfEI8x3E4-0Lo7P4t_jw'
-  const zoom = ref(4)
 
   // BREADCRUMB  
   const page = ref({ title: 'Registro de Repuesto' });
@@ -75,7 +70,6 @@ const dialog = ref(false);
     state.formData.id = respuesta.id
     state.formData.fecha = respuesta.fecha
     state.formData.partida = respuesta.nro_partida 
-    //state.formData.total = respuesta.total
 
     const rep = respuesta.repuestos
     for (let i = 0; i < rep.length; i++) {
@@ -165,75 +159,6 @@ const añadir_repuesto = () => {
   }
 }
 
-
- /* const añadir_repuesto = () => {
-//console.log('clic')
-    //console.log(state.formData.id_repuesto )
-    if(state.formData.id_repuesto && state.formData.cantidad && state.formData.unidad && state.formData.precio_u){
-        console.log('clic 2323')
-      desserts7.value = desserts7.value.filter(
-        (codigo: any) =>
-        codigo.id != state.formData.id_repuesto
-      )
- 
-      let a = desserts7.value.find(
-  (region: any) => region.id == state.formData.id_repuesto
-);
-
-// Si el objeto `a` existe, entonces extraes el `nombre_repuesto`
-if (a) {
-  console.log('Nombre del repuesto: ' + a.nombre_repuesto);
-  state.formData.nombre_repuesto = a.nombre_repuesto;  // También puedes almacenarlo en formData
-} else {
-  console.log('No se encontró el repuesto');
-}
-      state.formData.repuestos.push({
-        id_repuesto: state.formData.id_repuesto,
-        
-        nombre_repuesto: state.formData.nombre_repuesto,
-        cantidad: state.formData.cantidad,
-        unidad:state.formData.unidad,
-        precio_u:state.formData.precio_u,
-        subtotal:state.formData.subtotal
-        
-      })
-      state.formData.id_repuesto = ''
-      state.formData.nombre_repuesto= ''
-      state.formData.cantidad= ''
-      state.formData.unidad = ''
-      state.formData.precio_u = ''
-  
-    }
-  }*/
-/*
-  const buttonDeleteRep = (index: number) => {
-
-if(state.formData.repuestos.length>0){
-      const registro2: any = state.formData.repuestos[index]
-
-        desserts7.value.push({
-          id: registro2.id_repuesto,
-          nombre_repuesto: registro2.id
-        })
-           // Sumar el subtotal actual al total acumulado
-            state.formData.total = parseFloat(state.formData.total) - parseFloat(state.formData.subtotal);
-        // REORDENAMIENTO DE LISTA
-        desserts7.value.sort(function(aa: any, bb: any) {
-          const codigo_a = aa.id
-          const codigo_b = bb.id
-        
-          if(codigo_a < codigo_b){
-            return -1
-          }
-          if(codigo_a > codigo_b){
-            return 1
-          }
-          return 0
-        })
-        state.formData.repuestos.splice(index,1)
-    }
-
-}*/
 
 const buttonDeleteRep = (index: number) => {
   if (state.formData.repuestos.length > 0) {
@@ -474,7 +399,19 @@ Fecha de Registro<span style="color:red">(*)</span>
           />
         
         </v-col>
-      
+        <v-col cols="12" md="12">
+          <v-label class="mb-2 font-weight-medium">Observación </v-label>
+          <VTextField
+            variant="outlined" 
+            color="primary"
+            type="text"
+            v-model.trim="state.formData.observacion"
+            @input="miValidacion(), state.formData.observacion = validateText(state.formData.observacion.toUpperCase())"
+            :error="submitButton && !state.formData.observacion"
+            hide-details
+          />
+        
+        </v-col>
        <v-col cols="12" md="12">
         <h4 class="mb-5 mt-2 primary">
         <strong > Registro de repuestos:</strong> 

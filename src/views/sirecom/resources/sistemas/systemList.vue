@@ -4,9 +4,7 @@ import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
 import { useSystemStore } from '@/stores/resources/system';
 import Swal from 'sweetalert2'
-
 const sistemaStore = useSystemStore()
-
 const page = ref({ title: 'Sistemas' });
 const breadcrumbs = ref([
   {
@@ -29,8 +27,6 @@ const breadcrumbs = ref([
   const buttonsistemaForm = (id_sistema: any) => {
     router.push({ name: 'systemForm', params: { id_sistema: id_sistema }})
   }
-
-
 // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
@@ -39,13 +35,13 @@ const headers = ref([
 
 function deleteItem(item: any) {
     Swal.fire({
-        title: "Estas seguro?",
-        text: "El proceso no podra ser revertido!",
+        title: "¿Estas seguro?",
+        text: "¡El proceso no podra ser revertido!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!"
+        confirmButtonText: "Si, ¡eliminar!"
     }).then(async (result) => {
     if (result.isConfirmed) {
       const { ok, message } = await sistemaStore.deleteSys({"id":item})

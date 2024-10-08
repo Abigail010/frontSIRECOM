@@ -14,7 +14,7 @@ const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_pe
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
 const us2:any = JSON.parse(localStorage.getItem('user') || '').id_taller
-console.log(us2)
+
  //onsole.log('perfil', userLogged);
   // DECLARACION DEL STATE
   const state = reactive({
@@ -38,15 +38,6 @@ console.log(us2)
     }
   });
 
-
-const buttonReport = async () => {
-
-    
-///console.log(respuesta_info.length)
-
-
-
-}
 
 // Crear un nuevo objeto de fecha
 const fechaActual = new Date();
@@ -222,7 +213,7 @@ const getGen = async () => {
         }
         
         state.formData.dato5 = String(tot4)
-        console.log( state.formData.dato5)
+        //console.log( state.formData.dato5)
         let tot5 = 0 
         for(let i=0;i < rep2.length; i++){
            if(rep2[i].id_taller == info.id_taller){
@@ -429,7 +420,7 @@ const pieChart = {
 };
   onMounted(async () => {
    await getGen()
-    await buttonReport()
+   // await buttonReport()
   })
 </script>
 <template>

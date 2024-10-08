@@ -8,7 +8,7 @@ import Swal from 'sweetalert2'
 import { useTallerStore } from '@/stores/resources/taller';
 import { useResourceStore } from '@/stores/resource';
 import { validateText } from '@/utils/helpers/validateText'
-import { MapboxMap } from 'vue-mapbox-ts';
+
 const usertaller:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
 
 const usert:any = JSON.parse(localStorage.getItem('user') || '').id_taller
@@ -19,7 +19,6 @@ const tallerStore = useTallerStore()
   const route = useRoute()
 
   const resourceStore = useResourceStore()
-  const myAccessToken = 'pk.eyJ1IjoiYXJpZWwxMTEiLCJhIjoiY2xmaDZpdnZoMHRvNzN1bnZyeXFwazgydyJ9.cgyfEI8x3E4-0Lo7P4t_jw'
   // BREADCRUMB  
   const page = ref({ title: 'Taller' });
   const breadcrumbs = ref([

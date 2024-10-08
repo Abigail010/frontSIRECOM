@@ -4,12 +4,7 @@ import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
 import { useVehicleStore } from '@/stores/resources/vehicle';
 import Swal from 'sweetalert2'
-import { useTallerStore } from '@/stores/resources/taller';
-import { useResourceStore } from '@/stores/resource';
-import { validateText } from '@/utils/helpers/validateText'
-import { MapboxMap } from 'vue-mapbox-ts';
 
-const tallerStore = useTallerStore()
 const sistemaStore = useVehicleStore()
 
 const page = ref({ title: 'Vehículos' });
@@ -35,8 +30,6 @@ const breadcrumbs = ref([
     router.push({ name: 'vehiculoForm', params: { id_v: id_v }})
   }
 
-
-// nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
   { title: 'Fuerza', key: 'nombre_fuerza' },
@@ -48,13 +41,13 @@ const headers = ref([
 
 function deleteItem(item: any) {
     Swal.fire({
-        title: "Estas seguro?",
-        text: "El proceso no podra ser revertido!",
+        title: "¿Estas seguro?",
+        text: "¡El proceso no podra ser revertido!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!"
+        confirmButtonText: "Si, ¡eliminar!"
     }).then(async (result) => {
     if (result.isConfirmed) {
       const { ok, message } = await sistemaStore.deleteVehiculo({"id":item})

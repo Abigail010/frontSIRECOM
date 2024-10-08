@@ -21,7 +21,6 @@ const vehicleStore = useVehicleStore()
   const resourceStore = useResourceStore()
   const orden = useOrdenStore()
   const tipos_combustible = ['GASOLINA', 'DIESEL', 'KEROSENE']
-  const categorias_conductor = ['P', 'M', 'PROFESIONAL A', 'PROFESIONAL B', 'PROFESIONAL C', 'T', 'LICENCIA ESPECIAL']
   const submitButton = ref(false)
   const sendForm = ref(true)
   const searchLoading = ref(false)
@@ -45,8 +44,6 @@ const vehicleStore = useVehicleStore()
 
   
   const permisoEdicion = ref<any>(true)
-  const currentDate = (route.params.id_caso != '0') ? '' : format(new Date(),"yyyy-MM-dd")
-  const currentDate2 = format(new Date(), "yyyy-MM-dd");
   const editar = ref<any>(false)
 
   const state = reactive({
@@ -146,13 +143,9 @@ const vehicleStore = useVehicleStore()
   const ordernes_id = async (id_v: any) => {
   
     const data = await vehicleStore.getIDv(id_v)
-    //console.log(data)
-
     state.formData.id_vehiculo = data.id_v
     state.formData.chasis_= data.chasis
-   
     state.formData.placas = data.placa
-   
     state.formData.nro_ocupantes = data.nro_ocupantes
     state.formData.motor = data.motor
     state.formData.marca = data.id_marca
@@ -169,10 +162,8 @@ const vehicleStore = useVehicleStore()
    state.formData.grupo = data.grupo 
    state.formData.procedencia = data.id_procedencia
    state.formData.componente = data.componente
-   //state.formData.
+   
     editar.value = false
-  
-  
     state.formData.comparar_ = data.total
     state.formData.kilo_ = data.kilo_rem
     state.formData.estado_orden = data.estado
@@ -197,11 +188,9 @@ const vehicleStore = useVehicleStore()
 
     isLoading.value = true
     if(route.params.id_v == '0'){
-      // ES NUEVO REGISTRO
-     // console.log('registroooo2')
 
       Swal.fire({
-        title: 'Estás seguro?',
+        title: '¿Estás seguro?',
         text: "Verifica que la información registrada sea correcta",
         icon: 'warning',
         showCancelButton: true,
@@ -222,7 +211,6 @@ const vehicleStore = useVehicleStore()
     }else{
       // NO ES NUEVO REGISTRO
       if(permisoEdicion.value){
-//console.log('actualizar ')
         const { ok, message } = await vehicleStore.updateVehicle(state.formData)
         const icono = (ok ? 'success' : 'error')
         Toast.fire({ icon: icono, title: message })

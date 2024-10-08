@@ -15,7 +15,7 @@ const breadcrumbs = ref([
     href: '#'
   },
   {
-    text: 'Listado de Marcas',
+    text: 'Marca de vehículo',
     disabled: true,
     href: '#'
   }
@@ -40,13 +40,13 @@ const headers = ref([
 
 function deleteItem(item: any) {
     Swal.fire({
-        title: "Estas seguro?",
-        text: "El proceso no podra ser revertido!",
+        title: "¿Estas seguro?",
+        text: "¡El proceso no podra ser revertido!",
         icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Si, eliminar!"
+        confirmButtonText: "¡Si, eliminar!"
     }).then(async (result) => {
     if (result.isConfirmed) {
       const { ok, message } = await Marcas.deleteMarcas({"id":item})

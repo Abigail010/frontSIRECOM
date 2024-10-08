@@ -32,15 +32,13 @@ const getRegisterRList = async() => {
     router.push({ name: 'registerForm', params: { id: id }})
   }
 
-
-
   // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
   { title: 'N° de partida', key: 'nro_partida' },
   { title: 'Cantidad de repuestos', key: 'cantidad' },
   { title: 'Total', key: 'total' },
-  { title: 'Observacion', key: 'observacion' },
+  { title: 'Observación', key: 'observacion' },
 
 ])
 

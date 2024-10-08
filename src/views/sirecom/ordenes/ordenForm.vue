@@ -5,7 +5,6 @@ import { ref, reactive, onMounted } from 'vue';
 import { TrashIcon, SearchIcon, PlusIcon } from 'vue-tabler-icons';
 import { format } from 'date-fns'
 import { useResourceStore } from '@/stores/resource';
-
 import { useOrdenStore } from '@/stores/orden/orden';
 import { validateText } from '@/utils/helpers/validateText'
 import { editPermission } from '@/utils/helpers/editPermission' 
@@ -21,7 +20,6 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
   const categorias_conductor = ['P', 'M', 'PROFESIONAL A', 'PROFESIONAL B', 'PROFESIONAL C', 'T', 'LICENCIA ESPECIAL']
   const submitButton = ref(false)
   const sendForm = ref(true)
-  const searchLoading = ref(false)
   const isLoading = ref(false)
   const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
   // BREADCRUMB
@@ -263,7 +261,7 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
       //console.log('registroooo')
 
       Swal.fire({
-        title: 'Estás seguro?',
+        title: '¿Estás seguro?',
         text: "Verifica que la información registrada sea correcta",
         icon: 'warning',
         showCancelButton: true,
@@ -296,7 +294,6 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
     isLoading.value = false
   }
 
-  
   // VALIDACION GENERAL
   const validateForm = async () => {
     sendForm.value = true

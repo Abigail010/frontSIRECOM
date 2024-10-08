@@ -3,14 +3,10 @@ import { router } from '@/router';
 import { useRoute } from 'vue-router'
 import { ref, reactive, onMounted } from 'vue';
 import { TrashIcon, SearchIcon, PlusIcon } from 'vue-tabler-icons';
-import { format } from 'date-fns'
 import { useResourceStore } from '@/stores/resource';
-
-import { useOrdenStore } from '@/stores/orden/orden';
 import { useRegisterStore } from '@/stores/orden/registro';
 import { useSystemStore } from '@/stores/resources/system';
 import { validateText } from '@/utils/helpers/validateText'
-import { editPermission } from '@/utils/helpers/editPermission' 
 import type { Header } from "vue3-easy-data-table";
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import Swal from 'sweetalert2'
@@ -22,11 +18,11 @@ const openpanel = ref([0]);
   const route = useRoute()
   const resourceStore = useResourceStore()
   const dialog = ref(false);
-  const orden = useOrdenStore()
+  
   const registro = useRegisterStore()
   const getSystem = useSystemStore()
   const submitButton = ref(false)
-  const addButton = ref(false)
+ 
   const sendForm = ref(true)
   const isLoading = ref(false)
   const soli_Rep = useSoliStore()
@@ -964,7 +960,7 @@ if(state.formData.id_Rep.length>0){
       // ES NUEVO REGISTRO
       dialog.value = false
       Swal.fire({
-        title: 'Estás seguro?',
+        title: '¿Estás seguro?',
         text: "Verifica que la información registrada sea correcta",
         icon: 'warning',
         showCancelButton: true,

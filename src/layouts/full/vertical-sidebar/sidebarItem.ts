@@ -191,12 +191,12 @@ const lista_menu = [
                   to: '/MarcaList'
                 },
                 {
-                  title: 'Clase',
+                  title: 'Tipo',
                   icon: CircleXIcon,
                   to: '/ClaseList'
                 },
                 {
-                  title: 'Tipo',
+                  title: 'Modelo',
                   icon: CircleXIcon,
                   to: '/TipoList'
                 },
