@@ -145,7 +145,7 @@ margin: 0;
    overflow: hidden;  /* Evita cualquier scroll */
 }
 .prueba {
-   background-image: url('../../../assets/images/misimagenes/probar3.png');
+   background-image: url('../../../assets/images/misimagenes/prueba.png');
    background-size: cover; /* La imagen cubrirá completamente el área del contenedor */
    background-position: center center; /* Centrará la imagen tanto vertical como horizontalmente */
    background-repeat: no-repeat; /* Evitará que la imagen se repita */
@@ -168,10 +168,11 @@ margin: 0;
     height: 70%;
     margin: 10% auto; /* Centro vertical y horizontal */
     border-radius: 40px;
-    max-width: 600px; /* Limita el ancho máximo para pantallas grandes */
+    max-width: 500px; /* Limita el ancho máximo para pantallas grandes */
     max-height: 90%; /* Limita la altura máxima */
     padding: 20px; /* Añadir algo de espacio interior */
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Para darle un efecto de profundidad */
+    align-items: center;
 }
 
 /* Ajuste para pantallas pequeñas */
