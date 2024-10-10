@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import siibApi from "@/api/siibApi"
+import RebApi from "@/api/RebApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -10,7 +10,7 @@ export const useProfileStore = defineStore({
 
     async profiles () {
       try {
-        const { data } = await siibApi.get('profile/profiles')
+        const { data } = await RebApi.get('profile/profiles')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -20,7 +20,7 @@ export const useProfileStore = defineStore({
 
      async profile (id: any) {
       try {
-        const { data } = await siibApi.get('profile/profile/' + id)
+        const { data } = await RebApi.get('profile/profile/' + id)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -30,7 +30,7 @@ export const useProfileStore = defineStore({
 
     async createProfile(form: any) {
       try {
-        const { data } = await siibApi.post('profile/create_profile/' + userLogged, form)
+        const { data } = await RebApi.post('profile/create_profile/' + userLogged, form)
         router.push({ name: 'profileList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -41,7 +41,7 @@ export const useProfileStore = defineStore({
 
     async updateProfile(form: any) {
       try {
-        const { data } = await siibApi.post('profile/update_profile/' + userLogged, form)
+        const { data } = await RebApi.post('profile/update_profile/' + userLogged, form)
         router.push({ name: 'profileList' });
         return {
           ok: true,
@@ -56,7 +56,7 @@ export const useProfileStore = defineStore({
 
     async deleteProfile(form: any) {
       try {
-        const { data } = await siibApi.post('profile/delete_profile/' + userLogged, form)
+        const { data } = await RebApi.post('profile/delete_profile/' + userLogged, form)
         router.push({ name: 'profileList' });
         return {
           ok: true,

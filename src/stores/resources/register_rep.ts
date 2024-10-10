@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import siibApi from "@/api/siibApi"
+import RebApi from "@/api/RebApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -11,7 +11,7 @@ export const useRegisterRStore = defineStore({
     // OBTENER LISTA DE DELITOS
     async getRegisterRs () {
       try {
-        const { data } = await siibApi.get('register/getRegisters')
+        const { data } = await RebApi.get('register/getRegisters')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -23,7 +23,7 @@ export const useRegisterRStore = defineStore({
      async RegisterR (id: any) {
       try {
        
-        const { data } = await siibApi.get('register/Register/' + id)
+        const { data } = await RebApi.get('register/Register/' + id)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -34,7 +34,7 @@ export const useRegisterRStore = defineStore({
      async infoR (id: any) {
         try {
           
-          const { data } = await siibApi.get('register/info/' + id)
+          const { data } = await RebApi.get('register/info/' + id)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -45,7 +45,7 @@ export const useRegisterRStore = defineStore({
     // CREAR DELITO
     async createRegisterR(form: any) {
       try {
-        const { data } = await siibApi.post('register/create_Register/' + userLogged, form)
+        const { data } = await RebApi.post('register/create_Register/' + userLogged, form)
         router.push({ name: 'registerList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -55,7 +55,7 @@ export const useRegisterRStore = defineStore({
     },
     async updateInfo(form: any) {
         try {
-          const { data } = await siibApi.post('register/update_info/' + userLogged, form)
+          const { data } = await RebApi.post('register/update_info/' + userLogged, form)
          // router.push({ name: 'registerList' });
           return {
             ok: true,
@@ -69,7 +69,7 @@ export const useRegisterRStore = defineStore({
     // ACTUALIZAR DELITO
     async updateRegisterR(form: any) {
       try {
-        const { data } = await siibApi.post('register/update_Register/' + userLogged, form)
+        const { data } = await RebApi.post('register/update_Register/' + userLogged, form)
         router.push({ name: 'registerList' });
         return {
           ok: true,
@@ -85,7 +85,7 @@ export const useRegisterRStore = defineStore({
     // ELIMINAR DELITO
     async deleteRegisterR(form: any) {
       try {
-        const { data } = await siibApi.post('register/delete_Register/' + userLogged, form)
+        const { data } = await RebApi.post('register/delete_Register/' + userLogged, form)
         router.push({ name: 'registerList' });
         return {
           ok: true,

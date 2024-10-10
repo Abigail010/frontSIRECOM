@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import siibApi from "@/api/siibApi"
+import RebApi from "@/api/RebApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -10,7 +10,7 @@ export const useTiposStore = defineStore({
 
     async Tipo () {
       try {
-        const { data } = await siibApi.get('tipo_v/getTipos')
+        const { data } = await RebApi.get('tipo_v/getTipos')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -20,7 +20,7 @@ export const useTiposStore = defineStore({
 
      async TiposID (id: any) {
       try {
-        const { data } = await siibApi.get('tipo_v/Tipo/' + id)
+        const { data } = await RebApi.get('tipo_v/Tipo/' + id)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -31,7 +31,7 @@ export const useTiposStore = defineStore({
 
     async createTipos(form: any) {
       try {
-        const { data } = await siibApi.post('tipo_v/create_Tipo/' + userLogged, form)
+        const { data } = await RebApi.post('tipo_v/create_Tipo/' + userLogged, form)
         router.push({ name: 'TipoList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -43,7 +43,7 @@ export const useTiposStore = defineStore({
    
     async updateTipos(form: any) {
       try {
-        const { data } = await siibApi.post('tipo_v/update_Tipo/' + userLogged, form)
+        const { data } = await RebApi.post('tipo_v/update_Tipo/' + userLogged, form)
         router.push({ name: 'TipoList' });
         return {
           ok: true,
@@ -59,7 +59,7 @@ export const useTiposStore = defineStore({
     // ELIMINAR DELITO
     async deleteTipos(form: any) {
       try {
-        const { data } = await siibApi.post('tipo_v/delete_Tipo/' + userLogged, form)
+        const { data } = await RebApi.post('tipo_v/delete_Tipo/' + userLogged, form)
         router.push({ name: 'TipoList' });
         return {
           ok: true,

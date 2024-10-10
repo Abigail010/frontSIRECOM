@@ -302,7 +302,7 @@ const openpanel = ref([0]);
     }
       
     const acce = data.id_accesorios_
-    const n= data.id_accesorios_.map(item => item.id);
+    const n= data.id_accesorios_.map((item:any) => item.id);
  
    state.formData.id_accesorios_= []
     for (let i = 0; i < acce.length; i++) {

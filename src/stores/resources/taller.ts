@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import siibApi from "@/api/siibApi"
+import RebApi from "@/api/RebApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -11,7 +11,7 @@ export const useTallerStore = defineStore({
     // OBTENER LISTA DE DEPOSITO
     async tallers () {
       try {
-        const { data } = await siibApi.get('tall/tallers')
+        const { data } = await RebApi.get('tall/tallers')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -21,7 +21,7 @@ export const useTallerStore = defineStore({
 
     async tallersD () {
       try {
-        const { data } = await siibApi.get('tall/tallersID/'+ userLogged)
+        const { data } = await RebApi.get('tall/tallersID/'+ userLogged)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -31,7 +31,7 @@ export const useTallerStore = defineStore({
       // OBTENER INFORMACION DE DEPOSITO POR ID
       async taller_id (id_taller: any) {
         try {          
-          const { data } = await siibApi.get('tall/taller_id/' + id_taller)
+          const { data } = await RebApi.get('tall/taller_id/' + id_taller)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -42,7 +42,7 @@ export const useTallerStore = defineStore({
           // CREAR DEPOSITO
     async createTaller(form: any) {
       try {
-        const { data } = await siibApi.post('tall/create_taller/' + userLogged, form)
+        const { data } = await RebApi.post('tall/create_taller/' + userLogged, form)
         router.push({ name: 'tallerList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -54,7 +54,7 @@ export const useTallerStore = defineStore({
   // ACTUALIZAR DEPOSITO
   async updateTaller(form: any) {
     try {
-      const { data } = await siibApi.post('tall/update_taller/' + userLogged, form)
+      const { data } = await RebApi.post('tall/update_taller/' + userLogged, form)
       router.push({ name: 'tallerList' });
       return {
         ok: true,
@@ -67,7 +67,7 @@ export const useTallerStore = defineStore({
   },
   async updateTallerU(form: any) {
     try {
-      const { data } = await siibApi.post('tall/update_taller/' + userLogged, form)
+      const { data } = await RebApi.post('tall/update_taller/' + userLogged, form)
       //router.push({ name: 'tallerList' });
       return {
         ok: true,
@@ -81,7 +81,7 @@ export const useTallerStore = defineStore({
    // ELIMINAR DEPOSITO
    async deleteTaller(form: any) {
     try {
-      const { data } = await siibApi.post('tall/delete_taller/' + userLogged, form)
+      const { data } = await RebApi.post('tall/delete_taller/' + userLogged, form)
       router.push({ name: 'tallerList' });
       return {
         ok: true,

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import pruebaApi from "@/api/siibApi"
+import pruebaApi from "@/api/RebApi"
 
 
 export const useLogsruterStore = defineStore({

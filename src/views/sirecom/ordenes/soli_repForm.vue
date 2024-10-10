@@ -115,6 +115,7 @@ const openpanel = ref([0]);
         precio:'',
         id_det:'', 
         estado:'',
+        disponible:'',
     }
   });
 
@@ -169,6 +170,8 @@ const openpanel = ref([0]);
     const res2= await soli_Rep.getTotal(id_orden) 
     state.formData.total = res2.total
   }
+
+  const opciones = ref([]) as any
   const ButtonRepuesto = async (item: any) => {
     const data2 = await soli_Rep.getID(item);
     //console.log(data2)
@@ -181,8 +184,15 @@ const openpanel = ref([0]);
     state.formData2.precio = data2.precio
     state.formData2.id_det = data2.id_det
     state.formData2.estado = data2.entregado
+    state.formData2.disponible = data2.can_rep
+
     if(parseInt(data2.costo)>0){
       state.formData2.costo=data2.costo  
+    }
+    
+    if(parseInt(state.formData2.disponible)>0){
+      opciones.values = await soli_Rep.getPrecio( state.formData2.id_repuesto);
+      console.log(opciones.values)
     }
     dialog.value = true
   }
@@ -191,6 +201,12 @@ const openpanel = ref([0]);
     const cantidad = parseFloat(state.formData2.cantidad) || 0;
       const precio_u = parseFloat(state.formData2.precio) || 0;
       state.formData2.costo = (cantidad * precio_u).toFixed(2) ; // Calcula y formatea el subtotal
+    /*  const size = Object.keys(opciones).length;
+console.log(`El tamaño del objeto es: ${size}`);
+   console.log(' :disponible ' + (Object.keys(opciones).length))
+      for(let i=0; i<(Object.keys(opciones).length); i++){
+                console.log(i)
+      }*/
 }
 
   const buttonReturnList = () => {

@@ -38,7 +38,7 @@ const getTallerList = async() => {
     router.push({ name: 'tallerForm', params: { id_taller: id_taller }})
   }
 
-  const getTipoClass = (tipo) => {
+  const getTipoClass = (tipo: any) => {
       return tipo === 'PROPIO' ? 'tipo-externo2' : tipo === 'EXTERNO' ? 'tipo-externo' : '';
     };
 

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
 
-import siibApi from "@/api/siibApi"
+import RebApi from "@/api/RebApi"
 import { getDirection } from '@/utils/helpers/direction'
 
 const direccion_url = getDirection()
@@ -15,7 +15,7 @@ export const useSoliStore = defineStore({
       try {
        
         const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-        const { data } = await siibApi.post('soli_rep/observacion_rep/' + userLogged, form)
+        const { data } = await RebApi.post('soli_rep/observacion_rep/' + userLogged, form)
         router.push({ name: 'soliRepForm' });
         return {
           ok: true,
@@ -32,7 +32,7 @@ export const useSoliStore = defineStore({
         try {
          
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await siibApi.post('soli_rep/entrega_rep/' + userLogged, form)
+          const { data } = await RebApi.post('soli_rep/entrega_rep/' + userLogged, form)
           router.push({ name: 'soliRepForm' });
           return {
             ok: true,
@@ -49,7 +49,7 @@ export const useSoliStore = defineStore({
         try {
          
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await siibApi.post('soli_rep/recibido_rep/' + userLogged, form)
+          const { data } = await RebApi.post('soli_rep/recibido_rep/' + userLogged, form)
           router.push({ name: 'soliRepForm' });
           return {
             ok: true,
@@ -66,7 +66,7 @@ export const useSoliStore = defineStore({
         try {
          
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await siibApi.post('soli_rep/update_rep/' + userLogged, form)
+          const { data } = await RebApi.post('soli_rep/update_rep/' + userLogged, form)
          router.push({ name: 'soliRepForm' });
           return {
             ok: true,
@@ -83,7 +83,7 @@ export const useSoliStore = defineStore({
       async getsolicitudes (id_repuesto: any) {
         try {
           
-          const { data } = await siibApi.get('soli_rep/solicitudes/' + id_repuesto)
+          const { data } = await RebApi.get('soli_rep/solicitudes/' + id_repuesto)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -94,7 +94,7 @@ export const useSoliStore = defineStore({
       async getTotal (id_orden: any) {
         try {
           
-          const { data } = await siibApi.get('soli_rep/total_/' + id_orden)
+          const { data } = await RebApi.get('soli_rep/total_/' + id_orden)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -102,10 +102,23 @@ export const useSoliStore = defineStore({
         }
     
       },
+      
+      async getPrecio (id_rep: any) {
+        try {
+          
+          const { data } = await RebApi.get('soli_rep/precios/' + id_rep)
+          return data
+        } catch (error: any) {
+          const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+          return { ok: false, message: message }
+        }
+    
+      },
+
       async getEntregas (id_repuesto: any) {
         try {
           
-          const { data } = await siibApi.get('soli_rep/entregas/' + id_repuesto)
+          const { data } = await RebApi.get('soli_rep/entregas/' + id_repuesto)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -117,7 +130,7 @@ export const useSoliStore = defineStore({
   async getID (id_repuesto: any) {
     try {
       
-      const { data } = await siibApi.get('soli_rep/solirep_id/' + id_repuesto)
+      const { data } = await RebApi.get('soli_rep/solirep_id/' + id_repuesto)
       return data
     } catch (error: any) {
       const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -129,7 +142,7 @@ export const useSoliStore = defineStore({
     async verificar_reg(id_orden: any) {
       try {
         
-        const { data } = await siibApi.get('registro/soli_id/' + id_orden)
+        const { data } = await RebApi.get('registro/soli_id/' + id_orden)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -140,7 +153,7 @@ export const useSoliStore = defineStore({
   // OBTENER INFORMACION DE DELITO POR ID
   async getbasico (id_orden: any) {
     try {
-      const { data } = await siibApi.get('registro/basico/' + id_orden)
+      const { data } = await RebApi.get('registro/basico/' + id_orden)
       return data
     } catch (error: any) {
       const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -189,7 +202,7 @@ export const useSoliStore = defineStore({
   async soliReport(id_orden: number) {
     try {
       // Realiza la solicitud POST y recibe el archivo directamente como un blob
-      const response = await siibApi.post(`soli_rep/generate_report/${id_orden}`, {
+      const response = await RebApi.post(`soli_rep/generate_report/${id_orden}`, {
         responseType: 'blob', // Asegúrate de recibir la respuesta como un blob
       });
   
@@ -220,7 +233,7 @@ export const useSoliStore = defineStore({
   async soliReport(id_orden: number) {
     try {
       // Realiza la solicitud POST y recibe el archivo directamente como un blob
-      const response = await siibApi.post(`soli_rep/generate_report/${id_orden}`, {
+      const response = await RebApi.post(`soli_rep/generate_report/${id_orden}`, {
         responseType: 'blob', // Asegúrate de recibir la respuesta como un blob
       });
   
