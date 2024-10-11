@@ -1,4 +1,4 @@
-import siibApi from "@/api/siibApi"
+import RebApi from "@/api/RebApi"
 import { useResourceStore } from '@/stores/resource';
 
 export function editPermission(modulo_actual: string) {

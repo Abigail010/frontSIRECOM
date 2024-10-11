@@ -188,12 +188,78 @@ const openpanel = ref([0]);
 
     if(parseInt(data2.costo)>0){
       state.formData2.costo=data2.costo  
+     
+    }else{
+      if(parseInt(state.formData2.disponible)>0 || parseInt(data2.costo) == 0){
+      opciones.values = await soli_Rep.getPrecio( state.formData2.id_repuesto);
+    //  console.log(opciones.values.length)
+      let solicitado = parseInt(state.formData2.cantidad)
+      let costo_ver=0
+      let residuo=0
+      let b = 0 
+      if(opciones.values.length>0){
+        //console.log('solicitado '+ solicitado)
+      for(let i=0; i<opciones.values.length; i++){
+     //   console.log(i)
+        if(opciones.values[i].entregado>0){
+         // console.log('residuo'  + residuo)
+          residuo = parseInt(opciones.values[i].cantidad) - parseInt(opciones.values[i].entregado)
+          if(residuo==solicitado){
+           // console.log('iguales')
+          if(solicitado>0){
+            costo_ver =costo_ver+ solicitado * parseInt(opciones.values[i].precio_u)
+            solicitado = Math.max(solicitado - residuo, 0)
+           // console.log('solicitud '+ solicitado + ' costo '+ costo_ver)
+           // state.formData2.costo = String(costo_ver)
+          } 
+          
+          }else{
+            if(residuo> parseInt(state.formData2.cantidad)){
+              if(solicitado>0){
+              costo_ver = costo_ver+ parseInt(state.formData2.cantidad) * parseInt(opciones.values[i].precio_u)
+              solicitado = Math.max(solicitado - solicitado, 0)
+             // console.log('solicitud '+ solicitado + ' costo '+ costo_ver)
+              }
+            }else{
+              //console.log('es mayor la solicitud')
+              if(solicitado>0){
+              costo_ver= costo_ver+ residuo * parseInt(opciones.values[i].precio_u)
+              solicitado = Math.max(solicitado - residuo, 0)
+            //  console.log('solicitud '+ solicitado + ' costo '+ costo_ver)
+              }
+            }
+          }
+          state.formData2.costo = String(costo_ver)
+        }else{
+          //console.log('es cero'+ solicitado)
+          if(parseInt(state.formData2.cantidad)==solicitado){
+             if(solicitado >0){
+              costo_ver =costo_ver+ solicitado * parseInt(opciones.values[i].precio_u)
+            solicitado = Math.max(solicitado - residuo, 0)
+             }
+          }
+          if(parseInt(state.formData2.cantidad)>solicitado){
+              costo_ver = costo_ver+ parseInt(state.formData2.cantidad) * parseInt(opciones.values[i].precio_u)
+              solicitado = Math.max(solicitado - solicitado, 0)
+             }else{
+              costo_ver= costo_ver+ residuo * parseInt(opciones.values[i].precio_u)
+              solicitado = Math.max(solicitado - residuo, 0)
+             }
+          state.formData2.costo = String(costo_ver)   
+        }
+        /*if(parseInt(state.formData2.cantidad)>0){
+
+        }*/
+      }
+      }else{
+        state.formData2.costo = ''
+      }
+    }else{
+        state.formData2.costo = ''
+      }
     }
     
-    if(parseInt(state.formData2.disponible)>0){
-      opciones.values = await soli_Rep.getPrecio( state.formData2.id_repuesto);
-      console.log(opciones.values)
-    }
+    
     dialog.value = true
   }
 
@@ -201,12 +267,7 @@ const openpanel = ref([0]);
     const cantidad = parseFloat(state.formData2.cantidad) || 0;
       const precio_u = parseFloat(state.formData2.precio) || 0;
       state.formData2.costo = (cantidad * precio_u).toFixed(2) ; // Calcula y formatea el subtotal
-    /*  const size = Object.keys(opciones).length;
-console.log(`El tamaño del objeto es: ${size}`);
-   console.log(' :disponible ' + (Object.keys(opciones).length))
-      for(let i=0; i<(Object.keys(opciones).length); i++){
-                console.log(i)
-      }*/
+
 }
 
   const buttonReturnList = () => {
@@ -248,37 +309,7 @@ console.log(`El tamaño del objeto es: ${size}`);
     }
     isLoading.value = false
   }
-  const buttonSendForm2 = async () => {
-    submitButton.value = true
-    await validateForm()
-    if(!sendForm.value) return
 
-    isLoading.value = true
-    if(state.formData.id_orden != '0' ){
-      // ES NUEVO REGISTRO
-      dialog.value = false
-      Swal.fire({
-        title: '¿Estás seguro?',
-        text: "Verifica que la información registrada sea correcta",
-        icon: 'warning',
-        showCancelButton: true,
-        cancelButtonColor: '#FA896B',
-        confirmButtonColor: '#5D87FF',
-        cancelButtonText: 'No, volver',
-        confirmButtonText: 'Si, actualizar',
-      }).then(async (result) => {
-        if(result.isConfirmed){
-          
-          const { ok, message } = await soli_Rep.updateRepID(state.formData2)
-          const icono = (ok ? 'success' : 'error')
-          Toast.fire({ icon: icono, title: message })
-            
-        }
-       window.location.reload()
-      })
-    }
-    isLoading.value = false
-  }
   // VALIDACION GENERAL
   const validateForm = async () => {
     sendForm.value = true
