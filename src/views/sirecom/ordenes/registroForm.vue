@@ -172,8 +172,13 @@ const openpanel = ref([0]);
  
     lista_accesorios.value = await resourceStore.getAccesorios()      // LISTA DE accesorios
     // // LISTA DE sistemas
-    lista_sistemas.value = await getSystem.systems()
+    //lista_sistemas.value = await getSystem.systems()
     //console.log(lista_sistemas.value)
+
+    //sistemas basado en el filtro
+
+
+
     tipo_filtro.value=await registro.getFiltros()
 
     lista_unidad.value=await registro.getUnidad()
@@ -211,6 +216,9 @@ const openpanel = ref([0]);
     state.formData.dos = data.dos
     state.formData.celular_con = data.celular_conductor
     state.formData.estado_orden = data.estado
+
+    lista_sistemas.value = await registro.sistem(id_orden)
+    console.log(lista_sistemas.value)
    } 
 
    const verificar_id = async (id_orden: any) => {
@@ -316,7 +324,7 @@ const openpanel = ref([0]);
       state.formData.id_Rep.push(rep[i])
       tipo_filtro.value = tipo_filtro.value.filter( (tipo: any) => tipo.nombre_repuesto !=rep[i].id_filtro)
     }
-
+  
   }
 
   const mifuncion = async () => {

@@ -13,6 +13,7 @@ import SocialLinksTab from '@/components/forms/form-vertical/SocialLinksTab.vue'
 import UiParentCardLogo from '@/components/shared/UiParentCardLogo.vue';
 import VeeValidation from '@/components/forms/form-validation/VeeValidation.vue'
 import { Form } from "vee-validate";
+import { readonly } from 'vue';
 import * as Yup from "yup";
 import { router } from '@/router';
 import { useRoute } from 'vue-router'
@@ -454,6 +455,7 @@ const buttonSendFormT = async () => {
             item-title="nombre_region"
             item-value="nombre_region"
             :error="submitButton && !state.formDataT.tipo_taller"
+            readonly
           ></v-select>
           <template v-if="submitButton && !state.formDataT.tipo_taller">
             <div class="v-messages font-weight-black px-2 py-2">

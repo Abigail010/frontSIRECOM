@@ -83,38 +83,14 @@ const headers = ref([
 
 ])
 
-  function deleteItem(item: any) {
-    Swal.fire({
-        title: "Estas seguro?",
-        text: "¡El proceso no podra ser revertido!",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "¡Si, eliminar!"
-    }).then(async (result) => {
-    if (result.isConfirmed) {
-      const { ok, message } = await tallerStore.deleteTaller({"id":item})
-      const icono = (ok ? 'success' : 'error')
-      if(ok){
-        await getOrdenes_sol()
-      }
-      Toast.fire({
-        icon: icono,
-        title: message,
-      })
-        }
-    });
-} 
-
 
 const buttonApprove = async (item: any) => {
     await registro_id(item);  // Wait for the state update
-
-    if (state.formData.permiso === 'entrega exitosa') {
+   // console.log(state.formData.permiso)
+    if (state.formData.permiso === 'Entrega exitosa') {
     
         Swal.fire({
-      title: 'Estas seguro?',
+      title: '¿Estas seguro de realizar la entrega?',
       text: "",
       icon: 'info',
       showCancelButton: true,
@@ -149,15 +125,15 @@ const buttonApprove = async (item: any) => {
 
 const registro_id = async (id_orden: any) => {
     const res2 = await soli_Rep.getTotal(id_orden);
- 
+   // console.log(res2)
     state.formData.total = res2.total;
 
     if (state.formData.total === '0') {
      
-        state.formData.permiso = 'entrega exitosa';
+        state.formData.permiso = 'Entrega exitosa';
     } else {
      
-        state.formData.permiso = 'no se puede realizar';
+        state.formData.permiso = 'No se puede realizar';
     }
 };
 
@@ -165,7 +141,7 @@ const registro_id = async (id_orden: any) => {
   const buttonApprove2 = (item: any) => {
 
     Swal.fire({
-      title: 'Estas seguro?',
+      title: '¿Estas seguro de aceptar la entrega?',
       text: "",
       icon: 'info',
       showCancelButton: true,

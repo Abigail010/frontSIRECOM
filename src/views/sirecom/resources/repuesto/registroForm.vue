@@ -67,6 +67,7 @@ const dialog = ref(false);
   // FUNCION QUE OBTIENE LA INFORMACION DEL talle
   const getRegisterRId = async (id: any) => {
     const respuesta = await RegisterRStore.RegisterR(id)
+    console.log(respuesta)
     state.formData.id = respuesta.id
     state.formData.fecha = respuesta.fecha
     state.formData.partida = respuesta.nro_partida 
@@ -557,7 +558,7 @@ Fecha de Registro<span style="color:red">(*)</span>
               <td class="text-center">{{ item.cantidad }}</td>
               <td class="text-center">{{ item.precio_u }}</td>
               <td class="text-center">{{ item.subtotal }}</td>
-              <td class="text-center">
+              <td class="text-center" v-if="item.entregado != item.cantidad">
                 <v-btn 
                  class="mr-1"
                   size="x-small"
@@ -569,18 +570,19 @@ Fecha de Registro<span style="color:red">(*)</span>
                  @click="ButtonRepuesto(item.idd)"
                 > <PencilIcon></PencilIcon>
                 </v-btn>
-                <v-btn 
-                 
-                 size="x-small"
-                 title="Eliminar"
-                 height="25"
-                 width="25"
-                 color="error"
-               
-                 @click="buttonDeleteRep(index)"
-               > <TrashIcon ></TrashIcon >
-               </v-btn>
+                <v-btn v-if="item.entregado === null || item.entregado === 0"
+                    size="x-small"
+                    title="Eliminar"
+                    height="25"
+                    width="25"
+                    color="error"
+                    @click="buttonDeleteRep(index)"
+                  > <TrashIcon ></TrashIcon >
+                </v-btn>
                 
+              </td>
+              <td  class="text-center" v-else>
+                 <b> !Agotado¡</b>       
               </td>
               
             </tr>

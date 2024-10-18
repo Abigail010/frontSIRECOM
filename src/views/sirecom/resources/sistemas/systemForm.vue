@@ -18,7 +18,7 @@ import { validateText } from '@/utils/helpers/validateText'
       href: '#'
     },
     {
-      text: 'system',
+      text: 'Información',
       disabled: true,
       href: '#'
     }

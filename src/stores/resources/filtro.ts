@@ -80,7 +80,7 @@ export const usefilterStore = defineStore({
      // OBTENER INFORMACION DE DELITO POR ID
      async filter (id: any) {
       try {
-        console.log(id)
+       
         const { data } = await RebApi.get('repuestos/filter_id/' + id)
         return data
       } catch (error: any) {

@@ -517,12 +517,12 @@ const buttonSendForm = async () => {
     <!---Delivery Options--->
     
 </v-expansion-panels>
-    <v-col cols="12" lg="12">
+    <!---<v-col cols="12" lg="12">
     
        <p class="mt-2 text-lg-left">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">volver</v-btn>
        
       </p>
-    </v-col>
+    </v-col>-->
   </v-row>
 </template>

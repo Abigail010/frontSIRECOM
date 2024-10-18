@@ -357,7 +357,7 @@ const openpanel = ref([0]);
 function recibido(item: any) {
   Swal.fire({
      
-      text: "¡Recibio el repuesto!",
+      text: "¿Recibió el repuesto?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

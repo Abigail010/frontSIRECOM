@@ -22,6 +22,18 @@ export const useRegisterStore = defineStore({
         return { ok: false, message: message, caso: 0, rd: 0}
       }
     },
+    async sistem(id_orden: any) {
+      try {
+        const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
+        
+        const { data } = await RebApi.get('registro/search_sis/' + id_orden)
+        return data
+        
+      } catch (error: any) {
+        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+        return { ok: false, message: message, caso: 0, rd: 0}
+      }
+    },
     
        //  OBTENER LISTA DE RECEPCIONES DOCUMENTALES MEDIANTE CASOS
        async getFiltros () {

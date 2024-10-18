@@ -63,8 +63,8 @@ const select = ref('');
 
 
 const fuerzas = []
-const pendientes = [] 
-const finalizados = []
+const pendientes = [] as any
+const finalizados = [] as any
 const prueba = ref([]) as any
 
 const getEncargado = async (id: any) => {
@@ -213,7 +213,7 @@ const getGen = async () => {
         }
         
         state.formData.dato5 = String(tot4)
-        //console.log( state.formData.dato5)
+        
         let tot5 = 0 
         for(let i=0;i < rep2.length; i++){
            if(rep2[i].id_taller == info.id_taller){
@@ -228,11 +228,6 @@ const getGen = async () => {
    // console.log(users)
   }
  
-/* Chart */
-
-
-
-
 
 const chartOptions = computed(() => {
     return {
@@ -273,12 +268,12 @@ const chartOptions = computed(() => {
             }
         },
         yaxis: {
-            min: Math.min(...prueba.value.map(item => item.total)),
-            max: Math.max(...prueba.value.map(item => item.total)), // Establecer el valor máximo de las barras
-            tickAmount: Math.max(...prueba.value.map(item => item.total))
+            min: Math.min(...prueba.value.map((item: any) => item.total)),
+            max: Math.max(...prueba.value.map((item: any) => item.total)), // Establecer el valor máximo de las barras
+            tickAmount: Math.max(...prueba.value.map((item: any) => item.total))
         },
         xaxis: {
-            categories: prueba.value.map(item => item.fuerza), 
+            categories: prueba.value.map((item: any) => item.fuerza), 
             axisBorder: {
                 show: false
             }
@@ -297,7 +292,7 @@ const chartOptions = computed(() => {
                         labels: {
                             rotate: -45
                         },
-                        categories: prueba.value.map(item => item.fuerza)
+                        categories: prueba.value.map((item:any) => item.fuerza)
                     }
                 }
             }
