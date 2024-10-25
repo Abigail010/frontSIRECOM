@@ -419,7 +419,7 @@ Fecha de Registro<span style="color:red">(*)</span>
       </h4>
        </v-col>
        <v-col cols="12" md="3">
-          <v-label class="mb-2 font-weight-medium">Repuestos <span style="color:red"></span></v-label>
+          <v-label class="mb-2 font-weight-medium">Repuestos <span style="color:red">(*)</span></v-label>
     
           <v-autocomplete
             variant="outlined"
@@ -440,7 +440,7 @@ Fecha de Registro<span style="color:red">(*)</span>
           </template>
         </v-col>
         <v-col cols="12" md="2">
-          <v-label class="mb-2 font-weight-medium">Unidad<span style="color:red"></span></v-label>
+          <v-label class="mb-2 font-weight-medium">Unidad<span style="color:red">(*)</span></v-label>
     
           <v-autocomplete
           variant="outlined"
@@ -463,7 +463,7 @@ Fecha de Registro<span style="color:red">(*)</span>
           </template>
         </v-col>
         <v-col cols="12" md="1">
-          <v-label class="mb-2 font-weight-medium">Cantidad <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Cantidad <span style="color:red">(*)</span></v-label>
     
           <v-text-field
             variant="outlined" 
@@ -484,7 +484,7 @@ Fecha de Registro<span style="color:red">(*)</span>
           </template>
         </v-col>
         <v-col cols="12" md="2">
-          <v-label class="mb-2 font-weight-medium">Precio Unitario <span style="color:red">*</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Precio Unitario <span style="color:red">(*)</span></v-label>
     
           <v-text-field
             variant="outlined" 
@@ -520,14 +520,14 @@ Fecha de Registro<span style="color:red">(*)</span>
               <v-btn
                 color="primary"
                 @click= añadir_repuesto()
-                :disabled=" !state.formData.id_repuesto "
+                :disabled=" !state.formData.id_repuesto || !state.formData.cantidad || !state.formData.unidad || !state.formData.precio_u"
                 readonly="true"
                 ><SearchIcon/>Añadir
               </v-btn>
               <v-btn
                 color="secondary"
                 @click= buttonClear2()
-                :disabled="!state.formData.id_repuesto"><TrashIcon/>Limpiar
+                :disabled="!state.formData.id_repuesto || !state.formData.cantidad || !state.formData.unidad || !state.formData.precio_u"><TrashIcon/>Limpiar
               </v-btn>
             </template>
           </v-text-field>
@@ -558,7 +558,7 @@ Fecha de Registro<span style="color:red">(*)</span>
               <td class="text-center">{{ item.cantidad }}</td>
               <td class="text-center">{{ item.precio_u }}</td>
               <td class="text-center">{{ item.subtotal }}</td>
-              <td class="text-center" v-if="item.entregado != item.cantidad">
+              <td class="text-center" v-if="(item.entregado != item.cantidad) && state.formData.id!=''">
                 <v-btn 
                  class="mr-1"
                   size="x-small"
@@ -581,8 +581,19 @@ Fecha de Registro<span style="color:red">(*)</span>
                 </v-btn>
                 
               </td>
-              <td  class="text-center" v-else>
+              <td  class="text-center" v-else-if="(item.entregado = item.cantidad) && state.formData.id!=''">
                  <b> !Agotado¡</b>       
+              </td>
+              <td class="text-center" v-else>
+                <v-btn 
+                    size="x-small"
+                    title="Eliminar"
+                    height="25"
+                    width="25"
+                    color="error"
+                    @click="buttonDeleteRep(index)"
+                  > <TrashIcon ></TrashIcon >
+                </v-btn>
               </td>
               
             </tr>

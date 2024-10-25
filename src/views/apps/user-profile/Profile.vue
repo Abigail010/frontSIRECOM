@@ -126,9 +126,10 @@ const schema = Yup.object().shape({
   }
 
    // BOTON RETORNAR
+
    const buttonReturnList = () => {
-     router.push({ name: 'tallerList' })
-   }
+    router.push({ name: 'Modern' })
+  }
 
   const submitButton = ref(false)
 
@@ -319,7 +320,7 @@ const buttonSendFormT = async () => {
         </v-col>
         <v-col cols="12">
             <v-btn color="primary" @click.prevent="buttonSendForm()" flat>Enviar</v-btn>
-            <v-btn class="bg-lighterror text-error ml-4" flat>Cancelar</v-btn>
+            <v-btn color="error" class="bg-lighterror text-error ml-4" @click="buttonReturnList()">Cancelar</v-btn>
         </v-col>
     </v-row>
                         </v-window-item>
@@ -390,7 +391,7 @@ const buttonSendFormT = async () => {
         
         <v-col cols="12">
             <v-btn color="primary" flat @click.prevent="buttonSendForm()">Enviar</v-btn>
-            <v-btn class="bg-lighterror text-error ml-4" flat>Cancelar</v-btn>
+            <v-btn color="error" class="bg-lighterror text-error ml-4" @click="buttonReturnList()">Cancelar</v-btn>
         </v-col>
     </v-row>
                         </v-window-item>
@@ -493,7 +494,7 @@ const buttonSendFormT = async () => {
   </template>
   <v-col cols="12">
             <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR')" color="primary" @click.prevent="buttonSendFormT()" flat>Enviar</v-btn>
-            <v-btn class="bg-lighterror text-error ml-4" flat>Cancelar</v-btn>
+             <v-btn color="error" class="bg-lighterror text-error ml-4" @click="buttonReturnList()">Cancelar</v-btn>
         </v-col>
       </v-row>
                         </v-window-item>

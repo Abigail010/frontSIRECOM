@@ -12,7 +12,7 @@ import { validateText } from '@/utils/helpers/validateText'
   const Tipos = useTiposStore()
 
   // BREADCRUMB  
-  const page = ref({ title: 'Tipos' });
+  const page = ref({ title: 'Modelo' });
   const breadcrumbs = ref([
     {
       text: 'Dashboard',
@@ -20,7 +20,7 @@ import { validateText } from '@/utils/helpers/validateText'
       href: '#'
     },
     {
-      text: 'Registro de Tipos para talleres externos',
+      text: 'Registro de Modelos ',
       disabled: true,
       href: '#'
     }
@@ -88,7 +88,7 @@ const buttonSendForm = async () => {
   <v-row>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <strong> DATOS DEL TIPO :</strong> Los campos con <span style="color:red">(*)</span> son obligatorios
+        <strong> DATOS DEL MODELO :</strong> Los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
 
       <v-row>

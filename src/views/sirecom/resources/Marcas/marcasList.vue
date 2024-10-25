@@ -104,7 +104,7 @@ onMounted(() => {
                   variant="flat" 
                   dark   
                   @click="buttonMarcaForm(0)" 
-                >Nuevo Marca</v-btn>
+                >Nueva Marca</v-btn>
               </v-toolbar>                        
             </template>
             <template v-slot:item.actions="{ item }">

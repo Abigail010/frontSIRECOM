@@ -116,7 +116,9 @@ onMounted(() => {
               <v-icon color="info" size="large" class="me-2" @click="buttonDepositForm(item.id)">
                   mdi-pencil
               </v-icon>
-              <v-icon color="error" size="large"  @click="deleteItem(item.id)">
+              <v-icon v-if="item.entregado == 0"
+
+              color="error" size="large"  @click="deleteItem(item.id)">
                   mdi-delete
               </v-icon>
           </template>                    

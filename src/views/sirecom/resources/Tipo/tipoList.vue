@@ -103,7 +103,7 @@ onMounted(() => {
                   variant="flat" 
                   dark   
                   @click="buttonTipoForm(0)" 
-                >Nuevo Tipo</v-btn>
+                >Nuevo Modelo</v-btn>
               </v-toolbar>                        
             </template>
             <template v-slot:item.actions="{ item }">

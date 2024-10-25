@@ -40,7 +40,7 @@ const headers = ref([
 
 function deleteItem(item: any) {
     Swal.fire({
-        title: "Estas seguro?",
+        title: "¿Estas seguro?",
         text: "¡El proceso no podra ser revertido!",
         icon: "warning",
         showCancelButton: true,

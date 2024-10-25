@@ -88,7 +88,7 @@ const buttonSendForm = async () => {
   <v-row>
     <v-col cols="12" lg="12">
       <h4 class="mb-5 mt-2 font-weight-light">
-        <strong> DATOS DEL fuerza:</strong> Los campos con <span style="color:red">(*)</span> son obligatorios
+        <strong> DATOS DE LA FUERZA:</strong> Los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
 
       <v-row>

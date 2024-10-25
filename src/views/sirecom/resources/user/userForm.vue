@@ -468,7 +468,7 @@ const buttonSendForm = async () => {
             type="date"
             v-model.trim="state.formData.fecha_nacimiento"
             @input="miValidacion(), state.formData.fecha_nacimiento= validateText(state.formData.fecha_nacimiento.toUpperCase())"
-            :error="submitButton && !state.formData.fecha_nacimiento"
+           
             
             hide-details
           />
