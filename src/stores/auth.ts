@@ -69,6 +69,7 @@ export const useAuthStore = defineStore({
         try {
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
           const { data } = await authApi.post('/menu', { userLogged })
+          console.log(data)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

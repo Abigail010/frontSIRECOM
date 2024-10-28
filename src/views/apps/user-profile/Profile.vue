@@ -131,6 +131,26 @@ const schema = Yup.object().shape({
     router.push({ name: 'Modern' })
   }
 
+  //generar alerta para la modificación de contraseña 
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 2000,
+    timerProgressBar: true,
+  });
+  const alerta= () => {
+  
+
+    if(state.formData.contraseña != '' || state.formData.password_ != '') {
+    
+        Toast.fire({
+            icon: 'error',
+            title: 'Al cambiar su contraseña, recuerde que usted es el único responsable de mantenerla segura y confidencial'
+          })
+    }
+}
+
   const submitButton = ref(false)
 
   const getGen = async () => {
@@ -328,11 +348,22 @@ const buttonSendFormT = async () => {
                             <v-row>
         <v-col cols="12" md="6">
                                     <v-label class="font-weight-medium mb-2">Nombre de usuario</v-label>
-                                    <v-text-field color="primary" variant="outlined" type="text" v-model="state.formData.nombre_usuario" hide-details />
+                                    <v-text-field color="primary" 
+                                    variant="outlined" 
+                                    type="text" 
+                                    v-model="state.formData.nombre_usuario" 
+                                    readonly
+                                    hide-details />
         </v-col>
         <v-col cols="12" md="6">
             <v-label class="font-weight-medium mb-2">Correo electrónico</v-label>
-            <v-text-field color="primary" variant="outlined" type="email" v-model="state.formData.correo_electronico" suffix="@example.com" hide-details />
+            <v-text-field color="primary" 
+            variant="outlined" 
+            type="email" 
+            v-model="state.formData.correo_electronico" 
+            suffix="@example.com" 
+            readonly
+            hide-details />
         </v-col>
 
         <v-col cols="12" md="6">
@@ -366,6 +397,7 @@ const buttonSendFormT = async () => {
                     :append-inner-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
                     @click:append-inner="show2 = !show2"
                     name="password" 
+                      @input="alerta()"
                 >
                 </v-text-field>
                <!---- <TextInput name="password"   type='password' success-message="Nice and secure!"  @click:append-inner="show2 = !show2" />-->
@@ -381,6 +413,7 @@ const buttonSendFormT = async () => {
                     hide-details
                     class="text-subtitle-1"
                     :append-inner-icon="show3 ? 'mdi-eye' : 'mdi-eye-off'"
+                      @input="alerta()"
                     @click:append-inner="show3 = !show3"
                 >
                 </v-text-field>
