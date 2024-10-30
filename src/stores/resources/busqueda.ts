@@ -252,6 +252,42 @@ export const useSearchStore = defineStore({
         }
       }, 
 
+      async ReportRepuestos(form:any) {
+        try {
+          const url = 'http://localhost:3001/search_tot/report_inventario';
+          
+          // Crear un formulario oculto para enviar los datos como POST
+          const formElement = document.createElement('form');
+          formElement.method = 'POST';
+          formElement.action = url;
+          formElement.target = '_blank';  // Esto abrirá la respuesta en una nueva pestaña
+      
+          // Agregar los datos del formulario
+          for (const key in form) {
+            if (form.hasOwnProperty(key)) {
+              const input = document.createElement('input');
+              input.type = 'hidden';
+              input.name = key;
+              input.value = form[key];
+              formElement.appendChild(input);
+            }
+          }
+      
+          // Agregar el formulario al cuerpo del documento y enviarlo
+          document.body.appendChild(formElement);
+          formElement.submit();
+      
+          // Remover el formulario del DOM después de enviarlo
+          document.body.removeChild(formElement);
+      
+          return { ok: true };
+        } catch (error: any) {
+          const message = error.message || 'Error: sin conexión';
+          return { ok: false, message };
+        }
+      }, 
+
+
   }
 
 });

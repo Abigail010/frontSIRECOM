@@ -32,6 +32,16 @@ const getRegisterRList = async() => {
     router.push({ name: 'registerForm', params: { id: id }})
   }
 
+  const getTipoClass = (cantidad: any) => {
+    console.log(cantidad)
+  // Verifica si la cantidad es numérica antes de comparar
+  return cantidad <=0 ? 'tipo-externo' : 'tipo-externo2';
+
+  // Si cantidad es una cadena específica
+  //return cantidad === 'EXTERNO' ? 'tipo-externo' : '';
+};
+
+
   // nuevo data table
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
@@ -92,7 +102,9 @@ onMounted(() => {
           :sort-by="[{ key: 'nombre_delito', order: 'asc' }]" 
           :search="search"
         >
-       
+        <template v-slot:item.cantidad="{ item }">
+             <span :class="getTipoClass(item.cantidad)">{{ item.cantidad }}</span>
+        </template>
           <template v-slot:top>
             <v-toolbar class="bg-lightprimary" flat>
               <v-text-field
@@ -129,18 +141,19 @@ onMounted(() => {
 
 <style >
 .tipo-externo{
-  background-color: rgb(82, 209, 82);
+ 
   padding: 8px 5px;
   border-radius: 10px;
-  color: white;
+  color: rgb(185, 11, 11);
   text-align: center;
+  font-weight: bold;
 }
 .tipo-externo2{
-  background-color: rgb(36, 174, 192);
+  
   padding: 8px 5px;
   border-radius: 10px; 
   variant:"flat"; 
-  color: white; text-align: center;
+  color: black; text-align: center;
 }
 
 .tipo-propio{

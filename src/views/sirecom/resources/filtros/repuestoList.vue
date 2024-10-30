@@ -35,8 +35,19 @@ const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
   { title: 'Nombre', key: 'nombre_repuesto' },
   { title: 'Cantidad', key: 'cantidad' },
+  { title: 'Estado', key: 'estado' },
  
 ])
+
+const getTipoClass = (cantidad: any) => {
+    console.log(cantidad)
+  // Verifica si la cantidad es numérica antes de comparar
+  return cantidad ==0 ? 'tipo' : cantidad <=3 ? 'tipo-2': 'tipo-p';
+
+  // Si cantidad es una cadena específica
+  //return cantidad === 'EXTERNO' ? 'tipo-externo' : '';
+};
+
 
 function deleteItem(item: any) {
     Swal.fire({
@@ -88,6 +99,9 @@ onMounted(() => {
             :sort-by="[{ key: 'nombre_repuesto', order: 'asc' }]" 
             :search="search"
           >
+          <template v-slot:item.cantidad="{ item }">
+             <span :class="getTipoClass(item.cantidad)">{{ item.cantidad }}</span>
+        </template>
             <template v-slot:top>
               <v-toolbar class="bg-lightprimary" flat>
                 <v-text-field 
@@ -119,3 +133,29 @@ onMounted(() => {
         </v-col>
     </v-row>
 </template>
+
+
+<style >
+.tipo{
+ 
+  padding: 8px 5px;
+  border-radius: 10px;
+  color: rgb(185, 11, 11);
+  text-align: center;
+  font-weight: bold;
+}
+.tipo-2{
+  
+  padding: 8px 5px;
+  border-radius: 10px; 
+  variant:"flat"; 
+  font-weight: bold;
+  color: rgb(32, 12, 146); text-align: center;
+}
+
+.tipo-p{
+  
+  color: black;
+}
+
+</style>

@@ -64,6 +64,11 @@ const openpanel = ref([0]);
       fecha_i3:'',
       fecha_f3:currentDate2, 
        
+    }, 
+    formData5:{
+       partida:'', 
+       fecha_i4:'', 
+       fecha_f4:currentDate2, 
     }
   });
 
@@ -89,7 +94,10 @@ const buttonGenerarReport4 = async () => {
       const respuesta_info = await orden.ReportMan(state.formData4)
       console.log(respuesta_info)
     }
-
+const buttonGenerarReport5 = async () => {
+      const respuesta_info = await orden.ReportRepuestos(state.formData5)
+      console.log(respuesta_info)
+ }
   const buttonClear = () => {
     state.formData.id_taller=''
      state.formData.departamento=''
@@ -116,6 +124,13 @@ const buttonClear4 = () => {
     state.formData4.fecha_f3=currentDate2
     state.formData4.id_mecanico =''
 }
+
+const buttonClear5 = () => {
+   state.formData5.fecha_i4=''
+    state.formData5.fecha_f4=currentDate2
+    state.formData5.partida =''
+}
+
 
   const editar = ref<any>(false)
     const desserts1 = ref([]) as any
@@ -514,7 +529,72 @@ const buttonSendForm = async () => {
            </v-row>
         </v-expansion-panel-text>
     </v-expansion-panel>
+
     <!---Delivery Options--->
+    <v-expansion-panel elevation="10" class=" mt-3">
+        <v-expansion-panel-title class="text-h6" style="color:black;">Reporte de Inventario</v-expansion-panel-title>
+        <v-expansion-panel-text class="mt-4">
+           <v-row>
+            <v-col cols="12" md="3">
+          <v-label class="mb-2 font-weight-medium">N° de partida <span style="color:red">(*)</span></v-label>
+          <v-text-field
+                    variant="outlined" 
+                    color="primary"
+                    type="text"
+                    :max="currentDate2"
+                    v-model.trim="state.formData5.partida"
+                    @input="miValidacion(), state.formData5.partida= validateText(state.formData5.partida.toUpperCase())"
+                    :error="submitButton && !state.formData5.partida"
+                    hide-details
+                />
+          </v-col>
+          <v-col cols="12" md="3">
+                <v-label class="mb-2 font-weight-medium">Fecha Inicio </v-label>
+            
+                <v-text-field
+                    variant="outlined" 
+                    color="primary"
+                    type="date"
+                    :max="currentDate2"
+                    v-model.trim="state.formData5.fecha_i4"
+                    @input="miValidacion(), state.formData5.fecha_i4= validateText(state.formData5.fecha_i4.toUpperCase())"
+                    :error="submitButton && !state.formData5.fecha_i4"
+                    hide-details
+                />
+               
+            </v-col>
+          <v-col cols="12" md="6">
+          <v-label class="mb-2 font-weight-medium">Fecha final </v-label>
+          <v-text-field
+                    variant="outlined" 
+                    color="primary"
+                    type="date"
+                    v-model.trim="state.formData5.fecha_f4"
+                    @input="miValidacion(), state.formData5.fecha_f4= validateText(state.formData5.fecha_f4.toUpperCase())"
+                    :error="submitButton && !state.formData5.fecha_f4"
+                    hide-details
+                >
+            <template v-slot:append >
+              <v-btn
+               class="mr-3"
+                color="primary"
+                @click= buttonGenerarReport5()
+                :disabled="!state.formData5.partida && !state.formData5.fecha_i4"
+                readonly="true"
+                ><SearchIcon/>Generar Reporte
+              </v-btn>
+              <v-btn
+                color="secondary"
+                @click= buttonClear5()
+                :disabled="!state.formData5.partida && !state.formData5.fecha_i4"><TrashIcon/>Limpiar
+              </v-btn>
+            </template>
+          </v-text-field>
+        </v-col>
+           </v-row>
+        </v-expansion-panel-text>
+    </v-expansion-panel>
+    <!----->
     
 </v-expansion-panels>
     <!---<v-col cols="12" lg="12">

@@ -21,6 +21,7 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
   const submitButton = ref(false)
   const sendForm = ref(true)
   const isLoading = ref(false)
+  const mostrarModal = ref(false);
   const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
   // BREADCRUMB
   const page = ref({ title: 'Registro de ingreso del vehículo' });
@@ -143,12 +144,14 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
                 editar.value = true
 
           if(!respuesta){
-            Toast.fire({
-              icon: 'error',
-              title: 'No se encontro la información'
-            })
-          // DESBLOQUEAR EL INPUT
-          
+              Toast.fire({
+                icon: 'error',
+                title: 'No se encontró la información'
+              })
+            // DESBLOQUEAR EL INPUT
+            //fromulario de solicitud 
+            // Muestra el modal de solicitud
+          //mostrarModal = true;
           }else{
             Toast.fire({
               icon: 'success',
