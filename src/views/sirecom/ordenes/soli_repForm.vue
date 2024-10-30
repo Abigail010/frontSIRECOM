@@ -158,7 +158,7 @@ const openpanel = ref([0]);
 
   const registro_id = async (id_orden: any) => {
    state.formData.id_Rep = await soli_Rep.getsolicitudes(id_orden) 
-   //console.log(state.formData.id_Rep)
+   console.log(state.formData.id_Rep)
    state.formData.id_Rep2 = await soli_Rep.getEntregas(id_orden) 
    const res= await soli_Rep.getEntregas(id_orden) 
  

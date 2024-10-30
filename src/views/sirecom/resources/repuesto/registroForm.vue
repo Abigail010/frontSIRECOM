@@ -9,12 +9,15 @@ import { useRegisterRStore } from '@/stores/resources/register_rep';
 import { useResourceStore } from '@/stores/resource';
 import { validateText } from '@/utils/helpers/validateText'
 import { format } from 'date-fns'
+import { useUserStore } from '@/stores/resources/user';
+const userStore = useUserStore()
 const RegisterRStore = useRegisterRStore()
 const dialog = ref(false);
   const route = useRoute()
   const repuestoStore = usefilterStore()
   const resourceStore = useResourceStore()
-
+  const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
+  const us2:any = JSON.parse(localStorage.getItem('user') || '').id_taller
   // BREADCRUMB  
   const page = ref({ title: 'Registro de Repuesto' });
   const breadcrumbs = ref([
@@ -35,6 +38,7 @@ const dialog = ref(false);
     formData: {
       id: '',
       fecha:currentDate2, 
+      id_taller: '',
       partida: '',
       total: '0',
       observacion: '', 
@@ -50,6 +54,17 @@ const dialog = ref(false);
     }
   });
 
+
+  const taller = ref([])
+  const gettaller = async() => {
+  
+    if(us==1 || us2==1){
+      taller.value = await resourceStore.getTalleres()
+    }else{
+      taller.value = await  userStore.Taller()
+      
+    }
+  }
   const editar = ref<any>(false)
   
   const departamentos = ref([])
@@ -67,10 +82,12 @@ const dialog = ref(false);
   // FUNCION QUE OBTIENE LA INFORMACION DEL talle
   const getRegisterRId = async (id: any) => {
     const respuesta = await RegisterRStore.RegisterR(id)
-    console.log(respuesta)
+   // console.log(respuesta)
     state.formData.id = respuesta.id
     state.formData.fecha = respuesta.fecha
     state.formData.partida = respuesta.nro_partida 
+    state.formData.id_taller = respuesta.id_taller
+    state.formData.observacion = respuesta.observacion 
 
     const rep = respuesta.repuestos
     for (let i = 0; i < rep.length; i++) {
@@ -273,6 +290,7 @@ const buttonClose = () => {
 
   onMounted( async () => {
     await getDepartmentsList()
+    await gettaller()
     await getServicios()
     if(route.params.id != '0'){
       await getRegisterRId(route.params.id)
@@ -364,9 +382,9 @@ const buttonClose = () => {
       </h4>
 
       <v-row>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="4">
       <v-label class="mb-2 font-weight-medium">
-Fecha de Registro<span style="color:red">(*)</span>
+            Fecha de Registro<span style="color:red">(*)</span>
       </v-label>
       <v-text-field 
         type="date" 
@@ -387,7 +405,7 @@ Fecha de Registro<span style="color:red">(*)</span>
         </div>
       </template>
     </v-col>
-        <v-col cols="12" md="6">
+        <v-col cols="12" md="4">
           <v-label class="mb-2 font-weight-medium">N° de partida </v-label>
           <VTextField
             variant="outlined" 
@@ -399,6 +417,23 @@ Fecha de Registro<span style="color:red">(*)</span>
             hide-details
           />
         
+        </v-col>
+        <v-col cols="12" md="4">
+          <v-label class="mb-2 font-weight-medium">Taller<span style="color:red">(*)</span></v-label>
+          <v-select
+            :items="taller"
+            item-title="nombre_taller"
+            item-value="id"
+            v-model="state.formData.id_taller"
+            :error="submitButton && !state.formData.id_taller"
+          />
+          <template v-if="submitButton && !state.formData.id_taller">
+            <div class="v-messages font-weight-black px-2 py-2">
+              <div class="v-messages__message text-error ">
+                El campo es requerido
+              </div>
+            </div>
+          </template>
         </v-col>
         <v-col cols="12" md="12">
           <v-label class="mb-2 font-weight-medium">Observación </v-label>
@@ -413,6 +448,7 @@ Fecha de Registro<span style="color:red">(*)</span>
           />
         
         </v-col>
+        
        <v-col cols="12" md="12">
         <h4 class="mb-5 mt-2 primary">
         <strong > Registro de repuestos:</strong> 
@@ -559,7 +595,7 @@ Fecha de Registro<span style="color:red">(*)</span>
               <td class="text-center">{{ item.precio_u }}</td>
               <td class="text-center">{{ item.subtotal }}</td>
               <td class="text-center" v-if="(item.entregado != item.cantidad) && state.formData.id!=''">
-                <v-btn 
+                <v-btn v-if="item.idd !=null "
                  class="mr-1"
                   size="x-small"
                   title="Editar"
@@ -570,7 +606,7 @@ Fecha de Registro<span style="color:red">(*)</span>
                  @click="ButtonRepuesto(item.idd)"
                 > <PencilIcon></PencilIcon>
                 </v-btn>
-                <v-btn v-if="item.entregado === null || item.entregado === 0"
+                <v-btn v-if="item.entregado === null || item.entregado === 0  || item.idd == null"
                     size="x-small"
                     title="Eliminar"
                     height="25"
