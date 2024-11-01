@@ -12,6 +12,8 @@ import { validateText } from '@/utils/helpers/validateText'
  import { required, email, helpers } from '@vuelidate/validators'
  import { FORM_INVALID_EMAIL, FORM_REQUIRED_FIELD } from '@/utils/helpers/messages'
  import { useValidationErrors } from '@/stores/useValidationErrors';
+ import { useFuerzasStore } from '@/stores/resources/fuerza';
+const fuerzas = useFuerzasStore()
  const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
  const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
   const route = useRoute()
@@ -40,7 +42,7 @@ import { validateText } from '@/utils/helpers/validateText'
       id_usuario: '',
       id_perfil: '',
       id_taller: '',
-
+      id_fuerza:'', 
       cedula_identidad: '',
       complemento: '',
       nombres: '',
@@ -65,6 +67,8 @@ import { validateText } from '@/utils/helpers/validateText'
     }
   });
 
+  const fuerza = ref([])
+  
   const editar = ref<any>(false)
     const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
     const us2:any = JSON.parse(localStorage.getItem('user') || '').id_taller
@@ -88,6 +92,7 @@ import { validateText } from '@/utils/helpers/validateText'
       taller.value = await  userStore.Taller()
       
     }
+    fuerza.value = await fuerzas.fuerza()
   }
 
   const usertaller:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
@@ -188,6 +193,7 @@ const usert:any = JSON.parse(localStorage.getItem('user') || '').id_taller
     state.formData.id_usuario = respuesta.id
     state.formData.id_persona = respuesta.id_persona
     state.formData.id_taller = respuesta.id_taller
+    state.formData.id_fuerza = respuesta.id_fuerza
     state.formData.id_perfil = respuesta.id_perfil
     state.formData.cedula_identidad = respuesta.cedula_identidad
     state.formData.nombres = respuesta.nombres
@@ -576,6 +582,20 @@ const buttonSendForm = async () => {
             </div>
           </template>
         </v-col>
+
+        <template v-if="state.formData.id_perfil != '' && state.formData.id_perfil == '5'">
+          
+               <v-col cols="12" md ="4">
+                <v-label class="mb-2 font-weight-medium">Fuerza<span style="color:red">(*)</span></v-label>
+                      <v-select
+                      :items="fuerza"
+                      item-title="nombre_fuerza"
+                      item-value="id_fuerza"
+                      v-model="state.formData.id_fuerza"
+                      :error="submitButton && !state.formData.id_fuerza"
+                      />
+               </v-col>
+        </template>
       </v-row>
 
       <v-row>

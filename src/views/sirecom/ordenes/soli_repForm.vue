@@ -104,6 +104,7 @@ const openpanel = ref([0]);
         total:'', 
       
     }, formData2:{
+      fuerza:'',
         nombre_repuesto:'',
         id_registro:'', 
         id_repuesto: '', 
@@ -143,6 +144,7 @@ const openpanel = ref([0]);
     state.formData.tipo_orden = data.tipo 
     state.formData.color_ve = data.color
     state.formData.prueba= data.prueba
+    state.formData2.fuerza = data.fuerza
    } 
   
 

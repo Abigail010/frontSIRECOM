@@ -10,6 +10,8 @@ import { useResourceStore } from '@/stores/resource';
 import { validateText } from '@/utils/helpers/validateText'
 import { format } from 'date-fns'
 import { useUserStore } from '@/stores/resources/user';
+import { useFuerzasStore } from '@/stores/resources/fuerza';
+const fuerzas = useFuerzasStore()
 const userStore = useUserStore()
 const RegisterRStore = useRegisterRStore()
 const dialog = ref(false);
@@ -58,12 +60,7 @@ const dialog = ref(false);
   const taller = ref([])
   const gettaller = async() => {
   
-    if(us==1 || us2==1){
-      taller.value = await resourceStore.getTalleres()
-    }else{
-      taller.value = await  userStore.Taller()
-      
-    }
+  taller.value = await fuerzas.fuerza()
   }
   const editar = ref<any>(false)
   
@@ -422,8 +419,8 @@ const buttonClose = () => {
           <v-label class="mb-2 font-weight-medium">Taller<span style="color:red">(*)</span></v-label>
           <v-select
             :items="taller"
-            item-title="nombre_taller"
-            item-value="id"
+            item-title="nombre_fuerza"
+            item-value="id_fuerza"
             v-model="state.formData.id_taller"
             :error="submitButton && !state.formData.id_taller"
           />
