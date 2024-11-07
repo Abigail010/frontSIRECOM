@@ -70,11 +70,11 @@ import 'aos/dist/aos.css';
         <v-row class="justify-center">
           <img
             style="width:15%; height:15%;"
-            src="@/assets/images/misimagenes/mesaTrabajo9.png"
+            src="@/assets/images/misimagenes/prueba.png"
             />
         </v-row>
         <h1 class="mt-14 text-h1 text-md-center font-weight-bold">
-          SISTEMA INFORMÁTICO INTEGRADO DE BIENES
+          SISTEMA REGISTRO Y CONTROL DE MANTENIMIENTO
         </h1>
         <p class="pt-2 pb-6 text-h5  text-md-center font-weight-regular" >
           Registrate 
@@ -123,15 +123,7 @@ import 'aos/dist/aos.css';
             Datos Personales
           </h2>
         </v-card-title>
-        <v-card-text class="mt-5 text-h6 ">
-          <p class="font-weight-black">Persona Natural</p><br>
-              <li class="text-justify">Debe ingresar sus datos personales y adjuntar una copia de su CI.</li><br>
-          <p class="font-weight-black">Persona Jurídica</p><br>
-              <li class="text-justify">Debe ingresar datos de la entidad y adjuntar el Certificado de personeria 
-              juridica y Certificado de inscripción, de igual modo debe ingresar los datos del representante legal  
-              y adjuntar un documento que lo acrédite. 
-              </li>
-        </v-card-text>
+        
       </v-card>
       </v-timeline-item>
 
@@ -147,10 +139,7 @@ import 'aos/dist/aos.css';
               Validación de datos para Pre-Registro
             </h2>
           </v-card-title>
-          <v-card-text class="mt-5 text-h6">
-            <p class="text-justify">Una vez ingresados los datos se le enviara un correo electrónico con un código
-            que deberá ingresar en el registro para proceder con el envio del mismo para su futura validación.</p>
-          </v-card-text>
+          
         </v-card>
       </v-timeline-item>
 
@@ -201,87 +190,7 @@ import 'aos/dist/aos.css';
     </div>
 
 <div>
-  <v-container>
-    <h2 class="sectionTitle text-center pt-sm-8 pt-8 font-weight-bold">
-    REQUISITOS PARA ADJUDICACIÓNES
-    </h2>
-  <v-row class="justify-center">
-    <v-col>
-        <h2 class="sectionTitle text-center pt-sm-8 pt-8 font-weight-bold">
-          VENTA DE BIENES
-        </h2>
-    </v-col>
-    <v-col>
-        <h2 class="sectionTitle text-center pt-sm-8 pt-8 font-weight-bold">
-          CONTRATOS
-        </h2>
-    </v-col>
-  </v-row>
-  <v-row class="justify-center">
-    <v-col>
-        <v-stepper :items="['SUBASTA PÚBLICA ', 'VENTA DIRECTA']">
-        <template v-slot:item.1>
-          <v-card  title="REQUISITOS EMPRESAS JURIDICAS">
-            <p class="text-justify ">Requisitos:<br>
-              1. Fotocopia de carnet<br>
-              2. Empoce del 10% el día de la subasta (en bolivianos o dólares)<br>
-              TOMAR EN CUENTA:<br>
-              No se pueden participar en el proces:<br>
-              a) El procesado.<br>
-              b) Servidores públicos dependientes del Ministerio de Gobierno.<br>
-              c) Familiares de servidores públicos dependientes del Ministerio de gobierno hasta segundo grado de consanguinidad o segundo grado de afinidad.<br>
-              El postor ganador tendrá 3 días para depositar a la cuenta de DIRCABI el saldo restante. <br>
-              En caso de no ser el postor ganador, se le devolverá en el mismo día el 10% del empoce.
-            </p>
-          </v-card>
-
-        </template>
-
-        <template v-slot:item.2>
-          <v-card title="EMPRESA SIN FINES DE LUCRO" flat>          
-            <p class="text-justify ">Requisitos:<br>
-              1. Fotocopia de carnet.<br>
-              2. Propuesta del monto a ofertar del participante.<br>
-              TOMAR EN CUENTA:<br>
-              No se pueden participar en el proces:<br>
-              a) El procesado.<br>
-              b) Servidores públicos dependientes del Ministerio de Gobierno.<br>
-              c) Familiares de servidores públicos dependientes del Ministerio de gobierno hasta segundo grado de consanguinidad o segundo grado de afinidad.<br>
-  
-            </p>
-          </v-card>
-        </template>
-      </v-stepper>
-    </v-col>
-    <v-col>
-        <v-stepper :items="['EMPRESA JÚRIDICA', 'EMPRESA SIN FINES DE LUCRO']">
-        <template v-slot:item.1>
-          <v-card  title="REQUISITOS EMPRESAS JURIDICAS">
-            <p class="text-justify">Requisitos:<br>
-            1. Nota de solicitud fundamentada y suscrita por la MAE, señalando un medio de comunicación digital, teléfono y/o numero de celular de una persona designada para la coordinación.<br>
-            2. Designación de la Máxima Autoridad Ejecutiva (Copia Legalizado).<br>
-            3. Credencial de la Maxima Autoridad Ejecutiva (Copia simple).<br>
-            4. Numero de Registro Tributario (Copia simple).<br>
-            5. Certificación del área correspondiente de la entidad solicitante donde asuma la responsabilidad para el mantenimiento y seguros para el bien solicitado (solo para comodatos).<br>
-            6. Proyecto para la utilización del bien bajo alguna de las políticas del Estado señalados en el Art. 130 (I) del Decreto Supremo 3434 (máximo 5 hojas - solo para comodatos).</p>
-          </v-card>
-
-        </template>
-
-        <template v-slot:item.2>
-          <v-card title="EMPRESA SIN FINES DE LUCRO" flat>          
-            <p class="text-justify" >Requisitos:<br>
-            1. Personería jurídica reconocida mediante Resolución por autoridad competente con una data igual o mayor a 10 años (copia legalizada).<br>
-            2. Representación legal que prevé la suscripción de contratos con el Estado (copia legalizada).<br>
-            3. Reconocimientos premios u otros que acrediten la actividad publica de la institución (copias simples).<br>
-            4. Declaración jurada notarial por su representante, que establezca que la entidad cuente con los recursos suficientes para el mantenimiento y seguros para el bien solicitado, acompañado de los documentos contables de respaldo.<br>
-            5. Proyecto para la utilización del bien bajo alguna de la políticas sociales señalados en el articulo 130 (II.b) del Decreto Supremo 3434 (Máximo 5 hojas)</p>
-          </v-card>
-        </template>
-      </v-stepper>
-    </v-col>
-  </v-row>
-</v-container>
+ 
 </div>  
 
 
@@ -290,18 +199,7 @@ import 'aos/dist/aos.css';
   <div class="mt-5 fondoDir">
       <v-container  height="400">
             <v-row class="justify-space-between">
-                <v-col class="text-white">
-                    <h2 >Oficina Nacional</h2>
-                    <h3 class="mt-1">Dirección:"Calle Cuba esq. Pasoskanqui #1617 Zona Miraflores "</h3>
-                    <h3 class="mt-1">Telefono: 2-114813</h3>
-                    <h3 class="mt-1">Correo: registroysistemas@mingobierno.gob.bo</h3>
-                    <!-- <v-btn class="mt-10 bg-surface rounded-circle mx-auto" style="height: 64px; width: 64px" href="https://dircabi.mingobierno.gob.bo/" >
-                      <img :src="google" width="15" height="15" alt="google" />
-                    </v-btn>
-                    <v-btn class="mt-10 bg-surface rounded-circle mx-auto" style="height: 64px; width: 64px" href="https://www.facebook.com/dircabi.bo/" >
-                      <img :src="facebook" width="40" height="40" class="mr-1" alt="facebook" />
-                  </v-btn> -->
-                  </v-col>
+               
                 
                 <v-col cols="12" md="5" class="pb-0">
                     <div class="d-flex justify-md-end justify-center mb-n1">
@@ -321,15 +219,7 @@ import 'aos/dist/aos.css';
 <!--FOOTER-->
     <v-container>
         <v-row class="justify-center">
-            <v-col cols="12" md="4" sm="5"  class="text-center" >
-                <div class="mt-8 mb-4">
-                    <p class="text-subtitle-1 mt-2 text-13">
-                        Copyright © 2024  <a href="https://www.mingobierno.gob.bo/" class="a_link"  target="_blank">Ministerio de Gobierno.</a><br>
-                        Desarrollado por Tecnología y Sistemas Todos los derechos reservados.<br>
-                        Contacto: soporte@mingobierno.gob.bo
-                    </p>
-                </div>
-            </v-col>
+            
         </v-row>
     </v-container>  
 </template>

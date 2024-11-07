@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import RebApi from "@/api/RebApi"
+import reb from "@/api/RebApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -13,7 +13,7 @@ export const useSearchStore = defineStore({
        async getInfoB () {
         try {
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await RebApi.get('search_tot/info_user/' + userLogged)
+          const { data } = await reb.RebApi.get('search_tot/info_user/' + userLogged)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -23,7 +23,7 @@ export const useSearchStore = defineStore({
     // OBTENER LISTA DE DELITOS
     async getUsers () {
       try {
-        const { data } = await RebApi.get('search_tot/tot_usuarios/')
+        const { data } = await reb.RebApi.get('search_tot/tot_usuarios/')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -32,7 +32,7 @@ export const useSearchStore = defineStore({
     },
     async getVehiculos () {
         try {
-          const { data } = await RebApi.get('search_tot/tot_vehiculo/')
+          const { data } = await reb.RebApi.get('search_tot/tot_vehiculo/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -41,7 +41,7 @@ export const useSearchStore = defineStore({
       },
       async getT () {
         try {
-          const { data } = await RebApi.get('search_tot/taller/')
+          const { data } = await reb.RebApi.get('search_tot/taller/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -50,7 +50,7 @@ export const useSearchStore = defineStore({
       },
       async getM () {
         try {
-          const { data } = await RebApi.get('search_tot/mecanicos/')
+          const { data } = await reb.RebApi.get('search_tot/mecanicos/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -59,7 +59,7 @@ export const useSearchStore = defineStore({
       },
       async getFinalizado () {
         try {
-          const { data } = await RebApi.get('search_tot/tot_fin/')
+          const { data } = await reb.RebApi.get('search_tot/tot_fin/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -68,7 +68,7 @@ export const useSearchStore = defineStore({
       },
       async getPrueba() {
         try {
-          const { data } = await RebApi.get('search_tot/placas/')
+          const { data } = await reb.RebApi.get('search_tot/placas/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -77,7 +77,7 @@ export const useSearchStore = defineStore({
       },
       async getPrueba2(mes: any) {
         try {
-          const { data } = await RebApi.get('search_tot/fuerzas/'+mes)
+          const { data } = await reb.RebApi.get('search_tot/fuerzas/'+mes)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -86,7 +86,7 @@ export const useSearchStore = defineStore({
       },
       async getPendiente () {
         try {
-          const { data } = await RebApi.get('search_tot/tot_pen/')
+          const { data } = await reb.RebApi.get('search_tot/tot_pen/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -95,7 +95,7 @@ export const useSearchStore = defineStore({
       },
       async getPedidos_en() {
         try {
-          const { data } = await RebApi.get('search_tot/pedidos_entregados/')
+          const { data } = await reb.RebApi.get('search_tot/pedidos_entregados/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -105,7 +105,7 @@ export const useSearchStore = defineStore({
 
       async getPedidos_pen() {
         try {
-          const { data } = await RebApi.get('search_tot/pedidos_pen/')
+          const { data } = await reb.RebApi.get('search_tot/pedidos_pen/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -114,7 +114,7 @@ export const useSearchStore = defineStore({
       },
       async vehiculosReport(form:any) {
         try {
-          const url = 'http://localhost:3001/search_tot/report_vehiculos';
+          const url = reb.getDirection()+'/search_tot/report_vehiculos';
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
@@ -146,11 +146,24 @@ export const useSearchStore = defineStore({
           return { ok: false, message };
         }
       }, 
+  /*    async minutesReport(form:any) {
+        try {
+          const response = open(reb.getDirection+'/search_tot/busqueda')
+          console.log(response)
+          return response
+        } catch (error: any) {
+          const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+          return { ok: false, message: message }
+        }
+      },
+*/
 
       async minutesReport(form: any) {
         try {
-          const url = 'http://localhost:3001/search_tot/busqueda';
-          
+         const url =  reb.getDirection()+'/search_tot/busqueda';
+
+     console.log(url)
+     //   const { url } = await reb.RebApi.post('repuestos/create_filter/' + userLogged, form)
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
           formElement.method = 'POST';
@@ -184,7 +197,7 @@ export const useSearchStore = defineStore({
 
       async ReportVe(form:any) {
         try {
-          const url = 'http://localhost:3001/search_tot/report_vehi';
+          const url = reb.getDirection()+'/search_tot/report_vehi';
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
@@ -219,7 +232,7 @@ export const useSearchStore = defineStore({
       
       async ReportMan(form:any) {
         try {
-          const url = 'http://localhost:3001/search_tot/report_meca';
+          const url = reb.getDirection()+'/search_tot/report_meca';
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
@@ -254,7 +267,7 @@ export const useSearchStore = defineStore({
 
       async ReportRepuestos(form:any) {
         try {
-          const url = 'http://localhost:3001/search_tot/report_inventario';
+          const url = reb.getDirection()+'/search_tot/report_inventario';
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');

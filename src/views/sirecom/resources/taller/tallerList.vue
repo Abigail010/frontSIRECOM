@@ -23,7 +23,13 @@ const breadcrumbs = ref([
   }
 ]);
 
-const desserts = ref([]) as any
+interface Man {
+  id_taller: number;
+  tipo: string;
+}
+
+  //const desserts = ref([]) as any
+  const desserts = ref<Man[]>([]);
 const getTallerList = async() => {
    // desserts.value = await tallerStore.tallers() 
    if( (usert==1  ||  usertaller ==1 )){
@@ -104,7 +110,7 @@ onMounted(() => {
           :sort-by="[{ key: 'nombre_delito', order: 'asc' }]" 
           :search="search"
         >
-        <template v-slot:item.tipo="{ item }">
+        <template v-slot:item.tipo="{ item }:{item : Man}">
              <span :class="getTipoClass(item.tipo)">{{ item.tipo }}</span>
         </template>
           <template v-slot:top>
@@ -126,7 +132,7 @@ onMounted(() => {
               >Nuevo taller</v-btn>
             </v-toolbar>                        
           </template>
-          <template v-slot:item.actions="{ item }">
+          <template v-slot:item.actions="{ item }:{item:Man}">
               <v-icon color="info" size="large" class="me-2" @click="buttonDepositForm(item.id_taller)">
                   mdi-pencil
               </v-icon>

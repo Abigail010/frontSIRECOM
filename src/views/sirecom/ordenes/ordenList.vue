@@ -41,7 +41,14 @@ const breadcrumbs = ref([
   const data2 = await registro.minutesReport(item);
   //console.log(data2)
   }
-const desserts = ref([]) as any
+
+  interface Man {
+  id: number;
+  estado:String;
+}
+
+  //const desserts = ref([]) as any
+  const desserts = ref<Man[]>([]);
 const getOrdenes_sol = async() => {
   if(userProfile.includes('SUPER ADMINISTRADOR') || us == 1){
     desserts.value = await orden.getOrdenes_soli()
@@ -219,8 +226,8 @@ onMounted(() => {
           :sort-by="[{ key: 'nombre_delito', order: 'asc' }]" 
           :search="search"
         >
-        <template v-slot:item.estado="{ item }">
-             <span :class="getestado(item.estado)">{{ item.estado }}</span>
+        <template v-slot:item.estado="{item}:{ item:Man}">
+             <span :class="getestado(item.estado)">{{item.estado}}</span>
         </template>
           <template v-slot:top>
             <v-toolbar class="bg-lightprimary" flat>
@@ -242,7 +249,7 @@ onMounted(() => {
             </v-toolbar>                        
           </template>
           
-          <template v-slot:item.actions="{ item }">
+          <template v-slot:item.actions="{ item } : {item:Man}">
               <v-icon v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3) "
               color="info" size="large" class="me-2" @click="buttonDepositForm(item.id)">
                   mdi-pencil

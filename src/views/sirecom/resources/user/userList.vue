@@ -22,7 +22,18 @@ const breadcrumbs = ref([
   }
 ]);
 
-const desserts = ref([]) as any
+
+interface User {
+  id_user: number;
+ /* nombre_fuerza: string;
+  placa: string;
+  chasis: string;
+  tipo_v: string;
+  color: string;*/
+}
+
+  //const desserts = ref([]) as any
+  const desserts = ref<User[]>([]);
 const getUsersList = async() => {
   if(usert == 1 || usertaller == 1){
   desserts.value = await userStore.users()
@@ -120,7 +131,7 @@ onMounted(() => {
                 >Nuevo Usuario</v-btn>
               </v-toolbar>                        
             </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:item.actions="{ item }:  { item: User }">
                 <v-icon color="info" size="large" class="me-2" @click="buttonUserForm(item.id_user)">
                     mdi-pencil
                 </v-icon>

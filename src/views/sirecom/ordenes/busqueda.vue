@@ -44,7 +44,7 @@ const openpanel = ref([0]);
       fuerza:'', 
       estado_v:'', 
       tipo_man:'',
-      departamento:'', 
+      departamento:null, 
       id_taller:'', 
     }, formData2: {
       marca:'', 
@@ -100,7 +100,7 @@ const buttonGenerarReport5 = async () => {
  }
   const buttonClear = () => {
     state.formData.id_taller=''
-     state.formData.departamento=''
+    state.formData.departamento=null
     state.formData.fuerza=''
     state.formData.fecha_i=''
     state.formData.fecha_f=currentDate2

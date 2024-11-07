@@ -23,7 +23,14 @@ const breadcrumbs = ref([
   }
 ]);
 
-const desserts = ref([]) as any
+interface Man {
+  id: number;
+  cantidad: number;
+  entregado: number;
+}
+
+  //const desserts = ref([]) as any
+  const desserts = ref<Man[]>([]);
 const getRegisterRList = async() => {
     desserts.value = await RegisterRStore.getRegisterRs() 
 }
@@ -35,7 +42,7 @@ const getRegisterRList = async() => {
   const getTipoClass = (cantidad: any) => {
     console.log(cantidad)
   // Verifica si la cantidad es numérica antes de comparar
-  return cantidad <=0 ? 'tipo-externo' : 'tipo-externo2';
+  return cantidad <=0 ? 'tipo-ex' : 'tipo-ex2';
 
   // Si cantidad es una cadena específica
   //return cantidad === 'EXTERNO' ? 'tipo-externo' : '';
@@ -103,7 +110,7 @@ onMounted(() => {
           :sort-by="[{ key: 'nombre_delito', order: 'asc' }]" 
           :search="search"
         >
-        <template v-slot:item.cantidad="{ item }">
+        <template v-slot:item.cantidad="{ item }:{item:Man}">
              <span :class="getTipoClass(item.cantidad)">{{ item.cantidad }}</span>
         </template>
           <template v-slot:top>
@@ -125,7 +132,7 @@ onMounted(() => {
               >Registro de Repuestos</v-btn>
             </v-toolbar>                        
           </template>
-          <template  v-if="usertaller == 1 || usert == 1" v-slot:item.actions="{ item }">
+          <template  v-if="usertaller == 1 || usert == 1" v-slot:item.actions="{ item } : { item : Man }">
               <v-icon color="info" size="large" class="me-2" @click="buttonDepositForm(item.id)">
                   mdi-pencil
               </v-icon>
@@ -141,7 +148,7 @@ onMounted(() => {
 </template>
 
 <style >
-.tipo-externo{
+.tipo-ex{
  
   padding: 8px 5px;
   border-radius: 10px;
@@ -149,7 +156,7 @@ onMounted(() => {
   text-align: center;
   font-weight: bold;
 }
-.tipo-externo2{
+.tipo-ex2{
   
   padding: 8px 5px;
   border-radius: 10px; 

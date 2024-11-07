@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
 
-import RebApi from "@/api/RebApi"
+import reb from "@/api/RebApi"
 import { getDirection } from '@/utils/helpers/direction'
 
 const direccion_url = getDirection()
@@ -14,7 +14,7 @@ export const useRegisterStore = defineStore({
       try {
         const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
         
-        const { data } = await RebApi.post('registro/search/' , form)
+        const { data } = await reb.RebApi.post('registro/search/' , form)
         return data
         
       } catch (error: any) {
@@ -26,7 +26,7 @@ export const useRegisterStore = defineStore({
       try {
         const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
         
-        const { data } = await RebApi.get('registro/search_sis/' + id_orden)
+        const { data } = await reb.RebApi.get('registro/search_sis/' + id_orden)
         return data
         
       } catch (error: any) {
@@ -39,7 +39,7 @@ export const useRegisterStore = defineStore({
        async getFiltros () {
         try {
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await RebApi.get('repuestos/filter')
+          const { data } = await reb.RebApi.get('repuestos/filter')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -49,7 +49,7 @@ export const useRegisterStore = defineStore({
       async getUnidad () {
         try {
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await RebApi.get('repuestos/unidad/')
+          const { data } = await reb.RebApi.get('repuestos/unidad/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -61,7 +61,7 @@ export const useRegisterStore = defineStore({
         try {
           console.log("actualizar")
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await RebApi.post('vehiculo/update_orden/' + userLogged, form)
+          const { data } = await reb.RebApi.post('vehiculo/update_orden/' + userLogged, form)
        //   router.push({ name: 'ordenList' });
           return {
             ok: true,
@@ -76,7 +76,7 @@ export const useRegisterStore = defineStore({
       },
       async gettipo_trabajo() {
         try {
-          const { data } = await RebApi.get('registro/tipo_trabajo/')
+          const { data } = await reb.RebApi.get('registro/tipo_trabajo/')
         //  router.push({ name: 'documentaryReceptionList' });
           return  data
         } catch (error: any) {
@@ -86,7 +86,7 @@ export const useRegisterStore = defineStore({
       },
       async gettipo_mantenimiento() {
         try {
-          const { data } = await RebApi.get('registro/tipo_mantenimiento/')
+          const { data } = await reb.RebApi.get('registro/tipo_mantenimiento/')
         //  router.push({ name: 'documentaryReceptionList' });
           return  data
         } catch (error: any) {
@@ -98,7 +98,7 @@ export const useRegisterStore = defineStore({
   async registro_id (id_orden: any) {
     try {
       
-      const { data } = await RebApi.get('registro/registro_id/' + id_orden)
+      const { data } = await reb.RebApi.get('registro/registro_id/' + id_orden)
       return data
     } catch (error: any) {
       const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -110,7 +110,7 @@ export const useRegisterStore = defineStore({
     async verificar_reg(id_orden: any) {
       try {
         
-        const { data } = await RebApi.get('registro/soli_id/' + id_orden)
+        const { data } = await reb.RebApi.get('registro/soli_id/' + id_orden)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -121,7 +121,7 @@ export const useRegisterStore = defineStore({
   // OBTENER INFORMACION DE DELITO POR ID
   async getbasico (id_orden: any) {
     try {
-      const { data } = await RebApi.get('registro/basico/' + id_orden)
+      const { data } = await reb.RebApi.get('registro/basico/' + id_orden)
       return data
     } catch (error: any) {
       const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -132,7 +132,7 @@ export const useRegisterStore = defineStore({
   async create_mantenimiento(form: any) {
     try {
       const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-      const { data } = await RebApi.post('registro/create_man/' + userLogged, form)
+      const { data } = await reb.RebApi.post('registro/create_man/' + userLogged, form)
       router.push({ name: 'ordenList' });
       return {
         ok: true,
@@ -149,7 +149,7 @@ export const useRegisterStore = defineStore({
   async update_mantenimiento(form: any) {
     try {
       const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-      const { data } = await RebApi.post('registro/update_man/' + userLogged, form)
+      const { data } = await reb.RebApi.post('registro/update_man/' + userLogged, form)
       router.push({ name: 'ordenList' });
       return {
         ok: true,
@@ -168,7 +168,7 @@ export const useRegisterStore = defineStore({
   
     async minutesReport(id_orden: number) {
       try {
-        const url = `http://localhost:3001/soli_Rep/report/${id_orden}`;
+        const url = `${reb.getDirection()}/soli_Rep/report/${id_orden}`;
         const newWindow = window.open(url, '_blank');
     
         if (!newWindow) {
@@ -183,7 +183,7 @@ export const useRegisterStore = defineStore({
     }, 
     async inventarioReport(id_orden: number) {
       try {
-        const url = `http://localhost:3001/soli_Rep/inventario_report/${id_orden}`;
+        const url = `${reb.getDirection()}/soli_Rep/inventario_report/${id_orden}`;
         const newWindow = window.open(url, '_blank');
     
         if (!newWindow) {

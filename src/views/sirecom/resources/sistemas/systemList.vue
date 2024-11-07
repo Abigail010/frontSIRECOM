@@ -19,7 +19,12 @@ const breadcrumbs = ref([
   }
 ]);
 
-  const desserts = ref([]) as any
+interface Man {
+  id: number;
+}
+
+  //const desserts = ref([]) as any
+  const desserts = ref<Man[]>([]);
   const getsistemasList = async() => {
     desserts.value = await sistemaStore.systems()
   }
@@ -102,7 +107,7 @@ onMounted(() => {
                 >Nuevo sistema</v-btn>
               </v-toolbar>                        
             </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:item.actions="{ item }: {item: Man}">
                 <v-icon color="info" size="large" class="me-2" @click="buttonsistemaForm(item.id)">
                     mdi-pencil
                 </v-icon>

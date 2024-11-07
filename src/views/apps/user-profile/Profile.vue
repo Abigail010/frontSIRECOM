@@ -79,13 +79,13 @@ const state = reactive({
     }, formDataT:{
        id:'', 
        nombre_taller: '',
-      departamento: '',
+      departamento: null,
       provincia: '', 
       municipio: '', 
       direccion_taller: '',
     tipo_taller:'',
     fuerza_taller: '',
-    servicio_taller: '', 
+    servicio_taller: null, 
     }, 
   });
 

@@ -40,7 +40,7 @@ const dialog = ref(false);
     formData: {
       id: '',
       fecha:currentDate2, 
-      id_taller: '',
+      id_taller: null,
       partida: '',
       total: '0',
       observacion: '', 
@@ -90,7 +90,7 @@ const dialog = ref(false);
     for (let i = 0; i < rep.length; i++) {
       state.formData.repuestos.push(rep[i])
       desserts7.value = desserts7.value.filter( (tipo: any) => tipo.id !=rep[i].id_repuesto)
-      state.formData.total = parseFloat(state.formData.total) + parseFloat(rep[i].subtotal)
+      state.formData.total = String(parseFloat(state.formData.total) + parseFloat(rep[i].subtotal))
     }
   }
     // VALIDACIONES
@@ -163,7 +163,7 @@ const añadir_repuesto = () => {
       //subtotal: parseInt(state.formData.cantidad)*parseInt(state.formData.precio_u)
     });
    // Sumar el subtotal actual al total acumulado
-    state.formData.total = parseFloat(state.formData.total) + parseFloat(state.formData.subtotal);
+    state.formData.total = String(parseFloat(state.formData.total) + parseFloat(state.formData.subtotal));
     // Limpiar los campos después de añadir
     state.formData.id_repuesto = '';
     state.formData.nombre_repuesto = '';
@@ -187,7 +187,7 @@ const buttonDeleteRep = (index: number) => {
     });
 
     // Sumar el subtotal actual al total acumulado
-    state.formData.total = parseFloat(state.formData.total) - parseFloat(registro2.subtotal); // Restar el subtotal del repuesto eliminado
+    state.formData.total = String(parseFloat(state.formData.total) - parseFloat(registro2.subtotal)); // Restar el subtotal del repuesto eliminado
 
     // Reordenar la lista de repuestos disponibles (desserts7)
     desserts7.value.sort((aa: any, bb: any) => {

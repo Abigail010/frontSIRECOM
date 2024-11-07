@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import RebApi from "@/api/RebApi"
+import reb from "@/api/RebApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -11,7 +11,7 @@ export const useSystemStore = defineStore({
     
     async systems () {
       try {
-        const { data } = await RebApi.get('system/systems')
+        const { data } = await reb.RebApi.get('system/systems')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -23,7 +23,7 @@ export const useSystemStore = defineStore({
      async systemID (id: any) {
       try {
         //console.log(id)
-        const { data } = await RebApi.get('system/sistemID/' + id)
+        const { data } = await reb.RebApi.get('system/sistemID/' + id)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -34,7 +34,7 @@ export const useSystemStore = defineStore({
  
     async createSys(form: any) {
       try {
-        const { data } = await RebApi.post('system/create_sys/' + userLogged, form)
+        const { data } = await reb.RebApi.post('system/create_sys/' + userLogged, form)
         router.push({ name: 'systemList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -46,7 +46,7 @@ export const useSystemStore = defineStore({
 
     async updateSys(form: any) {
       try {
-        const { data } = await RebApi.post('system/update_sys/' + userLogged, form)
+        const { data } = await reb.RebApi.post('system/update_sys/' + userLogged, form)
         router.push({ name: 'systemList' });
         return {
           ok: true,
@@ -62,7 +62,7 @@ export const useSystemStore = defineStore({
     // ELIMINAR DELITO
     async deleteSys(form: any) {
       try {
-        const { data } = await RebApi.post('system/delete_sys/' + userLogged, form)
+        const { data } = await reb.RebApi.post('system/delete_sys/' + userLogged, form)
         router.push({ name: 'systemList' });
         return {
           ok: true,

@@ -2,7 +2,7 @@
 import { ref, shallowRef, onMounted } from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import profileBg from '@/assets/images/backgrounds/profilebg.jpg';
-import back2 from '@/assets/images/misImagenes/back2.png';
+import back2 from '@/assets/images/misimagenes/min.png';
 
 const page = ref({ title: 'Perfil' });
 const breadcrumbs = ref([

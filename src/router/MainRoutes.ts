@@ -7,12 +7,12 @@ const MainRoutes = {
     component: () => import('@/layouts/full/FullLayout.vue'),
     children: [
         //DASHBOARD
-        {
+       /* {
             name: 'welcome',
             path: '/welcome',
             component: () => import('@/views/sirecom/dashboard/index.vue')
         },
-       
+       */
     
         // MODULO PERFILES
         {
@@ -227,17 +227,7 @@ const MainRoutes = {
          
      
         // MODULO KILOMETRAJE DE VEHICULO
-        {
-            name: 'vehicleMileageList',
-            path: '/vehicleMileageList',
-            component: () => import('@/views/sirecom/resources/vehicleMileage/vehicleMileageList.vue')
-        },
-        {
-            name: 'vehicleMileageForm',
-            path: '/vehicleMileageForm/:id_kilometraje',
-            component: () => import('@/views/sirecom/resources/vehicleMileage/vehicleMileageForm.vue')
-        },
-
+      
 
 
         {

@@ -21,7 +21,13 @@ const breadcrumbs = ref([
   }
 ]);
 
-  const desserts = ref([]) as any
+
+interface Man {
+  id_fuerza: number;
+}
+
+  //const desserts = ref([]) as any
+  const desserts = ref<Man[]>([]);
   const getList = async() => {
     desserts.value = await fuerzas.fuerza()
   }
@@ -106,7 +112,7 @@ onMounted(() => {
                 >Nueva fuerza</v-btn>
               </v-toolbar>                        
             </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:item.actions="{ item }: {item: Man}">
                 <v-icon color="info" size="large" class="me-2" @click="buttonfuerzaForm(item.id_fuerza)">
                     mdi-pencil
                 </v-icon>

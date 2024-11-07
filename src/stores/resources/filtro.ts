@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import RebApi from "@/api/RebApi"
+import reb from "@/api/RebApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -10,7 +10,7 @@ export const usefilterStore = defineStore({
  // OBTENER LISTA DE DELITOS
     async repuestos () {
       try {
-        const { data } = await RebApi.get('repuestos/geter')
+        const { data } = await reb.RebApi.get('repuestos/geter')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -20,7 +20,7 @@ export const usefilterStore = defineStore({
     // OBTENER LISTA DE DELITOS
     async filters () {
       try {
-        const { data } = await RebApi.get('repuestos/filter')
+        const { data } = await reb.RebApi.get('repuestos/filter')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -30,7 +30,7 @@ export const usefilterStore = defineStore({
       // OBTENER LISTA DE DELITOS
       async clase () {
         try {
-          const { data } = await RebApi.get('repuestos/clase')
+          const { data } = await reb.RebApi.get('repuestos/clase')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -40,7 +40,7 @@ export const usefilterStore = defineStore({
        // OBTENER LISTA DE DELITOS
        async Unidad () {
         try {
-          const { data } = await RebApi.get('repuestos/unidad')
+          const { data } = await reb.RebApi.get('repuestos/unidad')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -50,7 +50,7 @@ export const usefilterStore = defineStore({
   // OBTENER LISTA DE DELITOS
   async tipo () {
     try {
-      const { data } = await RebApi.get('repuestos/tipo')
+      const { data } = await reb.RebApi.get('repuestos/tipo')
       return data
     } catch (error: any) {
       const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -60,7 +60,7 @@ export const usefilterStore = defineStore({
     // OBTENER LISTA DE DELITOS
     async motor () {
         try {
-          const { data } = await RebApi.get('repuestos/tipo_mot')
+          const { data } = await reb.RebApi.get('repuestos/tipo_mot')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -70,7 +70,7 @@ export const usefilterStore = defineStore({
     // OBTENER LISTA DE DELITOS
     async marcas () {
         try {
-          const { data } = await RebApi.get('repuestos/marca')
+          const { data } = await reb.RebApi.get('repuestos/marca')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -81,7 +81,7 @@ export const usefilterStore = defineStore({
      async filter (id: any) {
       try {
        
-        const { data } = await RebApi.get('repuestos/filter_id/' + id)
+        const { data } = await reb.RebApi.get('repuestos/filter_id/' + id)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -92,8 +92,8 @@ export const usefilterStore = defineStore({
     // CREAR DELITO
     async createfilter(form: any) {
       try {
-        console.log('creando...')
-        const { data } = await RebApi.post('repuestos/create_filter/' + userLogged, form)
+        //console.log('creando...')
+        const { data } = await reb.RebApi.post('repuestos/create_filter/' + userLogged, form)
         router.push({ name: 'filtroList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -105,7 +105,7 @@ export const usefilterStore = defineStore({
     // ACTUALIZAR DELITO
     async updatefilter(form: any) {
       try {
-        const { data } = await RebApi.post('repuestos/update_filter/' + userLogged, form)
+        const { data } = await reb.RebApi.post('repuestos/update_filter/' + userLogged, form)
         router.push({ name: 'filtroList' });
         return {
           ok: true,
@@ -120,7 +120,7 @@ export const usefilterStore = defineStore({
     // ELIMINAR DELITO
     async deletefilter(form: any) {
       try {
-        const { data } = await RebApi.post('repuestos/delete_filter/' + userLogged, form)
+        const { data } = await reb.RebApi.post('repuestos/delete_filter/' + userLogged, form)
         router.push({ name: 'filtroList' });
         return {
           ok: true,

@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import RebApi from "@/api/RebApi"
+import reb from "@/api/RebApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -10,7 +10,7 @@ export const useClasesStore = defineStore({
 
     async Clase () {
       try {
-        const { data } = await RebApi.get('clase/getClases')
+        const { data } = await reb.RebApi.get('clase/getClases')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -20,7 +20,7 @@ export const useClasesStore = defineStore({
 
      async ClasesID (id_clase: any) {
       try {
-        const { data } = await RebApi.get('clase/Clase/' + id_clase)
+        const { data } = await reb.RebApi.get('clase/Clase/' + id_clase)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -31,7 +31,7 @@ export const useClasesStore = defineStore({
 
     async createClases(form: any) {
       try {
-        const { data } = await RebApi.post('clase/create_clase/' + userLogged, form)
+        const { data } = await reb.RebApi.post('clase/create_clase/' + userLogged, form)
         router.push({ name: 'ClaseList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -43,7 +43,7 @@ export const useClasesStore = defineStore({
    
     async updateClases(form: any) {
       try {
-        const { data } = await RebApi.post('Clase/update_clase/' + userLogged, form)
+        const { data } = await reb.RebApi.post('Clase/update_clase/' + userLogged, form)
         router.push({ name: 'ClaseList' });
         return {
           ok: true,
@@ -58,7 +58,7 @@ export const useClasesStore = defineStore({
     // ELIMINAR DELITO
     async deleteClases(form: any) {
       try {
-        const { data } = await RebApi.post('clase/delete_clase/' + userLogged, form)
+        const { data } = await reb.RebApi.post('clase/delete_clase/' + userLogged, form)
         router.push({ name: 'ClaseList' });
         return {
           ok: true,

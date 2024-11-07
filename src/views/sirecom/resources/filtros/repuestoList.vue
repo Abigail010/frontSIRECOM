@@ -20,7 +20,14 @@ const breadcrumbs = ref([
   }
 ]);
 
-  const desserts = ref([]) as any
+
+interface Man {
+  id: number;
+  cantidad:number;
+}
+
+  //const desserts = ref([]) as any
+  const desserts = ref<Man[]>([]);
   const getrepuestosList = async() => {
     desserts.value = await repuesto.getRepuestos()
     
@@ -99,7 +106,7 @@ onMounted(() => {
             :sort-by="[{ key: 'nombre_repuesto', order: 'asc' }]" 
             :search="search"
           >
-          <template v-slot:item.cantidad="{ item }">
+          <template v-slot:item.cantidad="{ item }:{item:Man}">
              <span :class="getTipoClass(item.cantidad)">{{ item.cantidad }}</span>
         </template>
             <template v-slot:top>
@@ -121,7 +128,7 @@ onMounted(() => {
                 >Nuevo Repuesto</v-btn>
               </v-toolbar>                        
             </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:item.actions="{ item } : {item: Man }">
                 <v-icon color="info" size="large" class="me-2" @click="buttonrepuestoForm(item.id)">
                     mdi-pencil
                 </v-icon>

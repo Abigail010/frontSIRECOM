@@ -29,8 +29,8 @@ const BLUE_THEME: ThemeTypes = {
         background: '#ffffff',
         hoverColor: '#f6f9fc',
         surface: '#fff',
-        ligthBlue: '#0083DD',
-        darkblue:"014F94",
+        //ligthBlue: '#0083DD',
+        //darkblue:"014F94",
         'on-surface-variant': '#fff',
         grey100: '#F2F6FA',
         grey200: '#EAEFF4'

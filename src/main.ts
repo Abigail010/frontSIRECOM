@@ -16,6 +16,7 @@ import './_mockApis';
 import Maska from 'maska';
 
 // Table
+
 import Vue3EasyDataTable from 'vue3-easy-data-table';
 import 'vue3-easy-data-table/dist/style.css';
 //i18
@@ -47,7 +48,7 @@ app.use(PerfectScrollbar);
 // app.use(VueDragscroll);
 app.use(createPinia());
 
-app.use(VueTablerIcons);
+app.use(VueTablerIcons as any);
 
 app.use(i18n);
 app.use(Maska);

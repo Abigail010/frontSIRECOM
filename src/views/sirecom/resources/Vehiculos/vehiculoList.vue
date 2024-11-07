@@ -20,8 +20,17 @@ const breadcrumbs = ref([
     href: '#'
   }
 ]);
+interface Vehiculo {
+  id_v: number;
+  nombre_fuerza: string;
+  placa: string;
+  chasis: string;
+  tipo_v: string;
+  color: string;
+}
 
-  const desserts = ref([]) as any
+  //const desserts = ref([]) as any
+  const desserts = ref<Vehiculo[]>([]);
   const getsistemasList = async() => {
     desserts.value = await sistemaStore.getvehicle()
   }
@@ -109,7 +118,7 @@ onMounted(() => {
                 >Nuevo vehículo</v-btn>
               </v-toolbar>                        
             </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:item.actions="{ item }: { item: Vehiculo }">
                 <v-icon color="info" size="large" class="me-2" @click="buttonsistemaForm(item.id_v)">
                     mdi-pencil
                 </v-icon>

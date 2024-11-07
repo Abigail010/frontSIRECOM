@@ -21,7 +21,13 @@ const breadcrumbs = ref([
   }
 ]);
 
-  const desserts = ref([]) as any
+ 
+interface Man {
+  id_procedencia: number;
+}
+
+  //const desserts = ref([]) as any
+  const desserts = ref<Man[]>([]);
   const getList = async() => {
     desserts.value = await Procedencias.Procedencia()
   }
@@ -106,7 +112,7 @@ onMounted(() => {
                 >Nueva Procedencia</v-btn>
               </v-toolbar>                        
             </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:item.actions="{ item }: {item: Man}">
                 <v-icon color="info" size="large" class="me-2" @click="buttonProcedenciaForm(item.id_procedencia)">
                     mdi-pencil
                 </v-icon>

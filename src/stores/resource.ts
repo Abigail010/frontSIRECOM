@@ -1,34 +1,20 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
 
-import RebApi from "@/api/RebApi"
-import segipApi from "@/api/segipApi"
+import reb from "@/api/RebApi"
+
 
 export const useResourceStore = defineStore({
   id: 'resource',
   actions: {
     // OBTIENE INFORMACION DE UNA PERSONA DE LA API SEGIP
-    async dataSegip(data: { cedula_identidad: string; complemento: string }) {
-      const { cedula_identidad, complemento } = data
-      const ced = cedula_identidad;
-      const com = complemento;
-      const nom = '';
-      const pat = '';
-      const mat = '';
-      try {
-        const { data } = await segipApi.post("/segipwsexterno", { ced, com, nom, pat, mat })
-        return { data }
-      } catch (error: any) {
-        const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-        return { ok: false, message: message }
-      }
-    },
+
 
     // OBTIENE LA INFORMACION DE UNA PERSONA QUE SE ENCUENTRE EN BASE DE DATOS
     async getPerson(info: { cedula_identidad: string; complemento: string }){
       const { cedula_identidad, complemento } = info
       try {
-        const { data } = await RebApi.post("/resource/person", { cedula_identidad, complemento })
+        const { data } = await reb.RebApi.post("/resource/person", { cedula_identidad, complemento })
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -40,7 +26,7 @@ export const useResourceStore = defineStore({
     async checkPermission (module: string) {
       try {
         const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-        const { data } = await RebApi.post('resource/checkPermission', { userLogged, module })
+        const { data } = await reb.RebApi.post('resource/checkPermission', { userLogged, module })
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -52,7 +38,7 @@ export const useResourceStore = defineStore({
     async getUserSession () {
       try {
         const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-        const { data } = await RebApi.post('resource/userSession', { userLogged })
+        const { data } = await reb.RebApi.post('resource/userSession', { userLogged })
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -62,7 +48,7 @@ export const useResourceStore = defineStore({
          // OBTIENE LA LISTA DE LAS OFICINAS
          async getTalleres() {
           try {
-            const { data } = await RebApi.get('/resource/taller')
+            const { data } = await reb.RebApi.get('/resource/taller')
             return data
           } catch (error: any) {
             const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -73,7 +59,7 @@ export const useResourceStore = defineStore({
          // OBTIENE LA LISTA DE LAS OFICINAS
          async getAccesorios() {
           try {
-            const { data } = await RebApi.get('/resource/accesorios')
+            const { data } = await reb.RebApi.get('/resource/accesorios')
             return data
           } catch (error: any) {
             const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -85,7 +71,7 @@ export const useResourceStore = defineStore({
     async getMileages() {
       try {
         // console.log('llego a resource')
-        const { data } = await RebApi.get('/resource/mileages')
+        const { data } = await reb.RebApi.get('/resource/mileages')
         const mileages = data
         return mileages
       } catch (error: any) {
@@ -98,7 +84,7 @@ export const useResourceStore = defineStore({
     async getIndustriesMileages() {
       try {
         // console.log('llego a resource')
-        const { data } = await RebApi.get('/resource/industriesMileages')
+        const { data } = await reb.RebApi.get('/resource/industriesMileages')
         const industriesMileages = data
         return industriesMileages
       } catch (error: any) {
@@ -111,7 +97,7 @@ export const useResourceStore = defineStore({
     // OBTIENE LA LISTA DE DEPARTAMENTOS
     async getDepartments() {
       try {
-        const { data } = await RebApi.get('/resource/departments')
+        const { data } = await reb.RebApi.get('/resource/departments')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -122,7 +108,7 @@ export const useResourceStore = defineStore({
     // OBTENER LISTA DE PROVINCIAS POR DEPARTAMENTO
     async getProvinces (department: any) {
       try {
-        const { data } = await RebApi.get('resource/provinces/' + department)
+        const { data } = await reb.RebApi.get('resource/provinces/' + department)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -133,7 +119,7 @@ export const useResourceStore = defineStore({
     // OBTENER LISTA DE MUNICIPIOS POR PROVINCIA
     async getMunicipalities (province: any) {
       try {
-        const { data } = await RebApi.get('resource/municipalities/' + province)
+        const { data } = await reb.RebApi.get('resource/municipalities/' + province)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -144,7 +130,7 @@ export const useResourceStore = defineStore({
     // OBTIENE LA LISTA DE DEPARTAMENTOS
     async getPlaces() {
       try {
-        const { data } = await RebApi.get('/resource/places')
+        const { data } = await reb.RebApi.get('/resource/places')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -156,7 +142,7 @@ export const useResourceStore = defineStore({
     // OBTIENE LA LISTA DE LOS CRIMENES
     async getProfiles() {
       try {
-        const { data } = await RebApi.get('/resource/profiles')
+        const { data } = await reb.RebApi.get('/resource/profiles')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -167,7 +153,7 @@ export const useResourceStore = defineStore({
     // OBTIENE LA LISTA DE LOS TIPOS DE SUSTANCIAS CONTROLADAS - SUSTANCIAS CONTROLADAS
     async getSubstances() {
       try {
-        const { data } = await RebApi.get('/resource/substances')
+        const { data } = await reb.RebApi.get('/resource/substances')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -179,7 +165,7 @@ export const useResourceStore = defineStore({
     // OBTIENE LA LISTA DE MENU
     async getMenu() {
       try {
-        const { data } = await RebApi.get('/resource/menu')
+        const { data } = await reb.RebApi.get('/resource/menu')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -190,7 +176,7 @@ export const useResourceStore = defineStore({
     // OBTIENE LA LISTA DE MENU SEGUN CADA PERFIL
     async getProfileMenu() {
       try {
-        const { data } = await RebApi.get('/resource/profileMenu')
+        const { data } = await reb.RebApi.get('/resource/profileMenu')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -201,7 +187,7 @@ export const useResourceStore = defineStore({
 
     async getInstances() {
       try {
-        const { data } = await RebApi.get('/resource/instances')
+        const { data } = await reb.RebApi.get('/resource/instances')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -211,7 +197,7 @@ export const useResourceStore = defineStore({
 
     async getSerivicio_t() {
       try {
-        const { data } = await RebApi.get('/resource/servicio')
+        const { data } = await reb.RebApi.get('/resource/servicio')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

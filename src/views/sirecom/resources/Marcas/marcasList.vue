@@ -21,7 +21,13 @@ const breadcrumbs = ref([
   }
 ]);
 
-  const desserts = ref([]) as any
+  
+interface Man {
+  id_marca: number;
+}
+
+  //const desserts = ref([]) as any
+  const desserts = ref<Man[]>([]);
   const getList = async() => {
     desserts.value = await Marcas.Marca()
    
@@ -107,7 +113,7 @@ onMounted(() => {
                 >Nueva Marca</v-btn>
               </v-toolbar>                        
             </template>
-            <template v-slot:item.actions="{ item }">
+            <template v-slot:item.actions="{item}: {item: Man}">
                 <v-icon color="info" size="large" class="me-2" @click="buttonMarcaForm(item.id_marca)">
                     mdi-pencil
                 </v-icon>

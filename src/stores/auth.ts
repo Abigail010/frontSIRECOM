@@ -1,19 +1,23 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import authApi from "@/api/authApi"
+import reb from "@/api/RebApi"
+type User = {
+  token: string;
+  // otros campos opcionales de `user`
+};
 
 export const useAuthStore = defineStore({
     id: 'auth',
     state: () => ({
       status: 'authenticating',
-      token: null,
-      user: null,
+      token: null as string | null,
+      user: null as User | null,
       returnUrl: null
     }),
     actions: {
       async login(username: string, password: string) {
         try {
-          const { data } = await authApi.post('/login', { username, password })
+          const { data } = await reb.RebApi.post('/auth/login', { username, password })
           const { token, user, permissions } = data
 
           this.token = token;
@@ -44,7 +48,7 @@ export const useAuthStore = defineStore({
           }
 
           const headers = { 'x-access-token': idToken }
-          const { data } = await authApi.get("/is-verify", { headers: headers })
+          const { data } = await reb.RebApi.get("/auth/is-verify", { headers: headers })
           const { token, user, permissions } = data
   
           this.token = token;
@@ -68,7 +72,7 @@ export const useAuthStore = defineStore({
       async getUserMenu() {
         try {
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await authApi.post('/menu', { userLogged })
+          const { data } = await reb.RebApi.post('/auth/menu', { userLogged })
          
           return data
         } catch (error: any) {

@@ -40,9 +40,9 @@ const fuerzas = useFuerzasStore()
     formData: {
       id_persona: '',
       id_usuario: '',
-      id_perfil: '',
-      id_taller: '',
-      id_fuerza:'', 
+      id_perfil: null,
+      id_taller: null,
+      id_fuerza:null, 
       cedula_identidad: '',
       complemento: '',
       nombres: '',
@@ -214,63 +214,7 @@ const usert:any = JSON.parse(localStorage.getItem('user') || '').id_taller
     }
   }
 
-  // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
-  const buttonSearchPerson = async () => {
-    state.formData.id_persona = ''
-   
 
-    const respuesta = await resourceStore.getPerson(state.formData)
-    if(Object.prototype.hasOwnProperty.call(respuesta, 'id')){
-     
-      Toast.fire({
-        icon: 'success',
-        title: 'Resultado Obtenido Satisfactoriamente'
-      })
-      const fecha_nacimiento = respuesta.fecha_nacimiento.split('T')
-    //  state.formData.cedula_identidad = state.formData.cedula_identidad 
-      state.formData.id_persona = respuesta.id
-      state.formData.nombres = respuesta.nombres
-      state.formData.apellido_paterno = respuesta.apellido_paterno
-      state.formData.apellido_materno = respuesta.apellido_materno
-      state.formData.fecha_nacimiento = fecha_nacimiento[0]
-      editar.value = true
-      state.formData.nombre_usuario = state.formData.cedula_identidad
-      state.formData.contrasena = state.formData.cedula_identidad 
-
-    }else{
-      // console.log('UTILIZANDO DESDE API SEGIP');
-      const { data } = await resourceStore.dataSegip(state.formData)
-      if(data.respuesta){
-        Toast.fire({
-          icon: 'error',
-          title: data.respuesta
-        })
-      // DESBLOQUEAR EL INPUT
-      }else{
-        Toast.fire({
-          icon: 'success',
-          title: 'Resultado Obtenido Satisfactoriamente'
-        })
-        state.formData.nombres = data.Nombres
-        state.formData.apellido_paterno = data.PrimerApellido
-        state.formData.apellido_materno = data.SegundoApellido
-        state.formData.genero = data.Genero
-        state.formData.fecha_nacimiento = birthDate(data.FechaNacimiento)
-        state.formData.pais = data.LugarNacimientoPais
-        state.formData.departamento = data.LugarNacimientoDepartamento
-        state.formData.provincia = data.LugarNacimientoProvincia
-        state.formData.localidad = data.LugarNacimientoLocalidad
-        state.formData.domicilio = data.Domicilio
-        state.formData.imagen = 
-          data.Fotografia !== undefined
-          ? 'data:image/jpeg;base64,' + data.Fotografia
-          : 'https://eitrawmaterials.eu/wp-content/uploads/2016/09/person-icon.png'
-          editar.value = true
-        state.formData.nombre_usuario = state.formData.cedula_identidad
-        state.formData.contrasena = state.formData.cedula_identidad
-      }
-    }
-  }
 
  
   const sendForm = ref(true)
@@ -413,7 +357,7 @@ const buttonSendForm = async () => {
             color="primary"
             v-model.trim="state.formData.complemento"
             @input="state.formData.complemento = validateText(state.formData.complemento.toUpperCase())"
-            @keydown.enter=buttonSearchPerson()
+           
             :readonly="editar"
           >
            
