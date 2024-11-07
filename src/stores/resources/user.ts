@@ -1,11 +1,9 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
 
-import reb from "@/api/RebApi"
-
-const direccion_url = 'http://localhost:3009/'  // LOCAL
-// const direccion_url = 'http://165.172.16.13:3009/'  // LOCAL ACCESO REMOTO
-// const direccion_url = 'https://edapi.mingobierno.gob.bo/reb.RebApi/'  // PRODUCCION
+import RebApi from "@/api/rebApi"
+import  { URL } from '@/utils/helpers/direction'
+const direccion_url = URL
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -15,8 +13,8 @@ export const useUserStore = defineStore({
     // OBTENER LISTA DE RECEPCIONES DOCUMENTALES MEDIANTE CASOS
     async users () {
       try {
-        // const { data } = await reb.RebApi.get('user/users/' + userLogged)
-        const { data } = await reb.RebApi.get('user/users')
+        // const { data } = await RebApi.get('user/users/' + userLogged)
+        const { data } = await RebApi.get('user/users')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -25,8 +23,8 @@ export const useUserStore = defineStore({
     },
     async Perfil() {
       try {
-        // const { data } = await reb.RebApi.get('user/users/' + userLogged)
-        const { data } = await reb.RebApi.get('user/perfil')
+        // const { data } = await reb..get('user/users/' + userLogged)
+        const { data } = await RebApi.get('user/perfil')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -36,7 +34,7 @@ export const useUserStore = defineStore({
     async Taller () {
       try {
         const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-        const { data } = await reb.RebApi.get('user/taller/' + userLogged)
+        const { data } = await RebApi.get('user/taller/' + userLogged)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -46,7 +44,7 @@ export const useUserStore = defineStore({
     async usersM () {
       try {
         const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-        const { data } = await reb.RebApi.get('user/users_admin/' + userLogged)
+        const { data } = await RebApi.get('user/users_admin/' + userLogged)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -57,7 +55,7 @@ export const useUserStore = defineStore({
      async user (id: any) {
       try {
         
-        const { data } = await reb.RebApi.get('user/user/' + id)
+        const { data } = await RebApi.get('user/user/' + id)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -68,7 +66,7 @@ export const useUserStore = defineStore({
     // CREAR USUARIO
     async createUser(form: any) {
       try {
-        const { data } = await reb.RebApi.post('user/create_user/' + userLogged, form)
+        const { data } = await RebApi.post('user/create_user/' + userLogged, form)
         router.push({ name: 'userList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -80,7 +78,7 @@ export const useUserStore = defineStore({
     // ACTUALIZAR USUARIO
     async updateUser(form: any) {
       try {
-        const { data } = await reb.RebApi.post('user/update_user/' + userLogged, form)
+        const { data } = await RebApi.post('user/update_user/' + userLogged, form)
         router.push({ name: 'userList' });
         return {
           ok: true,
@@ -96,7 +94,7 @@ export const useUserStore = defineStore({
         // ACTUALIZAR USUARIO
         async updateOne(form: any) {
           try {
-            const { data } = await reb.RebApi.post('user/update_one/' + userLogged, form)
+            const { data } = await RebApi.post('user/update_one/' + userLogged, form)
            // router.push({ name: '' });
             return {
               ok: true,
@@ -114,7 +112,7 @@ export const useUserStore = defineStore({
 
       try {
         console.log(form)
-        const { data } = await reb.RebApi.post('user/delete_user/' + userLogged, form)
+        const { data } = await RebApi.post('user/delete_user/' + userLogged, form)
         router.push({ name: 'userList' });
         return {
           ok: true,

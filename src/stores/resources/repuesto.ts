@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import reb from "@/api/RebApi"
+import RebApi from "@/api/rebApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -11,7 +11,7 @@ export const useRepuestoStore = defineStore({
     // OBTENER LISTA DE DELITOS
     async getRepuestos () {
       try {
-        const { data } = await reb.RebApi.get('registro_rep/getRepuestos')
+        const { data } = await RebApi.get('registro_rep/getRepuestos')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -23,7 +23,7 @@ export const useRepuestoStore = defineStore({
      async Repuesto (id: any) {
       try {
        
-        const { data } = await reb.RebApi.get('registro_rep/Repuesto/' + id)
+        const { data } = await RebApi.get('registro_rep/Repuesto/' + id)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -34,7 +34,7 @@ export const useRepuestoStore = defineStore({
     // CREAR DELITO
     async createRepuesto(form: any) {
       try {
-        const { data } = await reb.RebApi.post('registro_rep/create_Repuesto/' + userLogged, form)
+        const { data } = await RebApi.post('registro_rep/create_Repuesto/' + userLogged, form)
         router.push({ name: 'repuestoList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -46,7 +46,7 @@ export const useRepuestoStore = defineStore({
     // ACTUALIZAR DELITO
     async updateRepuesto(form: any) {
       try {
-        const { data } = await reb.RebApi.post('registro_rep/update_Repuesto/' + userLogged, form)
+        const { data } = await RebApi.post('registro_rep/update_Repuesto/' + userLogged, form)
         router.push({ name: 'repuestoList' });
         return {
           ok: true,
@@ -62,7 +62,7 @@ export const useRepuestoStore = defineStore({
     // ELIMINAR DELITO
     async deleteRepuesto(form: any) {
       try {
-        const { data } = await reb.RebApi.post('registro_rep/delete_Repuesto/' + userLogged, form)
+        const { data } = await RebApi.post('registro_rep/delete_Repuesto/' + userLogged, form)
         router.push({ name: 'repuestoList' });
         return {
           ok: true,

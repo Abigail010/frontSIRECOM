@@ -1,5 +1,5 @@
 import axios from "axios"
-
+import  { URL } from '@/utils/helpers/direction'
 
 /*
 let RebApi; 
@@ -20,8 +20,8 @@ if( dev === 'si'){
      // baseURL: "https://edapi.mingobierno.gob.bo/RebApi"
    })
 }*/
-const dev = true; // Cambia a false en producción
-const baseURL = dev ? 'http://localhost:3001' : 'http://localhost:3009';
+console.log(URL)
+const baseURL = URL
 
 export const RebApi = axios.create({
   baseURL
@@ -34,9 +34,5 @@ RebApi.interceptors.request.use((config) => {
   return config
 })
 
-
-export function getDirection() {
-  return baseURL; // Devuelve la URL en función del valor de dev
-}
-//export default RebApi
-export default { RebApi, getDirection }; // Exporta ambos como un objeto
+export default RebApi
+//export default { RebApi, getDirection }; // Exporta ambos como un objeto

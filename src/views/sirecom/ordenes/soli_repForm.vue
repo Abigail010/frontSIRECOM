@@ -160,7 +160,7 @@ const openpanel = ref([0]);
 
   const registro_id = async (id_orden: any) => {
    state.formData.id_Rep = await soli_Rep.getsolicitudes(id_orden) 
-   console.log(state.formData.id_Rep)
+   
    state.formData.id_Rep2 = await soli_Rep.getEntregas(id_orden) 
    const res= await soli_Rep.getEntregas(id_orden) 
  
@@ -315,7 +315,7 @@ const openpanel = ref([0]);
   // VALIDACION GENERAL
   const validateForm = async () => {
     sendForm.value = true
-    if( !state.formData2.cantidad || !state.formData2.unidad)
+    if( !state.formData2.cantidad || !state.formData2.unidad || !state.formData2.costo)
      {
       sendForm.value = false
     }
@@ -331,31 +331,69 @@ const openpanel = ref([0]);
     timerProgressBar: true,
   });
 
-  function entregar(item: any) {
-  Swal.fire({
-     
-      text: "¡El proceso no podra ser revertido!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "¡Si, entregar!"
-  }).then(async (result) => {
-  if (result.isConfirmed) {
-    const { ok, message } = await soli_Rep.updateEstado1({"id":item})
-    const icono = (ok ? 'success' : 'error')
+  const entregar = async (item: any) => {
+    const data2 = await soli_Rep.getID(item);
+    state.formData2.costo =data2.costo
+ 
+      if(parseFloat(state.formData2.costo) >0){
+        Swal.fire({
+        
+        text: "¡El proceso no podra ser revertido!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "¡Si, entregar!"
+    }).then(async (result) => {
+    if (result.isConfirmed) {
+      const { ok, message } = await soli_Rep.updateEstado1({"id":item})
+      const icono = (ok ? 'success' : 'error')
 
-    if(ok){
-      //await getUsersList()
-    }
-    Toast.fire({
-      icon: icono,
-      title: message,
-    })
-    window.location.reload()
+      if(ok){
+        //await getUsersList()
       }
-  });
-} 
+      Toast.fire({
+        icon: icono,
+        title: message,
+      })
+      window.location.reload()
+        }
+    });
+      }else{
+        Toast.fire({
+              icon: 'error',
+              title: 'Por favor, registre el costo del repuesto antes de continuar.'
+     })
+      }
+ // console.log(data2)
+  }
+ /* function entregar(item: any) {
+  
+      Swal.fire({
+        
+          text: "¡El proceso no podra ser revertido!",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "¡Si, entregar!"
+      }).then(async (result) => {
+      if (result.isConfirmed) {
+        const { ok, message } = await soli_Rep.updateEstado1({"id":item})
+        const icono = (ok ? 'success' : 'error')
+
+        if(ok){
+          //await getUsersList()
+        }
+        Toast.fire({
+          icon: icono,
+          title: message,
+        })
+        window.location.reload()
+          }
+      });
+
+} */
 function recibido(item: any) {
   Swal.fire({
      
@@ -509,18 +547,38 @@ function recibido(item: any) {
                                                 min:0
                                                 label="Precio Unitario"
                                                  type="number"
+                                                 :error="submitButton && !state.formData2.costo"
+                                                >
                                                 
-                                                ></v-text-field>
+                                              </v-text-field>
+                                              <template v-if="submitButton && !state.formData2.costo">
+                                                    <div class="v-messages font-weight-black px-2 py-2">
+                                                      <div class="v-messages__message text-error ">
+                                                        El campo es requerido
+                                                      </div>
+                                                    </div>
+                                                  </template>
                                                </template>
                                                <template v-else>
                                                 <v-text-field
                                                 v-model="state.formData2.costo"
                                                 min:0
                                                 label="Costo"
-                                                 type="number"
-                                               readonly
-                                                ></v-text-field>
+                                                type="number"
+                                                :error="submitButton && !state.formData2.costo"
+                                                readonly
+                                                >
+                                                  
+                                              </v-text-field>
+                                              <template v-if="submitButton && !state.formData2.costo">
+                                                    <div class="v-messages font-weight-black px-2 py-2">
+                                                      <div class="v-messages__message text-error ">
+                                                        El campo es requerido
+                                                      </div>
+                                                    </div>
+                                                  </template>
                                                </template>
+                                               
                                             </v-col>
                                             <v-col cols="12"  md="12">
                                                 <v-text-field
@@ -528,7 +586,10 @@ function recibido(item: any) {
                                                 label="Observación"
                                                  type="text"
                                                  @input="state.formData2.observacion = validateText(state.formData2.observacion.toUpperCase())"
-                                                ></v-text-field>
+                                                
+                                                >
+                                              
+                                              </v-text-field>
                                             </v-col>
                                           </v-row>
 
