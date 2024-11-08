@@ -134,7 +134,7 @@ const vehicleStore = useVehicleStore()
   const departamentos = ref([])
   const getDepartmentsList = async() => {
     departamentos.value = await resourceStore.getDepartments()
-    //console.log(departamentos.value)
+ 
   }
   const lista_accesorios = ref([]) as any
 
@@ -174,14 +174,12 @@ const vehicleStore = useVehicleStore()
   }
 
 
-
-//console.log(route.params.id_v)
   const buttonReturnList = () => {
     router.push({ name: 'VehiculoList' })
   }
 
   const buttonSendForm = async () => {
-   // console.log('registroooo')
+ 
     submitButton.value = true
     await validateForm()
     if(!sendForm.value) return
@@ -269,7 +267,7 @@ const vehicleStore = useVehicleStore()
   </v-row>
 
  
-  <v-rom>
+  <v-row>
 
 <v-expansion-panels v-model="openpanel">
     <!---Delivery Address--->
@@ -632,7 +630,7 @@ const vehicleStore = useVehicleStore()
     <!---Delivery Options--->
     
 </v-expansion-panels>
-</v-rom>
+</v-row>
 
   <v-row>
     <v-col cols="12" class="text-lg-left pt-5">

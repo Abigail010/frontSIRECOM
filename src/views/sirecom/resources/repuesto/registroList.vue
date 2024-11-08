@@ -40,7 +40,7 @@ const getRegisterRList = async() => {
   }
 
   const getTipoClass = (cantidad: any) => {
-    console.log(cantidad)
+  
   // Verifica si la cantidad es numérica antes de comparar
   return cantidad <=0 ? 'tipo-ex' : 'tipo-ex2';
 

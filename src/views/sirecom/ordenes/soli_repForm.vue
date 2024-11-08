@@ -132,7 +132,7 @@ const openpanel = ref([0]);
    // BUSQUEDA o despliegue de repuestos
    const basico_id = async (id_orden: any) => {
     const data = await registro.getbasico(id_orden)
-   // console.log(data)
+
     state.formData.id_orden =data.id
     state.formData.dato1= data.placa
     state.formData.dato2 = data.chasis
@@ -176,7 +176,7 @@ const openpanel = ref([0]);
   const opciones = ref([]) as any
   const ButtonRepuesto = async (item: any) => {
     const data2 = await soli_Rep.getID(item);
-    //console.log(data2)
+
     state.formData2.id_registro = data2.id
     state.formData2.id_repuesto = data2.id_tipo_repuesto
     state.formData2.id_solicitud = data2.id_solicitud
@@ -194,25 +194,24 @@ const openpanel = ref([0]);
     }else{
       if(parseInt(state.formData2.disponible)>0 || parseInt(data2.costo) == 0){
       opciones.values = await soli_Rep.getPrecio( state.formData2.id_repuesto);
-    //  console.log(opciones.values.length)
+ 
       let solicitado = parseInt(state.formData2.cantidad)
       let costo_ver=0
       let residuo=0
       let b = 0 
       if(opciones.values.length>0){
-        //console.log('solicitado '+ solicitado)
+   
       for(let i=0; i<opciones.values.length; i++){
-     //   console.log(i)
+ 
         if(opciones.values[i].entregado>0){
-         // console.log('residuo'  + residuo)
+     
           residuo = parseInt(opciones.values[i].cantidad) - parseInt(opciones.values[i].entregado)
           if(residuo==solicitado){
-           // console.log('iguales')
+        
           if(solicitado>0){
             costo_ver =costo_ver+ solicitado * parseInt(opciones.values[i].precio_u)
             solicitado = Math.max(solicitado - residuo, 0)
-           // console.log('solicitud '+ solicitado + ' costo '+ costo_ver)
-           // state.formData2.costo = String(costo_ver)
+         
           } 
           
           }else{
@@ -220,20 +219,20 @@ const openpanel = ref([0]);
               if(solicitado>0){
               costo_ver = costo_ver+ parseInt(state.formData2.cantidad) * parseInt(opciones.values[i].precio_u)
               solicitado = Math.max(solicitado - solicitado, 0)
-             // console.log('solicitud '+ solicitado + ' costo '+ costo_ver)
+          
               }
             }else{
-              //console.log('es mayor la solicitud')
+              
               if(solicitado>0){
               costo_ver= costo_ver+ residuo * parseInt(opciones.values[i].precio_u)
               solicitado = Math.max(solicitado - residuo, 0)
-            //  console.log('solicitud '+ solicitado + ' costo '+ costo_ver)
+            
               }
             }
           }
           state.formData2.costo = String(costo_ver)
         }else{
-          //console.log('es cero'+ solicitado)
+    
           if(parseInt(state.formData2.cantidad)==solicitado){
              if(solicitado >0){
               costo_ver =costo_ver+ solicitado * parseInt(opciones.values[i].precio_u)
@@ -278,7 +277,7 @@ const openpanel = ref([0]);
  
   const ButtonReport2 = async (item: any) => {
   const data2 = await soli_Rep.minutesReport(item);
- // console.log(data2)
+
   }
   const buttonSendForm = async () => {
     submitButton.value = true
@@ -365,7 +364,7 @@ const openpanel = ref([0]);
               title: 'Por favor, registre el costo del repuesto antes de continuar.'
      })
       }
- // console.log(data2)
+
   }
  /* function entregar(item: any) {
   
@@ -452,7 +451,7 @@ function recibido(item: any) {
       if(parseInt(state.formData.id_registro)>0){
         await registro_id(route.params.id_orden)
       }else{
-        console.log('0')
+        //console.log('0')
       }
       await basico_id(route.params.id_orden)
       editar.value = true
@@ -497,7 +496,7 @@ function recibido(item: any) {
     </v-col>
   </v-row>
 
-<v-rom>
+<v-row>
     
     <v-dialog v-model="dialog" max-width="1000px">
                                 <v-card>
@@ -778,7 +777,7 @@ function recibido(item: any) {
         </v-expansion-panel>
        
     </v-expansion-panels>
-</v-rom>
+</v-row>
     
 
   <v-row>

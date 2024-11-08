@@ -111,7 +111,7 @@ export const useUserStore = defineStore({
     async deleteUser(form: any) {
 
       try {
-        console.log(form)
+       
         const { data } = await RebApi.post('user/delete_user/' + userLogged, form)
         router.push({ name: 'userList' });
         return {

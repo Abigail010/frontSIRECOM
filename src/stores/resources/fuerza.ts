@@ -31,9 +31,9 @@ export const useFuerzasStore = defineStore({
 
     async createFuerzas(form: any) {
       try {
-        console.log(form)
+      
         const { data } = await RebApi.post('fuerza/create_Fuerza/' + userLogged, form)
-        console.log(data)
+      
         router.push({ name: 'FuerzasList' });
         return { ok: true, message: data.message }
       } catch (error: any) {

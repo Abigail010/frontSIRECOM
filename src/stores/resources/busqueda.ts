@@ -147,23 +147,13 @@ export const useSearchStore = defineStore({
           return { ok: false, message };
         }
       }, 
-  /*    async minutesReport(form:any) {
-        try {
-          const response = open(reb.getDirection+'/search_tot/busqueda')
-          console.log(response)
-          return response
-        } catch (error: any) {
-          const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
-          return { ok: false, message: message }
-        }
-      },
-*/
+  
 
       async minutesReport(form: any) {
         try {
          const url =  direccion_url+'/search_tot/busqueda';
 
-     console.log(url)
+     
      //   const { url } = await RebApi.post('repuestos/create_filter/' + userLogged, form)
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');

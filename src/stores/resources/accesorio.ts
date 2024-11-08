@@ -22,7 +22,7 @@ export const useaccesorioStore = defineStore({
      // OBTENER INFORMACION DE DELITO POR ID
      async accesorio (id: any) {
       try {
-        console.log(id)
+ 
         const { data } = await RebApi.get('accesorio/accesorio/' + id)
         return data
       } catch (error: any) {

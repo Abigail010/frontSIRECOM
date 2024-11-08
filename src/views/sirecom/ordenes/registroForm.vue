@@ -171,9 +171,7 @@ const openpanel = ref([0]);
     tipo_mantenimiento10.value = await registro.gettipo_mantenimiento()    
  
     lista_accesorios.value = await resourceStore.getAccesorios()      // LISTA DE accesorios
-    // // LISTA DE sistemas
-    //lista_sistemas.value = await getSystem.systems()
-    //console.log(lista_sistemas.value)
+  
 
     //sistemas basado en el filtro
 
@@ -195,7 +193,6 @@ const openpanel = ref([0]);
   state.formData.id_sistema= ''
    state.formData.repuestos= await registro.searchOrden(state.formData)
 
-   //console.log( state.formData.repuestos)
 }
 
    const basico_id = async (id_orden: any) => {
@@ -218,7 +215,7 @@ const openpanel = ref([0]);
     state.formData.estado_orden = data.estado
 
     lista_sistemas.value = await registro.sistem(id_orden)
-    console.log(lista_sistemas.value)
+  
    } 
 
    const verificar_id = async (id_orden: any) => {
@@ -328,13 +325,13 @@ const openpanel = ref([0]);
   }
 
   const mifuncion = async () => {
-  //  console.log('aqui')
+ 
    if(itemsSelected.value.length>0){
       const indice = itemsSelected.value.length-1
       state.formData.id_filtro= itemsSelected.value[indice].id
       state.formData.nombre_repuesto= itemsSelected.value[indice].nombre_repuesto
       state.formData.id_sis = itemsSelected.value[indice].id_sistema
-    //  console.log( state.formData.id_filtro)
+  
     }
 
  }
@@ -547,17 +544,17 @@ const openpanel = ref([0]);
       state.formData.repuestos = state.formData.repuestos.filter(
         (repuesto:any) => repuesto.id != state.formData.id_filtro
       );
-      //console.log('state.form '+ state.formData.repuestos)
+    
     
       let padre = tipo_filtro.value.find(
       (region:any) => region.id === state.formData.id_filtro
       )
      
       if (padre) {
-     //   console.log('....... ',  padre.nombre_repuesto);
+
         state.formData.nombre_repuesto = padre.nombre_repuesto; // Asignar el nombre_repuesto si se encuentra el objeto
       } else {
-        //console.log('No se encontró el repuesto con ese id_filtro');
+      
       }
       // Agregar el nuevo repuesto a la lista de id_Rep
       state.formData.id_Rep.push({
@@ -600,7 +597,7 @@ const openpanel = ref([0]);
 
   const ButtonReport2 = async (item: any) => {
   const data2 = await registro.inventarioReport(item);
-  console.log(data2) 
+
  
   }
 
@@ -905,14 +902,14 @@ if(state.formData.id_Rep.length>0){
   }
 
   const buttonSendForm = async () => {
-  //  console.log('registroooo')
+
     submitButton.value = true
     await validateForm()
     if(!sendForm.value) return
     isLoading.value = true
     if(state.formData.id_registro == '0' ){
       // ES NUEVO REGISTRO
-    //  console.log('registroooo1010101')
+ 
 
       Swal.fire({
         title: 'Estás seguro?',
@@ -935,7 +932,7 @@ if(state.formData.id_Rep.length>0){
     }else{
      
       if(state.formData.id_registro != '0'){
-        //console.log(state.formData.id_registro)
+       
             if(permisoEdicion.value){
               // SI TIENE PERMISO DE EDICIO
               const { ok, message } = await registro.update_mantenimiento(state.formData)
@@ -953,7 +950,7 @@ if(state.formData.id_Rep.length>0){
   }
   const ButtonRepuesto = async (item: any) => {
     const data2 = await soli_Rep.getID(item);
-    //console.log(data2)
+ 
     state.formData.id_reg_rep = data2.id
     state.formData.nombre_repuesto =  String(data2.nombre_repuesto)
     state.formData.observacion_r =  String(data2.observacion)
@@ -1051,7 +1048,7 @@ if(state.formData.id_Rep.length>0){
       if(parseInt(state.formData.id_registro)>0){
         await registro_id(route.params.id_orden)
       }else{
-        console.log('0')
+        //console.log('0')
       }
     
       await basico_id(route.params.id_orden)
@@ -1109,7 +1106,7 @@ if(state.formData.id_Rep.length>0){
     </v-col>
   </v-row>
 
-<v-rom>
+<v-row>
   <v-dialog v-model="dialog" max-width="1000px">
                                 <v-card>
                                     <v-card-title class="pa-2 bg-success">
@@ -2296,7 +2293,7 @@ if(state.formData.id_Rep.length>0){
         </template>
     </v-expansion-panels>
         
-</v-rom>
+</v-row>
     
   <v-row>
     <v-col cols="12" class="text-lg-left pt-5">

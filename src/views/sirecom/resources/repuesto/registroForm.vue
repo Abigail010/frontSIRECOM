@@ -79,7 +79,7 @@ const dialog = ref(false);
   // FUNCION QUE OBTIENE LA INFORMACION DEL talle
   const getRegisterRId = async (id: any) => {
     const respuesta = await RegisterRStore.RegisterR(id)
-   // console.log(respuesta)
+  
     state.formData.id = respuesta.id
     state.formData.fecha = respuesta.fecha
     state.formData.partida = respuesta.nro_partida 
@@ -139,10 +139,10 @@ const añadir_repuesto = () => {
 
     // Si el objeto `a` existe, extrae el `nombre_repuesto`
     if (a) {
-   //   console.log('Nombre del repuesto: ' + a.nombre_repuesto);
+
       state.formData.nombre_repuesto = a.nombre_repuesto;  // Almacena el nombre en formData
     } else {
-      //console.log('No se encontró el repuesto');
+ 
       return; // Sal del método si no se encuentra el repuesto
     }
 

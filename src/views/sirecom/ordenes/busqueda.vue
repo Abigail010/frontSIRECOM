@@ -75,28 +75,28 @@ const openpanel = ref([0]);
     // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
 const buttonGenerarReport = async () => {
         const respuesta_info = await orden.minutesReport(state.formData)
-        console.log(respuesta_info)
+        
 }
  
     // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
 const buttonGenerarReport2 = async () => {
       const respuesta_info = await orden.vehiculosReport(state.formData2)
-      console.log(respuesta_info)
+      
 }
 
         // BUSQUEDA DE PERSONA MEDIANTE NUMERO DE DOCUMENTO
 const buttonGenerarReport3 = async () => {
         const respuesta_info = await orden.ReportVe(state.formData3)
-        console.log(respuesta_info)
+       
         }
 
 const buttonGenerarReport4 = async () => {
       const respuesta_info = await orden.ReportMan(state.formData4)
-      console.log(respuesta_info)
+      
     }
 const buttonGenerarReport5 = async () => {
       const respuesta_info = await orden.ReportRepuestos(state.formData5)
-      console.log(respuesta_info)
+     
  }
   const buttonClear = () => {
     state.formData.id_taller=''

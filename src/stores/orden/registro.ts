@@ -58,7 +58,7 @@ export const useRegisterStore = defineStore({
 
       async updateOrdenID(form: any) {
         try {
-          console.log("actualizar")
+          
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
           const { data } = await RebApi.post('vehiculo/update_orden/' + userLogged, form)
        //   router.push({ name: 'ordenList' });

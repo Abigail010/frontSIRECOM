@@ -1002,17 +1002,14 @@ const getMenu = async () => {
         // ANALIZAREMOS SI EL SUBMENU QUE NOS LLEGA DEL BACKEND TIENE HIJOS
         if(response[i].children[j].children){
           // EL 2DO NIVEL TIENE HIJOS DE 3ER NIVEL
-          // console.log(response[i].children[j]);
-        
-         
           
               const menu_nivel_3 = []
               for (let k = 0; k < response[i].children[j].children.length; k++) {
-                // console.log(response[i].children[j].children[k]);
+                
                 const submenu_2: any = submenu.children.find(
                   (menu: any) => menu.title == response[i].children[j].children[k].title
                 )
-                // console.log('submenu2:',submenu_2);
+               
                 if(response[i].children[j].children[k].children){
                   const menu_nivel_4 = []
                   for (let l = 0; l < response[i].children[j].children[k].children.length; l++) {

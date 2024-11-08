@@ -101,7 +101,7 @@ export const useOrdenStore = defineStore({
       },
       async updateOrdenID(form: any) {
         try {
-        //  console.log("actualizar")
+   
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
           const { data } = await RebApi.post('vehiculo/update_orden/' + userLogged, form)
         router.push({ name: 'ordenList' });
@@ -119,7 +119,7 @@ export const useOrdenStore = defineStore({
 
       async updateentrega(form: any) {
         try {
-        //  console.log("actualizar")
+
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
           const { data } = await RebApi.post('vehiculo/entrega/' + userLogged, form)
         router.push({ name: 'ordenList' });
@@ -136,7 +136,7 @@ export const useOrdenStore = defineStore({
       },
       async updatefinalizado(form: any) {
         try {
-        //  console.log("actualizar")
+       
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
           const { data } = await RebApi.post('vehiculo/recibido/' + userLogged, form)
         router.push({ name: 'ordenList' });
@@ -153,7 +153,7 @@ export const useOrdenStore = defineStore({
       },
       async deleteEntrega(form: any) {
         try {
-        //  console.log("actualizar")
+        
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
           const { data } = await RebApi.post('vehiculo/cancelar_man/' + userLogged, form)
         router.push({ name: 'ordenList' });

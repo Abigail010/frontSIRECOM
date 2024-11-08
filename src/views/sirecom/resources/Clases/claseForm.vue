@@ -39,7 +39,7 @@ import { validateText } from '@/utils/helpers/validateText'
 
   // FUNCION QUE OBTIENE LA INFORMACION DE LA DEPENDENCIA
   const getClaseById = async (id_Clase: any) => {
- //   console.log(id_Clase)
+ 
     const respuesta = await Clases.ClasesID(route.params.id_clase)
     state.formData.id = respuesta.id_clase
     state.formData.nombre_Clase = respuesta.nombre_clase

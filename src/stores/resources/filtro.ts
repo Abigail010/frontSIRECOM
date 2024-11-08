@@ -92,7 +92,7 @@ export const usefilterStore = defineStore({
     // CREAR DELITO
     async createfilter(form: any) {
       try {
-        //console.log('creando...')
+        
         const { data } = await RebApi.post('repuestos/create_filter/' + userLogged, form)
         router.push({ name: 'filtroList' });
         return { ok: true, message: data.message }

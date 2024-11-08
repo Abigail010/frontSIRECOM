@@ -30,7 +30,7 @@ interface Man {
   const desserts = ref<Man[]>([]);
   const getrepuestosList = async() => {
     desserts.value = await repuestoStore.filters()
-    //console.log(desserts.value)
+  
   }
 
   const buttonrepuestoForm = (id_filtro: any) => {

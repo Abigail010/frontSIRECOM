@@ -20,9 +20,9 @@ export async function encryptMessage(id: any, secretKey: any) {
     //console.log('Clave generada (hexadecimal):', Libsodium.to_hex(secretKey));
     // Cifrar el mensaje
     const encrypted = Libsodium.crypto_secretbox_easy(id, nonce, secretKey);
-    console.log('id_juzgado: ',id)
+  
     const encriptado = Libsodium.to_hex(encrypted)
-    console.log('Mensaje cifrado (hexadecimal):',encriptado);
+    //console.log('Mensaje cifrado (hexadecimal):',encriptado);
     
     return { encriptado, nonce };
 }

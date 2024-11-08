@@ -54,12 +54,9 @@ const mesActualNombre = nombresMeses[fechaActual.getMonth()];
 // Obtener el año actual
 const añoActual = fechaActual.getFullYear();
 // Imprimir el mes y año actual
-//console.log(`Mes actual: ${mesActualNombre}`);
-//console.log(`Año actual: ${añoActual}`);
+
 const select = ref('');
  select.value = mesActualNombre;
-//const items = ref(['March 2023', 'April 2023', 'May 2023']);
-
 
 
 const fuerzas = []
@@ -68,17 +65,16 @@ const finalizados = [] as any
 const prueba = ref([]) as any
 
 const getEncargado = async (id: any) => {
-    //console.log('info... '+id)
+    
    // prueba.value = await orden.getPrueba2(mesActualNombre);
     if(id!=''){
-       // console.log('info2... '+id)
+       
         prueba.value = await orden.getPrueba2(id);
         for(let i=0; i< prueba.value.length; i++){
         pendientes[i] = parseInt(prueba.value[i].pendientes)
         finalizados[i] = prueba.value[i].finalizado
         fuerzas[i] = prueba.value[i].placa
-       // console.log(prueba.value[i].pendientes )
-      // console.log(pendientes[i] )
+     
     }
     }else{
         prueba.value = await orden.getPrueba2(mesActualNombre);
@@ -86,15 +82,14 @@ const getEncargado = async (id: any) => {
         pendientes[i] = parseInt(prueba.value[i].pendientes)
         finalizados[i] = prueba.value[i].finalizado
         fuerzas[i] = prueba.value[i].placa
-       // console.log(prueba.value[i].pendientes )
-      // console.log(pendientes[i] )
+       
     }
     }
      
   }
 const getGen = async () => {
     const info = await orden.getInfoB();
-   // console.log(info.id_taller)
+   
     const users = await orden.getUsers();
     const vehiculo = await orden.getVehiculos();
     const man1 = await orden.getFinalizado();
@@ -102,13 +97,12 @@ const getGen = async () => {
     const rep1 = await orden.getPedidos_en();
     const rep2 = await orden.getPedidos_pen();
     prueba.value = await orden.getPrueba2(mesActualNombre);
-    //console.log(prueba.value)
+    
     for(let i=0; i< prueba.value.length; i++){
         pendientes[i] = parseInt(prueba.value[i].pendientes)
         finalizados[i] = prueba.value[i].finalizado
         fuerzas[i] = prueba.value[i].placa
-       // console.log(prueba.value[i].pendientes )
-      // console.log(pendientes[i] )
+       
     }
     state.formData.title1 ="Usuarios Registrados"
     state.formData.title2 ="Vehículos Registrados"
@@ -225,7 +219,7 @@ const getGen = async () => {
         state.formData.dato6 = String(tot5)
     } 
 
-   // console.log(users)
+  
   }
  
 

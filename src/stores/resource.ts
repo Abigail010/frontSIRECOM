@@ -70,7 +70,7 @@ export const useResourceStore = defineStore({
     // OBTIENE LA LISTA DE LOS KILOMETRAJES - VEHICULOS
     async getMileages() {
       try {
-        // console.log('llego a resource')
+    
         const { data } = await RebApi.get('/resource/mileages')
         const mileages = data
         return mileages
@@ -83,7 +83,7 @@ export const useResourceStore = defineStore({
     // OBTIENE LA LISTA DE LOS KILOMETRAJES POR INDUSTRIA - VEHICULO
     async getIndustriesMileages() {
       try {
-        // console.log('llego a resource')
+       
         const { data } = await RebApi.get('/resource/industriesMileages')
         const industriesMileages = data
         return industriesMileages

@@ -20,7 +20,7 @@ if( dev === 'si'){
      // baseURL: "https://edapi.mingobierno.gob.bo/RebApi"
    })
 }*/
-console.log(URL)
+
 const baseURL = URL
 
 export const RebApi = axios.create({

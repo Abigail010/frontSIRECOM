@@ -15,7 +15,7 @@ export const usereadRuteStore = defineStore({
              longitud: 0.0,   
              });
           
-             //console.log(ruta)
+             
               navigator.geolocation.getCurrentPosition(position => {
               
               const  latitud = position.coords.latitude

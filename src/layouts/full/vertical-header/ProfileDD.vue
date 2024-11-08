@@ -35,7 +35,7 @@ const state = reactive({
     const info = await orden.getInfoB();
     state.formData.nombre = info.nombres+ ' '+ info.apellido_paterno+' ' +info.apellido_materno
     state.formData.correo = info.correo_electronico
-   //console.log(info)
+   
 }
 
 onMounted(async () => {

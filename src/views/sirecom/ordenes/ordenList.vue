@@ -28,7 +28,7 @@ const breadcrumbs = ref([
 ]);
 
   const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
-  // console.log('perfil', userProfile);
+
   const state = reactive({
     formData: {
       total:'', 
@@ -39,7 +39,7 @@ const breadcrumbs = ref([
   const ButtonReport2 = async (item: any) => {
   
   const data2 = await registro.minutesReport(item);
-  //console.log(data2)
+
   }
 
   interface Man {
@@ -93,7 +93,7 @@ const headers = ref([
 
 const buttonApprove = async (item: any) => {
     await registro_id(item);  // Wait for the state update
-   // console.log(state.formData.permiso)
+ 
     if (state.formData.permiso === 'Entrega exitosa') {
     
         Swal.fire({
@@ -132,7 +132,7 @@ const buttonApprove = async (item: any) => {
 
 const registro_id = async (id_orden: any) => {
     const res2 = await soli_Rep.getTotal(id_orden);
-   // console.log(res2)
+  
     state.formData.total = res2.total;
 
     if (state.formData.total === '0') {

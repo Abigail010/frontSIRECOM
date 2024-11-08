@@ -47,7 +47,7 @@ const headers = ref([
 ])
 
 const getTipoClass = (cantidad: any) => {
-    console.log(cantidad)
+   
   // Verifica si la cantidad es numérica antes de comparar
   return cantidad ==0 ? 'tipo' : cantidad <=3 ? 'tipo-2': 'tipo-p';
 

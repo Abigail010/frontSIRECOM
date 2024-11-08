@@ -44,7 +44,7 @@ const getUsersList = async() => {
 }
 
   const buttonUserForm = (id_usuario: any) => {
-    ///console.log(id_usuario)
+
     router.push({ name: 'userForm', params: { id_usuario: id_usuario }})
   }
 

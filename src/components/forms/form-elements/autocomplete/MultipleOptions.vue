@@ -13,7 +13,7 @@ const value = ref(['The Dark Knight']);
 const multi_value = ref(['The Dark Knight', 'Fight Club']);
 const onSearch = async (search: any) =>{
       // lógica de búsqueda (opcional)
-      console.log('Searching for:', search);
+     // console.log('Searching for:', search);
 }
 </script>
 

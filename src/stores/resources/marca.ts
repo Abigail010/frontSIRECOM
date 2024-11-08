@@ -20,7 +20,7 @@ export const useMarcasStore = defineStore({
 
      async MarcasID (id: any) {
       try {
-        //console.log('.....'+ id)
+        
         const { data } = await RebApi.get('marca/Marca/' + id)
         return data
       } catch (error: any) {

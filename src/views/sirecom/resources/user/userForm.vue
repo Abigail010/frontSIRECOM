@@ -189,7 +189,7 @@ const usert:any = JSON.parse(localStorage.getItem('user') || '').id_taller
   // FUNCION QUE OBTIENE LA INFORMACION DEL USUARIO
   const getUserById = async (id: any) => {
     const respuesta = await userStore.user(id)
-    //console.log(respuesta.value)
+   
     state.formData.id_usuario = respuesta.id
     state.formData.id_persona = respuesta.id_persona
     state.formData.id_taller = respuesta.id_taller

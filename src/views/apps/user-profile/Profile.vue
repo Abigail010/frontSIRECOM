@@ -163,7 +163,7 @@ const schema = Yup.object().shape({
     state.formData.genero = info.genero
     state.formData.correo_electronico = correo_electronico
     state.formData.nombre_usuario = nombre_usuario
-    //console.log(state.formData.fecha_nac)
+    
     const respuesta = await tallerStore.taller_id(state.formData.id_taller)
     state.formDataT.id = respuesta.id
     state.formDataT.nombre_taller = respuesta.nombre_taller
@@ -174,10 +174,8 @@ const schema = Yup.object().shape({
     state.formDataT.tipo_taller =respuesta.tipo
     state.formDataT.fuerza_taller = respuesta.fuerza
     state.formDataT.servicio_taller = respuesta.servicio
-   // console.log(info.id_taller)
+  
     
-
-   // console.log(users)
   }
   const buttonSendForm = async () => {
 

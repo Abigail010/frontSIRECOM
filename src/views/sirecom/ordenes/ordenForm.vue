@@ -253,7 +253,7 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
   }
 
   const buttonSendForm = async () => {
-  //  console.log('registroooo')
+  
     submitButton.value = true
     await validateForm()
     if(!sendForm.value) return
@@ -261,8 +261,7 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
     isLoading.value = true
     if(route.params.id_orden == '0'){
       // ES NUEVO REGISTRO
-      //console.log('registroooo')
-
+     
       Swal.fire({
         title: '¿Estás seguro?',
         text: "Verifica que la información registrada sea correcta",
