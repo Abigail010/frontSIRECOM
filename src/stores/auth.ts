@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import RebApi from "@/api/rebApi"
+import  RebApi from "@/api/rebApi"
 type User = {
   token: string;
   // otros campos opcionales de `user`

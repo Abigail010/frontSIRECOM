@@ -3,7 +3,7 @@ import { router } from '@/router';
 
 import RebApi from "@/api/rebApi"
 import { URL} from '@/utils/helpers/direction'
-import renameFiles from '@/utils/helpers/renameFiles'
+
 
 const direccion_url = URL
 

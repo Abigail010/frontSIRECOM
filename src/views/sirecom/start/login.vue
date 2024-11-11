@@ -62,7 +62,7 @@ const Toast = Swal.mixin({
 </script>
 
 <template>
-<div class="pa-3 prueba" >
+<div class="pa-3 prueba_unica" >
     <v-row class="h-100vh mh-100 auth ">
       <v-col cols="12" lg="4" xl="4" class="d-lg-flex align-center justify-center  position-relative">
         <div></div>
@@ -137,74 +137,69 @@ const Toast = Swal.mixin({
 </template>
 
 
-<style lang="css">
-html, body {
-height: 100%;  /* Asegura que el html y el body ocupen el 100% de la altura de la pantalla */
-margin: 0;
+<style scoped lang="css">
+* {
+   box-sizing: border-box;
+   margin: 0;
    padding: 0;
-   overflow: hidden;  /* Evita cualquier scroll */
 }
-.prueba {
+
+html, body {
+   height: 100%;
+   overflow: hidden; /* Elimina cualquier scroll */
+}
+
+.prueba_unica {
    background-image: url('../../../assets/images/misimagenes/prueba.png');
-   background-size: cover; /* La imagen cubrirá completamente el área del contenedor */
-   background-position: center center; /* Centrará la imagen tanto vertical como horizontalmente */
-   background-repeat: no-repeat; /* Evitará que la imagen se repita */
-   width: 100vw; /* Ancho de la ventana del navegador */
-   height: 105vh; /* Alto de la ventana del navegador */
-   margin: 0 auto; /* Centrará el contenedor si es necesario */
+   background-size: cover;
+   background-position: center center;
+   background-repeat: no-repeat;
+   width: 100vw;
+   height: 100vh; /* Ocupa el 100% de la pantalla */
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   margin: 0;
+   padding: 0;
+   overflow: hidden; /* Asegura que no haya scroll dentro del contenedor */
 }
 
- /* .login_{
-    background-color: white; 
-    width:  80%;
-     height: 70%;
-     margin-top: 10%;
-    
-     border-radius: 40px ;
-  }*/
-  .login_ {
-    background-color: white;
-    width: 80%;
-    height: 70%;
-    margin: 10% auto; /* Centro vertical y horizontal */
-    border-radius: 40px;
-    max-width: 500px; /* Limita el ancho máximo para pantallas grandes */
-    max-height: 90%; /* Limita la altura máxima */
-    padding: 20px; /* Añadir algo de espacio interior */
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Para darle un efecto de profundidad */
-    align-items: center;
+
+.login_ {
+   background-color: white;
+   width: 80%;
+   height: 70%;
+   margin: 10% auto;
+   border-radius: 40px;
+   max-width: 500px;
+   max-height: 90%;
+   padding: 20px;
+   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+   align-items: center;
 }
 
-/* Ajuste para pantallas pequeñas */
 @media (max-width: 768px) {
- /* .prueba {
-       background-size: contain; 
-       height: auto; 
-       min-height: 100vh; 
-   }*/
-    .login_ {
-        width: 90%; /* Aumenta el ancho en pantallas pequeñas */
-        height: auto; /* Permite que la altura se ajuste al contenido */
-        margin-top: 5%; /* Reduce el margen superior */
-        padding: 15px;
-    }
+   .login_ {
+      width: 90%;
+      height: auto;
+      margin-top: 5%;
+      padding: 15px;
+   }
 }
 
-/* Ajuste para pantallas muy pequeñas (móviles) */
 @media (max-width: 480px) {
-    .login_ {
-        width: 95%; /* Casi toda la pantalla en dispositivos muy pequeños */
-        margin-top: 3%;
-        padding: 10px;
-        border-radius: 20px; /* Redondeado menor para pantallas pequeñas */
-    }
+   .login_ {
+      width: 95%;
+      margin-top: 3%;
+      padding: 10px;
+      border-radius: 20px;
+   }
 }
 
-  .imagen{
-    width: 30%; 
-    height: 50%; 
-    border-radius: 50%;
-  }
+.imagen {
+   width: 30%;
+   height: 50%;
+   border-radius: 50%;
+}
 </style>
-
 
