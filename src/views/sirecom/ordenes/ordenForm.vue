@@ -322,9 +322,9 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
 const getMecanicos = async() => {
     desserts.value = await orden.getDisponibles() 
     let n = desserts.value.length;
-   //console.log('numero '+n)
+
     if(n==0){
-     // console.log('despliegue de todo')
+  
       desserts.value = await orden.getMecanicos() 
     }
 }

@@ -1039,7 +1039,7 @@ if(state.formData.id_Rep.length>0){
   
   onMounted(async () => {
     await getResourcesList()
-    //await getMecanicos()
+   
     
     if(route.params.id_orden  != '0'){
       
