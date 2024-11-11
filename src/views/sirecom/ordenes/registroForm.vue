@@ -1067,9 +1067,9 @@ if(state.formData.id_Rep.length>0){
     <v-col cols="12" lg="12">
       <v-alert
         variant="outlined"
-        type="warning"
+        type="success"
         border="top"
-        icon="$warning"
+        icon="$success"
         title="INFORMACIÓN DEL VEHÍCULO"
         closable
       >

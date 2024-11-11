@@ -354,8 +354,9 @@ const getMecanicos = async() => {
         title="ATENCIÓN"
         closable
       >
-        - <span class="text-primary">Debe ingresar para el registro del vehículo la placa o chasis</span><br>
-        - <span class="text-primary">El vehículo debe encontrarse registrado en el sistema para poder registrar su ingreso</span><br>
+        - <span class="text-primary">Debe ingresar la placa o chasis para el registro de ingreso del vehículo. </span><br>
+        - <span class="text-primary">El vehículo debe encontrarse registrado en el sistema para poder registrar su ingreso. </span><br>
+        - <span class="text-error"><b>Nota: </b>En caso de que el vehículo no se encuentre registrado en el sistema, se recomienda comunicarse con la administración de la <b>DIPREVCON</b> para realizar el registro correspondiente.</span><br>
       </v-alert>
     </v-col>
   </v-row>

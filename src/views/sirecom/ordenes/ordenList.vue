@@ -82,7 +82,7 @@ const headers = ref([
   { title: 'Placa', key: 'placa' },
   { title: 'Chasis', key: 'chasis' },
   { title: 'Conductor', key: 'conductor' },
-  { title: 'Mecanico', key: 'mecanico' },
+  { title: 'Mecánico', key: 'mecanico' },
   { title: 'Taller', key: 'nombre_taller' },
   { title: 'Ciudad', key: 'ciudad' },
  

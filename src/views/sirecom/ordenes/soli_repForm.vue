@@ -463,14 +463,30 @@ function recibido(item: any) {
 
 <template>
   <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
-
-  <v-row >
+  <v-row>
     <v-col cols="12" lg="12">
       <v-alert
         variant="outlined"
         type="warning"
         border="top"
         icon="$warning"
+        title="ATENCIÓN"
+        closable
+      >
+        - <span class="text-primary"> El botón de editar le permite registrar el costo del vehículo. </span><br>
+        - <span class="text-primary"> Luego de haber registrado el <b>costo</b>, podrá realizar el registro de entrega del repuesto. </span><br>
+        - <span class="text-primary"> El botón de <b>recibir repuesto</b> le permite registrar el repuesto en mal estado que fue solicitado.</span><br>
+        - <span class="text-primary"><b>Nota:</b> El costo que se visualiza es un estimado.</span><br>
+      </v-alert>
+    </v-col>
+  </v-row>
+  <v-row >
+    <v-col cols="12" lg="12">
+      <v-alert
+        variant="outlined"
+        type="success"
+        border="top"
+        icon="$success"
         title="INFORMACIÓN DEL VEHÍCULO"
         closable
       >
@@ -495,7 +511,7 @@ function recibido(item: any) {
       </v-alert>
     </v-col>
   </v-row>
-
+  
 <v-row>
     
     <v-dialog v-model="dialog" max-width="1000px">
