@@ -23,16 +23,16 @@ if( dev === 'si'){
 
 const baseURL = URL
 
-export const RebApi = axios.create({
+export const rebApi = axios.create({
   baseURL
 });
 
-RebApi.interceptors.request.use((config) => {
+rebApi.interceptors.request.use((config) => {
   config.headers = {
     "x-access-token": localStorage.getItem("token")
   }
   return config
 })
 
-export default RebApi
+export default rebApi
 //export default { RebApi, getDirection }; // Exporta ambos como un objeto

@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
 
-import RebApi from "@/api/rebApi"
+import rebApi from "@/api/rebApi"
 import { URL} from '@/utils/helpers/direction'
 
 
@@ -15,7 +15,7 @@ export const useVehicleStore = defineStore({
      // OBTENER INFORMACION DEL BIEN VEHICULO
      async getvehicle () {
       try {
-        const { data } = await RebApi.get('vehicle/getvehi_/' )
+        const { data } = await rebApi.get('vehicle/getvehi_/' )
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -25,7 +25,7 @@ export const useVehicleStore = defineStore({
      // OBTENER INFORMACION DEL BIEN VEHICULO
      async getFuerza () {
       try {
-        const { data } = await RebApi.get('vehicle/getFuerza/' )
+        const { data } = await rebApi.get('vehicle/getFuerza/' )
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -34,7 +34,7 @@ export const useVehicleStore = defineStore({
     },
     async getProce () {
       try {
-        const { data } = await RebApi.get('vehicle/getpro/' )
+        const { data } = await rebApi.get('vehicle/getpro/' )
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -45,7 +45,7 @@ export const useVehicleStore = defineStore({
     // OBTENER INFORMACION DEL BIEN VEHICULO
     async vehicle (id_bien_registro: number) {
       try {
-        const { data } = await RebApi.get('vehicle/vehicle/' + id_bien_registro)
+        const { data } = await rebApi.get('vehicle/vehicle/' + id_bien_registro)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -55,7 +55,7 @@ export const useVehicleStore = defineStore({
       
     async createVehicle (form: any) {
       try {
-        const { data } = await RebApi.post('vehicle/create_vehicle/' + userLogged, form);
+        const { data } = await rebApi.post('vehicle/create_vehicle/' + userLogged, form);
        // router.push({ name: 'vehiculoList' });
          router.push({ name: 'VehiculoList' });
         return { ok: true, message: data.message };
@@ -74,7 +74,7 @@ export const useVehicleStore = defineStore({
     async getIDv (id: any) {
       try {
         
-        const { data } = await RebApi.get('vehicle/vehicle/' + id)
+        const { data } = await rebApi.get('vehicle/vehicle/' + id)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -86,7 +86,7 @@ export const useVehicleStore = defineStore({
 
     async updateVehicle (form: any) {
       try {
-        const { data } = await RebApi.post('vehicle/update_vehicle/' + userLogged, form);
+        const { data } = await rebApi.post('vehicle/update_vehicle/' + userLogged, form);
        // router.push({ name: 'vehiculoList' });
           router.push({ name: 'VehiculoList' });
         return { ok: true, message: data.message };
@@ -107,7 +107,7 @@ export const useVehicleStore = defineStore({
 
           try {
             console.log(form)
-            const { data } = await RebApi.post('vehicle/delete_vehicle/' + userLogged, form)
+            const { data } = await rebApi.post('vehicle/delete_vehicle/' + userLogged, form)
             router.push({ name: 'VehiculoList' });
             return {
               ok: true,
@@ -136,7 +136,7 @@ export const useVehicleStore = defineStore({
    // CREAR INFORMACION DEL BIEN VEHICULO
    async deleteVehicle (form: any) {
     try {
-      const { data } = await RebApi.post('vehicle/delete_vehicle/' + userLogged, form)
+      const { data } = await rebApi.post('vehicle/delete_vehicle/' + userLogged, form)
       return { ok: true, message: data.message }
     } catch (error: any) {
       const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

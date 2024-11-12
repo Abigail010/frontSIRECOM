@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import RebApi from "@/api/rebApi"
+import rebApi from "@/api/rebApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -10,7 +10,7 @@ export const useProcedenciasStore = defineStore({
 
     async Procedencia () {
       try {
-        const { data } = await RebApi.get('proce/getProcedencias')
+        const { data } = await rebApi.get('proce/getProcedencias')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -20,7 +20,7 @@ export const useProcedenciasStore = defineStore({
 
      async ProcedenciasID (id: any) {
       try {
-        const { data } = await RebApi.get('proce/Procedencia/' + id)
+        const { data } = await rebApi.get('proce/Procedencia/' + id)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -31,7 +31,7 @@ export const useProcedenciasStore = defineStore({
 
     async createProcedencias(form: any) {
       try {
-        const { data } = await RebApi.post('proce/create_Procedencia/' + userLogged, form)
+        const { data } = await rebApi.post('proce/create_Procedencia/' + userLogged, form)
         router.push({ name: 'proceList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -43,7 +43,7 @@ export const useProcedenciasStore = defineStore({
    
     async updateProcedencias(form: any) {
       try {
-        const { data } = await RebApi.post('proce/update_Procedencia/' + userLogged, form)
+        const { data } = await rebApi.post('proce/update_Procedencia/' + userLogged, form)
         router.push({ name: 'proceList' });
         return {
           ok: true,
@@ -59,7 +59,7 @@ export const useProcedenciasStore = defineStore({
     // ELIMINAR DELITO
     async deleteProcedencias(form: any) {
       try {
-        const { data } = await RebApi.post('proce/delete_Procedencia/' + userLogged, form)
+        const { data } = await rebApi.post('proce/delete_Procedencia/' + userLogged, form)
         router.push({ name: 'proceList' });
         return {
           ok: true,

@@ -1,4 +1,4 @@
-import RebApi from "@/api/rebApi"
+import rebApi from "@/api/rebApi"
 import { useResourceStore } from '@/stores/resource';
 
 export function editPermission(modulo_actual: string) {

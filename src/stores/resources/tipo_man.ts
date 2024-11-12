@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import RebApi from "@/api/rebApi"
+import rebApi from "@/api/rebApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -11,7 +11,7 @@ export const useManStore = defineStore({
     
     async Mantems () {
       try {
-        const { data } = await RebApi.get('tipo_man/tipo_man')
+        const { data } = await rebApi.get('tipo_man/tipo_man')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -22,7 +22,7 @@ export const useManStore = defineStore({
      // OBTENER INFORMACION DE DELITO POR ID
      async MantemID (id: any) {
       try {
-        const { data } = await RebApi.get('tipo_man/tipo_manID/' + id)
+        const { data } = await rebApi.get('tipo_man/tipo_manID/' + id)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -33,7 +33,7 @@ export const useManStore = defineStore({
  
     async createMan(form: any) {
       try {
-        const { data } = await RebApi.post('tipo_man/create_Man/' + userLogged, form)
+        const { data } = await rebApi.post('tipo_man/create_Man/' + userLogged, form)
         router.push({ name: 'tipo_manList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -45,7 +45,7 @@ export const useManStore = defineStore({
 
     async updateMan(form: any) {
       try {
-        const { data } = await RebApi.post('tipo_man/update_Man/' + userLogged, form)
+        const { data } = await rebApi.post('tipo_man/update_Man/' + userLogged, form)
         router.push({ name: 'tipo_manList' });
         return {
           ok: true,
@@ -61,7 +61,7 @@ export const useManStore = defineStore({
     // ELIMINAR DELITO
     async deleteMan(form: any) {
       try {
-        const { data } = await RebApi.post('tipo_man/delete_Man/' + userLogged, form)
+        const { data } = await rebApi.post('tipo_man/delete_Man/' + userLogged, form)
         router.push({ name: 'tipo_manList' });
         return {
           ok: true,
