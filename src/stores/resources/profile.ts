@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import rebApi from "@/api/rebApi"
+import sirecomApi from "@/api/sirecomApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -10,7 +10,7 @@ export const useProfileStore = defineStore({
 
     async profiles () {
       try {
-        const { data } = await rebApi.get('profile/profiles')
+        const { data } = await sirecomApi.get('profile/profiles')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -20,7 +20,7 @@ export const useProfileStore = defineStore({
 
      async profile (id: any) {
       try {
-        const { data } = await rebApi.get('profile/profile/' + id)
+        const { data } = await sirecomApi.get('profile/profile/' + id)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -30,7 +30,7 @@ export const useProfileStore = defineStore({
 
     async createProfile(form: any) {
       try {
-        const { data } = await rebApi.post('profile/create_profile/' + userLogged, form)
+        const { data } = await sirecomApi.post('profile/create_profile/' + userLogged, form)
         router.push({ name: 'profileList' });
         return { ok: true, message: data.message }
       } catch (error: any) {
@@ -41,7 +41,7 @@ export const useProfileStore = defineStore({
 
     async updateProfile(form: any) {
       try {
-        const { data } = await rebApi.post('profile/update_profile/' + userLogged, form)
+        const { data } = await sirecomApi.post('profile/update_profile/' + userLogged, form)
         router.push({ name: 'profileList' });
         return {
           ok: true,
@@ -56,7 +56,7 @@ export const useProfileStore = defineStore({
 
     async deleteProfile(form: any) {
       try {
-        const { data } = await rebApi.post('profile/delete_profile/' + userLogged, form)
+        const { data } = await sirecomApi.post('profile/delete_profile/' + userLogged, form)
         router.push({ name: 'profileList' });
         return {
           ok: true,

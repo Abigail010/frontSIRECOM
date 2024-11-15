@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
 
-import rebApi from "@/api/rebApi"
+import sirecomApi from "@/api/sirecomApi"
 import { URL } from '@/utils/helpers/direction'
 
 const direccion_url = URL
@@ -14,7 +14,7 @@ export const useOrdenStore = defineStore({
       try {
         const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
         
-        const { data } = await rebApi.post('vehiculo/search/' , form)
+        const { data } = await sirecomApi.post('vehiculo/search/' , form)
         
         return data
         
@@ -27,7 +27,7 @@ export const useOrdenStore = defineStore({
       try {
         const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
         
-        const { data } = await rebApi.post('vehiculo/search_info/' , form)
+        const { data } = await sirecomApi.post('vehiculo/search_info/' , form)
         
         return data
         
@@ -41,7 +41,7 @@ export const useOrdenStore = defineStore({
        async getDisponibles () {
         try {
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await rebApi.get('vehiculo/disponibles/' + userLogged)
+          const { data } = await sirecomApi.get('vehiculo/disponibles/' + userLogged)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -52,7 +52,7 @@ export const useOrdenStore = defineStore({
          async getMecanicos () {
           try {
             const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-            const { data } = await rebApi.get('vehiculo/mecanicos/' + userLogged)
+            const { data } = await sirecomApi.get('vehiculo/mecanicos/' + userLogged)
             return data
           } catch (error: any) {
             const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -63,7 +63,7 @@ export const useOrdenStore = defineStore({
             async getOrdenU () {
               try {
                 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-                const { data } = await rebApi.get('vehiculo/lista_unica/' + userLogged)
+                const { data } = await sirecomApi.get('vehiculo/lista_unica/' + userLogged)
                 return data
               } catch (error: any) {
                 const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -74,7 +74,7 @@ export const useOrdenStore = defineStore({
               async getOrdenM () {
                 try {
                   const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-                  const { data } = await rebApi.get('vehiculo/lista_men/' + userLogged)
+                  const { data } = await sirecomApi.get('vehiculo/lista_men/' + userLogged)
                   return data
                 } catch (error: any) {
                   const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -86,7 +86,7 @@ export const useOrdenStore = defineStore({
       async create_orden(form: any) {
         try {
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await rebApi.post('vehiculo/create_orden/' + userLogged, form)
+          const { data } = await sirecomApi.post('vehiculo/create_orden/' + userLogged, form)
           router.push({ name: 'ordenList' });
           return {
             ok: true,
@@ -103,7 +103,7 @@ export const useOrdenStore = defineStore({
         try {
    
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await rebApi.post('vehiculo/update_orden/' + userLogged, form)
+          const { data } = await sirecomApi.post('vehiculo/update_orden/' + userLogged, form)
         router.push({ name: 'ordenList' });
           return {
             ok: true,
@@ -121,7 +121,7 @@ export const useOrdenStore = defineStore({
         try {
 
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await rebApi.post('vehiculo/entrega/' + userLogged, form)
+          const { data } = await sirecomApi.post('vehiculo/entrega/' + userLogged, form)
         router.push({ name: 'ordenList' });
           return {
             ok: true,
@@ -138,7 +138,7 @@ export const useOrdenStore = defineStore({
         try {
        
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await rebApi.post('vehiculo/recibido/' + userLogged, form)
+          const { data } = await sirecomApi.post('vehiculo/recibido/' + userLogged, form)
         router.push({ name: 'ordenList' });
           return {
             ok: true,
@@ -155,7 +155,7 @@ export const useOrdenStore = defineStore({
         try {
         
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await rebApi.post('vehiculo/cancelar_man/' + userLogged, form)
+          const { data } = await sirecomApi.post('vehiculo/cancelar_man/' + userLogged, form)
         router.push({ name: 'ordenList' });
           return {
             ok: true,
@@ -171,7 +171,7 @@ export const useOrdenStore = defineStore({
 
       async getOrdenes_soli() {
         try {
-          const { data } = await rebApi.get('vehiculo/ordenes/')
+          const { data } = await sirecomApi.get('vehiculo/ordenes/')
         //  router.push({ name: 'documentaryReceptionList' });
           return  data
         } catch (error: any) {
@@ -183,7 +183,7 @@ export const useOrdenStore = defineStore({
   async orden_id (id_orden: any) {
     try {
         
-      const { data } = await rebApi.get('vehiculo/orden_id/' + id_orden)
+      const { data } = await sirecomApi.get('vehiculo/orden_id/' + id_orden)
       return data
     } catch (error: any) {
       const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

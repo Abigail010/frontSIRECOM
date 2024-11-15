@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import rebApi from "@/api/rebApi"
+import sirecomApi from "@/api/sirecomApi"
 
 
 export const useLogsruterStore = defineStore({
@@ -11,7 +11,7 @@ export const useLogsruterStore = defineStore({
       async createLogrutes(ruta: any) {
         try {
           
-          const { data } = await rebApi.post('rutalog/create_logrute' , ruta)
+          const { data } = await sirecomApi.post('rutalog/create_logrute' , ruta)
          
           return { ok: true, message: data.message }
         } catch (error: any) {

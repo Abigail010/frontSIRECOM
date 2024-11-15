@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 import { router } from '@/router';
-import rebApi from "@/api/rebApi"
+import sirecomApi from "@/api/sirecomApi"
 
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 
@@ -10,7 +10,7 @@ export const useFuerzasStore = defineStore({
 
     async fuerza () {
       try {
-        const { data } = await rebApi.get('fuerza/getFuerzas')
+        const { data } = await sirecomApi.get('fuerza/getFuerzas')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -20,7 +20,7 @@ export const useFuerzasStore = defineStore({
 
      async FuerzasID (id: any) {
       try {
-        const { data } = await rebApi.get('fuerza/Fuerza/' + id)
+        const { data } = await sirecomApi.get('fuerza/Fuerza/' + id)
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -32,7 +32,7 @@ export const useFuerzasStore = defineStore({
     async createFuerzas(form: any) {
       try {
       
-        const { data } = await rebApi.post('fuerza/create_Fuerza/' + userLogged, form)
+        const { data } = await sirecomApi.post('fuerza/create_Fuerza/' + userLogged, form)
       
         router.push({ name: 'FuerzasList' });
         return { ok: true, message: data.message }
@@ -45,7 +45,7 @@ export const useFuerzasStore = defineStore({
    
     async updateFuerzas(form: any) {
       try {
-        const { data } = await rebApi.post('fuerza/update_Fuerza/' + userLogged, form)
+        const { data } = await sirecomApi.post('fuerza/update_Fuerza/' + userLogged, form)
         router.push({ name: 'FuerzasList' });
         return {
           ok: true,
@@ -61,7 +61,7 @@ export const useFuerzasStore = defineStore({
     // ELIMINAR DELITO
     async deleteFuerzas(form: any) {
       try {
-        const { data } = await rebApi.post('fuerza/delete_Fuerza/' + userLogged, form)
+        const { data } = await sirecomApi.post('fuerza/delete_Fuerza/' + userLogged, form)
         router.push({ name: 'FuerzasList' });
         return {
           ok: true,
