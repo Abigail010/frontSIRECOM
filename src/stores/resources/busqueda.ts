@@ -6,7 +6,7 @@ import  { URL } from '@/utils/helpers/direction'
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
 const direccion_url = URL
 export const useSearchStore = defineStore({
-  id: 'search_tot',
+  id: 'search_total',
   actions: {
 
 
@@ -14,7 +14,7 @@ export const useSearchStore = defineStore({
        async getInfoB () {
         try {
           const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
-          const { data } = await sirecomApi.get('search_tot/info_user/' + userLogged)
+          const { data } = await sirecomApi.get('search_total/info_user/' + userLogged)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -24,7 +24,7 @@ export const useSearchStore = defineStore({
     // OBTENER LISTA DE DELITOS
     async getUsers () {
       try {
-        const { data } = await sirecomApi.get('search_tot/tot_usuarios/')
+        const { data } = await sirecomApi.get('search_total/tot_usuarios/')
         return data
       } catch (error: any) {
         const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -33,7 +33,7 @@ export const useSearchStore = defineStore({
     },
     async getVehiculos () {
         try {
-          const { data } = await sirecomApi.get('search_tot/tot_vehiculo/')
+          const { data } = await sirecomApi.get('search_total/tot_vehiculo/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -42,7 +42,7 @@ export const useSearchStore = defineStore({
       },
       async getT () {
         try {
-          const { data } = await sirecomApi.get('search_tot/taller/')
+          const { data } = await sirecomApi.get('search_total/taller/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -51,7 +51,7 @@ export const useSearchStore = defineStore({
       },
       async getM () {
         try {
-          const { data } = await sirecomApi.get('search_tot/mecanicos/')
+          const { data } = await sirecomApi.get('search_total/mecanicos/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -60,7 +60,7 @@ export const useSearchStore = defineStore({
       },
       async getFinalizado () {
         try {
-          const { data } = await sirecomApi.get('search_tot/tot_fin/')
+          const { data } = await sirecomApi.get('search_total/tot_fin/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -69,7 +69,7 @@ export const useSearchStore = defineStore({
       },
       async getPrueba() {
         try {
-          const { data } = await sirecomApi.get('search_tot/placas/')
+          const { data } = await sirecomApi.get('search_total/placas/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -78,7 +78,7 @@ export const useSearchStore = defineStore({
       },
       async getPrueba2(mes: any) {
         try {
-          const { data } = await sirecomApi.get('search_tot/fuerzas/'+mes)
+          const { data } = await sirecomApi.get('search_total/fuerzas/'+mes)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -87,7 +87,7 @@ export const useSearchStore = defineStore({
       },
       async getPendiente () {
         try {
-          const { data } = await sirecomApi.get('search_tot/tot_pen/')
+          const { data } = await sirecomApi.get('search_total/tot_pen/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -96,7 +96,7 @@ export const useSearchStore = defineStore({
       },
       async getPedidos_en() {
         try {
-          const { data } = await sirecomApi.get('search_tot/pedidos_entregados/')
+          const { data } = await sirecomApi.get('search_total/pedidos_entregados/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -106,7 +106,7 @@ export const useSearchStore = defineStore({
 
       async getPedidos_pen() {
         try {
-          const { data } = await sirecomApi.get('search_tot/pedidos_pen/')
+          const { data } = await sirecomApi.get('search_total/pedidos_pen/')
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
@@ -115,7 +115,7 @@ export const useSearchStore = defineStore({
       },
       async vehiculosReport(form:any) {
         try {
-          const url = direccion_url+'/search_tot/report_vehiculos';
+          const url = direccion_url+'/search_total/report_vehiculos';
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
@@ -151,7 +151,7 @@ export const useSearchStore = defineStore({
 
       async minutesReport(form: any) {
         try {
-         const url =  direccion_url+'/search_tot/busqueda';
+         const url =  direccion_url+'/search_total/busqueda';
 
      
      //   const { url } = await sirecomApi.post('repuestos/create_filter/' + userLogged, form)
@@ -188,7 +188,7 @@ export const useSearchStore = defineStore({
 
       async ReportVe(form:any) {
         try {
-          const url = direccion_url+'/search_tot/report_vehi';
+          const url = direccion_url+'/search_total/report_vehi';
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
@@ -223,7 +223,7 @@ export const useSearchStore = defineStore({
       
       async ReportMan(form:any) {
         try {
-          const url = direccion_url+'/search_tot/report_meca';
+          const url = direccion_url+'/search_total/report_meca';
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
@@ -258,7 +258,7 @@ export const useSearchStore = defineStore({
 
       async ReportRepuestos(form:any) {
         try {
-          const url = direccion_url+'/search_tot/report_inventario';
+          const url = direccion_url+'/search_total/report_inventario';
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
