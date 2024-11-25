@@ -34,8 +34,8 @@ router.beforeEach(async (to, from, next) => {
       next({ name: 'Login' })
     } else { 
       //Enviamos el to.path para leer la ruta 
-      const logsruteStore = usereadRuteStore();   
-      await logsruteStore.readLogrutes(to.path)
+      /*const logsruteStore = usereadRuteStore();   
+      await logsruteStore.readLogrutes(to.path)*/
 
       next()
     } 

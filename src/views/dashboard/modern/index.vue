@@ -72,7 +72,7 @@ const getEncargado = async (id: any) => {
         prueba.value = await orden.getPrueba2(id);
         for(let i=0; i< prueba.value.length; i++){
         pendientes[i] = parseInt(prueba.value[i].pendientes)
-        finalizados[i] = prueba.value[i].finalizado
+        finalizados[i] = parseInt(prueba.value[i].finalizado)
         fuerzas[i] = prueba.value[i].placa
      
     }
@@ -80,7 +80,7 @@ const getEncargado = async (id: any) => {
         prueba.value = await orden.getPrueba2(mesActualNombre);
         for(let i=0; i< prueba.value.length; i++){
         pendientes[i] = parseInt(prueba.value[i].pendientes)
-        finalizados[i] = prueba.value[i].finalizado
+        finalizados[i] = parseInt(prueba.value[i].finalizado)
         fuerzas[i] = prueba.value[i].placa
        
     }
@@ -105,7 +105,7 @@ const getGen = async () => {
        
     }
     state.formData.title1 ="Usuarios Registrados"
-    state.formData.title2 ="Vehículos Registrados"
+    state.formData.title2 ="Vehículos en Mantenimiento"
     state.formData.title3 ="Mantenimientos Finalizado"
     state.formData.title4 ="Mantenimientos Pendientes"
     state.formData.title5 ="Repuestos Entregados"
@@ -262,8 +262,8 @@ const chartOptions = computed(() => {
             }
         },
         yaxis: {
-            min: Math.min(...prueba.value.map((item: any) => item.total)),
-            max: Math.max(...prueba.value.map((item: any) => item.total)), // Establecer el valor máximo de las barras
+            min: Math.min(...prueba.value.map((item: any) => parseInt(item.total))),
+            max: Math.max(...prueba.value.map((item: any) => parseInt(item.total))), // Establecer el valor máximo de las barras
             tickAmount: Math.max(...prueba.value.map((item: any) => item.total))
         },
         xaxis: {
