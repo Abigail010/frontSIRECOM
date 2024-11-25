@@ -261,13 +261,24 @@ const chartOptions = computed(() => {
                 }
             }
         },
+        /*
         yaxis: {
-            min: Math.min(...prueba.value.map((item: any) => parseInt(item.total))),
-            max: Math.max(...prueba.value.map((item: any) => parseInt(item.total))), // Establecer el valor máximo de las barras
+            min: Math.min(...prueba.value.map((item: any) => item.total)),
+            max: Math.max(...prueba.value.map((item: any) => item.total)), // Establecer el valor máximo de las barras
             tickAmount: Math.max(...prueba.value.map((item: any) => item.total))
-        },
+        },*/
+        yaxis: {
+    min: Math.min(...(Array.isArray(prueba.value) ? prueba.value.map((item: any) => item.total ? Number(item.total) : 0) : [0])),
+    max: Math.max(...(Array.isArray(prueba.value) ? prueba.value.map((item: any) => item.total ? Number(item.total) : 0) : [0])),
+    tickAmount: Math.max(...(Array.isArray(prueba.value) ? prueba.value.map((item: any) => item.total ? Number(item.total) : 0) : [0]))
+},
+
+
         xaxis: {
-            categories: prueba.value.map((item: any) => item.fuerza), 
+            /*categories: prueba.value.map((item: any) => item.fuerza), */
+            categories: (Array.isArray(prueba.value) ? prueba.value : [])
+    .map((item: any) => item.fuerza && item.fuerza.trim() ? item.fuerza : 'Sin registros'),
+
             axisBorder: {
                 show: false
             }
@@ -286,7 +297,10 @@ const chartOptions = computed(() => {
                         labels: {
                             rotate: -45
                         },
-                        categories: prueba.value.map((item:any) => item.fuerza)
+                        /*categories: prueba.value.map((item:any) => item.fuerza)*/
+                        categories: (Array.isArray(prueba.value) ? prueba.value : [])
+    .map((item: any) => item.fuerza && item.fuerza.trim() ? item.fuerza : 'Sin registros'),
+
                     }
                 }
             }
