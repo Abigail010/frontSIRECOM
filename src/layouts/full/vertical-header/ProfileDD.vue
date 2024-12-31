@@ -49,7 +49,22 @@ onMounted(async () => {
     <!-- notifications DD -->
     <!-- ---------------------------------------------- -->
     <v-menu :close-on-content-click="false">
+        
+        
+           
+        
         <template v-slot:activator="{ props }">
+            <v-btn 
+                class="custom-" 
+                variant="text" 
+                icon 
+                href="http://mi_manual.com" 
+                target="_blank"
+                >
+                <v-avatar size="35">
+                    <img src="@/assets/images/misimagenes/manual.png" width="35" alt="Manual" />
+                </v-avatar>
+                </v-btn>
             <v-btn class="custom-hover-primary" variant="text" v-bind="props" icon>
                 <v-avatar size="35">
                     <img  src="@/assets/images/misimagenes/logo.png" width="35" alt="Julia" />

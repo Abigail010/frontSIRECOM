@@ -18,7 +18,7 @@ const authStore = useAuthStore();
                 <v-btn variant="text" icon rounded="md" color="primary" @click="authStore.logout()">
                     <PowerIcon />
 
-                    <v-tooltip activator="parent" location="top">Logout</v-tooltip>
+                    <v-tooltip activator="parent" location="top">Salir</v-tooltip>
                 </v-btn>
             </div>
         </div>

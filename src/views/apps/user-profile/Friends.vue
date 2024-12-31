@@ -51,7 +51,7 @@ const breadcrumbs = ref([
         <v-col cols="12">
             <div class="d-sm-flex align-center mb-5">
                 <h3 class="text-h3">
-                    Friends
+                    Friends 2
                     <v-chip size="small" class="ml-2 elevation-0" variant="elevated" color="secondary">{{ filteredCards.length }}</v-chip>
                 </h3>
                 <v-sheet width="250" class="ml-0 ml-sm-auto mt-3 mt-sm-0">

@@ -90,8 +90,8 @@ const getCart = computed(() => {
         <!-- ---------------------------------------------- 
         <NotificationDD />--->
 
-        <!-- right sidebar -->
-        <v-btn
+        <!-- right sidebar boton izquierdo de menu -->
+       <!---- <v-btn
             variant="text"
             color="primary"
             class="hidden-lg-and-up"
@@ -99,7 +99,7 @@ const getCart = computed(() => {
             @click.stop="appsdrawer = !appsdrawer"
         >
             <GridDotsIcon size="17" stroke-width="1.5" />
-        </v-btn>
+        </v-btn>-->
 
         <!-- ---------------------------------------------- -->
         <!-- User Profile -->

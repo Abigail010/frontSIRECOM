@@ -179,6 +179,16 @@ export const useOrdenStore = defineStore({
           return { ok: false, message: message, caso: 0, rd: 0}
         }
       },
+      async basic(id_orden: any) {
+        try {
+          const { data } = await sirecomApi.get('vehiculo/basic/'+id_orden)
+        //  router.push({ name: 'documentaryReceptionList' });
+          return  data
+        } catch (error: any) {
+          const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+          return { ok: false, message: message, caso: 0, rd: 0}
+        }
+      },
   // OBTENER INFORMACION DE DELITO POR ID
   async orden_id (id_orden: any) {
     try {

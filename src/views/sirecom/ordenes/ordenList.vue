@@ -2,7 +2,6 @@
 
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { router } from '@/router';
-import { useTallerStore } from '@/stores/resources/taller';
 import { useOrdenStore } from '@/stores/orden/orden';
 import { useRegisterStore } from '@/stores/orden/registro';
 import { useSoliStore } from '@/stores/orden/soli_rep';
@@ -11,7 +10,7 @@ import Swal from 'sweetalert2'
 const soli_Rep = useSoliStore()
 const orden = useOrdenStore()
 const registro = useRegisterStore()
-const tallerStore = useTallerStore()
+
 const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
 const page = ref({ title: 'Mantenimientos' });
 const breadcrumbs = ref([

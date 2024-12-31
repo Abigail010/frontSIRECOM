@@ -379,7 +379,7 @@ const authStore = useAuthStore()
 
 const sidebarItem: menu[] = [
   
-/*    { header: 'Home' },
+    { header: 'Home' },
     {
         title: 'Modern',
         icon: ApertureIcon,
@@ -420,7 +420,7 @@ const sidebarItem: menu[] = [
             }
         ]
     },
- /*   {
+    {
         title: 'E-Commerce',
         icon: BasketIcon,
         to: '/ecommerce/',
@@ -537,9 +537,9 @@ const sidebarItem: menu[] = [
         title: 'Landing Page',
         icon: AppWindowIcon,
         to: '/'
-    },*/
+    },
 
-  /*  { header: 'Forms' },
+    { header: 'Forms' },
     {
         title: 'Form Elements',
         icon: AppsIcon,
@@ -965,7 +965,7 @@ const sidebarItem: menu[] = [
         icon: StarIcon,
         to: '/',
         type: 'external'
-    }*/
+    }
   
 ];
 
