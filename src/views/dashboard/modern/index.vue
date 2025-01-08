@@ -436,7 +436,7 @@ const pieChart = {
                 :class="'text-decoration-none d-flex align-center justify-center text-center rounded-md pa-6  bg-lightprimary'"
             >
                 <div :class="'bg-lightprimary'">
-                    <img   src="@/assets/images/misimagenes/logo.png" class="imagen"/>
+                    <img   src="@/assets/images/misimagenes/9424639.png" class="imagen"/>
                     <div :class="'text-subtitle-1 text-capitalize font-weight-bold mt-3 text-primary'"  v-text="state.formData.title1"></div>
                     <h4 :class="'text-h4 mt-1 text-primary' " v-text="state.formData.dato1"></h4>
                 </div>

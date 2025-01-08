@@ -65,7 +65,8 @@ const state = reactive({
       mantenimiento:'', 
       fecha_salida:'',
       estado : '', 
-      fecha_entrega :''
+      fecha_entrega :'',
+      id_Rep:[] as any, 
     }, 
   });
   const checkbox = ref(false);
@@ -74,6 +75,7 @@ const checkbox3 = ref(false);
 const checkbox4 = ref(false);
 const registro_id = async (id_orden: any) => {
     const res2 = await orden.basic(id_orden)
+    state.formData.id_Rep = await orden.basic(id_orden)
   console.log(res2)
   state.formData.fecha_ingreso= res2[0].fecha_ingreso
    state.formData.fuerza = res2[0].fuerza
@@ -102,7 +104,9 @@ if(res2[0].entregado === null ){
         checkbox2.value =true
     }
     if(res2[0].total === '0'){
-        checkbox3.value =true
+          state.formData.fecha_salida = 'ENTREGA FINALIZADA'
+    }else{
+          state.formData.fecha_salida = 'PENDIENTE DE ENTREGA'
     }
     
 };
@@ -118,7 +122,7 @@ onMounted(async () => {
 
 <template>
 
-    <v-row class="justify-content-end mt-5">
+    <v-row class="justify-content-end mt-1">
         <v-col cols="12">
             <!----<div class="d-sm-flex align-center mb-5">
                 <h3 class="text-h3">
@@ -129,29 +133,16 @@ onMounted(async () => {
             </div>--->
 
             <v-row>
-                  <v-col cols="12" md="10" sm="12">
+                  <v-col cols="12" md="12" sm="12">
                 
                     <v-card elevation="10" class="card-hover">
                         <v-card-item class="text-center">
                             <h4 class="text-h5 mt-3"> <img src="@/assets/images/misimagenes/logos.png" style="width: 60%; height: auto;" class="position-relative d-none d-lg-flex" alt="login-home" /></h4>
-                            <h3 class="text-h5 mt-3">Registro de Mantenimiento</h3>
+                            <h3 class="text-h5 mt-3">Registro de Pedidos</h3>
                            
-                                <img src="@/assets/images/misimagenes/75704.png" style="width: 20%;"   />
                            
                             <h4 class="text-h5 mt-3">{{ state.formData.placa }}</h4>
                             <v-row>
-                                <v-col cols="12" md="3" style="text-align: right;">
-<b>Perteneciente a: </b>
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: left;">
-{{ state.formData.fuerza }}
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: right;">
-<b>Fecha Ingreso: </b>
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: left;">
-{{ state.formData.fecha_ingreso }}
-                                </v-col>
                                 <v-col cols="12" md="3" style="text-align: right;">
 <b>Taller: </b>
                                 </v-col>
@@ -159,46 +150,62 @@ onMounted(async () => {
 {{ state.formData.taller }}
                                 </v-col>
                                 <v-col cols="12" md="3" style="text-align: right;">
+<b>Solicita a: </b>
+                                </v-col>
+                                <v-col cols="12" md="3" style="text-align: left;">
+{{ state.formData.fuerza }}
+                                </v-col>
+                               
+                                <v-col cols="12" md="3" style="text-align: right;">
 <b>Departamento: </b>
                                 </v-col>
                                 <v-col cols="12" md="3" style="text-align: left;">
 {{ state.formData.departamento }}
                                 </v-col>
-                                <v-col cols="12" md="3" style="text-align: right;">
-<b>Tipo: </b>
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: left;">
-{{ state.formData.tipo_ve }}
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: right;">
-<b>Mantenimiento: </b>
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: left;">
-{{ state.formData.mantenimiento }}
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: right;">
-<b>Fecha de Salida: </b>
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: left;">
-{{ state.formData.fecha_salida }}                  </v-col>
+                               
                                 <v-col cols="12" md="3" style="text-align: right;">
 <b>Estado: </b>
                                 </v-col>
                                 <v-col cols="12" md="3" style="text-align: left;">
-{{ state.formData.estado }}
+{{ state.formData.fecha_salida }}
                                 </v-col>
+ <v-col cols="12" md="12">
+    Se solicito en fecha <b>{{ state.formData.fecha_ingreso }} </b> los siguientes repuestos:
+ </v-col>
+
+ <v-col cols="12" md="12">
+        <v-table density="compact">
+          <thead>
+            <tr>
+              <th class="text-center">N° </th>
+              <th class="text-center"><b> Repuesto</b></th>
+              <th class="text-center"><b> Cantidad</b></th>
+             
+              <th class="text-center"><b> Entregado</b></th>
+              <th class="text-center"><b> Devolución de repuestos en mal estado</b></th>
+             
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="(item, index) in state.formData.id_Rep"  :key="index"
+            >
+            <td class="text-center">{{ index+1 }}</td>
+              <td class="text-center">{{ item.nombre_repuesto }}</td>
+              <td class="text-center">{{ item.cantidad }}</td>
+              <td class="text-center">{{ item.entregados }}</td>
+              <td class="text-center">{{ item.recibido}}</td>
+        </tr>
+            </tbody>
+            </v-table>
+            </v-col>
+
+
                             </v-row>
                         </v-card-item>
                     </v-card>
                     <v-divider />
-                    <v-sheet class="bg-grey100 px-4 py-2 d-flex align-center justify-center gap-2">
-                        <div class="d-flex gap-3 justify-center  align-center flex-column flex-sm-row">
-        <v-checkbox-btn color="secondary" label="INGRESO DE VEHÍCULO"  :readonly="true" v-model="checkbox"></v-checkbox-btn>
-        <v-checkbox-btn color="secondary" label="ORDEN DE MANTENIMIENTO"  :readonly="true"   v-model="checkbox2" ></v-checkbox-btn>
-        <v-checkbox-btn color="secondary" label="ENTREGA DE REPUESTOS"  :readonly="true"  v-model="checkbox3"></v-checkbox-btn>
-        <v-checkbox-btn color="secondary" label="VERIFICACIÓN DE FUNCIONAMIENTO"  :readonly="true" v-model="checkbox4" ></v-checkbox-btn>
-    </div>
-                    </v-sheet>
+                
                        
                   </v-col>
             
