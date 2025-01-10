@@ -9,6 +9,9 @@ import { ref, reactive, onMounted } from 'vue';
 import { getPrimary, getSecondary } from '@/utils/UpdateColors';
 import { computed } from 'vue';
 import { useTheme } from 'vuetify';
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
+
 const orden = useSearchStore()
 const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
@@ -397,11 +400,11 @@ const piechartOptions = computed(() => {
             position: 'bottom',
             width: '50px'
         },
-        colors: ['#6ac3fd', '#0b70fb', '#f64e60', '#26c6da', '#ffa800'],
+        colors: ['#4CAF50', '#2196F3', '#FF9800', '#9C27B0', '#F44336', '#FFC107', '#8BC34A', '#00BCD4', '#3F51B5'],
         tooltip: {
             fillSeriesColor: false
         },
-        labels: ['Team A', 'Team B', 'Team C', 'Team D', 'Team E'],
+        labels: ['BENI', 'COCHABAMBA', 'LA PAZ', 'ORURO', 'PANDO', 'POTOSI', 'CHUQUISACA',  'SANTA CRUZ',  'TARIJA'],
         responsive: [
             {
                 breakpoint: 480,
@@ -419,8 +422,32 @@ const piechartOptions = computed(() => {
 });
 
 const pieChart = {
-    series: [44, 55, 13, 43, 22]
+    series: [44, 55, 13, 43, 22, 55, 13, 43, 22]
 };
+ const  captureChart  = async () => {
+      const chartContainer = ref.chartContainer;
+
+      try {
+        // Capturar contenido como imagen
+        const canvas = await html2canvas(chartContainer);
+        const image = canvas.toDataURL("image/png");
+
+        // Crear PDF
+        const pdf = new jsPDF();
+        pdf.addImage(image, "PNG", 10, 10, 190, 90); // Ajusta posición y tamaño según sea necesario
+        pdf.save("chart.pdf");
+
+        // Descargar la imagen
+        const link = document.createElement("a");
+        link.href = image;
+        link.download = "chart.png";
+        link.click();
+      } catch (error) {
+        console.error("Error al capturar el gráfico:", error);
+      }
+    }
+  
+
   onMounted(async () => {
    await getGen()
    // await buttonReport()
@@ -557,6 +584,8 @@ const pieChart = {
                     </div>
                 </v-col>-->
             </v-row>
+           
+           
        
         </v-card-item>
     </v-card>
@@ -564,8 +593,36 @@ const pieChart = {
             
               
            </v-row>
+           <v-row>
+
+        <v-card variant="outlined">
+        <v-card-item class="py-4 px-6">
+            <v-row>
+                <v-col cols="12" md="10"><b>Registros de mantenimiento</b></v-col>
+          <v-col cols="12" md="2">
+            <v-select v-if="(us==1 || us2==1)"
+                    v-model="select"
+                    item-text="text"
+                    :items="nombresMeses" 
+                    variant="outlined" 
+                    density="compact" 
+                    @update:model-value="getEncargado(select);"
+                    
+                    hide-details></v-select>
+          </v-col>
+            </v-row>
+        </v-card-item>
+        <v-divider />
+        <v-card-text>
+            <apexchart type="pie" height="300" :options="piechartOptions" :series="pieChart.series"> </apexchart>
+        </v-card-text>
+    </v-card>
+    </v-row>
+
+
         </v-col>    
     </v-row>
+    
 </template>
 
 <style>

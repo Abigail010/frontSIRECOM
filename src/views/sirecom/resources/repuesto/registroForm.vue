@@ -440,7 +440,7 @@ const buttonClose = () => {
             type="text"
             v-model.trim="state.formData.observacion"
             @input="miValidacion(), state.formData.observacion = validateText(state.formData.observacion.toUpperCase())"
-            :error="submitButton && !state.formData.observacion"
+            
             hide-details
           />
         
