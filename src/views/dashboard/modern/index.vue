@@ -60,16 +60,20 @@ const añoActual = fechaActual.getFullYear();
 
 const select = ref('');
  select.value = mesActualNombre;
-
+ const select2 = ref('');
+ select2.value = mesActualNombre;
 
 const fuerzas = []
 const pendientes = [] as any
 const finalizados = [] as any
 const prueba = ref([]) as any
-
+const datos = ref([]) as any//const departamento = [] as any
+const probar: { value?: number[] } = {};
+const pieChart = reactive({
+  series: [] as number[], // Inicializamos vacío
+});
 const getEncargado = async (id: any) => {
     
-   // prueba.value = await orden.getPrueba2(mesActualNombre);
     if(id!=''){
        
         prueba.value = await orden.getPrueba2(id);
@@ -77,19 +81,50 @@ const getEncargado = async (id: any) => {
         pendientes[i] = parseInt(prueba.value[i].pendientes)
         finalizados[i] = parseInt(prueba.value[i].finalizado)
         fuerzas[i] = prueba.value[i].placa
-     
     }
+        
     }else{
+        
         prueba.value = await orden.getPrueba2(mesActualNombre);
         for(let i=0; i< prueba.value.length; i++){
         pendientes[i] = parseInt(prueba.value[i].pendientes)
         finalizados[i] = parseInt(prueba.value[i].finalizado)
         fuerzas[i] = prueba.value[i].placa
-       
     }
     }
      
   }
+ 
+// Inicialización de variables
+let departamento: number[] = [];
+// Función asincrónica para obtener departamentos
+const getDepartamentos = async (id: any) => {
+    console.log(id);
+
+    // Obtener datos según el valor de `id`
+    if (id !== '') {
+        datos.value = await orden.getCiudades(id);
+    } else {
+        datos.value = await orden.getCiudades(mesActualNombre);
+    }
+
+    // Asignar valores a `departamento`
+    departamento = [
+        parseInt(datos.value[0].beni || "0"),
+        parseInt(datos.value[0].cochabamba || "0"),
+        parseInt(datos.value[0].la_paz || "0"),
+        parseInt(datos.value[0].oruro || "0"),
+        parseInt(datos.value[0].pando || "0"),
+        parseInt(datos.value[0].potosi || "0"),
+        parseInt(datos.value[0].chuquisaca || "0"),
+        parseInt(datos.value[0].santa_cruz || "0"),
+        parseInt(datos.value[0].tarija || "0")
+    ];
+    pieChart.series = [...departamento]; // Reactivo, actualiza el gráfico
+ 
+};
+
+   
 const getGen = async () => {
     const info = await orden.getInfoB();
    
@@ -107,6 +142,13 @@ const getGen = async () => {
         fuerzas[i] = prueba.value[i].placa
        
     }
+
+    datos.value = await orden.getCiudades(mesActualNombre);
+    departamento = [parseInt(datos.value[0].beni || 0), parseInt(datos.value[0].cochabamba || 0), parseInt(datos.value[0].la_paz || 0),parseInt(datos.value[0].oruro || 0), parseInt(datos.value[0].pando || 0), parseInt(datos.value[0].potosi || 0), parseInt(datos.value[0].chuquisaca || 0), parseInt(datos.value[0].santa_cruz || 0),parseInt(datos.value[0].tarija || 0)]
+    //onsole.log(departamento)
+    pieChart.series = [...departamento]; // Reactivo, actualiza el gráfico
+//  console.log("Departamento actualizado:", departamento);
+
     state.formData.title1 ="Usuarios Registrados"
     state.formData.title2 ="Vehículos en Mantenimiento"
     state.formData.title3 ="Mantenimientos Finalizado"
@@ -421,9 +463,7 @@ const piechartOptions = computed(() => {
     };
 });
 
-const pieChart = {
-    series: [44, 55, 13, 43, 22, 55, 13, 43, 22]
-};
+
  const  captureChart  = async () => {
       const chartContainer = ref.chartContainer;
 
@@ -601,12 +641,12 @@ const pieChart = {
                 <v-col cols="12" md="10"><b>Registros de mantenimiento</b></v-col>
           <v-col cols="12" md="2">
             <v-select v-if="(us==1 || us2==1)"
-                    v-model="select"
+                    v-model="select2"
                     item-text="text"
                     :items="nombresMeses" 
                     variant="outlined" 
                     density="compact" 
-                    @update:model-value="getEncargado(select);"
+                    @update:model-value="getDepartamentos(select2);"
                     
                     hide-details></v-select>
           </v-col>

@@ -11,6 +11,9 @@ import { validateText } from '@/utils/helpers/validateText'
 import { useVehicleStore } from '@/stores/resources/vehicle';
 import { useSearchStore } from '@/stores/resources/busqueda';
 import { usefilterStore } from '@/stores/resources/filtro';
+import { useAuthStore } from '@/stores/auth'
+//const authStore = useAuthStore()
+
 const repuestoStore = usefilterStore()
 const openpanel = ref([0]);
   const orden = useSearchStore()

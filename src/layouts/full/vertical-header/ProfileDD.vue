@@ -54,11 +54,55 @@ onMounted(async () => {
            
         
         <template v-slot:activator="{ props }">
-            <v-btn 
+            <v-btn v-if="userProfile === 'SUPER ADMINISTRADOR'"
                 class="custom-" 
                 variant="text" 
                 icon 
-                href="http://mi_manual.com" 
+                href="https://1drv.ms/w/s!AnQTBJ2Uzpo4kboCtc0LKjLeD3JveA?e=4TlTag" 
+                target="_blank"
+                >
+                <v-avatar size="35">
+                    <img src="@/assets/images/misimagenes/manual.png" width="35" alt="Manual" />
+                </v-avatar>
+                </v-btn>
+                <v-btn v-else-if="userProfile === 'SUPER ADMINISTRADOR'"
+                class="custom-" 
+                variant="text" 
+                icon 
+                href="https://1drv.ms/w/s!AnQTBJ2Uzpo4kboDK_rzELvNZ1v-9g?e=67WNA5" 
+                target="_blank"
+                >
+                <v-avatar size="35">
+                    <img src="@/assets/images/misimagenes/manual.png" width="35" alt="Manual" />
+                </v-avatar>
+                </v-btn>
+                <v-btn v-else-if="userProfile === 'SUPERVISOR DE MANTENIMIENTO'"
+                class="custom-" 
+                variant="text" 
+                icon 
+                href="https://1drv.ms/w/s!AnQTBJ2Uzpo4kboDK_rzELvNZ1v-9g?e=67WNA5" 
+                target="_blank"
+                >
+                <v-avatar size="35">
+                    <img src="@/assets/images/misimagenes/manual.png" width="35" alt="Manual" />
+                </v-avatar>
+                </v-btn>
+                <v-btn v-else-if="userProfile === 'PERSONAL DE ENTREGA'"
+                class="custom-" 
+                variant="text" 
+                icon 
+                href="https://1drv.ms/w/s!AnQTBJ2Uzpo4kboDK_rzELvNZ1v-9g?e=67WNA5" 
+                target="_blank"
+                >
+                <v-avatar size="35">
+                    <img src="@/assets/images/misimagenes/manual.png" width="35" alt="Manual" />
+                </v-avatar>
+                </v-btn>
+                <v-btn v-else-if="userProfile === 'MECANICO'"
+                class="custom-" 
+                variant="text" 
+                icon 
+                href="https://1drv.ms/w/s!AnQTBJ2Uzpo4kboDK_rzELvNZ1v-9g?e=67WNA5" 
                 target="_blank"
                 >
                 <v-avatar size="35">

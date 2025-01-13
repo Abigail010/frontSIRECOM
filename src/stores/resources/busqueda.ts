@@ -85,6 +85,15 @@ export const useSearchStore = defineStore({
           return { ok: false, message: message }
         }
       },
+      async getCiudades(mes: any) {
+        try {
+          const { data } = await sirecomApi.get('search_total/departamentos/'+mes)
+          return data
+        } catch (error: any) {
+          const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+          return { ok: false, message: message }
+        }
+      },
       async getPendiente () {
         try {
           const { data } = await sirecomApi.get('search_total/tot_pen/')
