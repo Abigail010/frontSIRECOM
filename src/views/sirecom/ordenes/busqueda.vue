@@ -12,10 +12,20 @@ import { useVehicleStore } from '@/stores/resources/vehicle';
 import { useSearchStore } from '@/stores/resources/busqueda';
 import { usefilterStore } from '@/stores/resources/filtro';
 import { useAuthStore } from '@/stores/auth'
-//const authStore = useAuthStore()
 
+const authStore = useAuthStore()
+/*const editar_1 = ref<any>(false)
+const editar_2 = ref<any>(false)
+const editar_3 = ref<any>(false)
+const editar_4 = ref<any>(false)
+const editar_5 = ref<any>(false)*/
+  const editar_1 = ref(false);
+const editar_2 = ref(false);
+const editar_3 = ref(false);
+const editar_4 = ref(false);
+const editar_5 = ref(false);
 const repuestoStore = usefilterStore()
-const openpanel = ref([0]);
+const openpanel = ref([0]) as any
   const orden = useSearchStore()
   const route = useRoute()
   const resourceStore = useResourceStore()
@@ -151,6 +161,35 @@ const buttonClear5 = () => {
     desserts5.value= await vehicleStore.getFuerza()
     desserts3.value= await orden.getT()
     desserts4.value= await orden.getM()
+
+    const response = await authStore.getUserMenu()
+    console.log('permisos ', response.length)
+   // console.log('permisos ', response)
+   for (let i = 0; i < response.length; i++) {
+    const title = response[i].title;
+
+    if (title === 'Busqueda de Mantenimientos') {
+      console.log('Activando editar_1');
+      editar_1.value = true;
+    }
+    if (title === 'Busqueda de Ingreso de Vehículos') {
+      console.log('Activando editar_2');
+      editar_2.value = true;
+    }
+    if (title === 'Busqueda de Kardex de Vehículo') {
+      console.log('Activando editar_3');
+      editar_3.value = true;
+    }
+    if (title === 'Busqueda de Kardex de Mecanico') {
+      console.log('Activando editar_4');
+      editar_4.value = true;
+    }
+    if (title === 'Busqueda de Inventario') {
+      console.log('Activando editar_5');
+      editar_5.value = true;
+    }
+  }
+    //console.log('permisos ', response)
   }
 
   const sendForm = ref(true)
@@ -181,6 +220,7 @@ const buttonSendForm = async () => {
         timerProgressBar: true
      })
   }*/
+
  
   onMounted(async () => {
     await getDepartmentsList()
@@ -198,9 +238,8 @@ const buttonSendForm = async () => {
         <strong> </strong> Los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
     </v-col>
-    <v-expansion-panels v-model="openpanel">
-    <!---Delivery Address--->
-    <v-expansion-panel elevation="10"  >
+    <v-expansion-panels v-model="openpanel" >
+      <v-expansion-panel elevation="10"v-if="editar_1">
         <v-expansion-panel-title class="text-h6">Reportes de registros de mantenimientos</v-expansion-panel-title>
         <v-expansion-panel-text class="mt-4">
           <v-row>
@@ -213,8 +252,6 @@ const buttonSendForm = async () => {
                   :items="desserts3"
                   item-title="nombre_taller"
                   item-value="nombre_taller"
-                  @input="miValidacion()"
-                  :error="submitButton && !state.formData.id_taller"
                   hide-details
           ></v-select>
          
@@ -227,8 +264,6 @@ const buttonSendForm = async () => {
                   :items="desserts5"
                   item-title="nombre_fuerza"
                   item-value="nombre_fuerza"
-                  @input="miValidacion()"
-                  :error="submitButton && !state.formData.fuerza"
                   hide-details
           ></v-select>
          
@@ -241,8 +276,6 @@ const buttonSendForm = async () => {
                   :items="departamentos"
                   item-title="nombre_region"
                   item-value="nombre_region"
-                  @input="miValidacion()"
-                  :error="submitButton && !state.formData.departamento"
                   hide-details
           ></v-select>
          
@@ -257,8 +290,7 @@ const buttonSendForm = async () => {
             type="date"
             :max="currentDate2"
             v-model.trim="state.formData.fecha_i"
-            @input="miValidacion(), state.formData.fecha_i= validateText(state.formData.fecha_i.toUpperCase())"
-            :error="submitButton && !state.formData.fecha_i"
+            
             hide-details
           />
           <template v-if="submitButton && !state.formData.fecha_i">
@@ -305,7 +337,7 @@ const buttonSendForm = async () => {
     </v-expansion-panel>
 
       <!---Payment Method--->
-    <v-expansion-panel elevation="10" class=" mt-3">
+    <v-expansion-panel elevation="10" class=" mt-3" v-if="editar_2">
         <v-expansion-panel-title class="text-h6" style="color:black;">Reporte de ingreso de vehículos</v-expansion-panel-title>
         <v-expansion-panel-text class="mt-4">
            <v-row>
@@ -320,7 +352,7 @@ const buttonSendForm = async () => {
             no-data-text="No existe más opciones para seleccionar"
             item-value="nombre_clase"
             item-title="nombre_clase"
-            :error="submitButton && !state.formData2.clase"
+           
           /> 
           
         </v-col>
@@ -334,7 +366,7 @@ const buttonSendForm = async () => {
             no-data-text="No existe más opciones para seleccionar"
             item-value="nombre_marca"
             item-title="nombre_marca"
-            :error="submitButton && !state.formData2.marca"
+            
           /> 
         
           
@@ -349,7 +381,7 @@ const buttonSendForm = async () => {
             no-data-text="No existe más opciones para seleccionar"
             item-value="nombre_tipo"
             item-title="nombre_tipo"
-            :error="submitButton && !state.formData2.tipo"
+            
           /> 
         </v-col>
             <v-col cols="12" md="5">
@@ -362,8 +394,7 @@ const buttonSendForm = async () => {
                     type="date"
                     :max="currentDate2"
                     v-model.trim="state.formData2.fecha_i1"
-                    @input="miValidacion(), state.formData2.fecha_i1= validateText(state.formData2.fecha_i1.toUpperCase())"
-                    :error="submitButton && !state.formData2.fecha_i1"
+                    
                     hide-details
                 />
                 <template v-if="submitButton && !state.formData2.fecha_i1">
@@ -381,8 +412,7 @@ const buttonSendForm = async () => {
                     color="primary"
                     type="date"
                     v-model.trim="state.formData2.fecha_f1"
-                    @input="miValidacion(), state.formData2.fecha_f1= validateText(state.formData2.fecha_f1.toUpperCase())"
-                    :error="submitButton && !state.formData2.fecha_f1"
+                   
                     hide-details
                 >
             <template v-slot:append >
@@ -405,8 +435,9 @@ const buttonSendForm = async () => {
            </v-row>
         </v-expansion-panel-text>
     </v-expansion-panel>
+
     <!---Delivery Options--->
-    <v-expansion-panel elevation="10" class=" mt-3">
+    <v-expansion-panel elevation="10" class=" mt-3" v-if="editar_3">
         <v-expansion-panel-title class="text-h6" style="color:black;">Reporte de kardex de vehículo</v-expansion-panel-title>
         <v-expansion-panel-text class="mt-4">
            <v-row>
@@ -417,8 +448,8 @@ const buttonSendForm = async () => {
                     color="primary"
                     type="text"
                     v-model.trim="state.formData3.placa_chasis2"
-                    @input="miValidacion(), state.formData3.placa_chasis2= validateText(state.formData3.placa_chasis2.toUpperCase())"
-                    :error="submitButton && !state.formData3.placa_chasis2"
+                    @input="state.formData3.placa_chasis2= validateText(state.formData3.placa_chasis2.toUpperCase())"
+                    
                     hide-details
                 />
           </v-col>
@@ -431,8 +462,8 @@ const buttonSendForm = async () => {
                     type="date"
                     :max="currentDate2"
                     v-model.trim="state.formData3.fecha_i2"
-                    @input="miValidacion(), state.formData3.fecha_i2= validateText(state.formData3.fecha_i2.toUpperCase())"
-                    :error="submitButton && !state.formData3.fecha_i2"
+                    
+                   
                     hide-details
                 />
                
@@ -444,8 +475,8 @@ const buttonSendForm = async () => {
                     color="primary"
                     type="date"
                     v-model.trim="state.formData3.fecha_f2"
-                    @input="miValidacion(), state.formData3.fecha_f2= validateText(state.formData3.fecha_f2.toUpperCase())"
-                    :error="submitButton && !state.formData3.fecha_f2"
+                    
+                  
                     hide-details
                 >
             <template v-slot:append >
@@ -468,8 +499,9 @@ const buttonSendForm = async () => {
            </v-row>
         </v-expansion-panel-text>
     </v-expansion-panel>
+  
     <!---Delivery Options--->
-    <v-expansion-panel elevation="10" class=" mt-3">
+    <v-expansion-panel elevation="10" class=" mt-3" v-if="editar_4">
         <v-expansion-panel-title class="text-h6" style="color:black;">Reporte de kardex de Mecánico</v-expansion-panel-title>
         <v-expansion-panel-text class="mt-4">
            <v-row>
@@ -483,7 +515,7 @@ const buttonSendForm = async () => {
             no-data-text="No existe más opciones para seleccionar"
             item-value="id"
             item-title="mecanico_disponible"
-            :error="submitButton && !state.formData4.id_mecanico"
+           
           /> 
           </v-col>
           <v-col cols="12" md="3">
@@ -495,8 +527,7 @@ const buttonSendForm = async () => {
                     type="date"
                     :max="currentDate2"
                     v-model.trim="state.formData4.fecha_i3"
-                    @input="miValidacion(), state.formData4.fecha_i3= validateText(state.formData4.fecha_i3.toUpperCase())"
-                    :error="submitButton && !state.formData4.fecha_i3"
+                 
                     hide-details
                 />
                
@@ -508,8 +539,7 @@ const buttonSendForm = async () => {
                     color="primary"
                     type="date"
                     v-model.trim="state.formData4.fecha_f3"
-                    @input="miValidacion(), state.formData4.fecha_f3= validateText(state.formData4.fecha_f3.toUpperCase())"
-                    :error="submitButton && !state.formData4.fecha_f3"
+                    
                     hide-details
                 >
             <template v-slot:append >
@@ -532,9 +562,10 @@ const buttonSendForm = async () => {
            </v-row>
         </v-expansion-panel-text>
     </v-expansion-panel>
+ 
 
     <!---Delivery Options--->
-    <v-expansion-panel elevation="10" class=" mt-3">
+    <v-expansion-panel elevation="10" class=" mt-3" v-if="editar_5">
         <v-expansion-panel-title class="text-h6" style="color:black;">Reporte de Inventario</v-expansion-panel-title>
         <v-expansion-panel-text class="mt-4">
            <v-row>
@@ -546,8 +577,7 @@ const buttonSendForm = async () => {
                     type="text"
                     :max="currentDate2"
                     v-model.trim="state.formData5.partida"
-                    @input="miValidacion(), state.formData5.partida= validateText(state.formData5.partida.toUpperCase())"
-                    :error="submitButton && !state.formData5.partida"
+                   
                     hide-details
                 />
           </v-col>
@@ -560,8 +590,7 @@ const buttonSendForm = async () => {
                     type="date"
                     :max="currentDate2"
                     v-model.trim="state.formData5.fecha_i4"
-                    @input="miValidacion(), state.formData5.fecha_i4= validateText(state.formData5.fecha_i4.toUpperCase())"
-                    :error="submitButton && !state.formData5.fecha_i4"
+                   
                     hide-details
                 />
                
@@ -573,8 +602,7 @@ const buttonSendForm = async () => {
                     color="primary"
                     type="date"
                     v-model.trim="state.formData5.fecha_f4"
-                    @input="miValidacion(), state.formData5.fecha_f4= validateText(state.formData5.fecha_f4.toUpperCase())"
-                    :error="submitButton && !state.formData5.fecha_f4"
+                  
                     hide-details
                 >
             <template v-slot:append >
@@ -597,8 +625,7 @@ const buttonSendForm = async () => {
            </v-row>
         </v-expansion-panel-text>
     </v-expansion-panel>
-    <!----->
-    
+ 
 </v-expansion-panels>
     <!---<v-col cols="12" lg="12">
     

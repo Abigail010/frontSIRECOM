@@ -87,78 +87,122 @@ const lista_menu = [
     {
         title: 'Usuarios',
         icon: ChartDonut3Icon,
-        to: '/userList'
+        to: '/userList',
+        visible: true, // Se mostrará
     },
        { title: 'Talleres',
         icon: BuildingFactory2Icon,
-        to: '/tallerList'
+        to: '/tallerList',
+        visible: true, // Se mostrará
     },
         {
             title:'Ordenes',
             icon: ChartDonut3Icon,
-        to: '/ordenList'
+        to: '/ordenList',
+        visible: true, // Se mostrará
         
         }, 
  
     {
       title: 'Busqueda Reporte',
       icon: SearchIcon,
-      to: '/Busqueda_list'
+      to: '/Busqueda_list',
+      visible: true, // Se mostrará
+    },
+    {
+      title: 'Busqueda de Mantenimientos',
+      icon: SearchIcon,
+      to: '/Busqueda_list',
+      visible: false, // No se mostrará
+    },
+    {
+      title: 'Busqueda de Ingreso de Vehículos',
+      icon: SearchIcon,
+      to: '/Busqueda_list',
+      visible: false, // No se mostrará
+    },
+    {
+      title: 'Busqueda de Kardex de Vehículo',
+      icon: SearchIcon,
+      to: '/Busqueda_list',
+      visible: false, // No se mostrará
+    },
+    {
+      title: 'Busqueda de Kardex de Mecanico',
+      icon: SearchIcon,
+      to: '/Busqueda_list',
+      visible: false, // No se mostrará
+    },
+    {
+      title: 'Busqueda de Inventario',
+      icon: SearchIcon,
+      to: '/Busqueda_list',
+      visible: false, // No se mostrará
     },
     {
       title: 'Dashboard',
       icon: ChartBarIcon,
-      to: '/home'
+      to: '/home',
+      visible: true, // Se mostrará
     },
    
     {
       title: 'Recursos',
       icon: MenuIcon,
       to: '#',
+      visible: true, // Se mostrará
       children: [
 
        
         {
           title: 'Perfil',
           icon: CircleIcon,
-          to: '/profileList'
+          to: '/profileList',
+          visible: true, // Se mostrará
         },
         {
           title: 'Servicios',
           icon: CircleIcon,
-          to: '/serviciosList'
+          to: '/serviciosList',
+          visible: true, // Se mostrará
         },
 
         {
           title: 'Accesorios',
           icon: CircleIcon,
-          to: '/accesorioList'
+          to: '/accesorioList',
+          visible: true, // Se mostrará
         },
         {
           title: 'Sistemas',
           icon: CircleIcon,
-          to: '/systemList'
+          to: '/systemList',
+          visible: true, // Se mostrará
         },
         {
           title: 'Filtros',
           icon: CircleIcon,
-          to: '/filtroList'
+          to: '/filtroList',
+          visible: true, // Se mostrará
         },
        
         {
           title: 'Repuestos',
           icon: CircleIcon,
           to: '/3level',
+          visible: true, // Se mostrará
           children: [
             {
               title: 'Repuesto',
               icon: CircleXIcon,
-              to: '/repuestoList'
+              to: '/repuestoList',
+              visible: true, // Se mostrará
             },
             {
               title: 'Ingreso de repuestos',
               icon: CircleXIcon,
-              to: '/registerList'
+              to: '/registerList',
+              visible: true, // Se mostrará
             }
           ]
         },
@@ -166,44 +210,52 @@ const lista_menu = [
         {
           title: 'Tipos de mantenimiento',
           icon: CircleIcon,
-          to: '/tipo_manList'
+          to: '/tipo_manList',
+          visible: true, // Se mostrará
         },
         {
           title: 'Registro de vehículos',
           icon: CircleIcon,
           to: '/3level',
+          visible: true, // Se mostrará
           children: [
             
             
                 {
                   title: 'Vehículos',
                   icon: CircleXIcon,
-                  to: '/vehiculoList'
+                  to: '/vehiculoList',
+                  visible: true, // Se mostrará
                 },
                 {
                   title: 'Fuerzas',
                   icon: CircleXIcon,
-                  to: '/FuerzasList'
+                  to: '/FuerzasList',
+                  visible: true, // Se mostrará
                 },
                 {
                   title: 'Marcas',
                   icon: CircleXIcon,
-                  to: '/MarcaList'
+                  to: '/MarcaList',
+                  visible: true, // Se mostrará
                 },
                 {
                   title: 'Tipo',
                   icon: CircleXIcon,
-                  to: '/ClaseList'
+                  to: '/ClaseList',
+                  visible: true, // Se mostrará
                 },
                 {
                   title: 'Modelo',
                   icon: CircleXIcon,
-                  to: '/TipoList'
+                  to: '/TipoList',
+                  visible: true, // Se mostrará
                 },
                 {
                   title: 'Procedencia',
                   icon: CircleXIcon,
-                  to: '/proceList'
+                  to: '/proceList',
+                  visible: true, // Se mostrará
                 },        
     
           ]
@@ -212,6 +264,7 @@ const lista_menu = [
           title: 'Bienes',
           icon: CircleIcon,
           to: '/3level',
+          visible: true, // Se mostrará
           children: [
             {
               title: 'Sustancia controlada',
@@ -379,8 +432,8 @@ const authStore = useAuthStore()
 
 const sidebarItem: menu[] = [
   
-    { header: 'Home' },
-    {
+ /*   { header: 'Home' },
+   {
         title: 'Modern',
         icon: ApertureIcon,
         chip: 'New',
@@ -965,7 +1018,7 @@ const sidebarItem: menu[] = [
         icon: StarIcon,
         to: '/',
         type: 'external'
-    }
+    }*/
   
 ];
 
