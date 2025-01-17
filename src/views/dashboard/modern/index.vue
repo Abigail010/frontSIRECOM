@@ -9,9 +9,9 @@ import { ref, reactive, onMounted } from 'vue';
 import { getPrimary, getSecondary } from '@/utils/UpdateColors';
 import { computed } from 'vue';
 import { useTheme } from 'vuetify';
-import jsPDF from "jspdf";
-import html2canvas from "html2canvas";
-
+import html2canvas from 'html2canvas';
+import jsPDF from 'jspdf';
+import { nextTick } from 'vue';
 const orden = useSearchStore()
 const userProfile:any = JSON.parse(localStorage.getItem('user') || '').nombre_perfil
 const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
@@ -145,9 +145,7 @@ const getGen = async () => {
 
     datos.value = await orden.getCiudades(mesActualNombre);
     departamento = [parseInt(datos.value[0].beni || 0), parseInt(datos.value[0].cochabamba || 0), parseInt(datos.value[0].la_paz || 0),parseInt(datos.value[0].oruro || 0), parseInt(datos.value[0].pando || 0), parseInt(datos.value[0].potosi || 0), parseInt(datos.value[0].chuquisaca || 0), parseInt(datos.value[0].santa_cruz || 0),parseInt(datos.value[0].tarija || 0)]
-    //onsole.log(departamento)
     pieChart.series = [...departamento]; // Reactivo, actualiza el gráfico
-//  console.log("Departamento actualizado:", departamento);
 
     state.formData.title1 ="Usuarios Registrados"
     state.formData.title2 ="Vehículos en Mantenimiento"
@@ -267,6 +265,39 @@ const getGen = async () => {
   
   }
  
+
+ const generatePDF = () =>{
+    nextTick(() => { // Usa nextTick aquí
+    const card = document.getElementById('mantenimientoCard');
+    if (card) {
+      html2canvas(card).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const pdf = new jsPDF();
+        pdf.addImage(imgData, 'PNG', 10, 10, 180, 160);
+        pdf.save('mantenimiento.pdf');
+      });
+    } else {
+      console.error("El elemento con id 'mantenimientoCard' no se encuentra.");
+    }
+  });
+    }
+const  generatePNG =  () => {
+    
+    nextTick(() => { // Usa nextTick aquí
+    const card = document.getElementById('mantenimientoCard');
+    if (card) {
+      html2canvas(card).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = imgData;
+        link.download = 'mantenimiento.png';
+        link.click();
+      });
+    } else {
+      console.error("El elemento con id 'mantenimientoCard' no se encuentra.");
+    }
+  });
+    }
 
 const chartOptions = computed(() => {
     return {
@@ -464,28 +495,7 @@ const piechartOptions = computed(() => {
 });
 
 
- const  captureChart  = async () => {
-      const chartContainer = ref.chartContainer;
 
-      try {
-        // Capturar contenido como imagen
-        const canvas = await html2canvas(chartContainer);
-        const image = canvas.toDataURL("image/png");
-
-        // Crear PDF
-        const pdf = new jsPDF();
-        pdf.addImage(image, "PNG", 10, 10, 190, 90); // Ajusta posición y tamaño según sea necesario
-        pdf.save("chart.pdf");
-
-        // Descargar la imagen
-        const link = document.createElement("a");
-        link.href = image;
-        link.download = "chart.png";
-        link.click();
-      } catch (error) {
-        console.error("Error al capturar el gráfico:", error);
-      }
-    }
   
 
   onMounted(async () => {
@@ -569,96 +579,84 @@ const piechartOptions = computed(() => {
          <v-col cols="12">
            <v-row v-if="(us==1 || us2==1)">
                 <!-- Revenue Updates -->
-                <v-col cols="12" lg="12" md="12">
-                    <v-card elevation="10" >
-        <v-card-item>
-            <div class="d-sm-flex align-center justify-space-between">
-                <div >
-                    <v-card-title class="text-h5">Cuadro de Mantenimiento por mes</v-card-title>
-                    <v-card-subtitle class="text-subtitle-1 textSecondary">Fuerzas</v-card-subtitle>
-                </div>
-                <div class="my-sm-0 my-2">
-                    <v-select v-if="(us==1 || us2==1)"
-                    v-model="select"
-                    item-text="text"
-                    :items="nombresMeses" 
-                    variant="outlined" 
-                    density="compact" 
-                    @update:model-value="getEncargado(select);"
-                    
-                    hide-details></v-select>
-                </div>
-            </div>
+            <v-col cols="12" lg="12" md="12">
+              <v-card elevation="10" >
+                <v-card-item>
+                    <div class="d-sm-flex align-center justify-space-between">
+                        <div >
+                            <v-card-title class="text-h5">Cuadro de Mantenimiento por mes</v-card-title>
+                            <v-card-subtitle class="text-subtitle-1 textSecondary">Fuerzas</v-card-subtitle>
+                        </div>
+                        <div class="my-sm-0 my-2">
+                            <v-select v-if="(us==1 || us2==1)"
+                            v-model="select"
+                            item-text="text"
+                            :items="nombresMeses" 
+                            variant="outlined" 
+                            density="compact" 
+                            @update:model-value="getEncargado(select);"
+                            
+                            hide-details></v-select>
+                        </div>
+                    </div>
 
-            <v-row>
-                <v-col v-if="(us==1 || us2==1)" cols="12" sm="12" class="pt-7">
-                    <apexchart type="bar" height="375" :options="chartOptions" :series="lineChart.series"> </apexchart>
-                </v-col>
-               
-              <!---  <v-col cols="12" sm="4" class="pt-7">
-                    <div class="d-flex align-center mt-md-6 mt-3">
-                        <v-avatar class="rounded-md bg-lightprimary text-primary">
-                            <GridDotsIcon size="22" />
-                        </v-avatar>
-                        <div class="pl-4">
-                            <h3 class="text-h3">$63,489.50</h3>
-                            <h6 class="text-subtitle-1 textSecondary">Total Earnings</h6>
-                        </div>
-                    </div>
-                    <div class="mt-sm-10 mb-sm-10 mt-10 mb-0">
-                        <div class="d-flex align-baseline">
-                            <v-icon icon="mdi mdi-checkbox-blank-circle" size="10" color="primary"></v-icon>
-                            <div class="pl-4">
-                                <h6 class="text-subtitle-1 textSecondary">Earnings this month</h6>
-                                <h5 class="text-h5 mt-1">$48,820</h5>
-                            </div>
-                        </div>
-                        <div class="d-flex mt-8 align-baseline">
-                            <v-icon icon="mdi mdi-checkbox-blank-circle" size="10" color="secondary"></v-icon>
-                            <div class="pl-4">
-                                <h6 class="text-subtitle-1 textSecondary">Expense this month</h6>
-                                <h5 class="text-h5 mt-1">$26,498</h5>
-                            </div>
-                        </div>
-                        <v-btn color="primary" class="mt-10" variant="flat" block>View Full Report</v-btn>
-                    </div>
-                </v-col>-->
-            </v-row>
+                    <v-row>
+                        <v-col v-if="(us==1 || us2==1)" cols="12" sm="12" class="pt-7">
+                            <apexchart type="bar" height="375" :options="chartOptions" :series="lineChart.series"> </apexchart>
+                        </v-col>
+                    </v-row>
            
-           
-       
-        </v-card-item>
-    </v-card>
-                </v-col>
-            
-              
+                </v-card-item>
+              </v-card>
+            </v-col>
            </v-row>
            <v-row>
-
-        <v-card variant="outlined">
+    <v-col cols="12" lg="12" md="12">
+      <v-card id="mantenimientoCard" variant="outlined">
         <v-card-item class="py-4 px-6">
-            <v-row>
-                <v-col cols="12" md="10"><b>Registros de mantenimiento</b></v-col>
-          <v-col cols="12" md="2">
-            <v-select v-if="(us==1 || us2==1)"
-                    v-model="select2"
-                    item-text="text"
-                    :items="nombresMeses" 
-                    variant="outlined" 
-                    density="compact" 
-                    @update:model-value="getDepartamentos(select2);"
-                    
-                    hide-details></v-select>
-          </v-col>
-            </v-row>
+          <v-row>
+            <v-col cols="12" md="6"><b>Registros de mantenimiento</b></v-col>
+            <v-col cols="12" md="2">
+              <v-select
+                v-if="(us==1 || us2==1)"
+                v-model="select2"
+                item-text="text"
+                :items="nombresMeses"
+                variant="outlined"
+                density="compact"
+                @update:model-value="getDepartamentos(select2);"
+                hide-details
+              ></v-select>
+            </v-col>
+            <v-col cols="12" md="2">
+              <v-btn 
+              
+             variant="outlined"
+                density="compact"
+                hide-details
+              @click="generatePDF">Generar PDF</v-btn>
+            
+            </v-col>
+            <v-col 
+             cols="12" md="2"
+        
+           >
+              
+              <v-btn  
+            variant="outlined"
+                density="compact"
+                hide-details
+               @click="generatePNG">Generar PNG</v-btn>
+            </v-col>
+          </v-row>
         </v-card-item>
         <v-divider />
         <v-card-text>
-            <apexchart type="pie" height="300" :options="piechartOptions" :series="pieChart.series"> </apexchart>
+          <apexchart type="pie" height="300" :options="piechartOptions" :series="pieChart.series"> </apexchart>
         </v-card-text>
-    </v-card>
-    </v-row>
-
+      </v-card>
+    </v-col>
+  </v-row>
 
         </v-col>    
     </v-row>

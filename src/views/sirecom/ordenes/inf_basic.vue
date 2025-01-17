@@ -1,55 +1,11 @@
 <script setup lang="ts">
 import { ref, onMounted, computed, reactive } from 'vue';
-import { HeartIcon, UsersIcon, TrashIcon } from 'vue-tabler-icons';
-
-import ProfileBanner from '@/components/apps/user-profile/ProfileBanner.vue';
-import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import { useOrdenStore } from '@/stores/orden/orden';
 import { router } from '@/router';
 import { useRoute } from 'vue-router'
-import { useFrinedsStore } from '@/stores/apps/userprofile/friends';
+
 const route = useRoute()
-import ColorCheckboxes from '@/components/forms/form-elements/checkbox/ColorCheckboxes.vue';
-import CheckBox from '@/components/forms/form-validation/CheckBox.vue';
 const orden = useOrdenStore()
-const store = useFrinedsStore();
-const checksColor = ref(['primary', 'secondary', 'success', 'error', 'warning']);
-onMounted(() => {
-    store.fetchFrineds();
-});
-const colorChecked = ref(true);
-const getfriends: any = computed(() => {
-    return store.friends;
-});
-const searchValue = ref('');
-// dropdown data
-const actionDD = ref([
-    { title: 'Favorite', icon: HeartIcon },
-    { title: 'Edit Friend List', icon: UsersIcon },
-    { title: 'Remove', icon: TrashIcon }
-]);
-const page = ref({ title: 'Social Profile' });
-
-const filteredCards = computed(() => {
-    return getfriends.value.filter((card: any) => {
-        return card.name.toLowerCase().includes(searchValue.value.toLowerCase());
-    });
-});
-
-console.log('id '+ route.params.id)
-
-const breadcrumbs = ref([
-    {
-        text: 'Dashboard',
-        disabled: false,
-        href: '/'
-    },
-    {
-        text: 'Social Profile',
-        disabled: true,
-        href: '#'
-    }
-]);
 const state = reactive({
     formData: {
       id_orden: '',
@@ -74,7 +30,6 @@ const checkbox3 = ref(false);
 const checkbox4 = ref(false);
 const registro_id = async (id_orden: any) => {
     const res2 = await orden.basic(id_orden)
-  console.log(res2)
   state.formData.fecha_ingreso= res2[0].fecha_ingreso
    state.formData.fuerza = res2[0].fuerza
 state.formData.tipo_ve = res2[0].tipo_v
@@ -95,7 +50,7 @@ if(res2[0].entregado === null ){
 }else{
     checkbox4.value =true
 }
-    if(res2[0].id!=0){
+    if(res2[0].id!==0){
         checkbox.value =true
     }
     if(res2[0].tipo !== ''){
@@ -120,18 +75,10 @@ onMounted(async () => {
 
     <v-row class="justify-content-end mt-5">
         <v-col cols="12">
-            <!----<div class="d-sm-flex align-center mb-5">
-                <h3 class="text-h3">
-                    DIPREVCON
-                    <v-chip size="small" class="ml-2 elevation-0" variant="elevated" color="secondary">{{ filteredCards.length }}</v-chip>
-                </h3>
-             
-            </div>--->
-
             <v-row>
                   <v-col cols="12" md="10" sm="12">
                 
-                    <v-card elevation="10" class="card-hover">
+                    <v-card elevation="10" style="border: 1px solid #666666; border-radius: 10px;">
                         <v-card-item class="text-center">
                             <h4 class="text-h5 mt-3"> <img src="@/assets/images/misimagenes/logos.png" style="width: 60%; height: auto;" class="position-relative d-none d-lg-flex" alt="login-home" /></h4>
                             <h3 class="text-h5 mt-3">Registro de Mantenimiento</h3>
@@ -191,7 +138,7 @@ onMounted(async () => {
                         </v-card-item>
                     </v-card>
                     <v-divider />
-                    <v-sheet class="bg-grey100 px-4 py-2 d-flex align-center justify-center gap-2">
+                    <v-sheet elevation="10" style="border: 1px solid #666666; border-radius: 10px;">
                         <div class="d-flex gap-3 justify-center  align-center flex-column flex-sm-row">
         <v-checkbox-btn color="secondary" label="INGRESO DE VEHÍCULO"  :readonly="true" v-model="checkbox"></v-checkbox-btn>
         <v-checkbox-btn color="secondary" label="ORDEN DE MANTENIMIENTO"  :readonly="true"   v-model="checkbox2" ></v-checkbox-btn>

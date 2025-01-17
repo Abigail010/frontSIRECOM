@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, computed, onMounted } from 'vue';
+import { ref, reactive, computed, onMounted, readonly } from 'vue';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
 import {TrashIcon, SearchIcon, PlusIcon } from 'vue-tabler-icons';
 import { router } from '@/router';
@@ -12,20 +12,16 @@ import { useVehicleStore } from '@/stores/resources/vehicle';
 import { useSearchStore } from '@/stores/resources/busqueda';
 import { usefilterStore } from '@/stores/resources/filtro';
 import { useAuthStore } from '@/stores/auth'
-
+import { watch } from "vue"; 
 const authStore = useAuthStore()
-/*const editar_1 = ref<any>(false)
+const editar_1 = ref<any>(false)
 const editar_2 = ref<any>(false)
 const editar_3 = ref<any>(false)
 const editar_4 = ref<any>(false)
-const editar_5 = ref<any>(false)*/
-  const editar_1 = ref(false);
-const editar_2 = ref(false);
-const editar_3 = ref(false);
-const editar_4 = ref(false);
-const editar_5 = ref(false);
+const editar_5 = ref<any>(false)
+
 const repuestoStore = usefilterStore()
-const openpanel = ref([0]) as any
+const openpanel = ref([0,1,2,3,4]) as any
   const orden = useSearchStore()
   const route = useRoute()
   const resourceStore = useResourceStore()
@@ -82,6 +78,13 @@ const openpanel = ref([0]) as any
        partida:'', 
        fecha_i4:'', 
        fecha_f4:currentDate2, 
+    },
+    formData6:{
+       respuesta1:'',
+       respuesta2:'',
+       respuesta3:'NO',
+       respuesta4:'NO',
+       respuesta5:'',
     }
   });
 
@@ -144,7 +147,6 @@ const buttonClear5 = () => {
     state.formData5.partida =''
 }
 
-
   const editar = ref<any>(false)
     const desserts1 = ref([]) as any
     const desserts2 = ref([]) as any
@@ -161,37 +163,12 @@ const buttonClear5 = () => {
     desserts5.value= await vehicleStore.getFuerza()
     desserts3.value= await orden.getT()
     desserts4.value= await orden.getM()
-
-    const response = await authStore.getUserMenu()
-    console.log('permisos ', response.length)
-   // console.log('permisos ', response)
-   for (let i = 0; i < response.length; i++) {
-    const title = response[i].title;
-
-    if (title === 'Busqueda de Mantenimientos') {
-      console.log('Activando editar_1');
-      editar_1.value = true;
-    }
-    if (title === 'Busqueda de Ingreso de Vehículos') {
-      console.log('Activando editar_2');
-      editar_2.value = true;
-    }
-    if (title === 'Busqueda de Kardex de Vehículo') {
-      console.log('Activando editar_3');
-      editar_3.value = true;
-    }
-    if (title === 'Busqueda de Kardex de Mecanico') {
-      console.log('Activando editar_4');
-      editar_4.value = true;
-    }
-    if (title === 'Busqueda de Inventario') {
-      console.log('Activando editar_5');
-      editar_5.value = true;
-    }
-  }
-    //console.log('permisos ', response)
   }
 
+
+  const selectPanel = (openpanel :any) => {
+  console.log(`Estás seleccionando el Panel ${openpanel}`);
+};
   const sendForm = ref(true)
   const miValidacion = async () => {
   sendForm.value = true
@@ -199,6 +176,7 @@ const buttonClear5 = () => {
     sendForm.value = false
   }
 }
+
   // BOTON RETORNAR
   const buttonReturnList = () => {
     router.push({ name: 'ordenList' })
@@ -220,28 +198,76 @@ const buttonSendForm = async () => {
         timerProgressBar: true
      })
   }*/
+ // Computed para evaluar la condición de respuesta4
 
+    // Watch para rastrear cambios en respuesta4
  
+    
+    const isVisible = ref(false);
+    const uno= ref(false);
+    const dos = ref(false);
+    const tres = ref(false);
+    const cuatro = ref(false);
+    const cinco= ref(false);
+    const toggle = async() => {
+      isVisible.value = !isVisible.value;
+      const response = await authStore.getUserMenu()
+   
+   for (let i = 0; i < response.length; i++) {
+        const title = response[i].title?.trim() || ''; // Validación y eliminación de espacios
+
+        if (title === 'Busqueda de Mantenimientos') {
+          uno.value = true;
+         
+        }
+        if (title === 'Busqueda de Ingreso de Vehículos') {
+          dos.value = true;
+          
+        }
+        if (title === 'Busqueda de Kardex de Vehículo') {
+          tres.value = true;
+         
+        }
+        if (title === 'Busqueda de Kardex de Mecanico') {
+          cuatro.value = true;
+     
+        }
+        if (title === 'Busqueda de Inventario') {
+          cinco.value = true;
+         
+        }
+      }
+    };
+
+  
   onMounted(async () => {
     await getDepartmentsList()
     
+  // Ejecuta alguna lógica inicial si es necesario
+  await toggle(); // Opcional: Llama a toggle() en onMounted si es necesario
+   
+  return {
+      isVisible, uno, dos,tres, cuatro, cinco,
+      toggle,
+    };
+
   })
 
 </script>
 
 <template>
-  <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
+    <BaseBreadcrumb :title="page.title" :breadcrumbs="breadcrumbs"></BaseBreadcrumb>
   <v-row>
-
     <v-col cols="12" md="12">
-      <h4 class="mb-5 mt-2 font-weight-light">
-        <strong> </strong> Los campos con <span style="color:red">(*)</span> son obligatorios
-      </h4>
-    </v-col>
-    <v-expansion-panels v-model="openpanel" >
-      <v-expansion-panel elevation="10"v-if="editar_1">
-        <v-expansion-panel-title class="text-h6">Reportes de registros de mantenimientos</v-expansion-panel-title>
-        <v-expansion-panel-text class="mt-4">
+     
+    <v-expansion-panels
+      v-model="openpanel"
+      
+      multiple
+    >
+      <v-expansion-panel v-if="uno" readonly>
+        <v-expansion-panel-title @click="selectPanel(1)">Reportes de registros de mantenimientos</v-expansion-panel-title>
+        <v-expansion-panel-text>
           <v-row>
         <v-col cols="12" md="4">
             
@@ -333,14 +359,14 @@ const buttonSendForm = async () => {
           </v-text-field>
         </v-col>
       </v-row>
-        </v-expansion-panel-text>
-    </v-expansion-panel>
 
-      <!---Payment Method--->
-    <v-expansion-panel elevation="10" class=" mt-3" v-if="editar_2">
-        <v-expansion-panel-title class="text-h6" style="color:black;">Reporte de ingreso de vehículos</v-expansion-panel-title>
-        <v-expansion-panel-text class="mt-4">
-           <v-row>
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+
+      <v-expansion-panel v-if="dos" readonly>
+        <v-expansion-panel-title @click="selectPanel(2)">Reporte de ingreso de vehículos</v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <v-row>
             <v-col cols="12" md="4">
           <v-label class="mb-2 font-weight-medium">Tipo <span style="color:red"></span></v-label>
     
@@ -433,14 +459,14 @@ const buttonSendForm = async () => {
           </v-text-field>
         </v-col>
            </v-row>
-        </v-expansion-panel-text>
-    </v-expansion-panel>
 
-    <!---Delivery Options--->
-    <v-expansion-panel elevation="10" class=" mt-3" v-if="editar_3">
-        <v-expansion-panel-title class="text-h6" style="color:black;">Reporte de kardex de vehículo</v-expansion-panel-title>
-        <v-expansion-panel-text class="mt-4">
-           <v-row>
+        </v-expansion-panel-text>
+      </v-expansion-panel>
+
+      <v-expansion-panel v-if="tres" readonly>
+        <v-expansion-panel-title @click="selectPanel(3)"> Reporte de kardex de vehículo</v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <v-row>
             <v-col cols="12" md="3">
           <v-label class="mb-2 font-weight-medium">Placa o chasis <span style="color:red">(*)</span></v-label>
           <v-text-field
@@ -497,14 +523,13 @@ const buttonSendForm = async () => {
           </v-text-field>
         </v-col>
            </v-row>
+
         </v-expansion-panel-text>
-    </v-expansion-panel>
-  
-    <!---Delivery Options--->
-    <v-expansion-panel elevation="10" class=" mt-3" v-if="editar_4">
-        <v-expansion-panel-title class="text-h6" style="color:black;">Reporte de kardex de Mecánico</v-expansion-panel-title>
-        <v-expansion-panel-text class="mt-4">
-           <v-row>
+      </v-expansion-panel>
+      <v-expansion-panel v-if="cuatro" readonly>
+        <v-expansion-panel-title @click="selectPanel(4)">Reporte de kardex de Mecánico</v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <v-row>
             <v-col cols="12" md="3">
           <v-label class="mb-2 font-weight-medium">Mecánico <span style="color:red">(*)</span></v-label>
           <v-autocomplete
@@ -561,14 +586,11 @@ const buttonSendForm = async () => {
         </v-col>
            </v-row>
         </v-expansion-panel-text>
-    </v-expansion-panel>
- 
-
-    <!---Delivery Options--->
-    <v-expansion-panel elevation="10" class=" mt-3" v-if="editar_5">
-        <v-expansion-panel-title class="text-h6" style="color:black;">Reporte de Inventario</v-expansion-panel-title>
-        <v-expansion-panel-text class="mt-4">
-           <v-row>
+      </v-expansion-panel>
+      <v-expansion-panel v-if="cinco" readonly>
+        <v-expansion-panel-title @click="selectPanel(5)">Reporte de Inventario</v-expansion-panel-title>
+        <v-expansion-panel-text>
+          <v-row>
             <v-col cols="12" md="3">
           <v-label class="mb-2 font-weight-medium">N° de partida <span style="color:red">(*)</span></v-label>
           <v-text-field
@@ -623,16 +645,18 @@ const buttonSendForm = async () => {
           </v-text-field>
         </v-col>
            </v-row>
+
         </v-expansion-panel-text>
-    </v-expansion-panel>
- 
-</v-expansion-panels>
-    <!---<v-col cols="12" lg="12">
-    
-       <p class="mt-2 text-lg-left">
-        <v-btn color="error" class="mr-3" @click="buttonReturnList()">volver</v-btn>
-       
-      </p>
-    </v-col>-->
+      </v-expansion-panel>
+    </v-expansion-panels>
+    </v-col>
   </v-row>
+  
 </template>
+
+<style>
+.v-expansion-panel {
+  display: block !important;
+  visibility: visible !important;
+}
+</style>
