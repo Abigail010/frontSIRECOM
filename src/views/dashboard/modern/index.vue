@@ -40,8 +40,6 @@ const us2:any = JSON.parse(localStorage.getItem('user') || '').id_taller
       extra:'', 
     }
   });
-
-
 // Crear un nuevo objeto de fecha
 const fechaActual = new Date();
 
@@ -99,7 +97,7 @@ const getEncargado = async (id: any) => {
 let departamento: number[] = [];
 // Función asincrónica para obtener departamentos
 const getDepartamentos = async (id: any) => {
-    console.log(id);
+    
 
     // Obtener datos según el valor de `id`
     if (id !== '') {
@@ -267,17 +265,41 @@ const getGen = async () => {
  
 
  const generatePDF = () =>{
-    nextTick(() => { // Usa nextTick aquí
+    const ciudad = ['BENI', 'COCHABAMBA', 'LA PAZ', 'ORURO', 'PANDO', 'POTOSI', 'CHUQUISACA',  'SANTA CRUZ',  'TARIJA']
+    nextTick(() => {
     const card = document.getElementById('mantenimientoCard');
     if (card) {
       html2canvas(card).then((canvas) => {
         const imgData = canvas.toDataURL('image/png');
         const pdf = new jsPDF();
-        pdf.addImage(imgData, 'PNG', 10, 10, 180, 160);
+
+        // Agregar el título al PDF
+        pdf.setFontSize(20); // Tamaño de la fuente
+       
+        pdf.text('Registro de Mantenimientos por Departamento', pdf.internal.pageSize.getWidth() / 2, 20, {
+          align: 'center',
+        });
+
+        // Reducir el tamaño del cuadro capturado en el PDF
+        const imgWidth = 150; // Ajustar ancho de la imagen
+        const imgHeight = (canvas.height * imgWidth) / canvas.width; // Mantener la proporción
+        pdf.addImage(imgData, 'PNG', 35, 30, imgWidth, imgHeight);
+
+        // Agregar las cantidades por departamento
+        pdf.setFontSize(12);
+        let yOffset = 30 + imgHeight + 10; // Ajustar posición debajo de la imagen
+        pdf.text('Resumen de Cantidades por Departamento:', 10, yOffset);
+
+        departamento.forEach((item, index) => {
+          yOffset += 8; // Ajustar espacio entre líneas
+          pdf.text(`${index + 1}. ${ciudad[index]}: ${pieChart.series[index]}`, 10, yOffset);
+        });
+
+        // Guardar el PDF
         pdf.save('mantenimiento.pdf');
       });
     } else {
-      console.error("El elemento con id 'mantenimientoCard' no se encuentra.");
+      //console.error("El elemento con id 'mantenimientoCard' no se encuentra.");
     }
   });
     }
@@ -294,11 +316,11 @@ const  generatePNG =  () => {
         link.click();
       });
     } else {
-      console.error("El elemento con id 'mantenimientoCard' no se encuentra.");
+      //onsole.error("El elemento con id 'mantenimientoCard' no se encuentra.");
     }
   });
     }
-
+   
 const chartOptions = computed(() => {
     return {
         chart: {
@@ -496,7 +518,7 @@ const piechartOptions = computed(() => {
 
 
 
-  
+ 
 
   onMounted(async () => {
    await getGen()
@@ -577,7 +599,7 @@ const piechartOptions = computed(() => {
          
        
          <v-col cols="12">
-           <v-row v-if="(us==1 || us2==1)">
+           <v-row v-if="(us==1 || us2==1) && us!==5">
                 <!-- Revenue Updates -->
             <v-col cols="12" lg="12" md="12">
               <v-card elevation="10" >
@@ -610,9 +632,9 @@ const piechartOptions = computed(() => {
               </v-card>
             </v-col>
            </v-row>
-           <v-row>
+           <v-row  v-if="(us==1 || us2==1) && us!==5">
     <v-col cols="12" lg="12" md="12">
-      <v-card id="mantenimientoCard" variant="outlined">
+      <v-card  variant="outlined">
         <v-card-item class="py-4 px-6">
           <v-row>
             <v-col cols="12" md="6"><b>Registros de mantenimiento</b></v-col>
@@ -624,16 +646,15 @@ const piechartOptions = computed(() => {
                 :items="nombresMeses"
                 variant="outlined"
                 density="compact"
+           
                 @update:model-value="getDepartamentos(select2);"
                 hide-details
               ></v-select>
             </v-col>
             <v-col cols="12" md="2">
               <v-btn 
-              
-             variant="outlined"
-                density="compact"
-                hide-details
+       elevation="2" 
+       block
               @click="generatePDF">Generar PDF</v-btn>
             
             </v-col>
@@ -643,15 +664,17 @@ const piechartOptions = computed(() => {
            >
               
               <v-btn  
-            variant="outlined"
-                density="compact"
-                hide-details
+            
+       elevation="2" 
+       block
+     
+       
                @click="generatePNG">Generar PNG</v-btn>
             </v-col>
           </v-row>
         </v-card-item>
         <v-divider />
-        <v-card-text>
+        <v-card-text id="mantenimientoCard">
           <apexchart type="pie" height="300" :options="piechartOptions" :series="pieChart.series"> </apexchart>
         </v-card-text>
       </v-card>

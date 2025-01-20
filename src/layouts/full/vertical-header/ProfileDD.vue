@@ -58,18 +58,18 @@ onMounted(async () => {
                 class="custom-" 
                 variant="text" 
                 icon 
-                href="https://1drv.ms/w/s!AnQTBJ2Uzpo4kboCtc0LKjLeD3JveA?e=4TlTag" 
+                href="https://1drv.ms/b/s!AnQTBJ2Uzpo4k49AyGjYjeuTmAb99g?e=gxjWQn" 
                 target="_blank"
                 >
                 <v-avatar size="35">
                     <img src="@/assets/images/misimagenes/manual.png" width="35" alt="Manual" />
                 </v-avatar>
                 </v-btn>
-                <v-btn v-else-if="userProfile === 'SUPER ADMINISTRADOR'"
+                <v-btn v-else-if="userProfile === 'RESPONSABLE DEL TALLER'"
                 class="custom-" 
                 variant="text" 
                 icon 
-                href="https://1drv.ms/w/s!AnQTBJ2Uzpo4kboDK_rzELvNZ1v-9g?e=67WNA5" 
+                href="https://1drv.ms/b/s!AnQTBJ2Uzpo4k48-hjmzPBSwlVyWxw?e=muaENc" 
                 target="_blank"
                 >
                 <v-avatar size="35">
@@ -80,7 +80,7 @@ onMounted(async () => {
                 class="custom-" 
                 variant="text" 
                 icon 
-                href="https://1drv.ms/w/s!AnQTBJ2Uzpo4kboDK_rzELvNZ1v-9g?e=67WNA5" 
+                href="https://1drv.ms/b/s!AnQTBJ2Uzpo4k487PDVpHur3lwceMg?e=q2nS9C" 
                 target="_blank"
                 >
                 <v-avatar size="35">
@@ -91,7 +91,7 @@ onMounted(async () => {
                 class="custom-" 
                 variant="text" 
                 icon 
-                href="https://1drv.ms/w/s!AnQTBJ2Uzpo4kboDK_rzELvNZ1v-9g?e=67WNA5" 
+                href="https://1drv.ms/b/s!AnQTBJ2Uzpo4k485yzGKrWvvyJTVzQ?e=jrGuvb" 
                 target="_blank"
                 >
                 <v-avatar size="35">
@@ -102,7 +102,17 @@ onMounted(async () => {
                 class="custom-" 
                 variant="text" 
                 icon 
-                href="https://1drv.ms/w/s!AnQTBJ2Uzpo4kboDK_rzELvNZ1v-9g?e=67WNA5" 
+                href="https://1drv.ms/b/s!AnQTBJ2Uzpo4k486vUgl5AzLYN_G2A?e=ZkvBQ3" 
+                target="_blank"
+                >
+                <v-avatar size="35">
+                    <img src="@/assets/images/misimagenes/manual.png" width="35" alt="Manual" />
+                </v-avatar>
+                </v-btn><v-btn v-else-if="userProfile === 'RESPONSABLE DE TRANSPORTE'"
+                class="custom-" 
+                variant="text" 
+                icon 
+                href="https://1drv.ms/b/s!AnQTBJ2Uzpo4k48_NmmbtczhhTKABQ?e=QITLdn" 
                 target="_blank"
                 >
                 <v-avatar size="35">

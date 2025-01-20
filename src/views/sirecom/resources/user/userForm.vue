@@ -558,7 +558,8 @@ const buttonSendForm = async () => {
                   :value="menu.id"
                   hide-details
                   @click="evaluateCheckbox(menu.id)"
-                  :disabled="(menu.titulo == 'Talleres' || menu.titulo == 'Busqueda Reporte') && !(usertaller == 1 || usert == 1)" 
+                  :disabled="(menu.titulo == 'Talleres' || menu.titulo == 'Busqueda Reporte' || menu.titulo == 'Busqueda de Ingreso de Vehículos' || menu.titulo == 'Busqueda de Kardex de Vehículo' 
+                  || menu.titulo == 'Busqueda de Kardex de Mecanico' || menu.titulo == 'Busqueda de Inventario' || menu.titulo == 'Busqueda de Mantenimientos') && !(usertaller == 1 || usert == 1)" 
              
                 />
                 <v-switch

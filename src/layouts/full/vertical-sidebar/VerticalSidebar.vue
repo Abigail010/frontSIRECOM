@@ -12,6 +12,8 @@ import RtlLogo from '../logo/RtlLogo.vue';
 
 const customizer = useCustomizerStore();
 const sidebarMenu = shallowRef(sidebarItems);
+
+
 </script>
 
 <template>

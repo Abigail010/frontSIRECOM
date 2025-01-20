@@ -80,10 +80,22 @@ export interface menu {
     disabled?: boolean;
     type?: string;
     subCaption?: string;
+    visible?: boolean; 
 }
 
-const lista_menu = [
-    { header: 'Menu' },
+
+interface MenuItem {
+  to?: string;         // Opcional porque un header no tiene un enlace
+  visible?: boolean;   // Opcional para headers que no requieren esta propiedad
+  title?: string;      // Opcional porque un header podría no tener título
+  header?: string;     // Para manejar headers de sección
+  icon?: any;          // Para asignar un ícono (puedes especificar un tipo si sabes cuál es)
+  children?:any;
+}
+
+const lista_menu : MenuItem[] = [
+    { header: 'Menu',
+      visible: true, }, // Se mostrará },
     {
         title: 'Usuarios',
         icon: ChartDonut3Icon,
