@@ -78,7 +78,7 @@ export const useSearchStore = defineStore({
       },
       async getPrueba2(mes: any) {
         try {
-          const { data } = await sirecomApi.get('search_total/fuerzas/'+mes)
+          const { data } = await sirecomApi.get('search_total/fuerzas/'+mes+'/'+userLogged)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

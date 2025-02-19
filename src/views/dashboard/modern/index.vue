@@ -530,7 +530,7 @@ const piechartOptions = computed(() => {
     <v-row>
         <!-- Top cards -->
 
-        <v-col cols="12" lg="2" md="4" sm="4" >
+        <v-col cols="12" lg="2" md="4" sm="4" v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DE TRANSPORTE') || userProfile.includes('RESPONSABLE DEL TALLER')" >
             <div
                 :class="'text-decoration-none d-flex align-center justify-center text-center rounded-md pa-6  bg-lightprimary'"
             >
@@ -599,7 +599,7 @@ const piechartOptions = computed(() => {
          
        
          <v-col cols="12">
-           <v-row v-if="(us==1 || us2==1) && us!==5">
+           <v-row >
                 <!-- Revenue Updates -->
             <v-col cols="12" lg="12" md="12">
               <v-card elevation="10" >
@@ -610,7 +610,7 @@ const piechartOptions = computed(() => {
                             <v-card-subtitle class="text-subtitle-1 textSecondary">Fuerzas</v-card-subtitle>
                         </div>
                         <div class="my-sm-0 my-2">
-                            <v-select v-if="(us==1 || us2==1)"
+                            <v-select 
                             v-model="select"
                             item-text="text"
                             :items="nombresMeses" 
@@ -623,7 +623,7 @@ const piechartOptions = computed(() => {
                     </div>
 
                     <v-row>
-                        <v-col v-if="(us==1 || us2==1)" cols="12" sm="12" class="pt-7">
+                        <v-col  cols="12" sm="12" class="pt-7">
                             <apexchart type="bar" height="375" :options="chartOptions" :series="lineChart.series"> </apexchart>
                         </v-col>
                     </v-row>
