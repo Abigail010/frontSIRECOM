@@ -152,7 +152,7 @@ const getGen = async () => {
     state.formData.title5 ="Repuestos Entregados"
     state.formData.title6 ="Repuestos Pendientes"
 
-    if(userProfile.includes('SUPER ADMINISTRADOR') || (us==1)){
+    if(userProfile.includes('SUPER ADMINISTRADOR') || (us==1) ){
        
         let tot = 0 
         for(let i=0;i < users.length; i++){
