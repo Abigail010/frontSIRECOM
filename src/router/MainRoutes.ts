@@ -73,16 +73,7 @@ const MainRoutes = {
             path: '/Busqueda_list',
             component: () => import('@/views/sirecom/ordenes/busqueda.vue')
         },
-        {
-            name: 'information',
-            path: '/information/:id',
-            component: () => import('@/views/sirecom/ordenes/inf_basic.vue')
-        },
-        {
-            name: 'info_details',
-            path: '/info_details/:id',
-            component: () => import('@/views/sirecom/ordenes/info_details.vue')
-        },
+      
 
          //DELITO
          {

@@ -73,7 +73,7 @@ onMounted(async () => {
 
 <template>
 
-    <v-row class="justify-content-end mt-5">
+    <v-row  class="ml-12 mt-5">
         <v-col cols="12">
             <v-row>
                   <v-col cols="12" md="10" sm="12">

@@ -32,6 +32,17 @@ const AuthRoutes = {
         //     component: () => import('@/views/authentication/SideLogin.vue')
         // },
         {
+            name: 'information',
+            path: '/information/:id',
+            component: () => import('@/views/sirecom/ordenes/inf_basic.vue')
+        },
+        {
+            name: 'info_details',
+            path: '/info_details/:id',
+            component: () => import('@/views/sirecom/ordenes/info_details.vue')
+        },
+        {
+
             name: 'Boxed Login',
             path: '/auth/login2',
             component: () => import('@/views/authentication/BoxedLogin.vue')
