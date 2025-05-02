@@ -85,6 +85,24 @@ export const useSearchStore = defineStore({
           return { ok: false, message: message }
         }
       },
+      async general_dashboard(mes: any) {
+        try {
+          const { data } = await sirecomApi.get('search_total/general_dashboard/'+mes+'/'+userLogged)
+          return data
+        } catch (error: any) {
+          const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+          return { ok: false, message: message }
+        }
+      },
+      async general_data_for_search() {
+        try {
+          const { data } = await sirecomApi.get('search_total/general_data_for_search/')
+          return data
+        } catch (error: any) {
+          const message = (error.response.data ? error.response.data.message : 'error: sin conexion')
+          return { ok: false, message: message }
+        }
+      },
       async getCiudades(mes: any) {
         try {
           const { data } = await sirecomApi.get('search_total/departamentos/'+mes)
@@ -124,8 +142,8 @@ export const useSearchStore = defineStore({
       },
       async vehiculosReport(form:any) {
         try {
-          const url = direccion_url+'/search_total/report_vehiculos';
-          
+          const url = direccion_url+'/search_total/report_vehiculos/'+ userLogged;
+         
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
           formElement.method = 'POST';
@@ -160,8 +178,8 @@ export const useSearchStore = defineStore({
 
       async minutesReport(form: any) {
         try {
-         const url =  direccion_url+'/search_total/busqueda';
-
+         const url =  direccion_url+'/search_total/busqueda/'+ userLogged;
+         console.log('url.....', url)
      
      //   const { url } = await sirecomApi.post('repuestos/create_filter/' + userLogged, form)
           // Crear un formulario oculto para enviar los datos como POST
@@ -197,7 +215,7 @@ export const useSearchStore = defineStore({
 
       async ReportVe(form:any) {
         try {
-          const url = direccion_url+'/search_total/report_vehi';
+          const url = direccion_url+'/search_total/report_vehi/'+ userLogged;
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
@@ -232,8 +250,7 @@ export const useSearchStore = defineStore({
       
       async ReportMan(form:any) {
         try {
-          const url = direccion_url+'/search_total/report_meca';
-          
+          const url = direccion_url+'/search_total/report_meca/'+ userLogged;
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
           formElement.method = 'POST';
@@ -267,7 +284,7 @@ export const useSearchStore = defineStore({
 
       async ReportRepuestos(form:any) {
         try {
-          const url = direccion_url+'/search_total/report_inventario';
+          const url = direccion_url+'/search_total/report_inventario/'+ userLogged;
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');

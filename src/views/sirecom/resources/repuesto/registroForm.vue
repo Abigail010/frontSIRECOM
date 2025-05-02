@@ -9,10 +9,12 @@ import { useRegisterRStore } from '@/stores/resources/register_rep';
 import { useResourceStore } from '@/stores/resource';
 import { validateText } from '@/utils/helpers/validateText'
 import { format } from 'date-fns'
-import { useUserStore } from '@/stores/resources/user';
-import { useFuerzasStore } from '@/stores/resources/fuerza';
-const fuerzas = useFuerzasStore()
-const userStore = useUserStore()
+// import { useUserStore } from '@/stores/resources/user';
+// import { useFuerzasStore } from '@/stores/resources/fuerza';
+import { useSearchStore } from '@/stores/resources/busqueda';
+const search = useSearchStore()
+// const fuerzas = useFuerzasStore()
+// const userStore = useUserStore()
 const RegisterRStore = useRegisterRStore()
 const dialog = ref(false);
   const route = useRoute()
@@ -56,25 +58,26 @@ const dialog = ref(false);
     }
   });
 
-
   const taller = ref([])
-  const gettaller = async() => {
+  // const gettaller = async() => {
   
-  taller.value = await fuerzas.fuerza()
-  }
+  // taller.value = await fuerzas.fuerza()
+  // }
   const editar = ref<any>(false)
   
   const departamentos = ref([])
-  const getDepartmentsList = async() => {
-    departamentos.value = await resourceStore.getDepartments()
-  }
+  // const getDepartmentsList = async() => {
+  //   departamentos.value = await resourceStore.getDepartments()
+  // }
   const servicios = ref([])
   const desserts6 = ref([]) as any
   const desserts7 = ref([]) as any
   const getServicios = async() => {
-    servicios.value = await resourceStore.getSerivicio_t()
-    desserts7.value = await repuestoStore.repuestos()
-    desserts6.value = await repuestoStore.Unidad()
+    const datos_generales = await  search.general_data_for_search()
+    taller.value = datos_generales.fuerza
+    servicios.value = datos_generales.servicio
+    desserts7.value = datos_generales.repuestos
+    desserts6.value = datos_generales.unidad
   }
   // FUNCION QUE OBTIENE LA INFORMACION DEL talle
   const getRegisterRId = async (id: any) => {
@@ -128,10 +131,8 @@ const precio = () => {
       //state.formData.
 }
 const añadir_repuesto = () => {
-
   // Verifica si los campos requeridos están llenos
   if(state.formData.id_repuesto && state.formData.cantidad && state.formData.unidad && state.formData.precio_u){
-    
     // Encuentra el objeto correspondiente al `id_repuesto` seleccionado
     let a = desserts7.value.find(
       (region: any) => region.id == state.formData.id_repuesto
@@ -139,10 +140,8 @@ const añadir_repuesto = () => {
 
     // Si el objeto `a` existe, extrae el `nombre_repuesto`
     if (a) {
-
       state.formData.nombre_repuesto = a.nombre_repuesto;  // Almacena el nombre en formData
     } else {
- 
       return; // Sal del método si no se encuentra el repuesto
     }
 
@@ -174,18 +173,15 @@ const añadir_repuesto = () => {
   }
 }
 
-
 const buttonDeleteRep = (index: number) => {
   if (state.formData.repuestos.length > 0) {
     // Obtén el registro que quieres eliminar de la lista de repuestos
     const registro2: any = state.formData.repuestos[index];
-
     // Añade nuevamente el repuesto eliminado a la lista de repuestos disponibles (desserts7)
     desserts7.value.push({
       id: registro2.id_repuesto,
       nombre_repuesto: registro2.nombre_repuesto // Aquí debes usar el nombre correcto
     });
-
     // Sumar el subtotal actual al total acumulado
     state.formData.total = String(parseFloat(state.formData.total) - parseFloat(registro2.subtotal)); // Restar el subtotal del repuesto eliminado
 
@@ -220,7 +216,6 @@ const setCodeName = () => {
         cantidad: state.formData.cantidad,
         unidad:state.formData.unidad,
         precio_u:state.formData.precio_u
-        
       })
       state.formData.id_repuesto = ''
       state.formData.nombre_repuesto= ''
@@ -286,8 +281,8 @@ const buttonClose = () => {
   }
 
   onMounted( async () => {
-    await getDepartmentsList()
-    await gettaller()
+    // await getDepartmentsList()
+    // await gettaller()
     await getServicios()
     if(route.params.id != '0'){
       await getRegisterRId(route.params.id)
@@ -310,10 +305,7 @@ const buttonClose = () => {
                                         <v-container>
                                             <v-row>
                                             <v-col cols="12"  md="4">
-                                                <v-text-field
-                                                v-model="state.formData.nombre_repuesto"
-                                                label="Repuesto"
-                                                ></v-text-field>
+                                                <v-text-field v-model="state.formData.nombre_repuesto" label="Repuesto"></v-text-field>
                                             </v-col>
                                             <v-col cols="12"  md="2">
                                         
@@ -327,9 +319,7 @@ const buttonClose = () => {
                                             no-data-text="No existe más opciones para seleccionar"
                                             item-value="nombre_unidad"
                                             item-title="nombre_unidad"
-                                            @input="state.formData.unidad = validateText(state.formData.unidad.toUpperCase())"
-                                          
-                                            /> 
+                                            @input="state.formData.unidad = validateText(state.formData.unidad.toUpperCase())" /> 
                                     </v-col>
                                             <v-col cols="12"  md="2">
                                                 <v-text-field
@@ -337,8 +327,7 @@ const buttonClose = () => {
                                                 v-model="state.formData.cantidad"
                                                 label="Cantidad"
                                                 type="number"
-                                                :min =1
-                                                ></v-text-field>
+                                                :min =1 ></v-text-field>
                                             </v-col>
                                             <v-col cols="12"  md="2">
                                                 <v-text-field
@@ -346,8 +335,7 @@ const buttonClose = () => {
                                                 v-model="state.formData.precio_u"
                                                 label="Precio Unitaro"
                                                 type="number"
-                                                :min =1
-                                                ></v-text-field>
+                                                :min =1 ></v-text-field>
                                             </v-col>
                                             <v-col cols="12"  md="2">
                                                 <v-text-field
@@ -355,20 +343,15 @@ const buttonClose = () => {
                                                 min:0
                                                 label="Importe"
                                                 readonly
-                                                 type="number"
-                                                ></v-text-field>
+                                                 type="number" ></v-text-field>
                                             </v-col>
                                             </v-row>
                                         </v-container>
                                     </v-card-text>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="error" variant="flat" dark   @click="buttonClose()">
-                                            Cancel
-                                        </v-btn>
-                                        <v-btn color="success" variant="flat" dark   @click="buttonSendForm2()">
-                                            Actualizar
-                                        </v-btn>
+                                        <v-btn color="error" variant="flat" dark   @click="buttonClose()"> Cancel </v-btn>
+                                        <v-btn color="success" variant="flat" dark   @click="buttonSendForm2()"> Actualizar </v-btn>
                                     </v-card-actions>
                                 </v-card>
                             </v-dialog>
@@ -377,7 +360,6 @@ const buttonClose = () => {
       <h4 class="mb-5 mt-2 font-weight-light">
         <strong> DATOS DEL REGISTRO:</strong> Los campos con <span style="color:red">(*)</span> son obligatorios
       </h4>
-
       <v-row>
         <v-col cols="12" md="4">
       <v-label class="mb-2 font-weight-medium">
@@ -391,9 +373,7 @@ const buttonClose = () => {
         :min="currentDate2"
         :max="currentDate2"
         :error="submitButton && !state.formData.fecha"
-
-        hide-details
-      />
+        hide-details/>
       <template v-if="submitButton && !state.formData.fecha">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
@@ -411,19 +391,16 @@ const buttonClose = () => {
             v-model.trim="state.formData.partida"
             @input="miValidacion(), state.formData.partida"
             :error="submitButton && !state.formData.partida"
-            hide-details
-          />
-        
+            hide-details/>
         </v-col>
         <v-col cols="12" md="4">
-          <v-label class="mb-2 font-weight-medium">Taller<span style="color:red">(*)</span></v-label>
+          <v-label class="mb-2 font-weight-medium">Fuerza<span style="color:red">(*)</span></v-label>
           <v-select
             :items="taller"
             item-title="nombre_fuerza"
             item-value="id_fuerza"
             v-model="state.formData.id_taller"
-            :error="submitButton && !state.formData.id_taller"
-          />
+            :error="submitButton && !state.formData.id_taller"  />
           <template v-if="submitButton && !state.formData.id_taller">
             <div class="v-messages font-weight-black px-2 py-2">
               <div class="v-messages__message text-error ">
@@ -440,10 +417,7 @@ const buttonClose = () => {
             type="text"
             v-model.trim="state.formData.observacion"
             @input="miValidacion(), state.formData.observacion = validateText(state.formData.observacion.toUpperCase())"
-            
-            hide-details
-          />
-        
+            hide-details />
         </v-col>
         
        <v-col cols="12" md="12">
@@ -462,8 +436,7 @@ const buttonClose = () => {
                   item-value="id"
                   @input="miValidacion()"
                   :error="submitButton && !state.formData.id_repuesto"
-                  hide-details
-          ></v-autocomplete>
+                  hide-details  ></v-autocomplete>
           <template v-if="submitButton && !state.formData.id_repuesto">
             <div class="v-messages font-weight-black px-2 py-2">
               <div class="v-messages__message text-error ">
@@ -485,8 +458,7 @@ const buttonClose = () => {
                               item-value="nombre_unidad"
                               item-title="nombre_unidad"
                               @input="state.formData.unidad = validateText(state.formData.unidad.toUpperCase())"
-                              @update:model-value="setCodeName()"
-          ></v-autocomplete>
+                              @update:model-value="setCodeName()"></v-autocomplete>
           <template v-if="submitButton && !state.formData.unidad">
             <div class="v-messages font-weight-black px-2 py-2">
               <div class="v-messages__message text-error ">
@@ -506,8 +478,7 @@ const buttonClose = () => {
             @input="precio(), state.formData.cantidad"
             :min="1"
             :error="submitButton && !state.formData.cantidad"
-            hide-details
-          />
+            hide-details />
           <template v-if="submitButton && !state.formData.cantidad">
             <div class="v-messages font-weight-black px-2 py-2">
               <div class="v-messages__message text-error ">
@@ -527,8 +498,7 @@ const buttonClose = () => {
             @input="precio(), state.formData.precio_u"
             :min="1"
             :error="submitButton && !state.formData.precio_u"
-            hide-details
-          />
+            hide-details />
           <template v-if="submitButton && !state.formData.precio_u">
             <div class="v-messages font-weight-black px-2 py-2">
               <div class="v-messages__message text-error ">
@@ -537,28 +507,23 @@ const buttonClose = () => {
             </div>
           </template>
         </v-col>
- <v-col cols="12" md="4">
+        <v-col cols="12" md="4">
           <v-label class="mb-2 font-weight-medium">Importe Bs.<span style="color:red"></span></v-label>
           <v-text-field
                     variant="outlined" 
                     color="primary"
                     type="number"
-
                     v-model.trim="state.formData.subtotal"
                     readonly
                     :error="submitButton && !state.formData.subtotal"
-                    hide-details
-                >
+                    hide-details >
             <template v-slot:append >
-              <v-btn
-                color="primary"
+              <v-btn color="primary"
                 @click= añadir_repuesto()
                 :disabled=" !state.formData.id_repuesto || !state.formData.cantidad || !state.formData.unidad || !state.formData.precio_u"
-                readonly="true"
-                ><SearchIcon/>Añadir
+                readonly="true" ><SearchIcon/>Añadir
               </v-btn>
-              <v-btn
-                color="secondary"
+              <v-btn color="secondary"
                 @click= buttonClear2()
                 :disabled="!state.formData.id_repuesto || !state.formData.cantidad || !state.formData.unidad || !state.formData.precio_u"><TrashIcon/>Limpiar
               </v-btn>
@@ -574,7 +539,6 @@ const buttonClose = () => {
               <th class="text-center">N° </th>
               <th class="text-center"><b> Repuesto</b></th>
               <th class="text-center"><b> Unidad</b></th>
-
               <th class="text-center"><b> Cantidad</b></th>
               <th class="text-center"><b> Precio Unitario</b></th>
               <th class="text-center"><b>Importe Bs.</b></th>
@@ -582,9 +546,7 @@ const buttonClose = () => {
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="(item, index) in state.formData.repuestos"  :key="index"
-            >
+            <tr v-for="(item, index) in state.formData.repuestos"  :key="index">
               <td class="text-center">{{ index+1 }}</td>
               <td class="text-center">{{ item.nombre_repuesto }}</td>
               <td class="text-center">{{ item.unidad }}</td>
@@ -600,8 +562,7 @@ const buttonClose = () => {
                   width="25"
                   color="primary"
                   text="hola"
-                 @click="ButtonRepuesto(item.idd)"
-                > <PencilIcon></PencilIcon>
+                 @click="ButtonRepuesto(item.idd)"> <PencilIcon></PencilIcon>
                 </v-btn>
                 <v-btn v-if="item.entregado === null || item.entregado === 0  || item.idd == null"
                     size="x-small"
@@ -609,8 +570,7 @@ const buttonClose = () => {
                     height="25"
                     width="25"
                     color="error"
-                    @click="buttonDeleteRep(index)"
-                  > <TrashIcon ></TrashIcon >
+                    @click="buttonDeleteRep(index)" > <TrashIcon ></TrashIcon >
                 </v-btn>
                 
               </td>
@@ -624,11 +584,9 @@ const buttonClose = () => {
                     height="25"
                     width="25"
                     color="error"
-                    @click="buttonDeleteRep(index)"
-                  > <TrashIcon ></TrashIcon >
+                    @click="buttonDeleteRep(index)"  > <TrashIcon ></TrashIcon >
                 </v-btn>
               </td>
-              
             </tr>
             <tr>
                <td></td>
@@ -643,10 +601,7 @@ const buttonClose = () => {
       </v-col>
     </template>
       </v-row>
-
-      
 <br>
-
       <p class="text-lg-left">
         <v-btn color="error" class="mr-3" @click="buttonReturnList()">Cancelar</v-btn>
         <v-btn color="primary" @click.prevent="buttonSendForm()">Enviar</v-btn>

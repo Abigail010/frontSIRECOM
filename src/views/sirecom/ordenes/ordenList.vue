@@ -36,9 +36,7 @@ const breadcrumbs = ref([
   });
 
   const ButtonReport2 = async (item: any) => {
-  
   const data2 = await registro.minutesReport(item);
-
   }
 
   interface Man {
@@ -48,8 +46,8 @@ const breadcrumbs = ref([
 
   //const desserts = ref([]) as any
   const desserts = ref<Man[]>([]);
-const getOrdenes_sol = async() => {
-  if(userProfile.includes('SUPER ADMINISTRADOR') || us == 1){
+  const getOrdenes_sol = async() => {
+  if(userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DE TALLER')  || us == 1){
     desserts.value = await orden.getOrdenes_soli()
   }else{
     if(userProfile.includes('MECANICO') || us == 4){
@@ -84,11 +82,9 @@ const headers = ref([
   { title: 'Mecánico', key: 'mecanico' },
   { title: 'Taller', key: 'nombre_taller' },
   { title: 'Ciudad', key: 'ciudad' },
- 
   { title: 'Estado', key: 'estado' },
 
 ])
-
 
 const buttonApprove = async (item: any) => {
     await registro_id(item);  // Wait for the state update
@@ -121,7 +117,6 @@ const buttonApprove = async (item: any) => {
             
     }
    else {
-        
         Toast.fire({
               icon: 'error',
               title: 'Aun quedan repuestos pendientes de entrega'
@@ -131,18 +126,14 @@ const buttonApprove = async (item: any) => {
 
 const registro_id = async (id_orden: any) => {
     const res2 = await soli_Rep.getTotal(id_orden);
-  
     state.formData.total = res2.total;
 
     if (state.formData.total === '0') {
-     
-        state.formData.permiso = 'Entrega exitosa';
+       state.formData.permiso = 'Entrega exitosa';
     } else {
-     
-        state.formData.permiso = 'No se puede realizar';
+      state.formData.permiso = 'No se puede realizar';
     }
 };
-
 
   const buttonApprove2 = (item: any) => {
 
@@ -171,8 +162,6 @@ const registro_id = async (id_orden: any) => {
     })
   }
 
-
-
   const buttonDelete = (item: any) => {
     Swal.fire({
       title: '¿Estas seguro?',
@@ -200,7 +189,6 @@ const registro_id = async (id_orden: any) => {
   }
 
 const search = ref() as any
-
 const Toast = Swal.mixin({
   toast: true,
   position: "top-end",
@@ -223,8 +211,7 @@ onMounted(() => {
           :headers="headers" 
           :items="desserts" 
           :sort-by="[{ key: 'nombre_delito', order: 'asc' }]" 
-          :search="search"
-        >
+          :search="search" >
         <template v-slot:item.estado="{item}:{ item:Man}">
              <span :class="getestado(item.estado)">{{item.estado}}</span>
         </template>
@@ -235,25 +222,22 @@ onMounted(() => {
                 v-model.trim="search" 
                 append-inner-icon="mdi-magnify" 
                 label="Busqueda" 
-                hide-details 
-              />
+                hide-details  />
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <v-btn v-if="(userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile == 'SUPERVISOR DE MANTENIMIENTO') || ( us == 1 || us==2 || us== 3)"
+              <v-btn v-if="(userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile == 'SUPERVISOR DE MANTENIMIENTO') || ( us == 1 || us==2 || us== 3)"
                 color="primary"  
                 variant="flat" 
                 dark   
-                @click="buttonDepositForm(0)" 
-              > Nuevo ingreso</v-btn>
+                @click="buttonDepositForm(0)"  > Nuevo ingreso</v-btn>
             </v-toolbar>                        
           </template>
-          
           <template v-slot:item.actions="{ item } : {item:Man}">
-              <v-icon v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3) "
+              <v-icon v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3) "
               color="info" size="large" class="me-2" @click="buttonDepositForm(item.id)">
                   mdi-pencil
               </v-icon>
-              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') ||  userProfile.includes('MECANICO')  || (us==1 || us==2 || us==3 || us== 4)"
+              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') ||  userProfile.includes('MECANICO')  || (us==1 || us==2 || us==3 || us== 4)"
                   class="mr-1"
                   size="x-small"
                   title="Orden de Mantenimiento"
@@ -261,12 +245,10 @@ onMounted(() => {
                   width="25"
                   color="secondary"
                   text="hola"
-                  @click="buttonRegistro(item.id)"
-                >
+                  @click="buttonRegistro(item.id)">
                 <ReportIcon style="cursor: pointer;"></ReportIcon>
-
               </v-btn>
-              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('PERSONAL DE ENTREGA') || (us==1 || us == 2 || us == 5) "
+              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DE TRANSPORTE') || userProfile.includes('PERSONAL DE ENTREGA') || (us==1 || us == 2 || us == 5) "
                   class="mr-1"
                   size="x-small"
                   title="Entrega de repuestos"
@@ -274,62 +256,46 @@ onMounted(() => {
                   width="25"
                   color="warning"
                   text="hola"
-                  @click="buttonEstadoRep(item.id)"
-                >
-                <ReportIcon style="cursor: pointer;"></ReportIcon>
-                
+                  @click="buttonEstadoRep(item.id)" >
+                <ReportIcon style="cursor: pointer;"></ReportIcon>    
               </v-btn>
-              <v-btn 
-                  v-if="item.estado == 'EN PROCESO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('MECANICO') || (us==1 || us == 2 || us == 4) )   "
+              <v-btn  v-if="item.estado == 'EN PROCESO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile.includes('MECANICO') || (us==1 || us == 2 || us == 4) )   "
                   class="mr-1"
                   size="x-small"
                   title="Entregar"
                   height="25"
                   width="25"
                   color="error"
-                  @click="buttonApprove(item.id)"
-                >
+                  @click="buttonApprove(item.id)">
                   <FileCheckIcon style=" cursor: pointer;"></FileCheckIcon>
                 </v-btn>
-
-
-                
-                <v-btn 
-                  v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO')  || (us==1 || us == 2 || us == 3)) "
-                
+                <v-btn v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO')  || (us==1 || us == 2 || us == 3)) "
                   class="mr-1 estado-3"
                   size="x-small"
                   title="Rechazar entrega de mantenimiento"
                   height="25"
                   width="25"
-                
-                  @click="buttonDelete(item.id)"
-                >
+                  @click="buttonDelete(item.id)" >
                   <FileIcon style=" cursor: pointer;"></FileIcon>
                 </v-btn>
-
-                <v-btn 
-                  v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3) ) "
+                <v-btn  v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3) ) "
                   class=""
                   size="x-small"
                   title="Entrega de vehiculo"
                   height="25"
                   width="25"
                   color="success"
-                  @click="buttonApprove2(item.id)"
-                >
+                  @click="buttonApprove2(item.id)" >
                   <FileCheckIcon style=" cursor: pointer;"></FileCheckIcon>
                 </v-btn>
-                <v-btn 
-                  v-if="item.estado == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3)) "
+                <v-btn  v-if="item.estado == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DE TRANSPORTE') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3)) "
                   class=""
                   size="x-small"
                   title="Reporte de Mantenimiento"
                   height="25"
                   width="25"
                   color="primary"
-                  @click="ButtonReport2(item.id)"
-                >
+                  @click="ButtonReport2(item.id)" >
                   <FileCheckIcon style=" cursor: pointer;"></FileCheckIcon>
                 </v-btn>
                 

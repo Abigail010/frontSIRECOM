@@ -2,7 +2,7 @@
 import { router } from '@/router';
 import { useRoute } from 'vue-router'
 import { ref, reactive, onMounted } from 'vue';
-import { TrashIcon, SearchIcon, PlusIcon, PencilIcon, CheckIcon, SquareCheckIcon, FallIcon, ElevatorIcon } from 'vue-tabler-icons';
+import { PencilIcon, SquareCheckIcon } from 'vue-tabler-icons';
 import { useRegisterStore } from '@/stores/orden/registro';
 import { validateText } from '@/utils/helpers/validateText'
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
@@ -95,11 +95,8 @@ const openpanel = ref([0]);
         observacion_r:'', 
         id_Rep:[] as any, 
         id_Rep2:[] as any, 
-    
-
         id_accesorios_: []as any, 
-        
-      cedula_identidad: '',
+        cedula_identidad: '',
         total_c:'', 
         total:'', 
       
@@ -121,13 +118,13 @@ const openpanel = ref([0]);
   });
 
   const lista_unidad = ref([]) as any
-  const lista_diagnosticos = ref([]) as any
-  const tipo_mantenimiento2 = ref([]) as any
-  const getResourcesList = async () => {
-    lista_diagnosticos.value = await registro.gettipo_trabajo() 
-    tipo_mantenimiento2.value = await registro.gettipo_mantenimiento()     // LISTA DE accesorios
-    lista_unidad.value=await registro.getUnidad()
-  }
+  // const lista_diagnosticos = ref([]) as any
+  // const tipo_mantenimiento2 = ref([]) as any
+  // const getResourcesList = async () => {
+  //   // lista_diagnosticos.value = await registro.gettipo_trabajo() 
+  //   // tipo_mantenimiento2.value = await registro.gettipo_mantenimiento()     // LISTA DE accesorios
+  //   lista_unidad.value=await registro.getUnidad()
+  // }
   
    // BUSQUEDA o despliegue de repuestos
    const basico_id = async (id_orden: any) => {
@@ -146,30 +143,34 @@ const openpanel = ref([0]);
     state.formData.prueba= data.prueba
     state.formData2.fuerza = data.fuerza
    } 
-  
 
    const verificar_id = async (id_orden: any) => {
     const data = await registro.verificar_reg(id_orden)
     const size = Object.keys(data).length;
-   if(size>0){
-    state.formData.id_registro = data.id_registro
-   }else{
-    //state.formData.id_registro = size;
-   }
+      if(size>0){
+        state.formData.id_registro = data.id_registro
+      }else{
+        //state.formData.id_registro = size;
+      }
    }
 
   const registro_id = async (id_orden: any) => {
-   state.formData.id_Rep = await soli_Rep.getsolicitudes(id_orden) 
-   
-   state.formData.id_Rep2 = await soli_Rep.getEntregas(id_orden) 
-   const res= await soli_Rep.getEntregas(id_orden) 
- 
+    const datos_pedidos =  await soli_Rep.getEntregas(id_orden) 
+    lista_unidad.value=datos_pedidos.Unidad
+  //  state.formData.id_Rep = await soli_Rep.getsolicitudes(id_orden) 
+    // console.log(datos_pedidos.getTotal)
+    state.formData.id_Rep =  datos_pedidos.getSolictudes
+ //  state.formData.id_Rep2 = await soli_Rep.getEntregas(id_orden) 
+       state.formData.id_Rep2 = datos_pedidos.getEntregas
+    // const res= await soli_Rep.getEntregas(id_orden) 
+   const res= datos_pedidos.getEntregas1
    let s = 0
    for(let i =0; i< res.length; i++ ){
     s = s + parseInt(res[i].costo)
    }
    state.formData.total_c = String(s) 
-    const res2= await soli_Rep.getTotal(id_orden) 
+    // const res2= await soli_Rep.getTotal(id_orden) 
+    const res2= datos_pedidos.getTotal
     state.formData.total = res2.total
   }
 
@@ -259,15 +260,13 @@ const openpanel = ref([0]);
         state.formData2.costo = ''
       }
     }
-    
-    
     dialog.value = true
   }
 
   const precio = () => {
     const cantidad = parseFloat(state.formData2.cantidad) || 0;
-      const precio_u = parseFloat(state.formData2.precio) || 0;
-      state.formData2.costo = (cantidad * precio_u).toFixed(2) ; // Calcula y formatea el subtotal
+    const precio_u = parseFloat(state.formData2.precio) || 0;
+    state.formData2.costo = (cantidad * precio_u).toFixed(2) ; // Calcula y formatea el subtotal
 
 }
 
@@ -362,37 +361,10 @@ const openpanel = ref([0]);
         Toast.fire({
               icon: 'error',
               title: 'Por favor, registre el costo del repuesto antes de continuar.'
-     })
+        });
       }
-
   }
- /* function entregar(item: any) {
-  
-      Swal.fire({
-        
-          text: "¡El proceso no podra ser revertido!",
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "¡Si, entregar!"
-      }).then(async (result) => {
-      if (result.isConfirmed) {
-        const { ok, message } = await soli_Rep.updateEstado1({"id":item})
-        const icono = (ok ? 'success' : 'error')
-
-        if(ok){
-          //await getUsersList()
-        }
-        Toast.fire({
-          icon: icono,
-          title: message,
-        })
-        window.location.reload()
-          }
-      });
-
-} */
+ 
 function recibido(item: any) {
   Swal.fire({
      
@@ -419,32 +391,8 @@ function recibido(item: any) {
   });
 } 
 
-  function deleteItem(item: any) {
-  Swal.fire({
-      title: "¿Estas seguro?",
-      text: "¡El proceso no podra ser revertido!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Si, ¡eliminar!"
-  }).then(async (result) => {
-  if (result.isConfirmed) {
-    const { ok, message } = await soli_Rep.updateEstado1({"id":item})
-    const icono = (ok ? 'success' : 'error')
-    if(ok){
-      //await getUsersList()
-    }
-    Toast.fire({
-      icon: icono,
-      title: message,
-    })
-      }
-  });
-} 
-
   onMounted(async () => {
-    await getResourcesList()
+    // await getResourcesList()
    
     if(route.params.id_orden  != '0'){
       await verificar_id(route.params.id_orden)
@@ -491,22 +439,22 @@ function recibido(item: any) {
         closable
       >
       <div style="display: flex; justify-content: space-between;">
-  <div><b>PLACA :</b> <span class="text-primary">{{state.formData.dato1}}</span></div>
-  <div><b>CHASIS :</b> <span class="text-primary">{{state.formData.dato2}}</span></div>
-  <div><b>TIPO :</b> <span class="text-primary">{{state.formData.tipo_orden}}</span></div>
-</div>
+      <div><b>PLACA :</b> <span class="text-primary">{{state.formData.dato1}}</span></div>
+      <div><b>CHASIS :</b> <span class="text-primary">{{state.formData.dato2}}</span></div>
+      <div><b>TIPO :</b> <span class="text-primary">{{state.formData.tipo_orden}}</span></div>
+    </div>
 
-<div style="display: flex; justify-content: space-between;">
-  <div><b>MARCA :</b> <span class="text-primary">{{state.formData.marca}}</span></div>
-  <div><b>COLOR :</b> <span class="text-primary">{{state.formData.color_ve}}</span></div>
-  <div><b>FECHA DE INGRESO :</b> <span class="text-primary">{{state.formData.dato3}}</span></div>
-</div>
+    <div style="display: flex; justify-content: space-between;">
+      <div><b>MARCA :</b> <span class="text-primary">{{state.formData.marca}}</span></div>
+      <div><b>COLOR :</b> <span class="text-primary">{{state.formData.color_ve}}</span></div>
+      <div><b>FECHA DE INGRESO :</b> <span class="text-primary">{{state.formData.dato3}}</span></div>
+    </div>
 
-<div style="display: flex; justify-content: space-between;">
-  <div><b>CONDUCTOR :</b> <span class="text-primary">{{state.formData.nombre_completo}}</span></div>
-  <div><b>CEL :</b> <span class="text-primary">{{state.formData.dato3}}</span></div>
-  <div><b>PRE - DIAGNOSTICO :</b> <span class="text-primary">{{state.formData.dato4}}</span></div>
-</div>
+    <div style="display: flex; justify-content: space-between;">
+      <div><b>CONDUCTOR :</b> <span class="text-primary">{{state.formData.nombre_completo}}</span></div>
+      <div><b>CEL :</b> <span class="text-primary">{{state.formData.dato3}}</span></div>
+      <div><b>PRE - DIAGNOSTICO :</b> <span class="text-primary">{{state.formData.dato4}}</span></div>
+    </div>
 
       </v-alert>
     </v-col>
@@ -536,8 +484,7 @@ function recibido(item: any) {
                                                 v-model="state.formData2.cantidad"
                                                 label="Cantidad"
                                                 type="number"
-                                                 :min = 1
-                                                ></v-text-field>
+                                                 :min = 1></v-text-field>
                                             </v-col>
                                             <v-col cols="12"  md="3">
                                         
@@ -551,9 +498,7 @@ function recibido(item: any) {
                                                     no-data-text="No existe más opciones para seleccionar"
                                                     item-value="nombre_unidad"
                                                     item-title="nombre_unidad"
-                                                    @input="state.formData2.unidad = validateText(state.formData2.unidad.toUpperCase())"
-                                                  
-                                                    /> 
+                                                    @input="state.formData2.unidad = validateText(state.formData2.unidad.toUpperCase())"  /> 
                                             </v-col>
                                             <v-col cols="12"  md="2">
                                                <template v-if="us==1 || us==2">
@@ -562,8 +507,7 @@ function recibido(item: any) {
                                                 min:0
                                                 label="Precio Unitario"
                                                  type="number"
-                                                 :error="submitButton && !state.formData2.costo"
-                                                >
+                                                 :error="submitButton && !state.formData2.costo">
                                                 
                                               </v-text-field>
                                               <template v-if="submitButton && !state.formData2.costo">
@@ -581,8 +525,7 @@ function recibido(item: any) {
                                                 label="Costo"
                                                 type="number"
                                                 :error="submitButton && !state.formData2.costo"
-                                                readonly
-                                                >
+                                                readonly >
                                                   
                                               </v-text-field>
                                               <template v-if="submitButton && !state.formData2.costo">
@@ -600,9 +543,7 @@ function recibido(item: any) {
                                                 v-model="state.formData2.observacion"
                                                 label="Observación"
                                                  type="text"
-                                                 @input="state.formData2.observacion = validateText(state.formData2.observacion.toUpperCase())"
-                                                
-                                                >
+                                                 @input="state.formData2.observacion = validateText(state.formData2.observacion.toUpperCase())" >
                                               
                                               </v-text-field>
                                             </v-col>
@@ -612,17 +553,9 @@ function recibido(item: any) {
                                     </v-card-text>
                                     <v-card-actions>
                                         <v-spacer></v-spacer>
-                                        <v-btn color="error" variant="flat" dark   @click="buttonClose()">
-                                            Cancel
-                                        </v-btn>
-                                        <v-btn v-if="state.formData2.estado == 'RECIBIDO' && ( us==1 || us==2 )"
-                                         color="success" variant="flat" dark   @click="buttonSendForm()">
-                                            Guardar
-                                        </v-btn>
-                                        <v-btn v-else
-                                         color="primary" variant="flat" dark   @click="buttonSendForm()">
-                                            Guardar
-                                        </v-btn>
+                                        <v-btn color="error" variant="flat" dark   @click="buttonClose()"> Cancel</v-btn>
+                                        <v-btn v-if="state.formData2.estado == 'RECIBIDO' && ( us==1 || us==2 )" color="success" variant="flat" dark   @click="buttonSendForm()"> Guardar </v-btn>
+                                        <v-btn v-else color="primary" variant="flat" dark   @click="buttonSendForm()"> Guardar</v-btn>
                                     </v-card-actions>
                                 </v-card>
                             </v-dialog>
@@ -634,8 +567,6 @@ function recibido(item: any) {
             <v-expansion-panel-text class="mt-4">
               
                <v-row>
-        
-
                 <template v-if="state.formData.id_Rep.length>0">
       <v-col cols="12" md="12">
         <v-table density="compact">
@@ -678,7 +609,6 @@ function recibido(item: any) {
               <td class="text-center" v-if="item.recibido === 'PENDIENTE'">
  
                 <v-btn
-                  
                   size="small"
                   title="Recibir repuesto"
                   height="25"
@@ -700,8 +630,7 @@ function recibido(item: any) {
                   width="25"
                   color="primary"
                   text="hola"
-                 @click="ButtonRepuesto(item.id)"
-                > <PencilIcon style="cursor: pointer;"></PencilIcon>
+                 @click="ButtonRepuesto(item.id)" > <PencilIcon style="cursor: pointer;"></PencilIcon>
                 </v-btn>
                 </td>
                 <td class="text-center" v-else-if="item.entregado === 'RECIBIDO' &&  (us==1 ||  us==2) ">
@@ -713,8 +642,7 @@ function recibido(item: any) {
                   width="25"
                   color="success"
                   text="hola"
-                 @click="ButtonRepuesto(item.id)"
-                > <PencilIcon></PencilIcon>
+                 @click="ButtonRepuesto(item.id)" > <PencilIcon></PencilIcon>
                 </v-btn>
                 </td>
                 <td class="text-center" v-else>
@@ -725,9 +653,7 @@ function recibido(item: any) {
                   height="25"
                   width="25"
                   color=""
-                  text="hola"
-               
-                > <PencilIcon></PencilIcon>
+                  text="hola" > <PencilIcon></PencilIcon>
                 </v-btn>
                 </td>
             </tr>
@@ -745,8 +671,6 @@ function recibido(item: any) {
             <v-expansion-panel-text class="mt-4">
               
                <v-row>
-        
-
                 <template v-if="state.formData.id_Rep2.length>0">
       <v-col cols="12" md="12">
         <v-table density="compact">
@@ -760,7 +684,6 @@ function recibido(item: any) {
              
               <th class="text-center"><b> Observación</b></th>
               
-            
             </tr>
           </thead>
           <tbody>
@@ -788,10 +711,8 @@ function recibido(item: any) {
       </v-col>
     </template>
                </v-row>
-               
             </v-expansion-panel-text>
         </v-expansion-panel>
-       
     </v-expansion-panels>
 </v-row>
     

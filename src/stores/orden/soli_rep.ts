@@ -105,8 +105,8 @@ export const useSoliStore = defineStore({
       
       async getPrecio (id_rep: any) {
         try {
-          
-          const { data } = await sirecomApi.get('soli_rep/precios/' + id_rep)
+          const userLogged = JSON.parse(localStorage.getItem('user') || '').cedula_identidad
+          const { data } = await sirecomApi.get('soli_rep/precios/' + id_rep+'/'+ userLogged)
           return data
         } catch (error: any) {
           const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

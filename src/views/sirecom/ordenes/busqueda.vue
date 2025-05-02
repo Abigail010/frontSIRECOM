@@ -156,13 +156,15 @@ const buttonClear5 = () => {
     const desserts6 = ref([]) as any
   const departamentos = ref([])
   const getDepartmentsList = async() => {
-    departamentos.value = await resourceStore.getDepartments()
-    desserts1.value= await repuestoStore.clase()
-    desserts2.value= await repuestoStore.marcas()
-    desserts6.value= await repuestoStore.tipo()
-    desserts5.value= await vehicleStore.getFuerza()
-    desserts3.value= await orden.getT()
-    desserts4.value= await orden.getM()
+    const datos_generales = await  orden.general_data_for_search()
+    //  console.log(datos_generales)
+     departamentos.value = datos_generales.departamento
+     desserts1.value= datos_generales.clase
+     desserts2.value= datos_generales.marca
+     desserts6.value= datos_generales.tipo
+     desserts5.value=datos_generales.fuerza
+     desserts3.value= datos_generales.taller
+     desserts4.value= datos_generales.mecanicos
   }
 
 

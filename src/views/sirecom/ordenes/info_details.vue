@@ -81,7 +81,7 @@ onMounted(async () => {
         <v-col cols="12">
           
             <v-row>
-                  <v-col cols="12" md="10" sm="12">
+                  <v-col cols="12" md="12" >
                 
                     <v-card elevation="10"  style="border: 1px solid #666666; border-radius: 10px;">
                         <v-card-item class="text-center">

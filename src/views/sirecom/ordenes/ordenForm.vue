@@ -82,11 +82,10 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
     }
   });
 
-  const lista_accesorios = ref([]) as any
-
-  const getResourcesList = async () => {
-    lista_accesorios.value = await resourceStore.getAccesorios()      // LISTA DE accesorios
-  }
+  // const lista_accesorios = ref([]) as any
+  // const getResourcesList = async () => {
+  //   lista_accesorios.value = await resourceStore.getAccesorios()      // LISTA DE accesorios
+  // }
 
   const ordernes_id = async (id_orden: any) => {
   
@@ -191,7 +190,6 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
                 state.formData.id_vehiculo = respuesta_info.id_vehiculo
 
       }
-  
   }
 
   const validateKilometraje = () => {
@@ -203,7 +201,6 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
        state.formData.valido_kilo = String(dato2)
      
         if(parseInt(state.formData.kilometraje)>=parseInt(state.formData.kilo_) && parseInt(state.formData.kilometraje)<=dato2  ){
-        
           Toast.fire({
           icon: 'success',
           title: 'Kilometraje valido'
@@ -215,7 +212,6 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
             })
         }
      }else{
-
       Toast.fire({
           icon: 'success',
           title: 'Primer registro'
@@ -247,10 +243,7 @@ const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
 
   }
 
-
-  const buttonReturnList = () => {
-    router.push({ name: 'ordenList' })
-  }
+  const buttonReturnList = () => { router.push({ name: 'ordenList' }) }
 
   const buttonSendForm = async () => {
   
@@ -329,7 +322,7 @@ const getMecanicos = async() => {
     }
 }
   onMounted(async () => {
-    await getResourcesList()
+    // await getResourcesList()
     await getMecanicos()
     
     if(route.params.id_orden  != '0'){
@@ -352,8 +345,7 @@ const getMecanicos = async() => {
         border="top"
         icon="$warning"
         title="ATENCIÓN"
-        closable
-      >
+        closable >
         - <span class="text-primary">Debe ingresar la placa o chasis para el registro de ingreso del vehículo. </span><br>
         - <span class="text-primary">El vehículo debe encontrarse registrado en el sistema para poder registrar su ingreso. </span><br>
         - <span class="text-error"><b>Nota: </b>En caso de que el vehículo no se encuentre registrado en el sistema, se recomienda comunicarse con la administración de la <b>DIPREVCON</b> para realizar el registro correspondiente.</span><br>
@@ -380,17 +372,14 @@ const getMecanicos = async() => {
                   v-model.trim="state.formData.placa_chasis"
                   @input="state.formData.placa_chasis = validateText(state.formData.placa_chasis.toUpperCase());"
                   :error="submitButton && !state.formData.placa_chasis"
-                  hide-details
-                >
+                  hide-details >
                   <template v-slot:append>
                     <template v-if="route.params.id_orden=='0'">
-                      <v-btn
-                        color="primary"
+                      <v-btn color="primary"
                         @click= buttonSearchOrden()
                         :disabled="!state.formData.placa_chasis"><SearchIcon/>Buscar
                       </v-btn>
-                      <v-btn
-                        color="secondary"
+                      <v-btn color="secondary"
                         @click= buttonClearOrden()
                         :disabled="!state.formData.placa_chasis"><TrashIcon/>Limpiar
                       </v-btn>
@@ -400,8 +389,7 @@ const getMecanicos = async() => {
                 </v-text-field>
               </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">
-Fecha de Registro<span style="color:red">(*)</span>
+      <v-label class="mb-2 font-weight-medium"> Fecha de Registro<span style="color:red">(*)</span>
       </v-label>
       <v-text-field 
         type="date" 
@@ -411,9 +399,7 @@ Fecha de Registro<span style="color:red">(*)</span>
         :min="currentDate2"
         :max="currentDate2"
         :error="submitButton && !state.formData.marca"
-
-        hide-details
-      />
+        hide-details />
       <template v-if="submitButton && !state.formData.fecha_formulario">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
@@ -431,12 +417,10 @@ Fecha de Registro<span style="color:red">(*)</span>
         color="primary"
         v-model="state.formData.tipo_orden"
         readonly
-        hide-details
-      />
+        hide-details />
     </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">
-        Marca<span style="color:red">(*)</span>
+      <v-label class="mb-2 font-weight-medium">  Marca<span style="color:red">(*)</span>
       </v-label>
       <v-text-field 
         variant="outlined" 
@@ -444,8 +428,7 @@ Fecha de Registro<span style="color:red">(*)</span>
         v-model.trim="state.formData.marca"
         @input="state.formData.marca =  validateText(state.formData.marca.toUpperCase());"
         readonly 
-        hide-details
-      />
+        hide-details/>
       
       <template v-if="submitButton && !state.formData.marca">
         <div class="v-messages font-weight-black px-2 py-2">
@@ -456,8 +439,7 @@ Fecha de Registro<span style="color:red">(*)</span>
       </template>
     </v-col>
     <v-col cols="12" md="4">
-      <v-label class="mb-2 font-weight-medium">
-        Color<span style="color:red">(*)</span>
+      <v-label class="mb-2 font-weight-medium"> Color<span style="color:red">(*)</span>
       </v-label>
       <div v-if="state.formData.color_ve != ''">
         <v-textarea
@@ -466,8 +448,7 @@ Fecha de Registro<span style="color:red">(*)</span>
         v-model.trim="state.formData.color_ve"
         @input="state.formData.color_ve = validateText(state.formData.color_ve.toUpperCase())"
         :error="submitButton && !state.formData.color_ve"
-        hide-details
-         />
+        hide-details />
           <template v-if="submitButton && !state.formData.color_ve">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
@@ -484,8 +465,7 @@ Fecha de Registro<span style="color:red">(*)</span>
             v-model.trim="state.formData.color_ve"
             @input=" state.formData.color_ve= validateText(state.formData.color_ve.toUpperCase())"
             :error="submitButton && !state.formData.color_ve"
-            hide-details
-          />
+            hide-details />
           <template v-if="submitButton && !state.formData.color_ve">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
@@ -505,8 +485,7 @@ Fecha de Registro<span style="color:red">(*)</span>
         @input="state.formData.anio_fabri = validateText(state.formData.anio_fabri.toUpperCase())"
         readonly
         :error="submitButton && !state.formData.anio_fabri"
-        hide-details
-      ></v-text-field>
+        hide-details ></v-text-field>
     </v-col>
     <v-col cols="12" md="4">
       <v-label class="mb-2 font-weight-medium">Placa <span style="color:red">(*)</span></v-label>
@@ -517,8 +496,7 @@ Fecha de Registro<span style="color:red">(*)</span>
         @input="state.formData.placas = validateText(state.formData.placas.toUpperCase())"
         readonly
         :error="submitButton && !state.formData.placas"
-        hide-details
-      ></v-text-field>
+        hide-details ></v-text-field>
       <template v-if="submitButton && !state.formData.placas">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
@@ -535,8 +513,7 @@ Fecha de Registro<span style="color:red">(*)</span>
         v-model.trim="state.formData.chasis_"
         @input="state.formData.chasis_ = validateText(state.formData.chasis_.toUpperCase())"
         readonly 
-        hide-details
-      ></v-textarea>
+        hide-details ></v-textarea>
     </v-col><v-col cols="12" md="4">
       <v-label class="mb-2 font-weight-medium">Motor <span style="color:red">(*)</span></v-label>
       <v-textarea
@@ -545,8 +522,7 @@ Fecha de Registro<span style="color:red">(*)</span>
         v-model.trim="state.formData.motor"
         @input="state.formData.motor = validateText(state.formData.motor.toUpperCase())"
         readonly
-        hide-details
-      ></v-textarea>
+        hide-details ></v-textarea>
     </v-col>
     <v-col cols="12" md="4">
       <v-label class="mb-2 font-weight-medium">Kilometraje <b>(Actual)</b> <span style="color:red">(*)</span></v-label>
@@ -559,7 +535,6 @@ Fecha de Registro<span style="color:red">(*)</span>
                    @input="validateKilometraje()"
         v-model.trim="state.formData.kilometraje"
         :error="submitButton && !state.formData.kilometraje"
-
         hide-details
       ></v-text-field>
       <template v-if="submitButton && !state.formData.kilometraje ">
@@ -581,8 +556,7 @@ Fecha de Registro<span style="color:red">(*)</span>
         v-model.trim="state.formData.nro_ocupantes"
         @input="state.formData.nro_ocupantes "
         hide-details
-        :readonly="editar"
-      ></v-text-field>
+        :readonly="editar" ></v-text-field>
       </div>
       
       <div v-else>
@@ -594,9 +568,7 @@ Fecha de Registro<span style="color:red">(*)</span>
          min="1"
         v-model.trim="state.formData.nro_ocupantes"
         @input="state.formData.nro_ocupantes"
-        hide-details
-        
-      ></v-text-field>
+        hide-details ></v-text-field>
       </div>
     </v-col>
     <template v-if="submitButton && !state.formData.nro_ocupantes">
@@ -614,10 +586,7 @@ Fecha de Registro<span style="color:red">(*)</span>
             :items="tipos_combustible"
             item-title="nombre_region"
             item-value="nombre_region"
-            :error="submitButton && !state.formData.combustible"
-             
-
-          ></v-select>
+            :error="submitButton && !state.formData.combustible" ></v-select>
       <template v-if="submitButton && !state.formData.combustible">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
@@ -633,9 +602,7 @@ Fecha de Registro<span style="color:red">(*)</span>
             item-title="nombre_region"
             item-value="nombre_region"
             :error="submitButton && !state.formData.combustible"
-            :readonly="editar"
-
-          ></v-select>
+            :readonly="editar" ></v-select>
      </div>
     </v-col>
 
@@ -651,9 +618,7 @@ Fecha de Registro<span style="color:red">(*)</span>
         v-model.trim="state.formData.cedula_identidad"
         @input="state.formData.cedula_identidad = validateText(state.formData.cedula_identidad.toUpperCase())"
         :error="submitButton && !state.formData.cedula_identidad"
-
-        hide-details
-      ></v-textarea>
+        hide-details></v-textarea>
       <template v-if="submitButton && !state.formData.cedula_identidad">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
@@ -669,10 +634,7 @@ Fecha de Registro<span style="color:red">(*)</span>
             :items="categorias_conductor"
             item-title="nombre"
             item-value="nombre"
-            :error="submitButton && !state.formData.categoria_con"
-        
-
-          ></v-select>
+            :error="submitButton && !state.formData.categoria_con" ></v-select>
       <template v-if="submitButton && !state.formData.categoria_con">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
@@ -690,9 +652,7 @@ Fecha de Registro<span style="color:red">(*)</span>
         v-model.trim="state.formData.nombre_conductor"
         @input="state.formData.nombre_conductor = validateText(state.formData.nombre_conductor.toUpperCase())"
         :error="submitButton && !state.formData.nombre_conductor"
-
-        hide-details
-      ></v-textarea>
+        hide-details ></v-textarea>
       <template v-if="submitButton && !state.formData.nombre_conductor">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
@@ -709,9 +669,7 @@ Fecha de Registro<span style="color:red">(*)</span>
         v-model.trim="state.formData.apellidos_condutor"
         @input="state.formData.apellidos_condutor = validateText(state.formData.apellidos_condutor.toUpperCase())"
         :error="submitButton && !state.formData.apellidos_condutor"
-
-        hide-details
-      ></v-textarea>
+        hide-details ></v-textarea>
       <template v-if="submitButton && !state.formData.apellidos_condutor">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
@@ -728,20 +686,16 @@ Fecha de Registro<span style="color:red">(*)</span>
         v-model.trim="state.formData.celular_con"
         @input="state.formData.celular_con = validateText(state.formData.celular_con.toUpperCase())"
         :error="submitButton && !state.formData.celular_con"
-
-        hide-details
-      ></v-textarea>
+        hide-details ></v-textarea>
     </v-col>
     <v-col class="12" md="4">
       <v-label class="mb-2 font-weight-medium">Mecanicos disponibles<span style="color:red">(*)</span></v-label>
 
-      <v-select
-            v-model="state.formData.id_mecanico"
+      <v-select v-model="state.formData.id_mecanico"
             :items="desserts"
             item-title="mecanico_disponible"
             item-value="id"
-            :error="submitButton && !state.formData.id_mecanico"
-          ></v-select>
+            :error="submitButton && !state.formData.id_mecanico" ></v-select>
           <template v-if="submitButton && !state.formData.id_mecanico">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">
@@ -763,13 +717,10 @@ Fecha de Registro<span style="color:red">(*)</span>
         variant="outlined" 
         color="primary"
         type="text"
-        
         v-model="state.formData.prediagnostico"
         @input="state.formData.prediagnostico = validateText(state.formData.prediagnostico.toUpperCase())"
-
         :error="submitButton && !state.formData.prediagnostico"
-        hide-details
-      />
+        hide-details/>
       <template v-if="submitButton && !state.formData.prediagnostico">
         <div class="v-messages font-weight-black px-2 py-2">
           <div class="v-messages__message text-error ">

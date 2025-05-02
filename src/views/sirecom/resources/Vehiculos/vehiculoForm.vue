@@ -11,14 +11,15 @@ import { validateText } from '@/utils/helpers/validateText'
 import { editPermission } from '@/utils/helpers/editPermission' 
 import { usefilterStore } from '@/stores/resources/filtro';
 import BaseBreadcrumb from '@/components/shared/BaseBreadcrumb.vue';
+import { useSearchStore } from '@/stores/resources/busqueda';
 import Swal from 'sweetalert2'
 import { readonly } from 'vue';
 import { startCase } from 'lodash';
+const search = useSearchStore()
+// BREADCRUMB  
 const openpanel = ref([0]);
-const repuestoStore = usefilterStore()
 const vehicleStore = useVehicleStore()
   const route = useRoute()
-  const resourceStore = useResourceStore()
   const orden = useOrdenStore()
   const tipos_combustible = ['GASOLINA', 'DIESEL', 'KEROSENE']
   const submitButton = ref(false)
@@ -41,8 +42,6 @@ const vehicleStore = useVehicleStore()
     }
   ]);
 
-
-  
   const permisoEdicion = ref<any>(true)
   const editar = ref<any>(false)
 
@@ -87,17 +86,35 @@ const vehicleStore = useVehicleStore()
   });
 
     // LISTA DE REGIONES COMPLETA
-    const lista_regiones = ref([]) as any
+  const lista_regiones = ref([]) as any
   const lista_departamentos = ref([]) as any
   const lista_municipios = ref([]) as any
   const lista_provincias = ref([]) as any
 
-  const getRegionList = async () => {
-    lista_regiones.value = await resourceStore.getPlaces()
-    lista_departamentos.value = lista_regiones.value.filter(
-      (region:any) => region.tipo == 'DEPARTAMENTO'
-    )
+  const desserts2 = ref([]) as any
+  const desserts3 = ref([]) as any
+  const desserts4 = ref([]) as any
+  const desserts5 = ref([]) as any
+  const desserts6 = ref([]) as any
+  const desserts7 = ref([]) as any
+  const departamentos = ref([])
+  const getrepuestosList = async() => {
+    const datos_generales = await  search.general_data_for_search()
+    desserts2.value = datos_generales.clase
+    desserts3.value = datos_generales.tipo
+    desserts4.value = datos_generales.marca
+    desserts5.value = datos_generales.fuerza
+    desserts6.value = datos_generales.procedencia
+    departamentos.value = datos_generales.departamento
+    lista_regiones.value = datos_generales.place
+    lista_departamentos.value = lista_regiones.value.filter(  (region:any) => region.tipo == 'DEPARTAMENTO')
   }
+  // const getRegionList = async () => {
+  //   lista_regiones.value = await resourceStore.getPlaces()
+  //   lista_departamentos.value = lista_regiones.value.filter(
+  //     (region:any) => region.tipo == 'DEPARTAMENTO'
+  //   )
+  // }
   const getEncargado = async (id: any) => {
     let padre = lista_departamentos.value.find(
       (region:any) => region.nombre_region == id
@@ -115,30 +132,11 @@ const vehicleStore = useVehicleStore()
         )
   }
 
- 
-  const desserts2 = ref([]) as any
-  const desserts3 = ref([]) as any
-  const desserts4 = ref([]) as any
-  const desserts5 = ref([]) as any
-  const desserts6 = ref([]) as any
-  const desserts7 = ref([]) as any
-  const getrepuestosList = async() => {
 
-    desserts2.value = await repuestoStore.clase()
-    desserts3.value = await repuestoStore.tipo()
-    desserts4.value = await repuestoStore.marcas()
-   desserts5.value= await vehicleStore.getFuerza()
-   desserts6.value = await vehicleStore.getProce()
-   
-  }
-  const departamentos = ref([])
-  const getDepartmentsList = async() => {
-    departamentos.value = await resourceStore.getDepartments()
+  // const getDepartmentsList = async() => {
+  //   departamentos.value = await resourceStore.getDepartments()
  
-  }
-  const lista_accesorios = ref([]) as any
-
- 
+  // }
 
   const ordernes_id = async (id_v: any) => {
   
@@ -202,9 +200,7 @@ const vehicleStore = useVehicleStore()
           const { ok, message} = await vehicleStore.createVehicle(state.formData)
           const icono = (ok ? 'success' : 'error')
           Toast.fire({ icon: icono, title: message })
-         
         }
-      
       })
     }else{
       // NO ES NUEVO REGISTRO
@@ -243,8 +239,8 @@ const vehicleStore = useVehicleStore()
   });
 
   onMounted(async () => {
-    await getDepartmentsList()
-    await getRegionList()
+    // await getDepartmentsList()
+    // await getRegionList()
     await getrepuestosList()
     if(route.params.id_v  != '0'){
      await ordernes_id(route.params.id_v)
@@ -265,8 +261,6 @@ const vehicleStore = useVehicleStore()
       </h4>
     </v-col>
   </v-row>
-
- 
   <v-row>
 
 <v-expansion-panels v-model="openpanel">

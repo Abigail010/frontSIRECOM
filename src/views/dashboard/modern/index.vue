@@ -65,6 +65,7 @@ const fuerzas = []
 const pendientes = [] as any
 const finalizados = [] as any
 const prueba = ref([]) as any
+const general = ref([]) as any
 const datos = ref([]) as any//const departamento = [] as any
 const probar: { value?: number[] } = {};
 const pieChart = reactive({
@@ -74,7 +75,9 @@ const getEncargado = async (id: any) => {
     
     if(id!=''){
        
-        prueba.value = await orden.getPrueba2(id);
+       //   prueba.value = await orden.getPrueba2(id);
+        general.value= await orden.general_dashboard(id);
+        prueba.value = general.value.fuerzas_ingresadas;
         for(let i=0; i< prueba.value.length; i++){
         pendientes[i] = parseInt(prueba.value[i].pendientes)
         finalizados[i] = parseInt(prueba.value[i].finalizado)
@@ -82,8 +85,9 @@ const getEncargado = async (id: any) => {
     }
         
     }else{
-        
-        prueba.value = await orden.getPrueba2(mesActualNombre);
+        general.value= await orden.general_dashboard(mesActualNombre);
+        prueba.value = general.value.fuerzas_ingresadas;
+       //prueba.value = await orden.getPrueba2(mesActualNombre);
         for(let i=0; i< prueba.value.length; i++){
         pendientes[i] = parseInt(prueba.value[i].pendientes)
         finalizados[i] = parseInt(prueba.value[i].finalizado)
@@ -97,13 +101,13 @@ const getEncargado = async (id: any) => {
 let departamento: number[] = [];
 // Función asincrónica para obtener departamentos
 const getDepartamentos = async (id: any) => {
-    
-
     // Obtener datos según el valor de `id`
     if (id !== '') {
-        datos.value = await orden.getCiudades(id);
+        general.value =  await orden.general_dashboard(id);
+        datos.value = general.value.ingreso_departamentos
     } else {
-        datos.value = await orden.getCiudades(mesActualNombre);
+        general.value = await  orden.general_dashboard(mesActualNombre);
+        datos.value = general.value.ingreso_departamentos
     }
 
     // Asignar valores a `departamento`
@@ -122,17 +126,27 @@ const getDepartamentos = async (id: any) => {
  
 };
 
-   
 const getGen = async () => {
-    const info = await orden.getInfoB();
-   
-    const users = await orden.getUsers();
+    general.value= await orden.general_dashboard(mesActualNombre);
+    //console.log(general)
+    const info = general.value.informacion;
+    //console.log('ver ', general.value.usuarios[0])
+
+   /* const users = await orden.getUsers();
     const vehiculo = await orden.getVehiculos();
     const man1 = await orden.getFinalizado();
     const man2 = await orden.getPendiente();
     const rep1 = await orden.getPedidos_en();
-    const rep2 = await orden.getPedidos_pen();
-    prueba.value = await orden.getPrueba2(mesActualNombre);
+    const rep2 = await orden.getPedidos_pen();*/
+    const users = general.value.usuarios; // Esto es un array
+    const vehiculo = general.value.vehiculos_ingresados
+    const man1 = general.value.mantenimiento_finalizado
+    const man2 = general.value.mantenimiento_pendiente
+    const rep1 = general.value.pedidos_finalizados
+    const rep2 = general.value.pedidos_pendientes
+   // console.log('usuarios cantidad: ', users.length);
+
+    prueba.value = general.value.fuerzas_ingresadas;
     
     for(let i=0; i< prueba.value.length; i++){
         pendientes[i] = parseInt(prueba.value[i].pendientes)
@@ -141,7 +155,8 @@ const getGen = async () => {
        
     }
 
-    datos.value = await orden.getCiudades(mesActualNombre);
+  //  datos.value = await orden.getCiudades(mesActualNombre);
+    datos.value = general.value.ingreso_departamentos
     departamento = [parseInt(datos.value[0].beni || 0), parseInt(datos.value[0].cochabamba || 0), parseInt(datos.value[0].la_paz || 0),parseInt(datos.value[0].oruro || 0), parseInt(datos.value[0].pando || 0), parseInt(datos.value[0].potosi || 0), parseInt(datos.value[0].chuquisaca || 0), parseInt(datos.value[0].santa_cruz || 0),parseInt(datos.value[0].tarija || 0)]
     pieChart.series = [...departamento]; // Reactivo, actualiza el gráfico
 
@@ -218,7 +233,6 @@ const getGen = async () => {
        
         state.formData.dato2 = String(tot1)
        
-
         let tot2 = 0 
         for(let i=0;i < man1.length; i++){
            if(man1[i].id_taller == info.id_taller){

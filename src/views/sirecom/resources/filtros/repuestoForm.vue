@@ -5,11 +5,10 @@ import { router } from '@/router';
 import { useRoute } from 'vue-router'
 import Swal from 'sweetalert2'
 import { usefilterStore } from '@/stores/resources/filtro';
-import { useSystemStore } from '@/stores/resources/system';
-
+import { useSearchStore } from '@/stores/resources/busqueda';
   const route = useRoute()
   const repuestoStore = usefilterStore()
-  const sistemaStore = useSystemStore()
+  const search = useSearchStore()
   // BREADCRUMB  
   const page = ref({ title: 'Registro de filtro' });
   const breadcrumbs = ref([
@@ -69,13 +68,14 @@ import { useSystemStore } from '@/stores/resources/system';
   const desserts6 = ref([]) as any
   const desserts7 = ref([]) as any
   const getrepuestosList = async() => {
+    const datos_generales = await  search.general_data_for_search()
     desserts.value = await repuestoStore.filters()
-    desserts2.value = await repuestoStore.clase()
-    desserts3.value = await repuestoStore.tipo()
-    desserts4.value = await repuestoStore.marcas()
-    desserts5.value = await repuestoStore.motor()
-    desserts7.value = await repuestoStore.repuestos()
-    desserts6.value = await sistemaStore.systems()
+    desserts2.value = datos_generales.clase
+    desserts3.value = datos_generales.tipo
+    desserts4.value = datos_generales.marca
+    desserts5.value = datos_generales.tipo_motor
+    desserts7.value = datos_generales.repuestos
+    desserts6.value = datos_generales.sistemas
   }
 
   const sendForm = ref(true)
