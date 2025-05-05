@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:dist/assets/VLabel-GLYsymE2.js
-import{m as o,u as s}from"./useRender-CqBomNwa.js";import{p as n,a_ as r,m as c,g as m,b}from"./index-CGzb33IU.js";const i=n({text:String,onClick:r(),...o(),...c()},"VLabel"),C=m()({name:"VLabel",props:i(),setup(e,t){let{slots:a}=t;return s(()=>{var l;return b("label",{class:["v-label",{"v-label--clickable":!!e.onClick},e.class],style:e.style,onClick:e.onClick},[e.text,(l=a.default)==null?void 0:l.call(a)])}),{}}});export{C as V};
-========
-import{m as o,u as s}from"./useRender-na3-jXyE.js";import{p as n,a_ as r,m as c,g as m,b}from"./index-WHY3Dg12.js";const i=n({text:String,onClick:r(),...o(),...c()},"VLabel"),C=m()({name:"VLabel",props:i(),setup(e,t){let{slots:a}=t;return s(()=>{var l;return b("label",{class:["v-label",{"v-label--clickable":!!e.onClick},e.class],style:e.style,onClick:e.onClick},[e.text,(l=a.default)==null?void 0:l.call(a)])}),{}}});export{C as V};
->>>>>>>> a0b9ce3c13727712172ae7ca60663935fecdb815:dist/assets/VLabel-DLBA6URR.js
