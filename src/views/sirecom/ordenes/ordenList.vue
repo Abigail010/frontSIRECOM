@@ -47,7 +47,7 @@ const breadcrumbs = ref([
   //const desserts = ref([]) as any
   const desserts = ref<Man[]>([]);
   const getOrdenes_sol = async() => {
-  if(userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DE TALLER')  || us == 1){
+  if(userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DE TRANSPORTE')  || us == 1){
     desserts.value = await orden.getOrdenes_soli()
   }else{
     if(userProfile.includes('MECANICO') || us == 4){
