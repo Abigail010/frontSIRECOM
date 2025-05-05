@@ -69,7 +69,7 @@ onMounted(async () => {
                 class="custom-" 
                 variant="text" 
                 icon 
-                href="https://1drv.ms/b/s!AnQTBJ2Uzpo4k48-hjmzPBSwlVyWxw?e=muaENc" 
+                href="https://1drv.ms/b/c/642cdce85c43fd48/EdDzRrP3zSRChL56pik7q0MBoRi6GyXHyqiarNncmHP6AA?e=0RHNrf" 
                 target="_blank"
                 >
                 <v-avatar size="35">

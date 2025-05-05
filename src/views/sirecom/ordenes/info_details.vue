@@ -91,74 +91,46 @@ onMounted(async () => {
                            
                             <h4 class="text-h5 mt-3">{{ state.formData.placa }}</h4>
                             <v-row>
-                                <v-col cols="12" md="3" style="text-align: right;">
-<b>Taller: </b>
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: left;">
-{{ state.formData.taller }}
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: right;">
-<b>Solicita a: </b>
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: left;">
-{{ state.formData.fuerza }}
-                                </v-col>
+                                <v-col cols="12" md="3" style="text-align: right;"> <b>Taller: </b> </v-col>
+                                <v-col cols="12" md="3" style="text-align: left;"> {{ state.formData.taller }} </v-col>
+                                <v-col cols="12" md="3" style="text-align: right;">  <b>Solicita a: </b> </v-col>
+                                <v-col cols="12" md="3" style="text-align: left;">{{ state.formData.fuerza }} </v-col>                               
+                                <v-col cols="12" md="3" style="text-align: right;"> <b>Departamento: </b>   </v-col>
+                                <v-col cols="12" md="3" style="text-align: left;">{{ state.formData.departamento }} </v-col>
                                
-                                <v-col cols="12" md="3" style="text-align: right;">
-<b>Departamento: </b>
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: left;">
-{{ state.formData.departamento }}
-                                </v-col>
-                               
-                                <v-col cols="12" md="3" style="text-align: right;">
-<b>Estado: </b>
-                                </v-col>
-                                <v-col cols="12" md="3" style="text-align: left;">
-{{ state.formData.fecha_salida }}
-                                </v-col>
- <v-col cols="12" md="12">
-    Se solicito en fecha <b>{{ state.formData.fecha_ingreso }} </b> los siguientes repuestos:
- </v-col>
+                                <v-col cols="12" md="3" style="text-align: right;"><b>Estado: </b></v-col>
+                                <v-col cols="12" md="3" style="text-align: left;">{{ state.formData.fecha_salida }}  </v-col>
+                                <v-col cols="12" md="12"> Se solicito en fecha <b>{{ state.formData.fecha_ingreso }} </b> los siguientes repuestos:</v-col>
 
- <v-col cols="12" md="12">
-        <v-table density="compact">
-          <thead>
-            <tr>
-              <th class="text-center">N° </th>
-              <th class="text-center"><b> Repuesto</b></th>
-              <th class="text-center"><b> Cantidad</b></th>
-             
-              <th class="text-center"><b> Entregado</b></th>
-              <th class="text-center"><b> Devolución de repuestos en mal estado</b></th>
-             
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="(item, index) in state.formData.id_Rep"  :key="index"
-            >
-            <td class="text-center">{{ index+1 }}</td>
-              <td class="text-center">{{ item.nombre_repuesto }}</td>
-              <td class="text-center">{{ item.cantidad }}</td>
-              <td class="text-center">{{ item.entregados }}</td>
-              <td class="text-center">{{ item.recibido}}</td>
-        </tr>
-            </tbody>
+         <v-col cols="12" md="12">
+            <v-table density="compact">
+              <thead>
+                <tr>
+                  <th class="text-center">N° </th>
+                  <th class="text-center"><b> Repuesto</b></th>
+                  <th class="text-center"><b> Cantidad</b></th>
+                  <th class="text-center"><b> Entregado</b></th>
+                  <th class="text-center"><b> Devolución de repuestos en mal estado</b></th>
+                
+                </tr>
+              </thead>
+              <tbody>
+                  <tr v-for="(item, index) in state.formData.id_Rep"  :key="index">
+                    <td class="text-center">{{ index+1 }}</td>
+                    <td class="text-center">{{ item.nombre_repuesto }}</td>
+                    <td class="text-center">{{ item.cantidad }}</td>
+                    <td class="text-center">{{ item.entregados }}</td>
+                    <td class="text-center">{{ item.recibido}}</td>
+                  </tr>
+              </tbody>
             </v-table>
             </v-col>
-
-
-                            </v-row>
+             </v-row>
                         </v-card-item>
                     </v-card>
                     <v-divider />
-                
-                       
                   </v-col>
-            
             </v-row>
-          
         </v-col>
     </v-row>
 </template>

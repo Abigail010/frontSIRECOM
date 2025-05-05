@@ -225,7 +225,7 @@ onMounted(() => {
                 hide-details  />
               <v-divider class="mx-4" inset vertical></v-divider>
               <v-spacer></v-spacer>
-              <v-btn v-if="(userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile == 'SUPERVISOR DE MANTENIMIENTO') || ( us == 1 || us==2 || us== 3)"
+              <v-btn v-if="(userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile == 'SUPERVISOR DE MANTENIMIENTO') || ( us == 1 || us==2 || us== 6)"
                 color="primary"  
                 variant="flat" 
                 dark   
@@ -233,11 +233,11 @@ onMounted(() => {
             </v-toolbar>                        
           </template>
           <template v-slot:item.actions="{ item } : {item:Man}">
-              <v-icon v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3) "
+              <v-icon v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 6) "
                   color="info" size="large" class="me-2" @click="buttonDepositForm(item.id)">
                   mdi-pencil
               </v-icon>
-              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') ||  userProfile.includes('MECANICO')  || (us==1 || us==2 || us==3 || us== 4)"
+              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') ||  userProfile.includes('MECANICO')  || (us==1 || us==2 || us==6 || us== 4)"
                   class="mr-1"
                   size="x-small"
                   title="Orden de Mantenimiento"
@@ -259,7 +259,7 @@ onMounted(() => {
                   @click="buttonEstadoRep(item.id)" >
                 <ReportIcon style="cursor: pointer;"></ReportIcon>    
               </v-btn>
-              <v-btn  v-if="item.estado == 'EN PROCESO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile.includes('MECANICO') || (us==1 || us == 2 || us == 4) )   "
+              <v-btn  v-if="item.estado == 'EN PROCESO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile.includes('MECANICO') || (us==1 || us == 2 || us == 6) )   "
                   class="mr-1"
                   size="x-small"
                   title="Entregar"
@@ -269,7 +269,7 @@ onMounted(() => {
                   @click="buttonApprove(item.id)">
                   <FileCheckIcon style=" cursor: pointer;"></FileCheckIcon>
                 </v-btn>
-                <v-btn v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO')  || (us==1 || us == 2 || us == 3)) "
+                <v-btn v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO')  || (us==1 || us == 2 || us == 6)) "
                   class="mr-1 estado-3"
                   size="x-small"
                   title="Rechazar entrega de mantenimiento"
@@ -278,7 +278,7 @@ onMounted(() => {
                   @click="buttonDelete(item.id)" >
                   <FileIcon style=" cursor: pointer;"></FileIcon>
                 </v-btn>
-                <v-btn  v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3) ) "
+                <v-btn  v-if="item.estado == 'ENTREGADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') || userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 6) ) "
                   class=""
                   size="x-small"
                   title="Entrega de vehiculo"
