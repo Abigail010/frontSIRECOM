@@ -2208,8 +2208,8 @@ if(state.formData.id_Rep.length>0){
             Actualizar
           </template>
         </v-btn>
-        <v-btn  class="mr-3 prueba" v-if=" state.formData.estado_orden == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || (us == 1 || us == 2)) "  @click="buttonSendForm()  "    >  
-          <template v-if=" state.formData.estado_orden == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('ADMINISTRADOR') || (us == 1 || us == 2))  ">
+        <v-btn  class="mr-3 prueba" v-if=" state.formData.estado_orden == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DE TALLER') || (us == 1 || us == 2)) "  @click="buttonSendForm()  "    >  
+          <template v-if=" state.formData.estado_orden == 'FINALIZADO' && (userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DE TALLER') || (us == 1 || us == 2))  ">
             Actualizar
           </template>
         </v-btn>

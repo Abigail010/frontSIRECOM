@@ -234,7 +234,7 @@ onMounted(() => {
           </template>
           <template v-slot:item.actions="{ item } : {item:Man}">
               <v-icon v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') || (us==1 || us == 2 || us == 3) "
-              color="info" size="large" class="me-2" @click="buttonDepositForm(item.id)">
+                  color="info" size="large" class="me-2" @click="buttonDepositForm(item.id)">
                   mdi-pencil
               </v-icon>
               <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DEL TALLER') ||   userProfile.includes('SUPERVISOR DE MANTENIMIENTO') ||  userProfile.includes('MECANICO')  || (us==1 || us==2 || us==3 || us== 4)"
@@ -248,7 +248,7 @@ onMounted(() => {
                   @click="buttonRegistro(item.id)">
                 <ReportIcon style="cursor: pointer;"></ReportIcon>
               </v-btn>
-              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DE TRANSPORTE') || userProfile.includes('PERSONAL DE ENTREGA') || (us==1 || us == 2 || us == 5) "
+              <v-btn v-if="userProfile.includes('SUPER ADMINISTRADOR') || userProfile.includes('RESPONSABLE DE TRANSPORTE') || userProfile.includes('PERSONAL DE ENTREGA') || (us==1 || us == 6 || us == 5) "
                   class="mr-1"
                   size="x-small"
                   title="Entrega de repuestos"

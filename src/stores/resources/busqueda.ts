@@ -179,8 +179,6 @@ export const useSearchStore = defineStore({
       async minutesReport(form: any) {
         try {
          const url =  direccion_url+'/search_total/busqueda/'+ userLogged;
-         console.log('url.....', url)
-     
      //   const { url } = await sirecomApi.post('repuestos/create_filter/' + userLogged, form)
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
