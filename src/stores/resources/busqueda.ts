@@ -142,7 +142,8 @@ export const useSearchStore = defineStore({
       },
       async vehiculosReport(form:any) {
         try {
-          const url = direccion_url+'/search_total/report_vehiculos/'+ userLogged;
+          const encodedUserLogged = encodeURIComponent(userLogged);
+          const url = direccion_url+'/search_total/report_vehiculos/'+ encodedUserLogged;
          
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
@@ -178,9 +179,10 @@ export const useSearchStore = defineStore({
 
       async minutesReport(form: any) {
         try {
-         const url =  direccion_url+'/search_total/busqueda/'+ userLogged;
-     //   const { url } = await sirecomApi.post('repuestos/create_filter/' + userLogged, form)
-          // Crear un formulario oculto para enviar los datos como POST
+         const encodedUserLogged = encodeURIComponent(userLogged);
+        //  console.log('viendo ', encodedUserLogged)
+         const url =  direccion_url+'/search_total/busqueda/'+ encodedUserLogged;
+        
           const formElement = document.createElement('form');
           formElement.method = 'POST';
           formElement.action = url;
@@ -213,7 +215,8 @@ export const useSearchStore = defineStore({
 
       async ReportVe(form:any) {
         try {
-          const url = direccion_url+'/search_total/report_vehi/'+ userLogged;
+          const encodedUserLogged = encodeURIComponent(userLogged);
+          const url = direccion_url+'/search_total/report_vehi/'+ encodedUserLogged;
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
@@ -248,7 +251,8 @@ export const useSearchStore = defineStore({
       
       async ReportMan(form:any) {
         try {
-          const url = direccion_url+'/search_total/report_meca/'+ userLogged;
+          const encodedUserLogged = encodeURIComponent(userLogged);
+          const url = direccion_url+'/search_total/report_meca/'+ encodedUserLogged;
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');
           formElement.method = 'POST';
@@ -280,9 +284,10 @@ export const useSearchStore = defineStore({
         }
       }, 
 
-      async ReportRepuestos(form:any) {
+      async ReportRepuestos(form:any, ) {
         try {
-          const url = direccion_url+'/search_total/report_inventario/'+ userLogged;
+          const encodedUserLogged = encodeURIComponent(userLogged);
+          const url = direccion_url+'/search_total/report_inventario/'+ encodedUserLogged;
           
           // Crear un formulario oculto para enviar los datos como POST
           const formElement = document.createElement('form');

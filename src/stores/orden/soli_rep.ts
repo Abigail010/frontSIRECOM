@@ -188,7 +188,5 @@ export const useSoliStore = defineStore({
       return { ok: false, message };
     }
   }, 
-  
-
   }
 });

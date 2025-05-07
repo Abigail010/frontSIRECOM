@@ -169,7 +169,7 @@ const buttonClear5 = () => {
 
 
   const selectPanel = (openpanel :any) => {
-  console.log(`Estás seleccionando el Panel ${openpanel}`);
+  // console.log(`Estás seleccionando el Panel ${openpanel}`);
 };
   const sendForm = ref(true)
   const miValidacion = async () => {
@@ -268,7 +268,7 @@ const buttonSendForm = async () => {
       multiple
     >
       <v-expansion-panel v-if="uno" readonly>
-        <v-expansion-panel-title @click="selectPanel(1)">Reportes de registros de mantenimientos</v-expansion-panel-title>
+        <v-expansion-panel-title @click="selectPanel(1)">Reporte de registros de mantenimientos</v-expansion-panel-title>
         <v-expansion-panel-text>
           <v-row>
         <v-col cols="12" md="4">

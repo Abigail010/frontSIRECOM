@@ -1,5 +1,0 @@
-<<<<<<<< HEAD:dist/assets/VContainer-CasjU3PX.js
-import"./VRow-zJLVNwpE.js";import{m as s,u as n}from"./useRender-CqBomNwa.js";import{p as r,g as l,aA as m,b as i}from"./index-CGzb33IU.js";import{m as p}from"./router-C8F8dwVc.js";const c=r({fluid:{type:Boolean,default:!1},...s(),...p()},"VContainer"),V=l()({name:"VContainer",props:c(),setup(e,a){let{slots:t}=a;const{rtlClasses:o}=m();return n(()=>i(e.tag,{class:["v-container",{"v-container--fluid":e.fluid},o.value,e.class],style:e.style},t)),{}}});export{V};
-========
-import"./VRow-BVAxoeUN.js";import{m as s,u as n}from"./useRender-na3-jXyE.js";import{p as r,g as l,aA as m,b as i}from"./index-WHY3Dg12.js";import{m as p}from"./router-Bg24abls.js";const c=r({fluid:{type:Boolean,default:!1},...s(),...p()},"VContainer"),V=l()({name:"VContainer",props:c(),setup(e,a){let{slots:t}=a;const{rtlClasses:o}=m();return n(()=>i(e.tag,{class:["v-container",{"v-container--fluid":e.fluid},o.value,e.class],style:e.style},t)),{}}});export{V};
->>>>>>>> a0b9ce3c13727712172ae7ca60663935fecdb815:dist/assets/VContainer-X0BcdO7-.js
