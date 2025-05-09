@@ -143,7 +143,7 @@ onMounted(async () => {
                 </div>
                 <v-divider></v-divider>
             </div>
-            <perfect-scrollbar style="height: calc(100vh - 140px); max-height: 60px">
+            <perfect-scrollbar style="height: calc(100vh - 140px); max-height: 70px">
                 <v-list class="py-0 theme-list" lines="two">
                     <v-list-item v-for="item in profileDD" :key="item.title" class="py-4 px-8 custom-text-primary" :to="item.href">
                         <template v-slot:prepend>
