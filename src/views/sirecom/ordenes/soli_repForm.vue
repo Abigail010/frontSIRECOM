@@ -155,13 +155,15 @@ const openpanel = ref([0]);
    }
 
   const registro_id = async (id_orden: any) => {
+
     const datos_pedidos =  await soli_Rep.getEntregas(id_orden) 
+
     lista_unidad.value=datos_pedidos.Unidad
   //  state.formData.id_Rep = await soli_Rep.getsolicitudes(id_orden) 
-    // console.log(datos_pedidos.getTotal)
+
     state.formData.id_Rep =  datos_pedidos.getSolictudes
  //  state.formData.id_Rep2 = await soli_Rep.getEntregas(id_orden) 
-       state.formData.id_Rep2 = datos_pedidos.getEntregas
+    state.formData.id_Rep2 = datos_pedidos.getEntregas
     // const res= await soli_Rep.getEntregas(id_orden) 
    const res= datos_pedidos.getEntregas1
    let s = 0
@@ -174,94 +176,104 @@ const openpanel = ref([0]);
     state.formData.total = res2.total
   }
 
-  const opciones = ref([]) as any
-  const ButtonRepuesto = async (item: any) => {
-    const data2 = await soli_Rep.getID(item);
+  // const opciones = ref([]) as any
+  // const ButtonRepuesto = async (item: any, fuerza:any) => {
 
-    state.formData2.id_registro = data2.id
-    state.formData2.id_repuesto = data2.id_tipo_repuesto
-    state.formData2.id_solicitud = data2.id_solicitud
-    state.formData2.nombre_repuesto = data2.nombre_repuesto
-    state.formData2.cantidad = data2.cantidad
-    state.formData2.unidad = data2.unidad
-    state.formData2.precio = data2.precio
-    state.formData2.id_det = data2.id_det
-    state.formData2.estado = data2.entregado
-    state.formData2.disponible = data2.can_rep
+  //   const data2 = await soli_Rep.getID(item, fuerza);
+  //   state.formData2.id_registro = data2.id
+  //   state.formData2.id_repuesto = data2.id_tipo_repuesto
+  //   state.formData2.id_solicitud = data2.id_solicitud
+  //   state.formData2.nombre_repuesto = data2.nombre_repuesto
+  //   state.formData2.cantidad = data2.cantidad
+  //   state.formData2.unidad = data2.unidad
+  //   state.formData2.precio = data2.precio>0 ? data2.precio: 0
+  //   state.formData2.id_det = data2.id_det
+  //   state.formData2.estado = data2.entregado
+  //   state.formData2.disponible = data2.can_rep
 
-    if(parseInt(data2.costo)>0){
-      state.formData2.costo=data2.costo  
-     
-    }else{
-      if(parseInt(state.formData2.disponible)>0 || parseInt(data2.costo) == 0){
-      opciones.values = await soli_Rep.getPrecio( state.formData2.id_repuesto);
- 
-      let solicitado = parseInt(state.formData2.cantidad)
-      let costo_ver=0
-      let residuo=0
-      let b = 0 
-      if(opciones.values.length>0){
-   
-      for(let i=0; i<opciones.values.length; i++){
- 
-        if(opciones.values[i].entregado>0){
-     
-          residuo = parseInt(opciones.values[i].cantidad) - parseInt(opciones.values[i].entregado)
-          if(residuo==solicitado){
-        
-          if(solicitado>0){
-            costo_ver =costo_ver+ solicitado * parseInt(opciones.values[i].precio_u)
-            solicitado = Math.max(solicitado - residuo, 0)
-         
-          } 
-          
-          }else{
-            if(residuo> parseInt(state.formData2.cantidad)){
-              if(solicitado>0){
-              costo_ver = costo_ver+ parseInt(state.formData2.cantidad) * parseInt(opciones.values[i].precio_u)
-              solicitado = Math.max(solicitado - solicitado, 0)
-          
-              }
-            }else{
-              
-              if(solicitado>0){
-              costo_ver= costo_ver+ residuo * parseInt(opciones.values[i].precio_u)
-              solicitado = Math.max(solicitado - residuo, 0)
-            
-              }
-            }
-          }
-          state.formData2.costo = String(costo_ver)
-        }else{
+  //   if(parseInt(data2.costo)>0){
+
+  //     state.formData2.costo=data2.costo  
     
-          if(parseInt(state.formData2.cantidad)==solicitado){
-             if(solicitado >0){
-              costo_ver =costo_ver+ solicitado * parseInt(opciones.values[i].precio_u)
-            solicitado = Math.max(solicitado - residuo, 0)
-             }
-          }
-          if(parseInt(state.formData2.cantidad)>solicitado){
-              costo_ver = costo_ver+ parseInt(state.formData2.cantidad) * parseInt(opciones.values[i].precio_u)
-              solicitado = Math.max(solicitado - solicitado, 0)
-             }else{
-              costo_ver= costo_ver+ residuo * parseInt(opciones.values[i].precio_u)
-              solicitado = Math.max(solicitado - residuo, 0)
-             }
-          state.formData2.costo = String(costo_ver)   
-        }
-        /*if(parseInt(state.formData2.cantidad)>0){
+     
+  //   }else{
+  //     let costo_ver =0 
+  //        costo_ver = data2.disponible >data2.cantidad && data2.precio != 0 ? costo_ver+ parseInt(state.formData2.cantidad) *parseInt(state.formData2.precio):  parseInt(data2.disponible) * parseInt(state.formData2.precio)
+  //        state.formData2.costo = String(costo_ver)  
+    
+  //   }
+  //   dialog.value = true
+  // }
 
-        }*/
-      }
-      }else{
-        state.formData2.costo = ''
-      }
-    }else{
-        state.formData2.costo = ''
-      }
+  // 🟢 Variable reactiva para mostrar la alerta solo dentro del modal
+const alertaCostoCero = ref(false);
+
+const ButtonRepuesto = async (item: any, fuerza: any) => {
+  try {
+    const data = await soli_Rep.getID(item, fuerza);
+    if (!data) {
+      console.error('No se encontró información para el repuesto');
+      return;
     }
-    dialog.value = true
+
+    const {
+      id,
+      id_tipo_repuesto,
+      id_solicitud,
+      nombre_repuesto,
+      cantidad,
+      unidad,
+      precio,
+      id_det,
+      entregado,
+      can_rep,
+      costo,
+    } = data;
+
+    const parsedCantidad = parseFloat(cantidad) || 0;
+    const parsedPrecio = parseFloat(precio) || 0;
+    const parsedDisponible = parseFloat(can_rep) || 0;
+    const parsedCosto = parseFloat(costo) || 0;
+
+    Object.assign(state.formData2, {
+      id_registro: id,
+      id_repuesto: id_tipo_repuesto,
+      id_solicitud,
+      nombre_repuesto,
+      cantidad: parsedCantidad,
+      unidad,
+      precio: parsedPrecio > 0 ? parsedPrecio : 0,
+      id_det,
+      estado: entregado,
+      disponible: parsedDisponible,
+    });
+
+    // 🔹 Cálculo del costo
+    let costoFinal = parsedCosto > 0 
+      ? parsedCosto 
+      : (parsedDisponible > parsedCantidad && parsedPrecio > 0)
+        ? parsedCantidad * parsedPrecio
+        : parsedDisponible * parsedPrecio;
+
+    state.formData2.costo = costoFinal.toFixed(2);
+
+    // 🔹 Mostrar alerta SOLO si costo es 0
+    alertaCostoCero.value = costoFinal <= 0;
+
+    // 🔹 Abrir el modal
+    dialog.value = true;
+
+  } catch (error) {
+    console.error('Error al obtener repuesto:', error);
   }
+};
+
+// 🟢 Al cerrar el modal, ocultar alerta
+// const buttonClose = () => {
+//   dialog.value = false;
+//   alertaCostoCero.value = false;
+// };
+
 
   const precio = () => {
     const cantidad = parseFloat(state.formData2.cantidad) || 0;
@@ -330,7 +342,7 @@ const openpanel = ref([0]);
   });
 
   const entregar = async (item: any) => {
-    const data2 = await soli_Rep.getID(item);
+    const data2 = await soli_Rep.getID(item, state.formData2.fuerza);
     state.formData2.costo =data2.costo
  
       if(parseFloat(state.formData2.costo) >0){
@@ -390,6 +402,11 @@ function recibido(item: any) {
       window.location.reload()
   });
 } 
+
+const ButtonPreview = (id_orden: any) => {
+  // lógica para mostrar la previsualización (por ejemplo abrir reporte temporal)
+  ButtonReport2(id_orden) // si usa la misma función
+}
 
   onMounted(async () => {
     // await getResourcesList()
@@ -462,7 +479,7 @@ function recibido(item: any) {
   
 <v-row>
     
-    <v-dialog v-model="dialog" max-width="1000px">
+    <!-- <v-dialog v-model="dialog" max-width="1000px">
                                 <v-card>
                                     <v-card-title class="pa-2 bg-success">
                                         <span class="text-h5">Información del Repuesto</span>
@@ -501,11 +518,12 @@ function recibido(item: any) {
                                                     @input="state.formData2.unidad = validateText(state.formData2.unidad.toUpperCase())"  /> 
                                             </v-col>
                                             <v-col cols="12"  md="2">
+                                             ffff {{ state.formData2.costo }}
                                                <template v-if="us==1 || us==2">
                                                 <v-text-field
                                                 v-model="state.formData2.costo"
                                                 min:0
-                                                label="Precio Unitario"
+                                                label="Precio Unitario666"
                                                  type="number"
                                                  :error="submitButton && !state.formData2.costo">
                                                 
@@ -558,8 +576,141 @@ function recibido(item: any) {
                                         <v-btn v-else color="primary" variant="flat" dark   @click="buttonSendForm()"> Guardar</v-btn>
                                     </v-card-actions>
                                 </v-card>
-                            </v-dialog>
-    <v-expansion-panels v-model="openpanel">
+                            </v-dialog> -->
+   
+   <v-dialog v-model="dialog" max-width="1000px">
+  <v-card>
+    <v-card-title class="pa-2 bg-success">
+      <span class="text-h5">Información del Repuesto</span>
+    </v-card-title>
+
+    <v-card-text>
+      <!-- 🔴 ALERTA solo visible dentro del modal -->
+      <v-alert
+        v-if="alertaCostoCero && dialog"
+        type="error"
+        variant="outlined"
+        density="compact"
+        border="start"
+        elevation="0"
+        class="mb-2 pa-2 text-body-2 alert-minimal"
+      >
+        <strong>No se encuentra registros, fuera de stock.</strong>
+      </v-alert>
+
+      <v-container>
+        <v-row>
+          <v-row>
+                                            <v-col cols="12"  md="4">
+                                                <v-text-field
+                                                v-model="state.formData2.nombre_repuesto"
+                                                label="Repuesto"
+                                                readonly
+                                                ></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12"  md="3">
+                                                <v-text-field
+                                                @input="precio(), state.formData2.cantidad"
+                                                v-model="state.formData2.cantidad"
+                                                label="Cantidad"
+                                                type="number"
+                                                 :min = 1></v-text-field>
+                                            </v-col>
+                                            <v-col cols="12"  md="3">
+                                        
+                                                <v-autocomplete
+                                                    variant="outlined"
+                                                     label="Unidad"
+                                                    color="primary"
+                                                    hide-details
+                                                    :items="lista_unidad"
+                                                    v-model="state.formData2.unidad"
+                                                    no-data-text="No existe más opciones para seleccionar"
+                                                    item-value="nombre_unidad"
+                                                    item-title="nombre_unidad"
+                                                    @input="state.formData2.unidad = validateText(state.formData2.unidad.toUpperCase())"  /> 
+                                            </v-col>
+                                            <v-col cols="12"  md="2">
+                                            
+                                               <template v-if="us==1 || us==2">
+                                                <v-text-field
+                                                v-model="state.formData2.costo"
+                                                min:0
+                                                label="Precio Unitario666"
+                                                 type="number"
+                                                 :error="submitButton && !state.formData2.costo">
+                                                
+                                              </v-text-field>
+                                              <template v-if="submitButton && !state.formData2.costo">
+                                                    <div class="v-messages font-weight-black px-2 py-2">
+                                                      <div class="v-messages__message text-error ">
+                                                        El campo es requerido
+                                                      </div>
+                                                    </div>
+                                                  </template>
+                                               </template>
+                                               <template v-else>
+                                                <v-text-field
+                                                v-model="state.formData2.costo"
+                                                min:0
+                                                label="Costo"
+                                                type="number"
+                                                :error="submitButton && !state.formData2.costo"
+                                                readonly >
+                                                  
+                                              </v-text-field>
+                                              <template v-if="submitButton && !state.formData2.costo">
+                                                    <div class="v-messages font-weight-black px-2 py-2">
+                                                      <div class="v-messages__message text-error ">
+                                                        El campo es requerido
+                                                      </div>
+                                                    </div>
+                                                  </template>
+                                               </template>
+                                               
+                                            </v-col>
+                                            <v-col cols="12"  md="12">
+                                                <v-text-field
+                                                v-model="state.formData2.observacion"
+                                                label="Observación"
+                                                 type="text"
+                                                 @input="state.formData2.observacion = validateText(state.formData2.observacion.toUpperCase())" >
+                                              
+                                              </v-text-field>
+                                            </v-col>
+                                          </v-row>
+        </v-row>
+      </v-container>
+    </v-card-text>
+
+    <v-card-actions>
+      <v-spacer></v-spacer>
+      <v-btn color="error" variant="flat" dark @click="buttonClose()">Cancelar</v-btn>
+      <v-btn
+        v-if="state.formData2.estado == 'RECIBIDO' && (us==1 || us==2)"
+        color="success"
+        variant="flat"
+        dark
+        :disabled="alertaCostoCero"
+        @click="buttonSendForm()"
+      >
+        Guardar
+      </v-btn>
+      <v-btn
+        v-else
+        color="primary"
+        variant="flat"
+        dark
+        :disabled="alertaCostoCero"
+        @click="buttonSendForm()"
+      >
+        Guardar
+      </v-btn>
+    </v-card-actions>
+  </v-card>
+</v-dialog>
+
+                            <v-expansion-panels v-model="openpanel">
        
         <!---Delivery Options--->
         <v-expansion-panel elevation="10" class=" mt-3">
@@ -630,7 +781,7 @@ function recibido(item: any) {
                   width="25"
                   color="primary"
                   text="hola"
-                 @click="ButtonRepuesto(item.id)" > <PencilIcon style="cursor: pointer;"></PencilIcon>
+                 @click="ButtonRepuesto(item.id, state.formData2.fuerza)" > <PencilIcon style="cursor: pointer;"></PencilIcon>
                 </v-btn>
                 </td>
                 <td class="text-center" v-else-if="item.entregado === 'RECIBIDO' &&  (us==1 ||  us==2) ">
@@ -642,7 +793,7 @@ function recibido(item: any) {
                   width="25"
                   color="success"
                   text="hola"
-                 @click="ButtonRepuesto(item.id)" > <PencilIcon></PencilIcon>
+                 @click="ButtonRepuesto(item.id, state.formData2.fuerza)" > <PencilIcon></PencilIcon>
                 </v-btn>
                 </td>
                 <td class="text-center" v-else>
@@ -721,14 +872,36 @@ function recibido(item: any) {
     <v-col cols="12" class="text-lg-left pt-5">
  
       <template v-if="!isLoading">
-        <v-btn color="error" class="mr-3" @click="buttonReturnList()">Volver</v-btn>
-        <v-btn v-if="state.formData.total == '0'"
-         color="success"  class="mr-10" @click="ButtonReport2( route.params.id_orden)">
-          <template v-if="state.formData.id_registro != '0' && permisoEdicion">
-            Imprimir 
-          </template>
-        </v-btn>
-      </template>
+  <!-- BOTÓN VOLVER -->
+  <v-btn color="error" class="mr-3" @click="buttonReturnList()">
+    Volver
+  </v-btn>
+
+  <!-- BOTÓN IMPRIMIR (cuando total == 0) -->
+  <v-btn
+    v-if="state.formData.total == '0'"
+    color="success"
+    class="mr-10"
+    @click="ButtonReport2(route.params.id_orden)"
+  >
+    <template v-if="state.formData.id_registro != '0' && permisoEdicion">
+      Imprimir
+    </template>
+  </v-btn>
+
+  <!-- BOTÓN PREVISUALIZACIÓN (nuevo, antes de finalizar) -->
+  <v-btn
+    v-if="state.formData.total != '0'"
+    color="secondary"
+    class="mr-10"
+    @click="ButtonPreview(route.params.id_orden)"
+  >
+    <template v-if="state.formData.id_registro != '0' && permisoEdicion">
+      Previsualización
+    </template>
+  </v-btn>
+</template>
+
             
       <template v-else>
         <v-btn color="primary" disabled>

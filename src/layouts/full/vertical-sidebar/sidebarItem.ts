@@ -102,18 +102,48 @@ const lista_menu : MenuItem[] = [
         to: '/userList',
         visible: true, // Se mostrará
     },
-       { title: 'Talleres',
+       
+    { 
+        title: 'Talleres',
         icon: BuildingFactory2Icon,
         to: '/tallerList',
         visible: true, // Se mostrará
     },
-        {
-            title:'Ordenes',
-            icon: ChartDonut3Icon,
+    {
+        title:'Ordenes',
+        icon: ChartDonut3Icon,
         to: '/ordenList',
         visible: true, // Se mostrará
         
-        }, 
+     }, 
+     {
+        title:'Ordenes - supervision',
+        icon: ChartDonut3Icon,
+        to: '/ordenList',
+        visible: false, // Se mostrará
+        
+     }, 
+     {
+        title:'Ordenes - mantenimiento',
+        icon: ChartDonut3Icon,
+        to: '/ordenList',
+        visible: false, // Se mostrará
+        
+     }, 
+     {
+        title:'Ordenes - entrega de repuestos',
+        icon: ChartDonut3Icon,
+        to: '/ordenList',
+        visible: false, // Se mostrará
+        
+     }, 
+     {
+        title:'Ordenes - evaluacion',
+        icon: ChartDonut3Icon,
+        to: '/ordenList',
+        visible: false, // Se mostrará
+        
+     }, 
  
     {
       title: 'Busqueda Reporte',

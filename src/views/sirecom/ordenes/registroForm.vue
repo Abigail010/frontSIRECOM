@@ -160,7 +160,7 @@ const openpanel = ref([0]);
   const getResourcesList = async () => {
    
     const diagnosticos =  await registro.gettipo_mantenimiento()
-    //console.log(diagnosticos)
+
     // lista_diagnosticos.value = await registro.gettipo_trabajo() 
     lista_diagnosticos.value = diagnosticos.tipo_trabajo
     tipo_mantenimiento2.value = diagnosticos.mantenimiento_dos    // LISTA DE accesorios
@@ -943,7 +943,7 @@ if(state.formData.id_Rep.length>0){
     isLoading.value = false
   }
   const ButtonRepuesto = async (item: any) => {
-    const data2 = await soli_Rep.getID(item);
+    const data2 = await soli_Rep.getID(item, '');
  
     state.formData.id_reg_rep = data2.id
     state.formData.nombre_repuesto =  String(data2.nombre_repuesto)
@@ -1042,7 +1042,7 @@ if(state.formData.id_Rep.length>0){
       if(parseInt(state.formData.id_registro)>0){
         await registro_id(route.params.id_orden)
       }else{
-        //console.log('0')
+        
       }
     
       await basico_id(route.params.id_orden)
@@ -2117,7 +2117,7 @@ if(state.formData.id_Rep.length>0){
                      <b> No se encontro ningún registro</b>
                  </v-col>
                 </template>
-                
+              
                 <template v-if="state.formData.id_Rep.length>0">
                   <v-col cols="12" md="12">
                     <v-table density="compact">

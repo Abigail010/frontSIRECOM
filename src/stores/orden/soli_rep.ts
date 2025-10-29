@@ -127,10 +127,10 @@ export const useSoliStore = defineStore({
     
       },
   // OBTENER INFORMACION DE DELITO POR ID
-  async getID (id_repuesto: any) {
+  async getID (id_repuesto: any, fuerza:string) {
     try {
       
-      const { data } = await sirecomApi.get('soli_rep/solirep_id/' + id_repuesto)
+      const { data } = await sirecomApi.get('soli_rep/solirep_id/' + id_repuesto+'/'+fuerza)
       return data
     } catch (error: any) {
       const message = (error.response.data ? error.response.data.message : 'error: sin conexion')

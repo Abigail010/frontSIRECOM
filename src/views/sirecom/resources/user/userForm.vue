@@ -70,8 +70,9 @@ const fuerzas = useFuerzasStore()
   const fuerza = ref([])
   
   const editar = ref<any>(false)
-    const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
-    const us2:any = JSON.parse(localStorage.getItem('user') || '').id_taller
+  const us:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
+
+  const us2:any = JSON.parse(localStorage.getItem('user') || '').id_taller
   const perfiles = ref([])
   const getProfilesList = async() => {
     perfiles.value = await resourceStore.getProfiles()
@@ -95,7 +96,7 @@ const fuerzas = useFuerzasStore()
     fuerza.value = await fuerzas.fuerza()
   }
 
-  const usertaller:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
+const usertaller:any = JSON.parse(localStorage.getItem('user') || '').id_perfil
 
 const usert:any = JSON.parse(localStorage.getItem('user') || '').id_taller
 
@@ -592,7 +593,7 @@ const buttonSendForm = async () => {
                         v-bind:value="submenu.id"
                         hide-details
                         @click="evaluateCheckbox(submenu.id)"
-                        :disabled="(submenu.titulo == 'Perfil' || submenu.titulo == 'Servicios') && !(usertaller == 1 || usert == 1)" 
+                        :disabled="(submenu.titulo == 'Perfil' || submenu.titulo == 'Servicios' || submenu.titulo == 'Accesorios' || submenu.titulo == 'Sistemas' || submenu.titulo == 'Filtros' || submenu.titulo == 'Tipos de mantenimiento') && (us != 1)" 
                       />
                       <v-switch
                         class="pl-3 my-0"
@@ -601,7 +602,7 @@ const buttonSendForm = async () => {
                         color="secondary"
                         v-bind:value="submenu.id"
                         hide-details
-                        :disabled="evaluateCheckbox(submenu.id) || (submenu.titulo == 'Perfil'  || submenu.titulo == 'Servicios') && !(usertaller == 1 || usert == 1)"
+                        :disabled="evaluateCheckbox(submenu.id) || (submenu.titulo == 'Perfil'  || submenu.titulo == 'Servicios' || submenu.titulo == 'Accesorios' || submenu.titulo == 'Sistemas' || submenu.titulo == 'Filtros' || submenu.titulo == 'Tipos de mantenimiento' ) && (us != 1)"
                         
                       />
                     </v-col>
@@ -613,6 +614,7 @@ const buttonSendForm = async () => {
                 <template v-if="menu.id == submenu.padre">
                   <h3 class="mb-5 text-primary">{{ submenu.titulo }}</h3>
                   <v-row>
+                
                     <template v-for="s_submenu in s_submenu_independiente" :key="s_submenu.id">
                       <template v-if="submenu.id == s_submenu.padre">
                         <v-col cols="12" md="4" class="low-col">
@@ -623,7 +625,9 @@ const buttonSendForm = async () => {
                             v-bind:value="s_submenu.id"
                             hide-details
                             @click="evaluateCheckbox(s_submenu.id)"
-                          />
+                            :disabled="(s_submenu.titulo == 'Vehículos' || s_submenu.titulo == 'Procedencia' || s_submenu.titulo == 'Modelo' || s_submenu.titulo == 'Tipo' || s_submenu.titulo == 'Marcas' || s_submenu.titulo == 'Fuerzas' || s_submenu.titulo == 'Ingreso de repuestos'  || s_submenu.titulo == 'Repuesto' ) && (us!=1)" 
+                      
+                          /> 
                           <v-switch
                             class="pl-3 my-0"
                             v-model="state.formData.ediciones"
@@ -631,7 +635,7 @@ const buttonSendForm = async () => {
                             color="secondary"
                             v-bind:value="s_submenu.id"
                             hide-details
-                            :disabled="evaluateCheckbox(s_submenu.id)"
+                            :disabled="evaluateCheckbox(s_submenu.id) || (s_submenu.titulo == 'Procedencia' ) && (us!=1)"
                           />
                         </v-col>
                       </template>
