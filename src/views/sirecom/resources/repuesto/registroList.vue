@@ -53,7 +53,7 @@ const getRegisterRList = async() => {
 const headers = ref([
   { title: 'Acciones', key: 'actions', sortable: false },
   { title: 'N° de partida', key: 'nro_partida' },
-  
+  { title: 'Fuerza', key: 'fuerza' },
   { title: 'Cantidad de repuestos', key: 'cantidad' },
   { title: 'Total', key: 'total' },
   { title: 'Observación', key: 'observacion' },

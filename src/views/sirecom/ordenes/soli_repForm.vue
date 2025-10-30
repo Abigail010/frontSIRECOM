@@ -772,7 +772,7 @@ const ButtonPreview = (id_orden: any) => {
 
               </td>
               <td class="text-center" v-else>ENTREGADO </td>
-              <td class="text-center" v-if="item.entregado === 'PENDIENTE' && (us==1 || us==2 ||  us==5) " >
+              <td class="text-center" v-if="item.entregado === 'PENDIENTE'" >
                 <v-btn
                   class="mr-1"
                   size="x-small"
@@ -784,7 +784,7 @@ const ButtonPreview = (id_orden: any) => {
                  @click="ButtonRepuesto(item.id, state.formData2.fuerza)" > <PencilIcon style="cursor: pointer;"></PencilIcon>
                 </v-btn>
                 </td>
-                <td class="text-center" v-else-if="item.entregado === 'RECIBIDO' &&  (us==1 ||  us==2) ">
+                <td class="text-center" v-else-if="item.entregado === 'RECIBIDO' &&  (us==1) ">
                     <v-btn 
                   class="mr-1"
                   size="x-small"
